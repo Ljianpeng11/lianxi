@@ -13,7 +13,8 @@ var appLogin = require('modules/login');
 var eventHelper = require('utils/eventHelper');
 var ElementUI = require('element-ui');
 var appSearch = require('modules/appSearch');
-
+var arcgisAPI = require('utils/arcgisAPI');
+var mapHelper = require('utils/mapHelper');
 Vue.use(ElementUI);
 Vue.use(VueRouter);
 window.eventHelper = eventHelper;
@@ -58,8 +59,7 @@ var app = new Vue({
         eventHelper.on('toggle-menu', function (flag) {
             this.isMenuToggleOff = flag;
         }.bind(this));
-    }
-    , data: function () {
+    }, data: function () {
         return {
             isLoginSuccess: false,
             isMenuToggleOff: false
@@ -75,4 +75,8 @@ var app = new Vue({
         // 'app-search': appSearch,
         'app-footer': appFooter
     }
-}).$mount('#app');
+});
+
+mapHelper.register(arcgisAPI, function (apiInstance) {
+    app.$mount('#app');
+});

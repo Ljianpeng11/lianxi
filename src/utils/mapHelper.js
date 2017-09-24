@@ -1,38 +1,52 @@
 define(function () {
-    var Map = cesc.require("esri/map"),
-        eventHelper = require('utils/eventHelper'),
-        ArcGISTiledMapServiceLayer = cesc.require('esri/layers/ArcGISTiledMapServiceLayer'),
-        ArcGISDynamicMapServiceLayer = cesc.require('esri/layers/ArcGISDynamicMapServiceLayer'),
-        TDTAnnoLayer = require('modules/arcgisPlugin/plugin/arcgisExpand/TDTAnnoLayer'),
-        TDTLayer = require('modules/arcgisPlugin/plugin/arcgisExpand/TDTLayer'),
-        Point = cesc.require('esri/geometry/Point'),
-        Extent = cesc.require("esri/geometry/Extent"),
-        SpatialReference = cesc.require('esri/SpatialReference'),
-        Polygon = cesc.require("esri/geometry/Polygon"),
-        Polyline = cesc.require("esri/geometry/Polyline"),
-        Graphic = cesc.require("esri/graphic"),
-        Color = cesc.require("esri/Color"),
-        Font = cesc.require("esri/symbols/Font"),
-        GraphicsLayer = cesc.require("esri/layers/GraphicsLayer"),
-        TextSymbol = cesc.require("esri/symbols/TextSymbol"),
-        CartographicLineSymbol = cesc.require('esri/symbols/CartographicLineSymbol'),
-        SimpleMarkerSymbol = cesc.require("esri/symbols/SimpleMarkerSymbol"),
-        SimpleLineSymbol = cesc.require("esri/symbols/SimpleLineSymbol"),
-        SimpleFillSymbol = cesc.require("esri/symbols/SimpleFillSymbol"),
-        PictureMarkerSymbol = cesc.require("esri/symbols/PictureMarkerSymbol");
-    var newColor = new Color([0, 191, 255, 0.25]);
-    var oldColor = new Color([181, 119, 196, 0.25]);
-    var highLightColor = new Color([229, 14, 14, 0.7]);
-    var map;
+    var apiInstance = {};
+    var apiVersion = '';
+    /*    var Map = cesc.require("esri/map"),
+     eventHelper = require('utils/eventHelper'),
+     ArcGISTiledMapServiceLayer = cesc.require('esri/layers/ArcGISTiledMapServiceLayer'),
+     ArcGISDynamicMapServiceLayer = cesc.require('esri/layers/ArcGISDynamicMapServiceLayer'),
+     TDTAnnoLayer = require('modules/arcgisPlugin/plugin/arcgisExpand/TDTAnnoLayer'),
+     TDTLayer = require('modules/arcgisPlugin/plugin/arcgisExpand/TDTLayer'),
+     Point = cesc.require('esri/geometry/Point'),
+     Extent = cesc.require("esri/geometry/Extent"),
+     SpatialReference = cesc.require('esri/SpatialReference'),
+     Polygon = cesc.require("esri/geometry/Polygon"),
+     Polyline = cesc.require("esri/geometry/Polyline"),
+     Graphic = cesc.require("esri/graphic"),
+     Color = cesc.require("esri/Color"),
+     Font = cesc.require("esri/symbols/Font"),
+     GraphicsLayer = cesc.require("esri/layers/GraphicsLayer"),
+     TextSymbol = cesc.require("esri/symbols/TextSymbol"),
+     CartographicLineSymbol = cesc.require('esri/symbols/CartographicLineSymbol'),
+     SimpleMarkerSymbol = cesc.require("esri/symbols/SimpleMarkerSymbol"),
+     SimpleLineSymbol = cesc.require("esri/symbols/SimpleLineSymbol"),
+     SimpleFillSymbol = cesc.require("esri/symbols/SimpleFillSymbol"),
+     PictureMarkerSymbol = cesc.require("esri/symbols/PictureMarkerSymbol");
+     var newColor = new Color([0, 191, 255, 0.25]);
+     var oldColor = new Color([181, 119, 196, 0.25]);
+     var highLightColor = new Color([229, 14, 14, 0.7]);
+     var map;*/
     var generateNo = function () {
         var date = new Date();
         return ('PA' + date.getTime()).substring(5);
     }
     return {
+        register: function (api, cb) {
+            api.getInstance(function (type, currentInstance) {
+                cb();
+                apiVersion = type;
+                apiInstance = currentInstance;
+                console.log(apiInstance);
+            }.bind(this));
+        },
         /**
          * 天地图WMTS
          **/
-        initTDWmtsServer: function (layerURL, centerX, centerY,zoom) {//传入地图图层服务路径以及中心点位置
+        initTDMap: function (centerX, centerY, zoom) {
+            var map = apiInstance.initTDLayer();
+            return map;
+        },
+        initTDWmtsServer: function (layerURL, centerX, centerY, zoom) {//传入地图图层服务路径以及中心点位置
             map = new Map("mapDiv", {
                 center: [centerX, centerY],
                 zoom: zoom
@@ -46,26 +60,28 @@ define(function () {
             map.addLayer(basemap);
             var annolayer = new TDTAnnoLayer();//文字注解图层
             map.addLayer(annolayer);
-            var labels = new ArcGISDynamicMapServiceLayer(layerURL, {opacity: 0.6,id:'1234'});
+            var labels = new ArcGISDynamicMapServiceLayer(layerURL, {opacity: 0.6, id: '1234'});
             map.addLayer(labels);
             map.on('click', function (event) {
                 console.log(event);
             });
-            map.on('update-end',function () {
+            map.on('update-end', function () {
                 console.log('地图加载完毕！');
             });
-            labels.on('update-end',function () {
+            labels.on('update-end', function () {
                 console.log('地图图层加载完毕！');
             });
             return map;
-        },
+        }
+        ,
         //刷新地图图层
-        refreshLayerById:function (currentMap,LayerId) {
-            var graphicsLayer=currentMap.getLayer(LayerId);
-            if(!!graphicsLayer){
+        refreshLayerById: function (currentMap, LayerId) {
+            var graphicsLayer = currentMap.getLayer(LayerId);
+            if (!!graphicsLayer) {
                 graphicsLayer.refresh();
             }
-        },
+        }
+        ,
         //根据状态改变点的填充颜色
         revertSymbol: function (graphic) {
             var color = newColor;
@@ -74,23 +90,26 @@ define(function () {
             }
             var symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([160, 82, 45]), 2), color);
             graphic.setSymbol(symbol);
-        },
+        }
+        ,
         //重新设置symbol的线和填充颜色
-        changeSymbol: function (graphic,lineColor,lineWidth,fillColor) {
+        changeSymbol: function (graphic, lineColor, lineWidth, fillColor) {
             var symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color(lineColor), lineWidth), new Color(fillColor));
             graphic.setSymbol(symbol);
-        },
+        }
+        ,
         //改变线的样式
-        changeLineSymbol: function (graphic,lineColor,lineWidth) {
+        changeLineSymbol: function (graphic, lineColor, lineWidth) {
             var symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color(lineColor), lineWidth);
             graphic.setSymbol(symbol);
-        },
+        }
+        ,
         // revertLineSymbol: function (graphic) {
         //     var symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([241, 104, 15, 0.8]), 2);
         //     graphic.setSymbol(symbol);
         // },
         //地图编辑画面
-        drawPolygonInMap: function  (map,lineColor,lineWidth,fillColor,cb,attributes) {
+        drawPolygonInMap: function (map, lineColor, lineWidth, fillColor, cb, attributes) {
             var DrawPolygonInMap = cesc.dojo.require("esri/toolbars/draw");
             this.drawPolygonPen = new DrawPolygonInMap(map, {
                 showTooltips: true
@@ -106,14 +125,15 @@ define(function () {
                     graphic.attributes = attributes;
                     cb(graphic, no);
                     map.graphics.add(graphic);
-                    map.graphics.on('click',function (event) {
+                    map.graphics.on('click', function (event) {
                         console.log(event.graphic.attributes);
                     });
                 }
             }.bind(this));
-        },
+        }
+        ,
         //画点
-        drawPointInMap: function  (map,iconUrl,pictureWidth,pictureHeight,cb,attributes) {
+        drawPointInMap: function (map, iconUrl, pictureWidth, pictureHeight, cb, attributes) {
             var DrawPointInMap = cesc.dojo.require("esri/toolbars/draw");
             this.drawPointPen = new DrawPointInMap(map, {
                 showTooltips: true
@@ -126,19 +146,20 @@ define(function () {
                     var pictureMarkerSymbol = new PictureMarkerSymbol(iconUrl, pictureWidth, pictureHeight);
                     var graphic = new Graphic(evtObj.geometry, pictureMarkerSymbol);
                     var no = generateNo();
-                    if(!!attributes){
+                    if (!!attributes) {
                         graphic.attributes = attributes;
                     }
                     cb(graphic, no);
                     map.graphics.add(graphic);
-                    map.graphics.on('click',function (event) {
-                       console.log(event.graphic.attributes);
+                    map.graphics.on('click', function (event) {
+                        console.log(event.graphic.attributes);
                     });
                 }
             }.bind(this));
-        },
+        }
+        ,
         //画线
-        drawLineInMap: function  (map,lineColor,lineWidth,cb,attributes) {
+        drawLineInMap: function (map, lineColor, lineWidth, cb, attributes) {
             var DrawLineInMap = cesc.dojo.require("esri/toolbars/draw");
             this.drawLinePen = new DrawLineInMap(map, {
                 showTooltips: true
@@ -151,39 +172,42 @@ define(function () {
                     var lineSymbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color(lineColor), lineWidth);
                     var graphic = new Graphic(evtObj.geometry, lineSymbol);
                     var no = generateNo();
-                    if(!!attributes){
+                    if (!!attributes) {
                         graphic.attributes = attributes;
                     }
                     cb(graphic, no);
                     map.graphics.add(graphic);
-                    map.graphics.on('click',function (event) {
+                    map.graphics.on('click', function (event) {
                         console.log(event.graphic.attributes);
                     });
                 }
             }.bind(this));
-        },
+        }
+        ,
         //停止polygon绘制
-        stopDraw:function () {
+        stopDraw: function () {
             this.drawPolygonPen.finishDrawing();
             this.drawPolygonPen.deactivate();
-        },
+        }
+        ,
         //结束画图
-        finishDraw: function (isSave,type) {
+        finishDraw: function (isSave, type) {
             this.isSave = isSave;
-            if(type ==='point'){
+            if (type === 'point') {
                 this.drawPointPen.finishDrawing();
                 this.drawPointPen.deactivate();
-            }else if(type === 'line'){
+            } else if (type === 'line') {
                 this.drawLinePen.finishDrawing();
                 this.drawLinePen.deactivate();
-            }else if(type === 'polygon'){
+            } else if (type === 'polygon') {
                 this.drawPolygonPen.finishDrawing();
                 this.drawPolygonPen.deactivate();
             }
 
-        },
+        }
+        ,
         //创建一个新的图层，并创建图例符号(传入icon，根据属性判断是否需要文字描述)
-        createSymbolNew: function (baseMap, x, y, iconUrl,pictureWidth,pictureHeight,attributes) {
+        createSymbolNew: function (baseMap, x, y, iconUrl, pictureWidth, pictureHeight, attributes) {
             var pictureMarkerSymbol = new PictureMarkerSymbol(iconUrl, pictureWidth, pictureHeight);
             var geometry = new Point(x, y);
             var graphic = new Graphic(geometry, pictureMarkerSymbol);
@@ -205,17 +229,20 @@ define(function () {
             })
             baseMap.addLayer(graLayer);
             return graLayer;
-        },
+        }
+        ,
         //删除单个图层
         removeLayer: function (map, layer) {
             map.removeLayer(layer);
-        },
+        }
+        ,
         //删除多个图层
         removeLayers: function (map, layers) {
             layers.forEach(function (layer) {
                 this.removeLayer(map, layer);
             }.bind(this));
-        },
+        }
+        ,
         createSymbol: function (baseMap, x, y, iconUrl, name, height, width, angel) {
             var pictureMarkerSymbol = new PictureMarkerSymbol(iconUrl, width, height);
             console.log(angel);
@@ -233,7 +260,8 @@ define(function () {
             graLayer.add(graphic);
             baseMap.addLayer(graLayer);
             return graLayer;
-        },
+        }
+        ,
         drawPolygons: function (baseMap, map) {
             var graLayer = new GraphicsLayer();
             var features = map.features;
@@ -245,9 +273,10 @@ define(function () {
                 graLayer.add(graphic);
             }.bind(this));
             baseMap.addLayer(graLayer);
-        },
+        }
+        ,
         //根据两点坐标进行画线（直接生成）
-        drawLine: function (map, start, end,lineWidth,lineColor,attributes) {
+        drawLine: function (map, start, end, lineWidth, lineColor, attributes) {
             var no = generateNo();
             var line = Polyline({
                 "paths": [[start, end]],
@@ -255,18 +284,19 @@ define(function () {
             });
             var symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color(lineColor), lineWidth);
             var graphic = new Graphic(line, symbol);
-            if(!!attributes){
-                graphic.attributes  = attributes;
+            if (!!attributes) {
+                graphic.attributes = attributes;
             }
             var graLayer = new GraphicsLayer();
             graLayer.add(graphic);
-            graLayer.on('click',function (event) {
+            graLayer.on('click', function (event) {
                 console.log(event.graphic.attributes);
             });
             // map.graphics.add(graphic);
             map.addLayer(graLayer);
             return graLayer;
-        },
+        }
+        ,
         // drawAnalyzeLine: function (map, start, end, type) {
         //     var no = generateNo();
         //     var line = Polyline({
@@ -296,7 +326,7 @@ define(function () {
         //     return graphic;
         // },
         //根据点画图
-        drawPolygon: function (map,points, isNew,lineColor,lineWidth,attributes) {
+        drawPolygon: function (map, points, isNew, lineColor, lineWidth, attributes) {
             var no = generateNo();
             var polygonJson = {
                 "rings": [points], "spatialReference": {"wkid": 4326}
@@ -308,7 +338,7 @@ define(function () {
             var polygon = new Polygon(polygonJson);
             var symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color(lineColor), lineWidth), color);
             var graphic = new Graphic(polygon, symbol);
-            if(!!attributes){
+            if (!!attributes) {
                 graphic.attributes = attributes;
             }
             var graLayer = new GraphicsLayer();
@@ -318,21 +348,24 @@ define(function () {
             //         console.log(this.graphic.attributes);
             //     });
             // });
-            map.graphics.on('click',function (event) {
-               console.log(event.graphic.attributes);
+            map.graphics.on('click', function (event) {
+                console.log(event.graphic.attributes);
             });
             return graphic;
-        },
+        }
+        ,
         //删除图解
         removeGraphic: function (map, graphic) {
             map.graphics.remove(graphic);
-        },
+        }
+        ,
         //删除多个图解
         removeGraphics: function (map, graphics) {
             graphics.forEach(function (graphic) {
                 map.graphics.remove(graphic);
             }.bind(this));
-        },
+        }
+        ,
         bindMaps: function (leftMap, rightMap) {
             var self = this;
             this.enableBind();
@@ -397,13 +430,16 @@ define(function () {
                     }
                 }
             });
-        },
+        }
+        ,
         disableBind: function (map) {
             this.bindOther = false;
-        },
+        }
+        ,
         enableBind: function (map) {
             this.bindOther = true;
-        },
+        }
+        ,
         //把地图定位到某个点
         locateMap: function (map, x, y) {
             // debugger;
@@ -413,7 +449,8 @@ define(function () {
             //其实创建点也可以不传入坐标系（使用默认的），但是定位无效，f12有错误信息，你可以试试
             var point = new Point(x, y, new SpatialReference({wkid: map.spatialReference.wkid}));
             map.centerAt(point);
-        },
+        }
+        ,
         initArcGISTiledMap: function (containerID, url) {
             var map = new Map(containerID, {
                 // center: [50667.15003870383, 28048.900874448493],
@@ -422,7 +459,8 @@ define(function () {
             var leftLayer = new ArcGISTiledMapServiceLayer(url);
             map.addLayer(leftLayer);
             return map;
-        },
+        }
+        ,
         //设置地图中心点和地图显示层
         setCenter: function (x, y, map, zoom) {
             var point = new Point(x, y, new SpatialReference({wkid: map.spatialReference.wkid}));
@@ -432,7 +470,8 @@ define(function () {
             else {
                 map.centerAt(point, 15);
             }
-        },
+        }
+        ,
         getArcGISTiledMap: function (leftID, rightID, leftUrl, rightUrl) {
 
             var leftMap = this.initArcGISTiledMap(leftID, leftUrl);
@@ -461,7 +500,8 @@ define(function () {
                 leftMap: leftMap,
                 rightMap: rightMap
             }
-        },
+        }
+        ,
         splitMap: function () {
             var lineDepartPolygon = function () {
                 map.setStatus({dragEnable: false});

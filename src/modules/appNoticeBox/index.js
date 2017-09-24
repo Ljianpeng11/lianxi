@@ -1,6 +1,6 @@
 var template = require('./noticeBox.html');
 var eventHelper = require('../../utils/eventHelper');
-var mapHelper = require('utils/mapHelper');
+//var mapHelper = require('utils/mapHelper');
 var points = [[108.30710438476564, 22.887789013671878],
     [108.24873951660157, 22.789255383300784],
     [108.45644978271486, 22.74839997558594],
