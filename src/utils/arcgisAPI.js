@@ -1,36 +1,5 @@
 define(['./arcgisExpand/TDTLayer'], function (TDTLayer) {
     var instance = {};
-    instance.Map;
-    /*
-     ArcGISTiledMapServiceLayer,
-     ArcGISDynamicMapServiceLayer,
-     TDTAnnoLayer = require('modules/arcgisPlugin/plugin/arcgisExpand/TDTAnnoLayer'),
-     TDTLayer = require('modules/arcgisPlugin/plugin/arcgisExpand/TDTLayer'),*/
-    instance.Point;
-    instance.Extent;
-    /*
-     this.SpatialReference,
-     */
-    instance.SpatialReference
-    instance.Polygon;
-    instance.Polyline;
-    instance.Graphic;
-    instance.Color;
-    instance.Font;
-    instance.GraphicsLayer;
-    instance.TextSymbol;
-    instance.WebTileLayer;
-    instance.TileLayer;
-    instance.erisConfig;
-    /*
-     this.CartographicLineSymbol;
-     */
-    instance.SimpleMarkerSymbol;
-    instance.Basemap;
-    instance.SimpleLineSymbol;
-    instance.SimpleFillSymbol;
-    instance.PictureMarkerSymbol;
-    instance.SceneView;
     instance.initTDLayer = function () {
         /*  var sr = new instance.SpatialReference({wkid:4490});
          var fullextent = new instance.Extent({
@@ -155,22 +124,15 @@ define(['./arcgisExpand/TDTLayer'], function (TDTLayer) {
         var map = new instance.Map({
             layers: [tiledLayer, tiledMarkLayer]
         });
-        /*     var view = new instance.SceneView({
-         container: "mapDiv",
-         map: map
-
-         });*/
         var view = new instance.MapView({
             container: "mapDiv",
             map: map,
-            center:[110.06034851074236,30.834846496582045],
-            zoom:10
+            center: [110.06034851074236, 30.834846496582045],
+            zoom: 10
         });
         view.on('click', function (evt) {
             console.log(evt)
         });
-
-
     }
     return {
         getInstance: function (cb) {
@@ -180,11 +142,8 @@ define(['./arcgisExpand/TDTLayer'], function (TDTLayer) {
             }
             cesc.require([
                 'esri/map',
-                /*      'esri/layers/ArcGISTiledMapServiceLayer',
-                 'esri/layers/ArcGISDynamicMapServiceLayer',*/
                 'esri/geometry/Point',
                 'esri/geometry/Extent',
-                /*    'esri/SpatialReference',*/
                 'esri/geometry/Polygon',
                 'esri/geometry/Polyline',
                 'esri/graphic',
@@ -192,7 +151,6 @@ define(['./arcgisExpand/TDTLayer'], function (TDTLayer) {
                 'esri/symbols/Font',
                 'esri/layers/GraphicsLayer',
                 'esri/symbols/TextSymbol',
-                /*        'esri/symbols/CartographicLineSymbol',*/
                 'esri/symbols/SimpleMarkerSymbol',
                 'esri/symbols/SimpleLineSymbol',
                 'esri/symbols/SimpleFillSymbol',
@@ -206,11 +164,8 @@ define(['./arcgisExpand/TDTLayer'], function (TDTLayer) {
                 "esri/config",
                 'esri/layers/support/TileInfo',
             ], function (arcgisMap,
-                         /*arcgisArcGISTiledMapServiceLayer,
-                          arcgisArcGISDynamicMapServiceLayer,*/
                          arcgisPoint,
                          arcgisExtent,
-                         /*    arcgisSpatialReference,*/
                          arcgisPolygon,
                          arcgisPolyline,
                          arcgisGraphic,
@@ -218,7 +173,6 @@ define(['./arcgisExpand/TDTLayer'], function (TDTLayer) {
                          arcgisFont,
                          arcgisGraphicsLayer,
                          arcgisTextSymbol,
-                         /*         arcgisCartographicLineSymbol,*/
                          arcgisSimpleMarkerSymbol,
                          arcgisSimpleLineSymbol,
                          arcgisSimpleFillSymbol,
@@ -232,11 +186,8 @@ define(['./arcgisExpand/TDTLayer'], function (TDTLayer) {
                          config,
                          TileInfo) {
                 instance.Map = arcgisMap;
-                /*        ArcGISTiledMapServiceLayer = arcgisArcGISTiledMapServiceLayer;
-                 instance. ArcGISDynamicMapServiceLayer = arcgisArcGISDynamicMapServiceLayer;*/
                 instance.Point = arcgisPoint;
                 instance.Extent = arcgisExtent;
-                /*      SpatialReference = arcgisSpatialReference;*/
                 instance.Polygon = arcgisPolygon;
                 instance.Polyline = arcgisPolyline;
                 instance.Graphic = arcgisGraphic;
@@ -244,7 +195,6 @@ define(['./arcgisExpand/TDTLayer'], function (TDTLayer) {
                 instance.Font = arcgisFont;
                 instance.GraphicsLayer = arcgisGraphicsLayer;
                 instance.TextSymbol = arcgisTextSymbol;
-                /*        CartographicLineSymbol = arcgisCartographicLineSymbol;*/
                 instance.SimpleMarkerSymbol = arcgisSimpleMarkerSymbol;
                 instance.SimpleLineSymbol = arcgisSimpleLineSymbol;
                 instance.SimpleFillSymbol = arcgisSimpleFillSymbol;
