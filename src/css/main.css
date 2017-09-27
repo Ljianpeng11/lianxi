@@ -25,6 +25,7 @@
 @import "./modules/appGeneralElements.css";
 @import "./modules/appSearch.css";
 @import "./modules/carMonitor.css";
+@import "./modules/map.css";
 @import "./maps/jquery-jvectormap-2.0.3.css";
 @import "./modules/appCarPlayback.css";
 :root {

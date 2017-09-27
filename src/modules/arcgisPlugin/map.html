@@ -1,5 +1,17 @@
 <div class='mapContainer'>
-    <div id = "mapDiv"></div>
+    <div id="mapDiv"></div>
+    <div id="draw-button" class="esri-widget-button esri-widget esri-interactive">
+        <span class="esri-icon-polygon"></span>
+    </div>
+    <div id="draw-line" class="esri-widget-button esri-widget esri-interactive">
+        <span class="esri-icon-polyline"></span>
+    </div>
+    <div id="draw-point" class="esri-widget-button esri-widget esri-interactive">
+        <span class=esri-icon-map-pin></span>
+    </div>
+    <div id="draw-polygon" class="esri-widget-button esri-widget esri-interactive">
+        <span class=esri-icon-polygon></span>
+    </div>
     <div id="toolBar" v-show="showtools"></div>
     <div id="mapType" v-show="showtools"></div>
     <flex-map-legend ref="mapLegend"></flex-map-legend><!--
@@ -48,7 +60,7 @@
     <!-- 右边菜单-->
     <!--right panel start-->
     <right-panel ref='rightPanel'></right-panel>
-<!--    <right-panel-complaint ref='rightPanelComplaint'></right-panel-complaint>-->
+    <!--    <right-panel-complaint ref='rightPanelComplaint'></right-panel-complaint>-->
     <!--right panel end-->
     <!--dialog start-->
     <app-check-dialog></app-check-dialog>
@@ -59,4 +71,4 @@
     <app-car-playback></app-car-playback>
     <app-car-detail ref='carDetail'></app-car-detail>
     <app-search></app-search>
-   </div>
+</div>
