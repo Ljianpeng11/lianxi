@@ -56,14 +56,11 @@ var comm = Vue.extend({
                 currentView = view;
                 apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
                 mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
-                    /*  var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
-                     mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
-                     color: [226, 119, 40],
-                     width: 4
-                     })*/
-                    var tabInfo = tabModel.getCurrentTab();
-                    window.tabModel = tabModel;
-                    console.log(tabInfo)
+                    var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
+                    mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
+                        color: [226, 119, 40],
+                        width: 4
+                    })
                 })
             }, function (evt) {
                 console.log(evt);
