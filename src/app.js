@@ -76,7 +76,6 @@ var app = new Vue({
         'app-footer': appFooter
     }
 });
-
 mapHelper.register(arcgisAPI, function (apiInstance) {
     app.$mount('#app');
 });

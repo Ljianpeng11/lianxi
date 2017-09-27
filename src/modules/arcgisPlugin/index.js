@@ -3,33 +3,13 @@ var template = require('./map.html');
 var loginCtrl = require('../../controllers/loginController');
 var eventHelper = require('../../utils/eventHelper');
 var toolBar = require('./plugin/toolBar/toolBar');
-//var arcgisExpand = require('./plugin/arcgisExpand/arcgisExpand');
 var mapType = require('./plugin/mapType/mapType');
-
-/*var flexMapLegend = require('./plugin/flexMapLegend');
- var global = require('./plugin/global');
- var facilityController = require('controllers/facilityController');
- var arcgisHelper = require('./plugin/arcgisExpand/arcgis-load-map');
- var rightPanel = require('modules/rightPanel');
- var rightPanelComplaint = require('modules/rightPanelComplaint');
- var appCarMonitor = require('modules/appCarMonitor');
- var appCarPlayback = require('modules/appCarPlayback');
- var appCarDetail = require('modules/appCarDetail');
- var appCarIllegal = require('modules/appCarIllegal');
- var appCarCase = require('modules/appCarCase');
- var appCarPollution = require('modules/appCarPollution');
- var appCheckDialog = require('modules/appCheckDialog');
- var appSearch = require('modules/appSearch');*/
 var mapHelper = require('utils/mapHelper');
 
 var initPlugin = function (facilityArr, self) {
     global.init();
     facilityController.getAllFacility(function (list) {
         self.$refs.mapLegend.init(list);
-        // list.forEach(function (station) {
-        //     facilityArr[station.facilityTypeName] = station.facilitys;
-        //     arcgisHelper.createPoints(station);
-        // })
     });
 }
 

@@ -68,6 +68,16 @@ define(function () {
         createPolyline: function (layer, paths, styleObj) {
             this.apiInstance.createPolyline(layer, paths, styleObj);
         },
+        createSymbol: function (layer, x, y, styleObj) {
+            this.apiInstance.createSymbol(layer, x, y, styleObj);
+        },
+        createPictureMarkSymbol: function (layer, x, y, imgObj) {
+            this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj);
+        },
+        createPolygon: function (layer, coords, styleObj) {
+            this.apiInstance.createPolygon(layer, coords, styleObj);
+        },
+
         //设置地图中心点和地图显示层
         setCenter: function (view, x, y, zoom) {
             this.apiInstance.setCenter(view, x, y, zoom)

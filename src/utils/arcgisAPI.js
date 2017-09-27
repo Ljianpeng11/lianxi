@@ -1,4 +1,4 @@
-define(['./arcgisExpand/TDTLayer'], function (TDTLayer) {
+define(function () {
     var instance = {};
 
     instance.initTDLayer = function (container, x, y, zoom, success, click) {
