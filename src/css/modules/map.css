@@ -1,0 +1,18 @@
+.esri-draw-button {
+    background-color: rgba(255, 255, 255, 0.65);
+    cursor: pointer;
+    display: inline-block;
+    width: 26px;
+    font-size: 1.5em;
+}
+
+.esri-draw-button-selected {
+    opacity: 1;
+    background-color: rgba(102, 0, 255, 0.75);
+    color: white;
+}
+
+.esri-draw-button-selected:hover {
+    background-color: rgba(102, 0, 255, 0.3);
+    color: white;
+}

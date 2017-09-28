@@ -4,29 +4,14 @@ var loginCtrl = require('../../controllers/loginController');
 var eventHelper = require('../../utils/eventHelper');
 var toolBar = require('./plugin/toolBar/toolBar');
 var mapType = require('./plugin/mapType/mapType');
-var flexMapLegend = require('./plugin/flexMapLegend');
-var layerList = require('./plugin/layerList');
-var global = require('./plugin/global');
-var facilityController = require('controllers/facilityController');
-var arcgisHelper = require('./plugin/arcgisExpand/arcgis-load-map');
-var rightPanel = require('modules/rightPanel');
-var infoWindow = require('modules/arcgisPlugin/plugin/infoWindow');
-var initBaseMap = function () {
-    //init map
-    var layerURL = 'http://112.74.51.12:6080/arcgis/rest/services/hwShow201705/MapServer';
-    var centerX = 113.32526513187868;
-    var centerY = 23.145541015892572;
-    var map = arcgisHelper.tdWmtsServer(layerURL, centerX, centerY);
-    return map;
-}
+var mapHelper = require('utils/mapHelper');
+var tabModel = require('controllers/model/appTabModel');
+
+
 var initPlugin = function (facilityArr, self) {
     global.init();
     facilityController.getAllFacility(function (list) {
         self.$refs.mapLegend.init(list);
-        // list.forEach(function (station) {
-        //     facilityArr[station.facilityTypeName] = station.facilitys;
-        //     arcgisHelper.createPoints(station);
-        // })
     });
 }
 
@@ -35,62 +20,73 @@ var comm = Vue.extend({
     template: template,
     data: function () {
         return {
-            weatherImg: './img/weather.png',
-            radarImg: '',
             message: '',
             roleName: '',
             userName: '',
-            dialogVisible: false,
-            showWeatherReportPanel: false,
             loginSuccess: false,
             detailOpen: false,
             facility: '',
-            showtools: false
+            showtools: false,
+            leftMap: {},
+            iscreateSymbol: false,
+            iscreateSymbols: false,
+            isCreatePolygon: false,
+            isCreateLine: false,
+            layer: '',
+            layers: [],
+            lineLayers: [],
+            drawGraphics: [],
+            drawPointGraphics: [],
+            drawLineGraphics: [],
+            polygonId: 1,
         }
     },
     methods: {
-        startPlan: function () {
-            this.dialogVisible = false;
-            var h = this.$createElement;
-            this.$notify({
-                title: '预案启动成功!',
-                message: h('i', {style: 'color: teal'}, '请把易涝点水位监测，窨井水位监测的数据采集频率设置为10s/次')
+        //初始化地图
+        initBaseMap: function () {
+            var layerURL = 'http://112.74.51.12:6080/arcgis/rest/services/hwShow201705/MapServer';
+            var centerX = 121.45075120184849;
+            var centerY = 31.25010784918339;
+            var zoom = 10;
+            var currentMap = {};
+            var currentView = {};
+            var apiInstance = mapHelper.getInstance();
+            var map = mapHelper.initTDMap('', centerX, centerY, zoom, function (map, view) {
+                currentMap = map;
+                currentView = view;
+                apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
+                mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
+                    var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
+                    mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
+                        color: [226, 119, 40],
+                        width: 4
+                    })
+                })
+            }, function (evt) {
+                console.log(evt);
+                mapHelper.setCenter(currentView, evt.mapPoint.x, evt.mapPoint.y);
             });
-
-        },
-        toggleSearch: function () {
-            eventHelper.emit('openPointSearch');
-            // eventHelper.emit('app-car-illegal');
-            // eventHelper.emit('app-car-cases');
-            // eventHelper.emit('app-car-pollution');
+            return map;
         }
     },
     mounted: function () {
-        this.facilityArr = {};
-        initPlugin(this.facilityArr, this);
         var self = this;
-        var map = initBaseMap();
+        //初始化地图
+        var map = this.initBaseMap();
+        //创建地图并把地图对象穿进去
         eventHelper.emit('mapCreated', map);
+        this.leftMap = map;
         this.$on('openMapLegend', function (legend) {
             eventHelper.emit('loading-start');
-            //console.log(legend);
+            console.log(legend);
             if (!!legend.showIcon) {
                 var cacheFacilities = self.facilityArr[legend.facilityTypeName];
                 if (!!cacheFacilities && cacheFacilities.length > 0) {
-                    arcgisHelper.createPoints(cacheFacilities, legend);
+                    arcgisHelper.createPoints(cacheFacilities, legend, true);
                     eventHelper.emit('loading-end');
                 } else {
                     facilityController.getFacilityByType(legend.id, function (subFacilities) {
-                        if (legend.facilityTypeName == 'WD') {
-                            subFacilities.forEach(function (subFacility) {
-                                subFacility.icon = './css/images/huawei-yj.png'
-                            })
-                        } else if (legend.facilityTypeName == 'WP') {
-                            subFacilities.forEach(function (subFacility) {
-                                subFacility.icon = './css/images/huawei-yld.png'
-                            })
-                        }
-                        var graLayer = arcgisHelper.createPoints(subFacilities, legend);
+                        var graLayer = arcgisHelper.createPoints(subFacilities, legend, true);
                         self.facilityArr[legend.facilityTypeName] = {
                             data: subFacilities,
                             layer: graLayer
@@ -105,34 +101,14 @@ var comm = Vue.extend({
         });
         eventHelper.on('subFacility-clicked', function (point) {
             console.log(point);
-            map.centerAt([parseFloat(point.center[0]) + 0.001, point.center[1]]);
+            map.centerAt([parseFloat(point.center[0]) + 0.005, point.center[1]]);
             this.$refs.rightPanel.open(point.item, point.facilityTypeName);
         }.bind(this));
-        eventHelper.on('startPlan', function () {
-            setTimeout(function () {
-                this.dialogVisible = true;
-                this.showWeatherReportPanel = true;
-                var i = 1;
-                this.radarCounter = setInterval(function () {
-                    if (i > 47) {
-                        i = 1;
-                    }
-                    this.radarImg = './img/radar/' + i + '.png';
-                    i++;
-                }.bind(this), 500);
-            }.bind(this), 2000);
-        }.bind(this));
-        eventHelper.on('stopPlan', function () {
-            this.showWeatherReportPanel = false;
-            clearInterval(this.radarCounter);
-
+        eventHelper.on('carDetail-clicked', function (point) {
+            console.log(point);
+            this.$refs.carDetail.open(point.item);
         }.bind(this));
     },
-    components: {
-        'right-panel': rightPanel,
-        'flex-map-legend': flexMapLegend,
-        'layer-list':layerList,
-        'info-window': infoWindow
-    }
+    components: {}
 });
 module.exports = comm;

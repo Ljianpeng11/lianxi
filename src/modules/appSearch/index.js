@@ -1,9 +1,8 @@
 var template = require('./content.html');
 var eventHelper = require('../../utils/eventHelper');
 var appMenuController = require('controllers/appMenuController');
-var menuData = require('services/mockMenu');
 var facilityService = require('services/facilityService');
-var mapHelper = require('utils/mapHelper');
+//var mapHelper = require('utils/mapHelper');
 // var serviceHelper = require('services/serviceHelper');
 // 定义组件
 var comm = Vue.extend({
