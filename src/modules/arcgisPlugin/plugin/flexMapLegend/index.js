@@ -21,14 +21,16 @@ var comm = Vue.extend({
     methods: {
         init: function (list) {
             list.forEach(function (type) {
-                this.legendList.push({
+                var facility = {
                     title: type.nameCn,
                     facilityTypeName: type.name,
                     icon: type.icon,
                     id: type.id,
-                    showIcon: false,
+                    showIcon: true,
                     showSub: false
-                });
+                };
+                this.legendList.push(facility);
+                this.$parent.$emit('openMapLegend', facility);
             }.bind(this));
         },
         openMapLegend: function () {
@@ -42,7 +44,7 @@ var comm = Vue.extend({
         showSubLegend: function (index, list) {
             // this.$emit('openMapLegend',)
             list.showIcon = !list.showIcon;
-            this.$parent.$emit('openMapLegend',list);
+            this.$parent.$emit('openMapLegend', list);
         },
         showSub: function (index) {
             if (index + 1) {

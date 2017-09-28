@@ -35,7 +35,9 @@ var comm = Vue.extend({
             facility: {},
             isPumpStation: false,
             isPumpStationStatisticsActive: true,
-            isReservoir: false
+            isReservoir: false,
+            facilityCurrentGraphArr: {},
+            facilityHistoryGraphArr: {}
         }
     },
     mounted: function () {
@@ -48,8 +50,8 @@ var comm = Vue.extend({
             this.showStatisticsView = true;
             this.showHistoricalStatisticsView = false;
             var time = [moment().format('YYYY-MM-DD hh:mm', new Date())];
-            var endDate = moment().format('YYYY-MM-DD hh:mm:ss', new Date());
-            var startDate = moment().subtract(1, 'days').format('YYYY-MM-DD hh:mm:ss');
+            var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+            var startDate = moment().subtract(1, 'hours').format('YYYY-MM-DD HH:mm:ss');
             console.log(startDate, endDate);
             this.monitorItem = getMonitorItem('waterLevel', parameter.devices);
             // setInterval(function(){
@@ -66,9 +68,9 @@ var comm = Vue.extend({
                         }
                     });
                     if (parameter.facility.facilityTypeName === 'WP') {
-                        statisticsHelper.initFloodStation('.statistics-main', '易涝点积水实时监控', xArr, yArr, max, this.monitorItem.alarmHeight);
+                        this.facilityHistoryGraphArr[parameter.facility.facilityTypeName] = statisticsHelper.initFloodStation('.statistics-main', '易涝点积水实时监控', xArr, yArr, max, this.monitorItem.alarmHeight);
                     } else {
-                        statisticsHelper.initFloodStation('.statistics-main', '井下水深实时监控', xArr, yArr, max, this.monitorItem.alarmHeight, this.monitorItem.warningHeight);
+                        this.facilityHistoryGraphArr[parameter.facility.facilityTypeName] = statisticsHelper.initFloodStation('.statistics-main', '井下水深实时监控', xArr, yArr, max, this.monitorItem.alarmHeight, this.monitorItem.warningHeight);
                     }
                 }.bind(this));
             } else if (parameter.facility.facilityTypeName === 'RF') {
@@ -146,13 +148,51 @@ var comm = Vue.extend({
             result.data.forEach(function (monitor) {
                 if (this.monitorItem.itemID === monitor.itemId) {
                     if (result.facility.facilityTypeName === 'WP') {
-                        statisticsHelper.initFloodStationCurrent([monitor.deviceUpdateTime], [monitor.dValue.toFixed(2)], (monitor.dValue * 1.2).toFixed(2), this.monitorItem.alarmHeight);
-                    } else if (result.facility.facilityTypeName === 'WD') {
-                        if (monitor.dValue > this.monitorItem.warnHigh) {
-                            statisticsHelper.initFloodStationCurrentAlarm([monitor.deviceUpdateTime], [monitor.dValue.toFixed(2)], (monitor.dValue * 1.2).toFixed(2), this.monitorItem.alarmHeight, this.monitorItem.warningHeight);
+                        if (!!this.facilityHistoryGraphArr[result.facility.facilityTypeName]) {
+                            var timeLength = this.facilityHistoryGraphArr[result.facility.facilityTypeName].option.xAxis[0].data.length;
+                            if (this.facilityHistoryGraphArr[result.facility.facilityTypeName].option.xAxis[0].data[timeLength - 1] !== monitor.deviceUpdateTime) {
+                                this.facilityHistoryGraphArr[result.facility.facilityTypeName].option.series[0].data.push(monitor.dValue.toFixed(2));
+                                this.facilityHistoryGraphArr[result.facility.facilityTypeName].option.xAxis[0].data.push(monitor.deviceUpdateTime);
+                                this.facilityHistoryGraphArr[result.facility.facilityTypeName].chart.setOption(this.facilityHistoryGraphArr[result.facility.facilityTypeName].option);
+                            }
+                        }
+                        if (!!this.facilityCurrentGraphArr[result.facility.facilityTypeName]) {
+                            this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.series[0].data = [monitor.dValue.toFixed(2)];
+                            this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.xAxis[0].data = [monitor.deviceUpdateTime];
+                            this.facilityCurrentGraphArr[result.facility.facilityTypeName].chart.setOption(this.facilityCurrentGraphArr[result.facility.facilityTypeName].option);
                         }
                         else {
-                            statisticsHelper.initFloodStationCurrent([monitor.deviceUpdateTime], [monitor.dValue.toFixed(2)], (monitor.dValue * 1.2).toFixed(2), this.monitorItem.alarmHeight, this.monitorItem.warningHeight);
+                            this.facilityCurrentGraphArr[result.facility.facilityTypeName] = statisticsHelper.initFloodStationCurrent([monitor.deviceUpdateTime], [monitor.dValue.toFixed(2)], (monitor.dValue * 1.2).toFixed(2), this.monitorItem.alarmHeight);
+                        }
+                    } else if (result.facility.facilityTypeName === 'WD') {
+                        if (!!this.facilityHistoryGraphArr[result.facility.facilityTypeName]) {
+                            var timeLength = this.facilityHistoryGraphArr[result.facility.facilityTypeName].option.xAxis[0].data.length;
+                            if (this.facilityHistoryGraphArr[result.facility.facilityTypeName].option.xAxis[0].data[timeLength - 1] !== monitor.deviceUpdateTime) {
+                                this.facilityHistoryGraphArr[result.facility.facilityTypeName].option.series[0].data.push(monitor.dValue.toFixed(2));
+                                this.facilityHistoryGraphArr[result.facility.facilityTypeName].option.xAxis[0].data.push(monitor.deviceUpdateTime);
+                                this.facilityHistoryGraphArr[result.facility.facilityTypeName].chart.setOption(this.facilityHistoryGraphArr[result.facility.facilityTypeName].option);
+
+                            }
+                        }
+                        if (monitor.dValue > this.monitorItem.warnHigh) {
+                            if (!!this.facilityCurrentGraphArr[result.facility.facilityTypeName]) {
+                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.xAxis[0].data = [monitor.deviceUpdateTime];
+                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.series[0].data = [monitor.dValue.toFixed(2)];
+                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].chart.setOption(this.facilityCurrentGraphArr[result.facility.facilityTypeName].option);
+                            }
+                            else {
+                                this.facilityCurrentGraphArr[result.facility.facilityTypeName] = statisticsHelper.initFloodStationCurrentAlarm([monitor.deviceUpdateTime], [monitor.dValue.toFixed(2)], (monitor.dValue * 1.2).toFixed(2), this.monitorItem.alarmHeight, this.monitorItem.warningHeight);
+                            }
+                        }
+                        else {
+                            if (!!this.facilityCurrentGraphArr[result.facility.facilityTypeName]) {
+                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.xAxis[0].data = [monitor.deviceUpdateTime];
+                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.series[0].data = [monitor.dValue.toFixed(2)];
+                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].chart.setOption(this.facilityCurrentGraphArr[result.facility.facilityTypeName].option);
+                            }
+                            else {
+                                statisticsHelper.initFloodStationCurrent([monitor.deviceUpdateTime], [monitor.dValue.toFixed(2)], (monitor.dValue + 5).toFixed(2), this.monitorItem.wellLidHeight, this.monitorItem.pipeHeight);
+                            }
                         }
                     } else if (result.facility.facilityTypeName === 'PP' || result.facility.facilityTypeName === 'SG') {
                         pumpStationHelper.initPumpStation('泵站实时监测', ['泵前水位', '泵后水位'], ['2016-12-1', '2016-12-2', '2016-12-3'], [[1, 2, 3], [3, 4, 1]]);

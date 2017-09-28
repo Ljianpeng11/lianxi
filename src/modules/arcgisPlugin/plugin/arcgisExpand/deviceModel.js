@@ -13,40 +13,51 @@
  */
 define(['utils/eventHelper'], function (eventHelper) {
     return {
-        createTextSymbol: function (Graphic,
-                                    Point,
-                                    TextSymbol,
-                                    Color,
-                                    geometry,
-                                    name,
-                                    layer) {
+        createTextSymbol: function (map) {
+            cesc.require([
+                "esri/graphic",
+                "esri/geometry/Point",
+                "esri/symbols/TextSymbol",
+                "esri/Color",
+                "esri/symbols/Font"
+            ], function (Graphic,
+                         Point,
+                         TextSymbol,
+                         Color,
+                         Font) {
+                var textSymbol = new esri.symbol.TextSymbol();
+                var textSymbol1 = new esri.symbol.TextSymbol();
+                textSymbol.setText('光明新区海绵体');
+                textSymbol1.setText('河道水质监测点');
+                textSymbol1.setColor(new Color([255, 0, 0, 1]));
+                textSymbol.setColor(new Color([255, 0, 0, 1]));
+                textSymbol1.setFont("12pt");
+                textSymbol.setFont("12pt");
+                var geometry = new Point(113.90514169311524, 22.782805590711433);
+                var geometry1 = new Point(113.91113911247254, 22.782269148908455);
+                var graphic = new Graphic(geometry, textSymbol);
+                var graphic1 = new Graphic(geometry1, textSymbol1);
+                map.graphics.add(graphic);
+                map.graphics.add(graphic1);
+            });
+        },
+        createSymbol: function (Color, PictureMarkerSymbol, Point, Graphic, TextSymbol, graLayer, x, y, iconUrl, item, facilityTypeName) {
+            var pictureMarkerSymbol = new PictureMarkerSymbol(iconUrl, 20, 25);
+            var geometry = new Point(x, y);
+            var graphic = new Graphic(geometry, pictureMarkerSymbol);
             var textSymbol = new TextSymbol();
-            textSymbol.setText(name);
+            textSymbol.setText('  ');
             textSymbol.setColor(new Color([255, 0, 0, 1]));
             textSymbol.setFont("8pt");
             textSymbol.setOffset(0, -20);
             var graphic1 = new Graphic(geometry, textSymbol);
-            layer.add(graphic1);
-        },
-        createSymbol: function (Color, PictureMarkerSymbol, Point, Graphic, TextSymbol, graLayer, x, y, iconUrl, item, legend, hideName) {
-            var pictureMarkerSymbol = new PictureMarkerSymbol(iconUrl, 20, 20);
-            var geometry = new Point(x, y);
-            var graphic = new Graphic(geometry, pictureMarkerSymbol);
-            var textSymbol = new TextSymbol();
-            textSymbol.setText(item.name);
-            textSymbol.setColor(new Color([255, 0, 0, 1]));
-            textSymbol.setFont("8pt");
-            textSymbol.setOffset(0, -20);
-            if (!hideName) {
-                var graphic1 = new Graphic(geometry, textSymbol);
-                graLayer.add(graphic1);
-                graphic1.attributes = {facilityTypeName: legend.facilityTypeName, item: item};
-            }
+            graLayer.add(graphic1);
+
             graLayer.add(graphic);
-            graphic.attributes = {facilityTypeName: legend.facilityTypeName, title: legend.title, item: item};
+            graphic.attributes = {facilityTypeName: facilityTypeName, item: item};
+            graphic1.attributes = {facilityTypeName: facilityTypeName, item: item};
             return graLayer;
-        }
-        ,
+        },
         ssjkCreatePoint: function (map, combId, featureLayreId, title, estType, x, y, content, iconUrl, iconW, iconH, facilityTypeName, item) {
             cesc.require([
                 "esri/geometry/Point",
@@ -60,8 +71,7 @@ define(['utils/eventHelper'], function (eventHelper) {
                 "dojo/_base/connect",
                 "esri/Color",
                 "esri/symbols/Font",
-                "esri/symbols/PictureMarkerSymbol",
-                "esri/layers/GraphicsLayer"
+                "esri/symbols/PictureMarkerSymbol"
             ], function (Point,
                          FeatureLayer,
                          Graphic,
@@ -73,8 +83,7 @@ define(['utils/eventHelper'], function (eventHelper) {
                          connect,
                          Color,
                          Font,
-                         PictureMarkerSymbol,
-                         GraphicsLayer) {
+                         PictureMarkerSymbol) {
 
                 iconW = (iconW == null) ? iconW = 15 : iconW = iconW;
                 iconH = (iconH == null) ? iconH = 15 : iconH = iconH;
@@ -194,28 +203,13 @@ define(['utils/eventHelper'], function (eventHelper) {
                 var geometry = new Point(x, y);
                 var graphic = new Graphic(geometry, textSymbol);
                 var graphic1 = new Graphic(geometry, pictureMarkerSymbol);
-                graphic.attributes = {facilityTypeName: facilityTypeName, item: item};
                 features.push(graphic);
                 features.push(graphic1);
                 featureLayer.add(graphic);
                 featureLayer.add(graphic1);
-                featureLayer.on('mouse-over',function (evt) {
-                    console.log('over',evt);
-                    map.infoWindow.setTitle('车辆基本信息');
-                    var content = '<p><span>'+ '驾驶员：'+'</span>'+item.driver +'</p>'+
-                                  '<p><span>'+ '公司：'+'</span>'+item.company +'</p>'+
-                                  '<p><span>'+ '车牌号：'+'</span>'+item.truckNum +'</p>';
-                    map.infoWindow.setContent(content);
-                    map.infoWindow.show(evt.screenPoint);
-                    console.log(evt.screenPoint);
-                });
-                featureLayer.on('mouse-out',function (evt) {
-                    map.infoWindow.hide();
-                });
                 featureLayer.on('click', function (event) {
-                    console.log(item);
-
-                    eventHelper.emit('carDetail-clicked', {
+                    console.log(event, item);
+                    eventHelper.emit('subFacility-clicked', {
                         id: 'f' + item.fid,
                         item: item,
                         facilityTypeName: facilityTypeName,
@@ -229,5 +223,4 @@ define(['utils/eventHelper'], function (eventHelper) {
     }
 
 
-})
-;
+});

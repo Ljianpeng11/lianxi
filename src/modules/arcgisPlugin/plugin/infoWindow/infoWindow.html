@@ -1,0 +1,12 @@
+<div class="infoWindow">
+    <div class="infoWindowItem" v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+index"
+         @mouseover="highLight('infoBox-'+index)" @mouseleave="normalize('infoBox-'+index)">
+        <span class="bot"></span>
+        <span class="top"></span>
+        <div v-for="item in infoBox.items">
+            <span>{{item.title}}</span>
+            <span class="content" v-if="item.type!='name'">{{item.content}}</span>
+            <span class="content name" v-if="item.type=='name'">{{item.content}}</span>
+        </div>
+    </div>
+</div>

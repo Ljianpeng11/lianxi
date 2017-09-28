@@ -9,7 +9,7 @@
         >
             <li v-for="(list,index) in legendList" @mouseover="showSub(index)">
                 <a href="javascript:void(0);" @click="showSubLegend(index,list)" :class="{'textOpen':list.showIcon}">
-                    <i class="glyphicon" :class="list.icon"></i>
+                    <i class="iconBox" :class="list.showIcon?list.icon : (list.icon+'Active')"></i>
                     <p class="childType">{{list.title}}</p>
                 </a>
               <!--  <ul class="subLegend" v-show="isShowSubLegend && legendList[index].showSub">

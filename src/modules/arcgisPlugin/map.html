@@ -1,62 +1,33 @@
 <div class='mapContainer'>
-    <div id = "mapDiv"></div>
+    <div id="mapDiv"></div>
     <div id="toolBar" v-show="showtools"></div>
     <div id="mapType" v-show="showtools"></div>
-    <flex-map-legend ref="mapLegend"></flex-map-legend>
-    <div class="control-search" >
-        <el-button @click="toggleSearch"  icon="search" ></el-button>
-    </div>
-    <div class="control-draw" >
-        <el-button type="primary" icon="edit" @click="drawPolygonInMap"></el-button>
-    </div>
-    <div class="control-deleteDraw" >
-        <el-button type="primary" icon="delete" @click="deleteDrawMap"></el-button>
-    </div>
-    <div class="control-cancelDraw" >
-        <el-button type="primary" @click="cancelDraw">取消画图</el-button>
-    </div>
-    <div class="control-addLayer" >
-        <el-button type="primary" @click="addOrDeleteLayer">增删单个图层</el-button>
-    </div>
-    <div class="control-addMoreLayer" >
-        <el-button type="primary" @click="addOrDeleteMoreLayer">增删多个图层</el-button>
-    </div>
-    <div class="control-grid" >
-        <el-button type="primary" @click="addOrDeleteGrid">增删网格图</el-button>
-    </div>
-    <div class="control-center" >
-        <el-button type="primary" @click="setMapCenter">设置中心点</el-button>
-    </div>
-    <div class="control-line" >
-        <el-button type="primary" @click="addOrDeleteLine">增删线条</el-button>
-    </div>
-    <div class="control-refresh" >
-        <el-button type="primary" @click="refreshMap">刷新地图</el-button>
-    </div>
-    <div class="control-addPoint" >
-        <el-button type="primary" icon="plus" @click="addPoints">画点</el-button>
-    </div>
-    <div class="control-delPoint" >
-        <el-button type="primary"  @click="deletePoints">删除添加点</el-button>
-    </div>
-    <div class="control-addLine" >
-        <el-button type="primary" icon="plus" @click="addLines">画线</el-button>
-    </div>
-    <div class="control-delLine" >
-        <el-button type="primary"  @click="deleteLines">删除添加线</el-button>
+    <!--<flex-map-legend ref="mapLegend"></flex-map-legend>-->
+    <layer-list ref="mapLegend"></layer-list>
+    <div class="control-search">
+        <el-button @click="toggleSearch" icon="search"></el-button>
     </div>
     <!-- 右边菜单-->
     <!--right panel start-->
     <right-panel ref='rightPanel'></right-panel>
-<!--    <right-panel-complaint ref='rightPanelComplaint'></right-panel-complaint>-->
-    <!--right panel end-->
     <!--dialog start-->
-    <app-check-dialog></app-check-dialog>
-    <app-car-pollution></app-car-pollution>
-    <app-car-case></app-car-case>
-    <app-car-illegal></app-car-illegal>
-    <app-car-monitor></app-car-monitor>
-    <app-car-playback></app-car-playback>
-    <app-car-detail ref='carDetail'></app-car-detail>
-    <app-search></app-search>
-   </div>
+    <info-window></info-window>
+    <el-dialog
+            title="预案启动提示"
+            :visible.sync="dialogVisible"
+            size="tiny"
+            modal="false">
+        <span>已收到气象台发出的</span><span style="color:#f7ba2a">【启动防暴雨内涝Ⅲ级应急响应通知】</span>，是否需要启动<span style="color:#f7ba2a">【防暴雨内涝Ⅲ级应急响应】</span><span>预案？</span>
+        <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="warning" @click="startPlan">启动</el-button>
+        </span>
+    </el-dialog>
+
+    <div v-show="showWeatherReportPanel" class="weatherReportPanel">
+        <img :src="weatherImg" style="width: 10em;height: 10em;">
+    </div>
+    <div v-show="showWeatherReportPanel" class="radarReportPanel">
+        <img :src="radarImg" style="width: 20em;height: 20em;">
+    </div>
+</div>
