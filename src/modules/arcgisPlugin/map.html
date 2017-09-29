@@ -14,7 +14,8 @@
     </div>
     <div id="toolBar" v-show="showtools"></div>
     <div id="mapType" v-show="showtools"></div>
-    <flex-map-legend ref="mapLegend"></flex-map-legend><!--
+    <layer-list ref="mapLegend"></layer-list>
+    <!--<flex-map-legend ref="mapLegend"></flex-map-legend>
     <div class="control-search" >
         <el-button @click="toggleSearch"  icon="search" ></el-button>
     </div>
@@ -63,12 +64,5 @@
     <!--    <right-panel-complaint ref='rightPanelComplaint'></right-panel-complaint>-->
     <!--right panel end-->
     <!--dialog start-->
-    <app-check-dialog></app-check-dialog>
-    <app-car-pollution></app-car-pollution>
-    <app-car-case></app-car-case>
-    <app-car-illegal></app-car-illegal>
-    <app-car-monitor></app-car-monitor>
-    <app-car-playback></app-car-playback>
-    <app-car-detail ref='carDetail'></app-car-detail>
-    <app-search></app-search>
+    <info-window></info-window>
 </div>

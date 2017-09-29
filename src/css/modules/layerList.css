@@ -1,0 +1,45 @@
+.layerBox{
+    width:13em;
+    background: #fff;
+    border-radius:5px;
+    text-align: left;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.2);
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+.layer-title{
+    background: #157DD6;
+    text-align: center;
+    color: #fff;
+    height: 2.8em;
+    line-height:2.8em;
+    border-top-left-radius: 5px;
+    border-top-right-radius:5px;
+}
+.layer-text{
+    margin-left:0.5em;
+}
+.layerTree{
+    border:none;
+    max-height: 25em;
+    overflow: auto;
+}
+/*.layerTree .el-tree-node__content{*/
+    /*position: relative;*/
+/*}*/
+/*.layerTree .el-tree-node__content>label{*/
+    /*margin-left:1em;*/
+/*}*/
+/*.layerTree .el-tree-node__content:hover{*/
+
+/*}*/
+/*.layerTree .el-tree-node__expand-icon{*/
+    /*position: absolute;*/
+    /*right: 5px;*/
+    /*top: 50%;*/
+    /*transform: translate(0,-50%) rotate(0);*/
+/*}*/
+/*.layerTree .el-tree-node__expand-icon.expanded{*/
+    /*transform: translate(0,-50%) rotate(0);*/
+/*}*/

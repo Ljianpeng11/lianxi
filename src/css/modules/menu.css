@@ -1,7 +1,7 @@
 .tertiaryMenu {
     width: 300px;
     height: 17.2em;
-    background: #013448;
+    background: #286CAC;
     float: left;
     margin-left: 200px;
     box-shadow: rgba(0, 204, 204, 0.498039) 0px 0px 10px;
@@ -37,7 +37,6 @@
     cursor: default;
     color: white;
     font-weight: bold;
-    border: 1px solid #2367a8;
 }
 
 .menuList > li > a:hover {

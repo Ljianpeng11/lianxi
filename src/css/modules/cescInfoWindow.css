@@ -1,0 +1,50 @@
+.infoWindowItem {
+    width: 200px;
+    padding: 10px 5px;
+    border: 2px solid #d9cc33;
+    border-radius: 25px;
+    height: 65px;
+    background: white;
+    position: absolute;
+}
+.infoWindowItem .name{
+    color:#105ba3 !important;
+}
+
+.infoWindowItem .bot, .infoWindowItem .top {
+    width: 0;
+    height: 0;
+    font-size: 0;
+    overflow: hidden;
+    position: absolute;
+}
+
+.infoWindowItem .highLightBox {
+    z-index: 9999;
+}
+
+.infoWindowItem span.bot {
+    border-width: 12px;
+    border-style: solid dashed dashed;
+    border-color: #d9cc33 transparent transparent;
+    left: 83px;
+    bottom: -23px;
+}
+
+.infoWindowItem span.top {
+    border-width: 10px;
+    border-style: solid dashed dashed;
+    border-color: #ffffff transparent transparent;
+    left: 85px;
+    bottom: -19px;
+}
+
+.infoWindow {
+    position: absolute;
+    top: 0;
+}
+
+.infoWindow .content {
+    color: #288c27;
+    font-weight: bold;
+}

@@ -1,11 +1,11 @@
 .tabGroups {
     width: calc(100% - 200px);
-    border-bottom: 2px solid #105ba3;
-    height: 2.8em;
+    height: 3em;
     position: absolute;
     top: 4em;
-    background-color: rgb(32, 160, 255);
+    background-color: #F0F0F0;
     float: left;
+    border-bottom:1px solid #ccc;
 }
 
 .tabGroupsMax {
@@ -24,31 +24,28 @@
 }
 
 .cescTab {
-    width: 10%;
-    height: 100%;
-    border: 1px solid gray;
+    border: 1px solid #ccc;
+    border-bottom:none;
     float: left;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    margin-top: 5px;
     background-color: lightgray;
 }
 
 .cescTab:hover {
+    background-color: #b8caa3;
     height: 100%;
     margin-top: 0;
 }
 
 .cescTab .tabName {
-    display: inline-block;
-    width: 88%;
-    height: 100%;
     text-align: center;
-    line-height: 2.8em;
     font-weight: bold;
     float: left;
-    padding-left: 1em;
+    line-height:3em;
+    padding:0 3em;
 }
+
 
 .tabGroups .tabActive {
     background-color: white;
@@ -57,14 +54,14 @@
 }
 
 .tabGroups .tabActive > a {
-    color: black;
+    color: #666;
 }
 
 .cescTab .tabClose {
     float: left;
-    top: 3px;
-    color: black;
-    display: inline-block;
+    color: #333;
+    line-height: 3em;
+    margin-left:-2em;
 }
 
 .tabGroups .tabContent {
@@ -76,8 +73,11 @@
 .tabControlLeft, .tabControlRight {
     width: 1.2em;
     float: left;
+    background: url('../images/arror.png') no-repeat center center;
+    background-size: 100% 100%;
     opacity: 0.7;
     font-size: 1.5em;
+    visibility: hidden;
 }
 
 .tabControlLeft, .tabControlRight > a {

@@ -4,6 +4,10 @@ var loginCtrl = require('../../controllers/loginController');
 var eventHelper = require('../../utils/eventHelper');
 var toolBar = require('./plugin/toolBar/toolBar');
 var mapType = require('./plugin/mapType/mapType');
+var layerList = require('./plugin/layerList');
+var global = require('./plugin/global');
+var facilityController = require('controllers/facilityController');
+var infoWindow = require('./plugin/infoWindow');
 var mapHelper = require('utils/mapHelper');
 var tabModel = require('controllers/model/appTabModel');
 
@@ -11,6 +15,7 @@ var tabModel = require('controllers/model/appTabModel');
 var initPlugin = function (facilityArr, self) {
     global.init();
     facilityController.getAllFacility(function (list) {
+        debugger;
         self.$refs.mapLegend.init(list);
     });
 }
@@ -70,6 +75,9 @@ var comm = Vue.extend({
         }
     },
     mounted: function () {
+        //加载设备
+        this.facilityArr = {};
+        initPlugin(this.facilityArr, this);
         var self = this;
         //初始化地图
         var map = this.initBaseMap();
@@ -77,6 +85,7 @@ var comm = Vue.extend({
         eventHelper.emit('mapCreated', map);
         this.leftMap = map;
         this.$on('openMapLegend', function (legend) {
+            debugger;
             eventHelper.emit('loading-start');
             console.log(legend);
             if (!!legend.showIcon) {
@@ -86,6 +95,15 @@ var comm = Vue.extend({
                     eventHelper.emit('loading-end');
                 } else {
                     facilityController.getFacilityByType(legend.id, function (subFacilities) {
+                        if (legend.facilityTypeName == 'WD') {
+                            subFacilities.forEach(function (subFacility) {
+                                subFacility.icon = './css/images/huawei-yj.png'
+                            })
+                        } else if (legend.facilityTypeName == 'WP') {
+                            subFacilities.forEach(function (subFacility) {
+                                subFacility.icon = './css/images/huawei-yld.png'
+                            })
+                        }
                         var graLayer = arcgisHelper.createPoints(subFacilities, legend, true);
                         self.facilityArr[legend.facilityTypeName] = {
                             data: subFacilities,
@@ -109,6 +127,9 @@ var comm = Vue.extend({
             this.$refs.carDetail.open(point.item);
         }.bind(this));
     },
-    components: {}
+    components: {
+        'layer-list':layerList,
+        'info-window': infoWindow
+    }
 });
 module.exports = comm;

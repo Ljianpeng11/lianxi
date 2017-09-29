@@ -28,6 +28,8 @@
 @import "./modules/map.css";
 @import "./maps/jquery-jvectormap-2.0.3.css";
 @import "./modules/appCarPlayback.css";
+@import "./modules/cescInfoWindow.css";
+@import "./modules/layerList.css";
 :root {
     --base-color:#105ba3;
 
