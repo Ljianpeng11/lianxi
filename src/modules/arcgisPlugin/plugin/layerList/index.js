@@ -21,6 +21,7 @@ var comm = Vue.extend({
     },
     methods: {
         init: function (list) {
+            debugger;
             var legendItem = [];
             list.forEach(function (type,index) {
                 var facility = {
@@ -35,7 +36,8 @@ var comm = Vue.extend({
                     this.checkList.push(facility.id);
                 }
                 legendItem.push(facility);
-                this.$parent.$emit('openMapLegend', facility);
+                debugger;
+                eventHelper.emit('openMapLegend', facility);
             }.bind(this));
             this.legendList = [{
                 id:1,
@@ -49,7 +51,7 @@ var comm = Vue.extend({
         handleCheckChange:function(data,checked,indeterminate){
             data.showIcon = checked;
             if(!indeterminate){
-                this.$parent.$emit('openMapLegend', data);
+                eventHelper.emit('openMapLegend', data);
             }
         }
     },

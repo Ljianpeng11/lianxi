@@ -15,6 +15,7 @@ var tabModel = require('controllers/model/appTabModel');
 var initPlugin = function (facilityArr, self) {
     global.init();
     facilityController.getAllFacility(function (list) {
+        debugger;
         self.$refs.mapLegend.init(list);
     });
 }
@@ -83,7 +84,7 @@ var comm = Vue.extend({
         //创建地图并把地图对象穿进去
         eventHelper.emit('mapCreated', map);
         this.leftMap = map;
-        this.$on('openMapLegend', function (legend) {
+        eventHelper.on('openMapLegend', function (legend) {
             debugger;
             eventHelper.emit('loading-start');
             console.log(legend);
@@ -115,7 +116,7 @@ var comm = Vue.extend({
                 arcgisHelper.removePoints(self.facilityArr[legend.facilityTypeName]);
                 eventHelper.emit('loading-end');
             }
-        });
+        }.bind(this));
         eventHelper.on('subFacility-clicked', function (point) {
             console.log(point);
             map.centerAt([parseFloat(point.center[0]) + 0.005, point.center[1]]);
