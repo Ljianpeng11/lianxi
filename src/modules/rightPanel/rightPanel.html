@@ -11,56 +11,65 @@
             </el-menu>
         </div>
         <div class="panel-content">
-            <div class="panel-top" v-show='isRealTimeMode'>
-                <div class="device-title">
-                    <span>实时视频</span>
-                    <i class="icon iconfont text-muted">&#xe601;</i>
+            <div class="panel-top">
+                <div class="device-title" v-show='isRealTimeMode'>
+                    <span>监控项</span><i class="wifiStatus"></i>
+                    <span class="refreshTime">更新时间：{{lastUpdateTime}}</span>
                 </div>
-                <!--<div class="device-title" v-show='!isRealTimeMode'>-->
-                <!--<span>数据表格</span>-->
-                <!--</div>-->
-                <div class="device-content">
-                    <!-- 消纳场-->
-                    <object name="OCX" ID="OCX" classid="clsid:BE020CC9-521F-4641-85E1-3B631B7ADDD9" width="500px"
-                            height="330px" v-if="facilityType == 'DS' || facilityType == 'CMP' || facilityType == 'SQ'">
-                    </object>
-                    <object id="videoobj" classid="CLSID:B1A739F2-A8CA-4214-AC65-73E4C9569ACD" width="500px"
-                            height="330px" v-if="facilityType == 'TP'"></object>
-                    <!--工地-->
-                    <object name="OCX" ID="OCX" CLASSID="CLSID:14C9C4EC-61E6-4E4A-AB03-219C8E77857A" width="500px"
-                            height="330px" v-if="facilityType == 'CS'"></object>
-                    <!-- 大华 -->
-                    <object id="DPSDK_OCX" classid="CLSID:D3E383B6-765D-448D-9476-DFD8B499926D"
-                            style="width: 500px; height: 330px" codebase="DpsdkOcx.cab#version=1.0.0.0"
-                            v-if="facilityType == 'DH'"></object>
+                <div class="part" v-bind:class="{partHistory:!isRealTimeMode}">
+                    <date-control ref='dateController' v-show='!isRealTimeMode'></date-control>
+                    <div v-show='isRealTimeMode' class="part-Img-Box" v-for="(device,index) in devices">
+                        <div class="part-Img">
+                            <img class='facilityPic' :src="facilityPic" alt="设施图">
+                        </div>
+                        <div class="conciseInfo">
+                            <p class="conciseTitle">{{device.name}}
+                                <a @click="showMonitorInfo(device)" class="showMore pull-right" v-show="devices.length > 1">详情</a>
+                                <a @click="showInit" class="showMore pull-right" v-show="showBack">返回</a>
+                            </p>
+                            <el-col class="conciseBody" :span="24">
+                                <el-col :span="device.monitorSpan" class="conciseItem" v-for="monitor in device.items" v-if="monitor.name !== '信号强度'">
+                                    <p class="item-top">{{monitor.name}}</p>
+                                    <p class="item-bottom" v-if='monitor.status === 0'>正常</p>
+                                    <p class="item-bottom" v-if='monitor.status === 1'>正在预警</p>
+                                    <p class="item-bottom" v-if='monitor.status === 2'>正在报警</p>
+                                </el-col>
+                            </el-col>
+                        </div>
+                    </div>
+                    <monitor ref='monitorPlugin' v-show="devices.length <= 1"></monitor>
                 </div>
             </div>
             <div class="panel-middle">
                 <div class="device-title" v-show='isRealTimeMode'>
                     <span>统计图表</span>
-                    <div v-if="facilityType!=='ylz'">
-                        <span class="gradeTitle">当前等级</span>
-                        <span class="grade six" title="6" v-bind:class="{currentGrade:waterGrade=='6'}">{{waterGradeTitle}}</span>
-                        <!--<span class="grade six" title="6" v-bind:class="{currentGrade:waterGrade=='6'}"></span>-->
-                        <!--<span class="grade five" title="5" v-bind:class="{currentGrade:waterGrade=='5'}"></span>-->
-                        <!--<span class="grade four" title="4" v-bind:class="{currentGrade:waterGrade=='4'}"></span>-->
-                        <!--<span class="grade three" title="3" v-bind:class="{currentGrade:waterGrade=='3'}"></span>-->
-                        <!--<span class="grade two" title="2" v-bind:class="{currentGrade:waterGrade=='2'}"></span>-->
-                        <!--<span class="grade one " title="1" v-bind:class="{currentGrade:waterGrade=='1'}"></span>-->
-                    </div>
+                    <!--<div v-if="facilityType!=='ylz'" class="pull-right">-->
+                    <!--<span v-if="facilityType!='xs'" class="gradeTitle"　>当前等级</span>-->
+                    <!--<span class="grade six" title="6" v-bind:class="{currentGrade:waterGrade=='6'}">{{waterGradeTitle}}</span>-->
+                    <!--</div>-->
                 </div>
                 <statistics ref='statisticPlugin'></statistics>
             </div>
-            <!-- <div class="panel-bottom">
-                 <div class="bottom-l">
-                     <span>实时视频<em></em></span>
-                 </div>
-                 <div class="bottom-r">
-                 &lt;!&ndash;<video  width="100%" height="100%" src="http://120.77.246.153:9000/vedio/test.ogg" autoplay="autoplay" loop="loop" controls="controls">
-                 您的浏览器不支持 video 标签。
-                 </video>&ndash;&gt;
-                 </div>
-             </div>-->
+            <div class="panel-bottom">
+                <div class="device-title" v-show='isRealTimeMode'>
+                    <span>实时数据</span>
+                </div>
+                <div class="bottom-r">
+                    <el-table
+                            :data="tableData"
+                            border
+                            style="width: 100%;height: 100% ;overflow-y: auto;">
+                        <el-table-column
+                                prop="deviceUpdateTime"
+                                label="日期">
+                        </el-table-column>
+                        <el-table-column
+                                prop="dValue"
+                                label="监测值">
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </div>
         </div>
     </div>
 </transition>

@@ -1,16 +1,24 @@
-<div class='device-title'>
+<div class='device-title history-title'>
     <div class="dateWidget">
         <span for="start" class="timeLabel">开始时间</span>
-        <input type="datetime" class="laydate-icon timeInput" v-model="queryStartDate" v-bind:class="{error:isDateInvalid}" id="start" v-on:click="start()">
+        <el-input placeholder="" class="laydate-icon timeInput" v-bind:class="{error:isDateInvalid}" id="start" v-on:click="start()" v-model="queryStartDate" icon="time"></el-input>
         <span for="end" class="timeLabel">结束时间</span>
-        <input type="datetime" class="laydate-icon timeInput"  v-model="queryEndDate" id="end" v-bind:class="{error:isDateInvalid}" v-on:click="end()">
+        <el-input placeholder="" class="laydate-icon timeInput"id="end" v-bind:class="{error:isDateInvalid}" v-on:click="end()" v-model="queryEndDate" icon="time"></el-input>
         <div class="quickSearch">
-            <select name="search">
-                <option value="天">天</option>
-                <option value="周">周</option>
-                <option value="月">月</option>
-                <option value="季度">季度</option>
-            </select>
+            <el-select v-model="value" placeholder="天" @change="changeValue">
+                <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
+            <!--<select name="search">-->
+                <!--<option value="天">天</option>-->
+                <!--<option value="周">周</option>-->
+                <!--<option value="月">月</option>-->
+                <!--<option value="季度">季度</option>-->
+            <!--</select>-->
             <!--<span :class="{quickSearchActive:currentPeroid=='day'}"><a href='#' v-on:click="currentPeroid='day'">天</a></span>-->
             <!--<span :class="{quickSearchActive:currentPeroid=='week'}"><a href='#' v-on:click="currentPeroid='week'">周</a></span>-->
             <!--<span :class="{quickSearchActive:currentPeroid=='month'}"><a href='#' v-on:click="currentPeroid='month'">月</a></span>-->
