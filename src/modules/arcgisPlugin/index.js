@@ -78,7 +78,6 @@ var comm = Vue.extend({
         //加载设备
         this.facilityArr = {};
         initPlugin(this.facilityArr, this);
-        debugger;
         var self = this;
         //初始化地图
         var map = this.initBaseMap();
@@ -87,7 +86,6 @@ var comm = Vue.extend({
         this.leftMap = map;
         eventHelper.on('openMapLegend', function (legend) {
             eventHelper.emit('loading-start');
-            debugger;
             console.log(legend);
             if (!!legend.showIcon) {
                 var cacheFacilities = self.facilityArr[legend.facilityTypeName];
@@ -105,6 +103,7 @@ var comm = Vue.extend({
                                 subFacility.icon = './css/images/huawei-yld.png'
                             })
                         }
+                        debugger;
                         var graLayer = arcgisHelper.createPoints(subFacilities, legend, true);
                         self.facilityArr[legend.facilityTypeName] = {
                             data: subFacilities,

@@ -21,7 +21,6 @@ var comm = Vue.extend({
     },
     methods: {
         init: function (list) {
-            debugger;
             var legendItem = [];
             list.forEach(function (type,index) {
                 var facility = {
