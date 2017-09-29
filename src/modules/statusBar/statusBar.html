@@ -1,19 +1,21 @@
-<div class='part-l status-bar'>
+<div class='status-bar'>
     <div v-for='monitor in monitors' class="session" v-bind:class="'session'+ monitor.type" v-show="!!monitor.visiable">
+        <!--<p class="label-br normalStatus" v-if='monitor.status === 0'><span>{{monitor.name}}：</span>正常</p>-->
+        <!--<p class="label-br warningStatus" v-if='monitor.status === 1'><span>{{monitor.name}}：</span>正在预警</p>-->
+        <!--<p class="label-br dangerStatus" v-if='monitor.status === 2'><span>{{monitor.name}}：</span>正在报警</p>-->
+        <p class="label-br"><span>{{monitor.name}}：</span>
+            <span v-if="monitor.deviceType.endsWith('voltageRatio')">{{(realTimeValueList[monitor.itemID]*100).toFixed(0)}}{{monitor.unit}}</span>
+            <span v-if="!monitor.deviceType.endsWith('voltageRatio')">{{realTimeValueList[monitor.itemID]}}{{monitor.unit}}</span>
+        </p>
         <div class="label-parent" >
-            <!--<p class="label-t">-->
-                <!--<b v-if="(!!monitor.highWarning || !!monitor.lowWarning)&& monitor.deviceType.endsWith('voltageRatio')">预警值:{{!!monitor.highWarning?monitor.highWarning:monitor.lowWarning}}{{monitor.unit}}</b>-->
-                  <!--<b v-if="(!!monitor.highWarning || !!monitor.lowWarning)&& monitor.deviceType.endsWith('voltageRatio')">预警值:{{!!monitor.highWarning?monitor.highWarning*100:monitor.lowWarning*100}}{{monitor.unit}}</b>-->
-                <!--<b v-if="monitor.deviceType.endsWith('voltageRatio')">报警值:{{!!monitor.highWarning?monitor.highAlert*100:monitor.lowAlert*100}}{{monitor.unit}}</b>-->
-                <!--<b v-if="!monitor.deviceType.endsWith('voltageRatio') && !!monitor.visiable">报警值:{{!!monitor.highWarning?monitor.highAlert:monitor.lowAlert}}{{monitor.unit}}</b>-->
-            <!--</p>-->
             <div class="label-content" :style='realTimeValueListBar[monitor.itemID]'>
-                <span class="num" :id='monitor.itemID' v-if="monitor.deviceType.endsWith('voltageRatio')">{{(realTimeValueList[monitor.itemID]*100).toFixed(0)}}{{monitor.unit}}</span>
-                <span class="num" :id='monitor.itemID' v-if="!monitor.deviceType.endsWith('voltageRatio')">{{realTimeValueList[monitor.itemID]}}{{monitor.unit}}</span>
-            </div>
+                </div>
+            <span class="num" :id='monitor.itemID' v-if="monitor.deviceType.endsWith('voltageRatio')">{{(realTimeValueList[monitor.itemID]*100).toFixed(0)}}{{monitor.unit}}</span>
+            <span class="num" :id='monitor.itemID' v-if="!monitor.deviceType.endsWith('voltageRatio')">{{realTimeValueList[monitor.itemID]}}{{monitor.unit}}</span>
+
             <span class="high-warning-line" v-if='!!monitor.highWarning'
                   :style='highWarnStyles[monitor.itemID]'>
-                <b class="line-label" v-if="(!!monitor.highWarning || !!monitor.lowWarning)&& monitor.deviceType.endsWith('voltageRatio')">{{!!monitor.highWarning?monitor.highWarning:monitor.lowWarning}}{{monitor.unit}}</b>
+                <b class="line-label" v-if="(!!monitor.highWarning || !!monitor.lowWarning)&& !monitor.deviceType.endsWith('voltageRatio')">{{!!monitor.highWarning?monitor.highWarning:monitor.lowWarning}}{{monitor.unit}}</b>
             </span>
             <span class="high-alert-line" v-if='!!monitor.highAlert'>
                 <b class="line-label" v-if="!monitor.deviceType.endsWith('voltageRatio') && !!monitor.visiable">{{!!monitor.highWarning?monitor.highAlert:monitor.lowAlert}}{{monitor.unit}}</b>
@@ -24,10 +26,7 @@
             <span class="low-alert-line" v-if='!!monitor.lowAlert'>
                 <b class="line-label" v-if="monitor.deviceType.endsWith('voltageRatio')">{{!!monitor.highWarning?monitor.highAlert*100:monitor.lowAlert*100}}{{monitor.unit}}</b>
             </span>
-            <span class="label-bl">{{monitor.name}}</span>
-            <span class="label-br normalStatus" v-if='monitor.status === 0'><span>状态:</span>正常</span>
-            <span class="label-br warningStatus" v-if='monitor.status === 1'><span>状态:</span>正在预警</span>
-            <span class="label-br dangerStatus" v-if='monitor.status === 2'><span>状态:</span>正在报警</span>
+            <!--<span class="label-bl">{{monitor.name}}</span>-->
         </div>
     </div>
 </div>

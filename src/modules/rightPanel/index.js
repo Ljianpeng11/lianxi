@@ -9,7 +9,7 @@ var moment = require('moment');
 var eventHelper = require('utils/eventHelper');
 var realTimeUpdate = function (self, monitorObj) {
     controller.getMonitorItemCurrentValue(monitorObj, function (result) {
-        self.lastUpdateTime = moment().format('YYYY-MM-DD hh:mm:ss', new Date());
+        self.lastUpdateTime = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
         self.$refs.monitorPlugin.$emit('update-monitor', result);
         self.$refs.statisticPlugin.$emit('update-statistic', {
             data: result,
@@ -17,75 +17,25 @@ var realTimeUpdate = function (self, monitorObj) {
         });
     });
 };
-var refreshTime = 1000;
+var getMonitorItem = function (monitorType, devices) {
+    var result = {};
+    devices.forEach(function (device) {
+        device.items.forEach(function (item) {
+            if (item.itemTypeName.indexOf(monitorType) !== -1) {
+                result = item;
+                return item;
+            }
+        });
+    });
+    return result;
+}
+var refreshTime = 10000;
 var currentThread;
 // 定义组件
 var comm = Vue.extend({
     template: template,
     data: function () {
         return {
-            msgLists: [
-                {
-                    children: [
-                        {
-                            name: '证号',
-                            value: '201630002'
-                        },
-                        {
-                            name: '所在区',
-                            value: '南宁市仙葫经济开发区五合社区消纳场'
-                        }
-                    ]
-                },
-                {
-                    children: [
-                        {
-                            name: '地址',
-                            value: '南宁市仙葫经济开发区蒲旧公路'
-                        },
-                        {
-                            name: '有效期限',
-                            value: '2016.05.20-2017.05.20'
-                        }
-                    ]
-                },
-                {
-                    children: [
-                        {
-                            name: '联系人',
-                            value: '韦绍陆'
-                        },
-                        {
-                            name: '电话',
-                            value: '18878876669'
-                        }
-                    ]
-                },
-                {
-                    children: [
-                        {
-                            name: '行政主管部门',
-                            value: '市城管局'
-                        },
-                        {
-                            name: '分管领导',
-                            value: '李军'
-                        }
-                    ]
-                },
-                {
-                    children: [
-                        {
-                            name: '部门联系人',
-                            value: '陈明'
-                        },
-                        {
-                            name: '电话',
-                            value: '15177925360'
-                        }
-                    ]
-                }
-            ],
             rightPanelOpen: false,
             isRealTimeMode: true,
             realTimeName: '实时监测',
@@ -98,8 +48,14 @@ var comm = Vue.extend({
             facilityName: '',
             selectedMode: '',
             facilityType: '',
+            tableHeight: '',
             waterGrade: 1,
-            waterGradeTitle: ''
+            waterGradeTitle: '',
+            tableData: [],
+            devices:[],
+            initData:[],
+            showBack:false,
+            deviceItem:{}
         }
     },
     mounted: function () {
@@ -122,6 +78,19 @@ var comm = Vue.extend({
         }.bind(this));
     },
     methods: {
+        queryHistoricalData: function (itemID) {
+            var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+            var startDate = moment().subtract(1, 'hours').format('YYYY-MM-DD HH:mm:ss');
+            controller.getHistoricalDataByMonitor(itemID, startDate, endDate, function (result) {
+                this.tableData.splice(0);
+                if(result.length>10){
+                    this.tableData.push(...result);
+                }else{
+                    this.tableData.push(...result.slice(result.length - 10, result.length));
+                }
+                this.tableData.reverse();
+            }.bind(this));
+        },
         handleSelect: function () {
             console.log('select');
         },
@@ -133,8 +102,16 @@ var comm = Vue.extend({
             this.rightPanelOpen = false;
             this.isRealTimeMode = true;
             this.activeIndex = '1';
+            this.tableData.splice(0);
+            if (!!this.historicalCounter) {
+                clearInterval(this.historicalCounter);
+            }
         },
         open: function (facility, facilityTypeName) {
+            if (!!this.historicalCounter) {
+                clearInterval(this.historicalCounter);
+            }
+            this.tableHeight = $('.bottom-r').height();
             eventHelper.emit('isLoading');
             var self = this;
             clearInterval(currentThread);
@@ -153,43 +130,133 @@ var comm = Vue.extend({
                     this.$refs.monitorPlugin.$emit('reset');
                 }
                 var facilityID = facility.id;
-                facilityController.getFacilityDetail(facilityID, function (data) {
-                    console.log(data);
-                    data.devices.forEach(function (device) {
-                        if (device.devName.toUpperCase().indexOf('VIDEO') !== -1) {
-                            var videoURL = device.items[0].value;
-                            if (videoURL.indexOf('dh-video') != -1) {
-                                facilityTypeName = 'DH';
+                if (facilityTypeName == 'WP') {
+                    this.facilityType = 'yld';
+                    this.facilityPic = '../src/img/huawei-demo.jpg';
+                } else if (facilityTypeName == 'WD') {
+                    this.facilityType = 'yj';
+                    this.facilityPic = '../src/img/huawei-demo.jpg';
+                }
+                this.facilityName = facility.name;
+                facilityController.getDeviceDetailByFacility(facilityID, function (result) {
+                    console.log(result);
+                    if (!!result.pics && result.pics.length > 0) {
+                        this.facilityPic = serviceHelper.getPicUrl(result.pics[0].url);
+                    }
+                    if (result.devices.length > 0) {
+                        var monitorIDs = [];
+                        var monitors = [];
+                        result.devices.forEach(function (device) {
+                            var i = 1;
+                            var s,len;
+                            if(device.items.indexOf('信号强度')){
+                                len = device.items.length - 1;
+                            }else{
+                                len = device.items.length;
                             }
-                            this.facilityType = facilityTypeName;
-                            if (facilityTypeName == 'DS' || facilityTypeName == 'CMP' || facilityTypeName == 'SQ') {
-                                this.initHKVideo(videoURL);
-                            } else if (facilityTypeName == 'CS') {
-                                this.initGDVideo(videoURL);
-                            } else if (facilityTypeName == 'TP') {
-                                this.initJJVideo(videoURL);
+                            if(len%2 === 1){
+                                if(len == 1){
+                                    s = 12;
+                                }else{
+                                    s = 48/(len + 1);
+                                }
+                            }else if(len%2 === 0){
+                                if(len === 2){
+                                    s = 12;
+                                }else{
+                                    s = 48/len;
+                                }
                             }
-                            else if (facilityTypeName == 'DH') {
-                                this.initDHVideo(videoURL);
-                            }
-                            return;
-                        }
-                    }.bind(this));
+                            device.monitorSpan = s;
+                            device.items.forEach(function (monitor) {
+                                if (monitor.itemTypeName === 'Precipitation') {
+                                    monitorIDs.push(monitor.RainfalldurationID);
+                                }
+                                else if (monitor.itemTypeName === 'waterLevel') {
+                                    self.waterLevelID = monitor.itemID;
+                                }
+                                monitorIDs.push(monitor.itemID);
+                                monitors.push(monitor);
+                                monitor.visiable = false;
+                                if (!!device.deviceTypeName &&
+                                    device.deviceTypeName.endsWith('_levelMeter') || !!device.deviceTypeName && device.deviceTypeName.endsWith('_flowmeter')) {
+                                    monitor.type = i;
+                                    i < 3 ? i++ : i = 1;
+                                    if (monitor.itemTypeName.endsWith('_waterLevel')) {
+                                        monitor.highWarning = !!monitor.pipeHeight ? monitor.pipeHeight : monitor.alarmHeight;
+                                        monitor.highAlert = !!monitor.wellLidHeight ? monitor.wellLidHeight : monitor.alarmHeight;
+                                        monitor.unit = 'm';
+                                        monitor.visiable = true;
+                                    }
+                                    else if (monitor.itemTypeName.endsWith('voltage')) {
+                                        monitor.lowAlert = !!monitor.lowAlarm ? monitor.lowAlarm : 220;
+                                        monitor.unit = 'V';
+                                        monitor.visiable = true;
+                                    }
+                                    else if (monitor.itemTypeName.endsWith('voltageRatio')) {
+                                        monitor.lowAlert = !!monitor.lowAlarm ? monitor.lowAlarm : 0.2;
+                                        monitor.unit = '%';
+                                        monitor.visiable = true;
+                                    }
+                                    //monitorItems = monitorItems.concat(device.items);
+                                } else if (device.deviceTypeName.endsWith('pump') || device.deviceTypeName.endsWith('gate')) {
+                                    monitor.itemTypeName = monitor.itemTypeName;
+                                    monitor.name = monitor.name;
+                                    monitor.deviceTypeName = device.deviceTypeName;
+                                } else if (device.deviceTypeName.endsWith('waterQualityMonitor')) {
+                                    monitor.itemTypeName = monitor.itemTypeName;
+                                    monitor.name = monitor.name;
+                                    monitor.unit = monitor.unit;
+                                    monitor.deviceTypeName = device.deviceTypeName;
+                                    monitor.visiable = false;
+                                }
+                                if (!!monitor.visiable) {
+                                    monitor.status = 0;
+                                }
+                            });
+                        }.bind(this));
+                        this.initData = result.devices.slice(0);
+                        this.devices = result.devices.slice(0);
+                        realTimeUpdate(this, monitorIDs);
+                        currentThread = setInterval(function () {
+                            realTimeUpdate(this, monitorIDs);
+                        }.bind(this), refreshTime);
+                    }
+                    facility.facilityTypeName = facilityTypeName;
+                    this.deviceItem = {
+                        facility: facility,
+                        devices: result.devices
+                    };
+                    this.$refs.monitorPlugin.$emit('init-monitor',this.deviceItem);
+                    this.$refs.statisticPlugin.$emit('init-statistic', {
+                        facility: facility,
+                        devices: result.devices
+                    });
+                    var monitorItem = getMonitorItem('waterLevel', result.devices);
+                    this.queryHistoricalData(monitorItem.itemID);
+                    this.historicalCounter = setInterval(function () {
+                        this.queryHistoricalData(monitorItem.itemID);
+                    }.bind(this), 1000);
+                    this.lastUpdateTime = result.currentDate;
                 }.bind(this));
-                facilityController.getMonitorDetailMsg(facilityID, function (data) {
-                    console.log(data);
-                    this.msgLists[0].children[0].value = data.licenseNumber;
-                    this.msgLists[0].children[1].value = data.district;
-                    this.msgLists[1].children[0].value = data.location;
-                    this.msgLists[1].children[1].value = data.limitTime;
-                    this.msgLists[2].children[0].value = data.contact;
-                    this.msgLists[2].children[1].value = data.contactPhone;
-                    this.msgLists[3].children[0].value = data.adminDepartment;
-                    this.msgLists[3].children[1].value = data.departmentSupervisor;
-                    this.msgLists[4].children[0].value = data.adminDepartmentContact
-                    this.msgLists[4].children[1].value = data.adminDepartmentPhone;
+
+                facilityController.getAlarmInfoByFacility(facilityID, function (result) {
+                    console.log(result);
+                    if (!!result && result.length > 0) {
+                        result.forEach(function (alarmItem) {
+                            if (!!alarmItem.isAlarm) {
+                                this.$refs.monitorPlugin.$emit('monitor-alarm', {
+                                    facility: facility,
+                                    alarmItem: alarmItem
+                                });
+                                this.alarmStatus = 2;
+                                this.alertMessage = '正在报警';
+                            }
+                        }.bind(this));
+                    }
                 }.bind(this));
             }.bind(this));
+
         },
         switchMode: function (key, keyPath) {
             this.isRealTimeMode = key === '1';
@@ -208,6 +275,19 @@ var comm = Vue.extend({
                 //query by default date
                 this.$refs.dateController.queryByDefaultDate();
             }
+        },
+        showMonitorInfo:function(item){
+            this.showBack = true;
+            this.devices.splice(0);
+            this.devices.push(item);
+            this.deviceItem.devices.splice(0);
+            this.deviceItem.devices.push(item);
+            this.$refs.monitorPlugin.$emit('init-monitor',this.deviceItem);
+        },
+        showInit:function(){
+            this.showBack = false;
+            this.devices.splice(0);
+            this.devices = this.initData.slice(0);
         }
     },
     components: {

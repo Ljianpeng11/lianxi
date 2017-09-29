@@ -4,8 +4,11 @@
 }
 
 .status-bar {
-    height: 14.28em;
     width: 100% !important;
+    border:1px solid #ccc;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .historyPanel {
@@ -17,18 +20,46 @@
 .historyContent {
     height: 100%;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .historyGrid {
     font-family: Arial;
-    border-radius: 5px;
-    float: left;
-    width: 33%;
-    height: 40%;
-    margin-left: 0.1em;
-    padding: 10px;
-    display: table;
-    color:#666;
+    width: 48%;
+    height: 47%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #fff;
+    align-items: center;
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+}
+.historyGrid:nth-child(1){
+    color: #5097B5;
+}
+.historyGrid:nth-child(1) .historyItem>i{
+    background: #5097B5;
+}
+.historyGrid:nth-child(4){
+    color: #7665AD;
+}
+.historyGrid:nth-child(4) .historyItem>i{
+    background: #7665AD;
+}
+.historyGrid:nth-child(2){
+    color:#CB6E94;
+}
+.historyGrid:nth-child(2) .historyItem>i{
+    background: #CB6E94;
+}
+.historyGrid:nth-child(3){
+    color:#75A17C;
+}
+.historyGrid:nth-child(3) .historyItem>i{
+    background: #75A17C;
 }
 
 .historyItem > h5 {
@@ -131,11 +162,30 @@
 }
 
 .historyItem {
-    text-align: left;
-    margin-bottom: 12%;
-    margin-top:3.7%;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
+.historyItem>h4{
+    font-size:24px;
+    color:#333;
+}
+.historyItem>span{
+    font-weight:bold;
+}
+.historyItem>span h4{
+    font-size:2.5em;
+}
+.historyItem>i{
+    font-size: 2em;
+    width: 2em;
+    height: 2em;
+    border-radius: 0.2em;
+    line-height: 2em;
+    color: #fff;
+}
 .big-item {
     display: table-row;
 }
