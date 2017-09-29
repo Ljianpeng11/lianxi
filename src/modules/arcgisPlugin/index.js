@@ -90,7 +90,7 @@ var comm = Vue.extend({
             if (!!legend.showIcon) {
                 var cacheFacilities = self.facilityArr[legend.facilityTypeName];
                 if (!!cacheFacilities && cacheFacilities.length > 0) {
-                    arcgisHelper.createPoints(cacheFacilities, legend, true);
+                    // arcgisHelper.createPoints(cacheFacilities, legend, true);
                     eventHelper.emit('loading-end');
                 } else {
                     facilityController.getFacilityByType(legend.id, function (subFacilities) {
@@ -103,16 +103,16 @@ var comm = Vue.extend({
                                 subFacility.icon = './css/images/huawei-yld.png'
                             })
                         }
-                        var graLayer = arcgisHelper.createPoints(subFacilities, legend, true);
-                        self.facilityArr[legend.facilityTypeName] = {
-                            data: subFacilities,
-                            layer: graLayer
-                        };
+                        // var graLayer = arcgisHelper.createPoints(subFacilities, legend, true);
+                        // self.facilityArr[legend.facilityTypeName] = {
+                        //     data: subFacilities,
+                        //     layer: graLayer
+                        // };
                         eventHelper.emit('loading-end');
                     });
                 }
             } else {
-                arcgisHelper.removePoints(self.facilityArr[legend.facilityTypeName]);
+                // arcgisHelper.removePoints(self.facilityArr[legend.facilityTypeName]);
                 eventHelper.emit('loading-end');
             }
         });
