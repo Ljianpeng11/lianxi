@@ -36,7 +36,6 @@ var comm = Vue.extend({
                     this.checkList.push(facility.id);
                 }
                 legendItem.push(facility);
-                debugger;
                 eventHelper.emit('openMapLegend', facility);
             }.bind(this));
             this.legendList = [{

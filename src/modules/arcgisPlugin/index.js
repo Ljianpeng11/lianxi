@@ -7,6 +7,7 @@ var mapType = require('./plugin/mapType/mapType');
 var layerList = require('./plugin/layerList');
 var global = require('./plugin/global');
 var facilityController = require('controllers/facilityController');
+var arcgisHelper = require('./plugin/arcgisExpand/arcgis-load-map');
 var infoWindow = require('./plugin/infoWindow');
 var mapHelper = require('utils/mapHelper');
 var tabModel = require('controllers/model/appTabModel');
@@ -15,7 +16,6 @@ var tabModel = require('controllers/model/appTabModel');
 var initPlugin = function (facilityArr, self) {
     global.init();
     facilityController.getAllFacility(function (list) {
-        debugger;
         self.$refs.mapLegend.init(list);
     });
 }
@@ -78,6 +78,7 @@ var comm = Vue.extend({
         //加载设备
         this.facilityArr = {};
         initPlugin(this.facilityArr, this);
+        debugger;
         var self = this;
         //初始化地图
         var map = this.initBaseMap();
@@ -85,8 +86,8 @@ var comm = Vue.extend({
         eventHelper.emit('mapCreated', map);
         this.leftMap = map;
         eventHelper.on('openMapLegend', function (legend) {
-            debugger;
             eventHelper.emit('loading-start');
+            debugger;
             console.log(legend);
             if (!!legend.showIcon) {
                 var cacheFacilities = self.facilityArr[legend.facilityTypeName];

@@ -51,34 +51,34 @@ var comm = Vue.extend({
         /* y:-85
          x:-106*/
         this.map = {};
-        eventHelper.on('mapCreated', function (map) {
-            this.map = map;
-            this.map.on('extent-change', function () {
-                setTimeout(function () {
-                    this.relocate();
-                }.bind(this), 10);
-            }.bind(this));
-            this.map.on('zoom-end', function () {
-                setTimeout(function () {
-                    this.display(true)
-                }.bind(this), 10);
-            }.bind(this));
-            this.map.on('pan-end', function () {
-                setTimeout(function () {
-                    this.display(true)
-                }.bind(this), 10);
-            }.bind(this));
-            this.map.on('zoom-start', function () {
-                setTimeout(function () {
-                    this.display(false);
-                }.bind(this), 10);
-            }.bind(this));
-            this.map.on('pan-start', function () {
-                setTimeout(function () {
-                    this.display(false)
-                }.bind(this), 10);
-            }.bind(this));
-        }.bind(this));
+        // eventHelper.on('mapCreated', function (map) {
+        //     this.map = map;
+        //     this.map.on('extent-change', function () {
+        //         setTimeout(function () {
+        //             this.relocate();
+        //         }.bind(this), 10);
+        //     }.bind(this));
+        //     this.map.on('zoom-end', function () {
+        //         setTimeout(function () {
+        //             this.display(true)
+        //         }.bind(this), 10);
+        //     }.bind(this));
+        //     this.map.on('pan-end', function () {
+        //         setTimeout(function () {
+        //             this.display(true)
+        //         }.bind(this), 10);
+        //     }.bind(this));
+        //     this.map.on('zoom-start', function () {
+        //         setTimeout(function () {
+        //             this.display(false);
+        //         }.bind(this), 10);
+        //     }.bind(this));
+        //     this.map.on('pan-start', function () {
+        //         setTimeout(function () {
+        //             this.display(false)
+        //         }.bind(this), 10);
+        //     }.bind(this));
+        // }.bind(this));
 
         eventHelper.on('alert-point', function (points, isReplace) {
             if (!!isReplace) {
