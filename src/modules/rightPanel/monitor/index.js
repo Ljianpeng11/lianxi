@@ -1,10 +1,8 @@
 var template = require('./monitor.html');
-var controller = require('controllers/rightPanelController');
 var statusBar = require('modules/statusBar');
 var historyPanel = require('modules/historyPanel');
 var pumpStationBar = require('modules/rightPanel/pumpStations/pumpStationBar');
 var eventHelper = require('utils/eventHelper');
-var weatherReport = require('modules/weatherReport');
 
 
 // 定义组件
@@ -115,7 +113,6 @@ var comm = Vue.extend({
     components: {
         'statusBar': statusBar,
         'historyPanel': historyPanel,
-        'weatherReport': weatherReport,
         'pumpStationBar': pumpStationBar
     }
 });

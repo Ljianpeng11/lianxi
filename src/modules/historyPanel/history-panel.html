@@ -1,33 +1,44 @@
 <div class='historyPanel'>
     <div class="historyContent" v-if='paishui'><!-- 排水管道水情站-->
         <div class='historyGrid'>
+            <div class='historyItem'><i class="icon iconfont">&#xe602;</i></div>
             <div class='historyItem'><h4>积水次数</h4></div>
-            <div class='historyItem'><h4><a href='#' v-on:click='seeperDetail=true;paishui = false'>2次</a></h4></div>
+            <div class='historyItem'><span><a href='#' v-on:click='seeperDetail=true;paishui = false'><h4>2次</h4></a></span>
+            </div>
+        </div>
+        <div class='historyGrid'>
+            <div class='historyItem'><i class="icon iconfont">&#xe60d;</i></div>
             <div class='historyItem'><h4>满管次数</h4></div>
-            <div class='historyItem'><h4>14次</h4></div>
+            <div class='historyItem'><span><h4>14次</h4></span></div>
         </div>
         <div class='historyGrid'>
-            <div class='historyItem big-item'><h4>最高流量</h4></div>
-            <div class='historyItem big-item'><h4>0.02m³/s</h4></div>
+            <div class='historyItem'><i class="icon iconfont">&#xe60b;</i></div>
+            <div class='historyItem'><h4>最高流量</h4></div>
+            <div class='historyItem'><span><h4>0.02m³/s</h4></span></div>
         </div>
         <div class='historyGrid'>
-            <div class='historyItem big-item'><h4>最大淹没深度</h4></div>
-            <div class='historyItem big-item'><h4>0.15m</h4></div>
+            <div class='historyItem'><i class="icon iconfont">&#xe62c;</i></div>
+            <div class='historyItem'><h4>最大淹没深度</h4></div>
+            <div class='historyItem'><span><h4>0.15m</h4></span></div>
         </div>
     </div>
     <div class="historyContent" v-if='yilao'><!-- 易涝水情站-->
         <div class='historyGrid'>
-            <div class='historyItem big-item'><h4>年积水次数</h4></div>
-            <div class='historyItem big-item'><h4><a href='#' v-on:click='seeperDetail=true;yilao=false'>12次</a></h4>
+            <div class='historyItem'><i class="icon iconfont">&#xe602;</i></div>
+            <div class='historyItem'><h4>年积水次数</h4></div>
+            <div class='historyItem'><span><a href='#'
+                                              v-on:click='seeperDetail=true;yilao=false'><h4>12次</h4></a></span>
             </div>
         </div>
         <div class='historyGrid'>
-            <div class='historyItem big-item'><h4>最大积水深度</h4></div>
-            <div class='historyItem big-item'><h4>0.35m</h4></div>
+            <div class='historyItem'><i class="icon iconfont">&#xe746;</i></div>
+            <div class='historyItem'><h4>最大积水深度</h4></div>
+            <div class='historyItem'><span><h4>0.35m</h4></span></div>
         </div>
         <div class='historyGrid'>
-            <div class='historyItem big-item'><h4>最大积水时长</h4></div>
-            <div class='historyItem big-item'><h4>8h</h4></div>
+            <div class='historyItem'><i class="icon iconfont">&#xe70a;</i></div>
+            <div class='historyItem'><h4>最大积水时长</h4></div>
+            <div class='historyItem'><span><h4>8h</h4></span></div>
         </div>
     </div>
     <div class="historyContent" v-if='yuliang'><!-- 雨量站-->
@@ -64,7 +75,7 @@
     <div id='seeperDetail' v-if='seeperDetail' class='seeperDetail' @mouseover='showBackButton=true'
          @mouseleave='showBackButton=false'>
         <div class='hideSpeerDetail' v-show='showBackButton'><a href='#' class='glyphicon glyphicon-eject'
-         v-on:click='seeperDetail=false;goBack(),hideHistoryChart = false'></a>
+                                                                v-on:click='seeperDetail=false;goBack(),hideHistoryChart = false'></a>
         </div>
         <div>
             <table>
@@ -83,8 +94,8 @@
     </div>
     <div class="historyContent" v-show="bengzhan">
         <div class='historyGrid'>
-            <div class='historyItem big-item'><h4>闸门开启次数</h4></div>
-            <div class='historyItem big-item'><h4><a href='#' v-on:click='seeperDetail=true;bengzhan=false'>12次</a></h4>
+            <div class='historyItem'><h4>闸门开启次数</h4></div>
+            <div class='historyItem'><h4><a href='#' v-on:click='seeperDetail=true;bengzhan=false'>12次</a></h4>
             </div>
         </div>
         <div class='historyChartGrid'>

@@ -10,6 +10,8 @@
 }
 .quickSearch{
     display:inline-block;
+    width: 7em;
+    float: right;
 }
 .quickSearch>span{
     margin-right:20px;
@@ -56,4 +58,7 @@
 .timeInput{
     width:28%;
     vertical-align: middle;
+}
+.history-title{
+    height:3em;
 }
