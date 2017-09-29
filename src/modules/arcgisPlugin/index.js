@@ -15,7 +15,6 @@ var tabModel = require('controllers/model/appTabModel');
 var initPlugin = function (facilityArr, self) {
     global.init();
     facilityController.getAllFacility(function (list) {
-        debugger;
         self.$refs.mapLegend.init(list);
     });
 }
