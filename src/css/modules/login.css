@@ -1,183 +1,174 @@
-.login.login-bg-img {
+html,body{
+    width:100%;
+    height: 100%;
+}
+.bg-login {
     width: 100%;
     height: 100%;
-    background-size: 100% 100%;
-    background: url(../../img/login/login-bg.jpg) no-repeat 62% 0;
-    position: relative;
+    background: url(../images/loginbg.jpg) center bottom no-repeat;
+    background-size: 100% auto;
 }
 
-.goBack {
-    width: 4em;
-    height: 3em;
-    background-size: 100% 100%;
+.loginPanel {
+    width: 1000px;
+    height: 600px;
     position: absolute;
-    top: 4em;
-    left: 4em;
-}
-
-.loginBox {
-    background: #fff;
-    width: 400px;
-    position: absolute;
-    left: 56.3%;
-    top: 32%;
-    z-index: 2;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-.loginBox .login-header {
-    line-height: 50px;
-    font-size: 1.5em;
-    height: 50px;
-    width: 100%;
-    color: #fff;
-    background-color: rgb(15, 141, 190);
-    text-align: center;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    margin-top: 0;
+    left: 50%;
+    top: 50%;
+    margin: -300px 0 0 -500px;
 }
 
 .logo {
-    font-size: 3em;
-    color: #333;
-    position: absolute;
-    top: 4em;
-    left: calc(50% - 3em);
-    width: 6em;
-    height: 2em;
-    background-size: contain;
+    text-align: center;
 }
 
-.userName, .password {
-    width: inherit;
-    height: 3em;
-    border-bottom: 1px solid #fff;
-    margin-top: 3em;
+.srk-login {
+    width: 360px;
+    height: 420px;
+    margin: 10px auto 0;
+    padding: 30px 20px;
+    background: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #aaa;
+    overflow: hidden;
 }
 
-.inputDiv {
-    display: inline-block;
-    font-size: 1.5em;
-    width: 14em;
-    height: 2em;
-    line-height: 2em;
-    outline: none;
-    vertical-align: middle;
+.srk-login ul {
+    padding: 20px 0;
 }
 
-.user-icon, .psd-icon {
-    display: inline-block;
-    width: 2.5em;
-    height: 2.5em;
-    margin: 0 1em;
-    vertical-align: middle;
+.srk-login ul li {
+    padding: 5px 20px;
+    text-align: center;
 }
 
-.user-icon {
-    background-size: 100% 100%;
+.srk-login .srk input {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    border: 1px solid #dadada;
+    border-radius: 40px;
+    background: #fff;
+    margin: 10px auto;
+    text-indent: 56px;
+    font-size: 16px;
 }
 
-.psd-icon {
-    background-size: 100% 100%;
-}
-
-.login-content .forgetPsd {
-    padding: 1em 0;
-    float: right;
-}
-
-.login-content label {
-    width: 4em;
-    color:rgb(15, 141, 190);
-
-}
-
-.login-content {
-    margin-top: 2em;
-}
-
-.login-content.relative {
-    position: relative;
-}
-
-.login-content .el-input {
-    width: 224px;
-}
-
-.login-btn {
-    width: 16em;
-    height: 2.6em;
-    clear: both;
-    font-size: 20px;
-    border-radius: 1.3em;
-    background: rgba(36, 149, 243, 0.6);
+.btn-login a {
+    display: block;
     margin: 0 auto;
-    text-align: center;
-    line-height: 2.6em;
-    color: #dcdcdc;
-    cursor: pointer;
-}
-
-.login-btn:hover, .login-btn:visited {
-    background: rgba(36, 149, 243, 0.6);
-}
-
-.login-container {
-    padding: 1em 4em 1em 4em;
-}
-
-.registerBox {
-    width: inherit;
-    padding: 0 2.8em;
-    margin-top: 2em;
-    line-height: 3.6em;
-}
-
-.skip, .register {
-    width: 5.6em;
-    height: 2.6em;
-    border-radius: 1.3em;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 40px;
+    background: #0098e1;
     color: #fff;
-    border: 1px solid #fff;
-    font-size: 20px;
     text-align: center;
+    font-size: 16px;
+}
+
+.btn-login a:hover {
+    background: #ff9000;
+}
+
+.srk-login .srk .user {
+    background: #fff url(../images/user.png) 15px center no-repeat;
+}
+
+.srk-login .srk .password {
+    background: #fff url(../images/password.png) 15px center no-repeat;
+}
+
+.nocheck {
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.forget {
+    float: left;
+    color: #999;
+}
+
+.reg {
+    float: right;
+    text-decoration: underline;
+    color: #0098e1;
+}
+
+.bq {
+    text-align: center;
+    padding: 20px 0;
+    color: #fff;
+}
+
+.title-l {
+    padding: 10px;
+    border-bottom: 1px solid #eaeaea;
+    text-align: center;
+    font-size: 20px;
+    color: #666;
+}
+
+.jj-t {
+    margin-top: 15px;
+}
+
+.mui-switch {
+    margin-right: 5px;
+    vertical-align: middle;
+    width: 40px;
+    height: 20px;
+    position: relative;
+    border: 1px solid #d5d5d5;
+    background-color: #d5d5d5;
+    box-shadow: #d5d5d5 0 0 0 0 inset;
+    border-radius: 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-clip: content-box;
+    display: inline-block;
+    -webkit-appearance: none;
+    user-select: none;
+    outline: none;
     cursor: pointer;
 }
 
-.skip {
-    float: left;
-}
-
-.register {
-    float: right;
-}
-
-.textInput {
-    font-size: 1.5em;
-    background-color: transparent;
-    border: none;
-    vertical-align: middle;
-    outline: none;
-}
-
-.logo-content {
+.mui-switch:before {
+    content: '';
+    width: 18px;
+    height: 18px;
     position: absolute;
-    top: 15%;
-    left: 56.3%
+    top: 0px;
+    left: 0;
+    border-radius: 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.login-container .btn-grounp {
-    float: right;
+.mui-switch:checked:before {
+    left: 19px;
 }
 
-.vertical-mid {
-    display: inline-block;
-    vertical-align: middle;
+.mui-switch.mui-switch-anim {
+    transition: border cubic-bezier(0, 0, 0, 1) 0.4s, box-shadow cubic-bezier(0, 0, 0, 1) 0.4s;
 }
 
-.logo-desc {
-    font-size: 3em;
-    color: #333;
+.mui-switch.mui-switch-anim:before {
+    transition: left 0.3s;
+}
+
+.mui-switch.mui-switch-anim:checked {
+    box-shadow: #0098e1 0 0 0 16px inset;
+    background-color: #0098e1;
+    transition: border ease 0.4s, box-shadow ease 0.4s, background-color ease 1.2s;
+}
+
+.mui-switch.mui-switch-anim:checked:before {
+    transition: left 0.3s;
 }

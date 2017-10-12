@@ -1,29 +1,21 @@
-<div class="login login-bg-img">
-    <!--<div class="goBack"></div>
-    <div class="logo"></div>-->
-    <div class="logo-content">
-        <p class="vertical-mid logo-desc">智慧水务在线监测系统</p>
-    </div>
-    <div class="loginBox clearfix">
-        <h2 class="login-header no-margin">登入系统</h2>
-        <div class="login-container clearfix">
-            <div class="login-content">
-                <label>用户名:</label>
-                <el-input v-model="userName" placeholder="用户名"></el-input>
-            </div>
-            <div class="login-content clearfix">
-                <label>密码:</label>
-                <el-input type = 'password' v-model="password" placeholder="密码"></el-input>
-                <a class="forgetPsd">忘记密码？</a>
-            </div>
-            <div class="btn-grounp">
-                <el-button type="primary" @click="login">登录</el-button>
-                <el-button type="primary">注册</el-button>
-            </div>
+<div class="bg-login">
+    <div class="loginPanel">
+        <p class="logo"><img src="../../img/login/logo.png"></p>
+        <div class="srk-login">
+            <p class="title-l">用户登录</p>
+            <ul>
+                <li class="srk">
+                    <input class="user" type="text" v-model="userName" placeholder="用户名">
+                    <input class="password" type="text" v-model="password" placeholder="密码">
+                </li>
+                <li class="jj-t">
+                    <input class="mui-switch mui-switch-anim" type="checkbox">记住用户名</li>
+                <li class="btn-login"><a  @click="login">登录</a></li>
+                <li>
+                    <a class="forget" href="#">忘记密码？</a>
+                    <a class="reg" href="#">注册</a>
+                </li>
+            </ul>
         </div>
-        <!--<div class="registerBox">
-            <div class="skip">跳过</div>
-            <div class="register">注册</div>
-        </div>-->
     </div>
 </div>

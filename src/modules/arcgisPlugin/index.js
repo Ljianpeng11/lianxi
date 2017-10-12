@@ -9,6 +9,7 @@ var global = require('./plugin/global');
 var facilityController = require('controllers/facilityController');
 var infoWindow = require('./plugin/infoWindow');
 var mapHelper = require('utils/mapHelper');
+var arcgisHelper = require('utils/arcgisExpand/arcgisHelper');
 var tabModel = require('controllers/model/appTabModel');
 
 
@@ -65,11 +66,13 @@ var comm = Vue.extend({
                         color: [226, 119, 40],
                         width: 4
                     })
-                })
+                });
+                return map;
             }, function (evt) {
                 console.log(evt);
                 mapHelper.setCenter(currentView, evt.mapPoint.x, evt.mapPoint.y);
             });
+            debugger;
             return map;
         }
     },
@@ -78,13 +81,7 @@ var comm = Vue.extend({
         this.facilityArr = {};
         initPlugin(this.facilityArr, this);
         var self = this;
-        //初始化地图
-        var map = this.initBaseMap();
-        //创建地图并把地图对象穿进去
-        eventHelper.emit('mapCreated', map);
-        this.leftMap = map;
-        this.$on('openMapLegend', function (legend) {
-            debugger;
+        eventHelper.on('openMapLegend', function (legend) {
             eventHelper.emit('loading-start');
             console.log(legend);
             if (!!legend.showIcon) {
@@ -103,6 +100,11 @@ var comm = Vue.extend({
                                 subFacility.icon = './css/images/huawei-yld.png'
                             })
                         }
+                        // var apiInstance = mapHelper.getInstance();
+                        // apiInstance.createMapImageLayer(
+                        //     currentMap, //当前地图对象
+                        //     layerURL,//图层
+                        //     urlid);//图层ID
                         // var graLayer = arcgisHelper.createPoints(subFacilities, legend, true);
                         // self.facilityArr[legend.facilityTypeName] = {
                         //     data: subFacilities,
