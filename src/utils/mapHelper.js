@@ -68,11 +68,11 @@ define(function () {
         createPolyline: function (layer, paths, styleObj) {
             this.apiInstance.createPolyline(layer, paths, styleObj);
         },
-        createSymbol: function (layer, x, y, styleObj) {
+        createMakerSymbol: function (layer, x, y, styleObj) {
             this.apiInstance.createSymbol(layer, x, y, styleObj);
         },
         createPictureMarkSymbol: function (layer, x, y, imgObj) {
-            this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj);
+            return this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj);
         },
         createPolygon: function (layer, coords, styleObj) {
             this.apiInstance.createPolygon(layer, coords, styleObj);

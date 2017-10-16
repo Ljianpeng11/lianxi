@@ -312,7 +312,7 @@ define(function () {
         return polygonGraphic;
 
     };
-    instance.createSymbol = function (layer, x, y, styleObj) {
+    instance.createMarkerSymbol = function (layer, x, y, styleObj) {
         var point = new instance.Point({
             longitude: x,
             latitude: y
