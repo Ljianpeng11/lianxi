@@ -103,6 +103,10 @@ var comm = Vue.extend({
         }
     },
     mounted: function () {
+        eventHelper.on('openRightPanel',function(facility, facilityTypeName){
+            console.log(123);
+            // this.open(facility, facilityTypeName);
+        });
         eventHelper.on('monitor-status', function (status) {
             this.alarmStatus = status;
         }.bind(this));
@@ -135,6 +139,7 @@ var comm = Vue.extend({
             this.activeIndex = '1';
         },
         open: function (facility, facilityTypeName) {
+            debugger;
             eventHelper.emit('isLoading');
             var self = this;
             clearInterval(currentThread);

@@ -44,7 +44,8 @@ var comm = Vue.extend({
             drawPointGraphics: [],
             drawLineGraphics: [],
             polygonId: 1,
-            baseMap:{}
+            baseMap:{},
+            graLayer:{}
         }
     },
     methods: {
@@ -60,6 +61,8 @@ var comm = Vue.extend({
             var apiInstance = mapHelper.getInstance();
             var map = mapHelper.initTDMap('', centerX, centerY, zoom, function (map, view) {
                 self.baseMap = map;
+                var apiInstance = mapHelper.getInstance();
+                self.graLayer = apiInstance.createGraphicsLayer(self.baseMap,'graphicLayer');
                 currentMap = map;
                 currentView = view;
                 apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
@@ -70,10 +73,27 @@ var comm = Vue.extend({
                         width: 4
                     })
                 });
-            }, function (evt) {
-                console.log(evt);
-                mapHelper.setCenter(currentView, evt.mapPoint.x, evt.mapPoint.y);
-            });
+                // debugger;
+                self.graLayer.on('layerview-create',function(evt){
+                    var graView = evt.view;
+                    var graLayerView = evt.layerView;
+                    var layer = evt.layerView.layer;
+                    graView.on('click',function(event){
+                        graView.hitTest(event).then(function(response){
+                            var graphic = response.results[0].graphic;
+                            var attributes = graphic.attributes;
+                            debugger;
+                            // mapHelper.setCenter(graView, evt.mapPoint.x, evt.mapPoint.y);
+                            self.$refs.rightPanel.open(attributes.item, attributes.facilityTypeName);
+                        });
+                    });
+                });
+            }
+            // , function (evt) {
+            //     console.log(evt);
+            //     mapHelper.setCenter(currentView, evt.mapPoint.x, evt.mapPoint.y);
+            // }
+            );
             return map;
         }
     },
@@ -103,9 +123,7 @@ var comm = Vue.extend({
                                 subFacility.icon = './css/images/huawei-yld.png'
                             })
                         }
-                        var apiInstance = mapHelper.getInstance();
-                        var graLayer = apiInstance.createGraphicsLayer(this.baseMap,legend.id);
-                        var graphics = [],textSymbols = [];
+                        var graphics = [];
                         subFacilities.forEach(function (item) {
                             var icon = legend.icon;
                             if (!!item.icon) {
@@ -116,19 +134,37 @@ var comm = Vue.extend({
                                 width: "30px",
                                 height: "36px"
                             };
-                            var styleObj = {
-                                color:'blue',
-                                size:'8px'
+                            var textObj = {
+                                color:'red',
+                                text:legend.label,
+                                // xoffset:3,
+                                yoffset:"30px",
+                                font:{
+                                    size:12
+                                }
                             };
-                            graphics.push(mapHelper.createPictureMarkSymbol(graLayer, item.x, item.y, imgObj));
-                            markerSymbols.push(mapHelper.createMarkerSymbol(graLayer,item.x,item.y,styleObj))
+                            var graphic = mapHelper.createPictureMarkSymbol(self.graLayer, item.x, item.y, imgObj);
+                            var attributes = [
+                                {
+                                    key:'item',
+                                    value:legend
+                                },{
+                                    key:'facilityTypeName',
+                                    value:legend.facilityTypeName
+                                }
+                            ];
+                            attributes.forEach(function(item){
+                                graphic.setAttribute(item.key,item.value);
+                            });
+                            graphics.push(graphic);
+                            graphics.push(mapHelper.createTextSymbol(self.graLayer,item.x,item.y,textObj));
                         });
                         self.facilityArr[legend.facilityTypeName] = {
                             graphics:graphics,
-                            layer:graLayer
-                        }
+                            layer:self.graLayer
+                        };
                         eventHelper.emit('loading-end');
-                    }.bind(this));
+                    });
                 }
             } else {
                 var layer = self.facilityArr[legend.facilityTypeName].layer;
@@ -140,6 +176,7 @@ var comm = Vue.extend({
         eventHelper.on('subFacility-clicked', function (point) {
             console.log(point);
             map.centerAt([parseFloat(point.center[0]) + 0.005, point.center[1]]);
+            debugger;
             this.$refs.rightPanel.open(point.item, point.facilityTypeName);
         }.bind(this));
         eventHelper.on('carDetail-clicked', function (point) {

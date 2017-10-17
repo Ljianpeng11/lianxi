@@ -312,7 +312,32 @@ define(function () {
         return polygonGraphic;
 
     };
-    instance.createMarkerSymbol = function (layer, x, y, styleObj) {
+    instance.createTextSymbol = function(layer,x,y,textObj){
+        var point = new instance.Point({
+            longitude: x,
+            latitude: y
+        });
+        var textSymbol = new instance.TextSymbol(
+             textObj
+            // {
+            //     color:'#333',
+            //     text:'you are here',
+            //     xoffset:3,
+            //     yoffset:3,
+            //     font:{
+            //         size:12
+            //     }
+            // }
+        );
+
+        var markPoint = new instance.Graphic({
+            geometry: point,
+            symbol: textSymbol
+        });
+        layer.add(markPoint);
+        return markPoint;
+    };
+    instance.createSymbol = function (layer, x, y, styleObj) {
         var point = new instance.Point({
             longitude: x,
             latitude: y

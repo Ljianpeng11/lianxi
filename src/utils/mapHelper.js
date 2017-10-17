@@ -66,16 +66,19 @@ define(function () {
             }
         },
         createPolyline: function (layer, paths, styleObj) {
-            this.apiInstance.createPolyline(layer, paths, styleObj);
+            return this.apiInstance.createPolyline(layer, paths, styleObj);
         },
-        createMakerSymbol: function (layer, x, y, styleObj) {
-            this.apiInstance.createSymbol(layer, x, y, styleObj);
+        createTextSymbol:function(layer,x,y,textObj){
+            return this.apiInstance.createTextSymbol(layer,x,y,textObj);
+        },
+        createSymbol: function (layer, x, y, styleObj) {
+            return this.apiInstance.createSymbol(layer, x, y, styleObj);
         },
         createPictureMarkSymbol: function (layer, x, y, imgObj) {
             return this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj);
         },
         createPolygon: function (layer, coords, styleObj) {
-            this.apiInstance.createPolygon(layer, coords, styleObj);
+            return this.apiInstance.createPolygon(layer, coords, styleObj);
         },
 
         //设置地图中心点和地图显示层
