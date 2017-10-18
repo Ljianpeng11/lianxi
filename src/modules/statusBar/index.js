@@ -17,10 +17,6 @@ var updateStatus = function (self, result) {
     console.log('get real time value', result);
     var realTimeValues = {};
     var realTimeValuesBar = {};
-    result.push({
-        dValue:0.8,
-        itemId:'mock'
-    });
     result.forEach(function (newValue) {
         var realTimeValue = newValue.dValue.toFixed(2);
         console.log('realTimeval', realTimeValue);
@@ -92,9 +88,7 @@ var comm = Vue.extend({
     mounted: function () {
         this.$on('init-status-bar', function (monitors) {
             this.reset();
-            console.log('init status bar');
             var self = this;
-            monitors.push(mockvoltageRatio);
             monitors.forEach(function (item) {
                 if (!!item.visiable) {
                     item.status = 0;

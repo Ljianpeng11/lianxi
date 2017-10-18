@@ -10,7 +10,7 @@ var comm = Vue.extend({
         return {
             defaultProps: {
                 children: 'children',
-                label: 'label'
+                label: 'title'
             },
             legendList:[],
             checkList:[]
@@ -25,7 +25,7 @@ var comm = Vue.extend({
             list.forEach(function (type,index) {
                 var facility = {
                     id: type.id,
-                    label: type.nameCn,
+                    title: type.nameCn,
                     facilityTypeName: type.name,
                     icon: type.icon,
                     showIcon: true,
@@ -39,7 +39,7 @@ var comm = Vue.extend({
             }.bind(this));
             this.legendList = [{
                 id:1,
-                label:'测站',
+                title:'测站',
                 disabled: true,
                 showIcon: true,
                 showSub: false,

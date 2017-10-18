@@ -1,7 +1,7 @@
 define(['./serviceHelper'], function (serviceHelper) {
     return {
         getAllFacility: function (cb) {
-            $.get(serviceHelper.getPath('facilityList'), function (result) {
+            $.get(serviceHelper.getPath('getAllFacilityType'), function (result) {
                 console.log(result);
                 if (!!result.success) {
                     cb(result.data);

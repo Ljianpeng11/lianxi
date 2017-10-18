@@ -27,7 +27,21 @@ var comm = Vue.extend({
             currentPeroid: '',
             isDateInvalid:false,
             queryStartDate:moment().subtract(7, 'days').format('YYYY-MM-DD', new Date()),
-            queryEndDate:moment().format('YYYY-MM-DD', new Date())
+            queryEndDate:moment().format('YYYY-MM-DD', new Date()),
+            options: [{
+                value: '天',
+                label: '天'
+            }, {
+                value: '周',
+                label: '周'
+            }, {
+                value: '月',
+                label: '月'
+            }, {
+                value: '季度',
+                label: '季度'
+            }],
+            value: ''
         }
     },
     mounted: function () {
@@ -60,18 +74,18 @@ var comm = Vue.extend({
         query: function () {
             var startDate, endDate;
             if (this.currentPeroid === 'day') {
-                endDate = moment().format('YYYY-MM-DD hh:mm:ss', new Date());
-                startDate = moment().subtract(1, 'days').format('YYYY-MM-DD hh:mm:ss');
+                endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+                startDate = moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
             }
             else if (this.currentPeroid === 'week') {
-                endDate = moment().format('YYYY-MM-DD hh:mm:ss', new Date());
-                startDate = moment().subtract(7, 'days').format('YYYY-MM-DD hh:mm:ss');
+                endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+                startDate = moment().subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss');
             } else if (this.currentPeroid === 'month') {
-                endDate = moment().format('YYYY-MM-DD hh:mm:ss', new Date());
-                startDate = moment().subtract(31, 'days').format('YYYY-MM-DD hh:mm:ss');
+                endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+                startDate = moment().subtract(31, 'days').format('YYYY-MM-DD HH:mm:ss');
             } else {
-                endDate = moment().format('YYYY-MM-DD hh:mm:ss', new Date());
-                startDate = moment().subtract(90, 'days').format('YYYY-MM-DD hh:mm:ss');
+                endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+                startDate = moment().subtract(90, 'days').format('YYYY-MM-DD HH:mm:ss');
 
             }
             this.$parent.$emit('query-history', {
@@ -82,6 +96,17 @@ var comm = Vue.extend({
         queryByDefaultDate: function () {
             this.currentPeroid = 'day';
             this.query();
+        },
+        changeValue:function(value){
+            if(value === '天'){
+                this.currentPeroid='day'
+            }else if(value === '周'){
+                this.currentPeroid='week'
+            }else if(value === '月'){
+                this.currentPeroid='month'
+            }else if(value === '季度'){
+                this.currentPeroid='quater'
+            }
         }
     }
 });

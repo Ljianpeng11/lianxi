@@ -82,7 +82,6 @@ var comm = Vue.extend({
                         graView.hitTest(event).then(function(response){
                             var graphic = response.results[0].graphic;
                             var attributes = graphic.attributes;
-                            debugger;
                             // mapHelper.setCenter(graView, evt.mapPoint.x, evt.mapPoint.y);
                             self.$refs.rightPanel.open(attributes.item, attributes.facilityTypeName);
                         });
@@ -114,29 +113,28 @@ var comm = Vue.extend({
                     eventHelper.emit('loading-end');
                 } else {
                     facilityController.getFacilityByType(legend.id, function (subFacilities) {
-                        if (legend.facilityTypeName == 'WD') {
-                            subFacilities.forEach(function (subFacility) {
-                                subFacility.icon = './css/images/huawei-yj.png'
-                            })
-                        } else if (legend.facilityTypeName == 'WP') {
-                            subFacilities.forEach(function (subFacility) {
-                                subFacility.icon = './css/images/huawei-yld.png'
-                            })
-                        }
+                        // if (legend.facilityTypeName == 'WD') {
+                        //     subFacilities.forEach(function (subFacility) {
+                        //         subFacility.icon = './css/images/huawei-yj.png'
+                        //     })
+                        // } else if (legend.facilityTypeName == 'WP') {
+                        //     subFacilities.forEach(function (subFacility) {
+                        //         subFacility.icon = './css/images/huawei-yld.png'
+                        //     })
+                        // }
                         var graphics = [];
                         subFacilities.forEach(function (item) {
-                            var icon = legend.icon;
-                            if (!!item.icon) {
-                                icon = item.icon;
-                            }
+                            var icon = !!legend.icon ? legend.icon : legend.facilityTypeName;
+                            var newIcon = './img/toolbar/huawei-' + icon + '.png';
+                            item.fid = 'f' + legend.id;
                             var imgObj = {
-                                url: icon,
+                                url: newIcon,
                                 width: "30px",
                                 height: "36px"
                             };
                             var textObj = {
                                 color:'red',
-                                text:legend.label,
+                                text:item.name,
                                 // xoffset:3,
                                 yoffset:"30px",
                                 font:{
@@ -147,10 +145,13 @@ var comm = Vue.extend({
                             var attributes = [
                                 {
                                     key:'item',
-                                    value:legend
+                                    value:item
                                 },{
                                     key:'facilityTypeName',
                                     value:legend.facilityTypeName
+                                },{
+                                    key:'id',
+                                    value:item.fid
                                 }
                             ];
                             attributes.forEach(function(item){
@@ -186,7 +187,7 @@ var comm = Vue.extend({
     },
     components: {
         'layer-list':layerList,
-        'info-window': infoWindow,
+        // 'info-window': infoWindow,
         'right-panel':rightPanel
     }
 });

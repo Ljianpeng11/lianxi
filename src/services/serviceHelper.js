@@ -10,7 +10,7 @@ define(['config'], function (config) {
         queryEmployee: basicUrl + '/employee',
         refreshToken: basicUrl + 'login/updateToken',
         queryOrder: basicUrl + '/orders/query',
-        facilityList: basicUrl + '/facility/getAllFacilitysType',
+        getAllFacilityType: basicUrl + '/facility/getAllFacilitysType',
         getCarList:basicUrl+'/truck/getTruckList',
         getFacilityByType:basicUrl+'/facility/getOneTypeFacilitys',
         getFacilityDetail:basicUrl+'/facility/getOneFacilityInfo',
