@@ -40,6 +40,10 @@ var comm = Vue.extend({
             isRealTimeMode: true,
             realTimeName: '实时监测',
             historyName: '历史记录',
+            reportType: '',
+            reportSolution: '',
+            reportAddress: '',
+            reportDescription: '',
             lastUpdateTime: '',
             alarmStatus: 0,
             alertMessage: '',
@@ -52,13 +56,18 @@ var comm = Vue.extend({
             waterGrade: 1,
             waterGradeTitle: '',
             tableData: [],
-            devices:[],
-            initData:[],
-            showBack:false,
-            deviceItem:{}
+            devices: [],
+            initData: [],
+            showBack: false,
+            deviceItem: {},
+            reportImgs: []
         }
     },
     mounted: function () {
+        eventHelper.on('updateData', function (data) {
+            this.tableData.splice(0, this.tableData.length);
+            this.tableData.push(...data);
+        }.bind(this))
         eventHelper.on('monitor-status', function (status) {
             this.alarmStatus = status;
         }.bind(this));
@@ -83,9 +92,9 @@ var comm = Vue.extend({
             var startDate = moment().subtract(1, 'hours').format('YYYY-MM-DD HH:mm:ss');
             controller.getHistoricalDataByMonitor(itemID, startDate, endDate, function (result) {
                 this.tableData.splice(0);
-                if(result.length>10){
+                if (result.length > 10) {
                     this.tableData.push(...result);
-                }else{
+                } else {
                     this.tableData.push(...result.slice(result.length - 10, result.length));
                 }
                 this.tableData.reverse();
@@ -137,37 +146,66 @@ var comm = Vue.extend({
                 } else if (facilityTypeName == 'WD') {
                     this.facilityType = 'yj';
                     this.facilityPic = '../src/img/huawei-demo.jpg';
+                } else if (facilityTypeName == 'RF') {
+                    this.facilityPic = '../src/img/ylj.png';
+                    this.facilityType = facilityTypeName;
+                } else if (facilityTypeName == 'DS') {
+                    this.facilityPic = '../src/img/ylj.png';
+                    this.facilityType = facilityTypeName;
+
+                } else if (facilityTypeName == 'CP') {
+                    this.facilityType = facilityTypeName;
+                    facilityController.getFacilityDetail(facilityID, function (data) {
+                        this.reportDescription = data.TSDZ.split(':')[1];
+                        this.reportAddress = data.TSDZ.split(':')[0];
+                        this.reportType = data.facilityName;
+                        this.reportSolution = data.TSLX;
+                    }.bind(this));
+                    facilityController.getDeviceDetailByFacility(facilityID, function (result) {
+                        console.log(result);
+                        if (!!result.pics && result.pics.length > 0) {
+                            this.reportImgs.splice(0, this.reportImgs.length);
+                            result.pics.forEach(function (picture) {
+                                this.reportImgs.push(serviceHelper.getPicUrl(picture.id));
+                            }.bind(this))
+                        }
+                    }.bind(this));
+                    eventHelper.emit('closeLoading');
+                    return;
                 }
-                this.facilityName = facility.label;
-                debugger;
+                else {
+                    facilityTypeName = 'RV';
+                    this.facilityPic = '../src/img/combImg.png';
+                    this.facilityType = facilityTypeName;
+                }
+                this.facilityName = facility.name;
                 facilityController.getDeviceDetailByFacility(facilityID, function (result) {
-                    debugger;
                     console.log(result);
                     if (!!result.pics && result.pics.length > 0) {
-                        this.facilityPic = serviceHelper.getPicUrl(result.pics[0].url);
+                        this.facilityPic = serviceHelper.getPicUrl(result.pics[0].id);
                     }
                     if (result.devices.length > 0) {
                         var monitorIDs = [];
                         var monitors = [];
                         result.devices.forEach(function (device) {
                             var i = 1;
-                            var s,len;
-                            if(device.items.indexOf('信号强度')){
+                            var s, len;
+                            if (device.items.indexOf('信号强度')) {
                                 len = device.items.length - 1;
-                            }else{
+                            } else {
                                 len = device.items.length;
                             }
-                            if(len%2 === 1){
-                                if(len == 1){
+                            if (len % 2 === 1) {
+                                if (len == 1) {
                                     s = 12;
-                                }else{
-                                    s = 48/(len + 1);
+                                } else {
+                                    s = 48 / (len + 1);
                                 }
-                            }else if(len%2 === 0){
-                                if(len === 2){
+                            } else if (len % 2 === 0) {
+                                if (len === 2) {
                                     s = 12;
-                                }else{
-                                    s = 48/len;
+                                } else {
+                                    s = 48 / len;
                                 }
                             }
                             device.monitorSpan = s;
@@ -216,6 +254,12 @@ var comm = Vue.extend({
                                 if (!!monitor.visiable) {
                                     monitor.status = 0;
                                 }
+                                if (!monitor.status) {
+                                    monitor.status = 0;
+                                }
+                                if (monitor.itemTypeName == 'RF_pluviometer_rainfall') {
+                                    monitor.status = -1;
+                                }
                             });
                         }.bind(this));
                         this.initData = result.devices.slice(0);
@@ -230,17 +274,20 @@ var comm = Vue.extend({
                         facility: facility,
                         devices: result.devices
                     };
-                    this.$refs.monitorPlugin.$emit('init-monitor',this.deviceItem);
+                    this.$refs.monitorPlugin.$emit('init-monitor', this.deviceItem);
                     this.$refs.statisticPlugin.$emit('init-statistic', {
                         facility: facility,
                         devices: result.devices
                     });
                     var monitorItem = getMonitorItem('waterLevel', result.devices);
-                    this.queryHistoricalData(monitorItem.itemID);
-                    this.historicalCounter = setInterval(function () {
+                    if (!facilityTypeName == 'RF') {
                         this.queryHistoricalData(monitorItem.itemID);
-                    }.bind(this), 1000);
+                        this.historicalCounter = setInterval(function () {
+                            this.queryHistoricalData(monitorItem.itemID);
+                        }.bind(this), 1000);
+                    }
                     this.lastUpdateTime = result.currentDate;
+                    eventHelper.emit('closeLoading');
                 }.bind(this));
 
                 facilityController.getAlarmInfoByFacility(facilityID, function (result) {
@@ -262,6 +309,13 @@ var comm = Vue.extend({
 
         },
         switchMode: function (key, keyPath) {
+            if (!this.isRealTimeMode) {
+                this.$message({
+                    message: '暂无历史数据！',
+                    type: 'warning'
+                });
+                return;
+            }
             this.isRealTimeMode = key === '1';
             if (!this.isRealTimeMode) {
                 eventHelper.emit('isLoading');
@@ -278,16 +332,17 @@ var comm = Vue.extend({
                 //query by default date
                 this.$refs.dateController.queryByDefaultDate();
             }
+            eventHelper.emit('closeLoading')
         },
-        showMonitorInfo:function(item){
+        showMonitorInfo: function (item) {
             this.showBack = true;
             this.devices.splice(0);
             this.devices.push(item);
             this.deviceItem.devices.splice(0);
             this.deviceItem.devices.push(item);
-            this.$refs.monitorPlugin.$emit('init-monitor',this.deviceItem);
+            this.$refs.monitorPlugin.$emit('init-monitor', this.deviceItem);
         },
-        showInit:function(){
+        showInit: function () {
             this.showBack = false;
             this.devices.splice(0);
             this.devices = this.initData.slice(0);

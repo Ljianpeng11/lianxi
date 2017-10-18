@@ -1,4 +1,7 @@
 /*rightPanel模板内容*/
+p{
+    margin:0;
+}
 .right-panel {
     height: inherit;
     background: #f4f4f4;

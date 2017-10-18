@@ -1,4 +1,21 @@
 /*页面初始化代码*/
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+body {
+    scrollbar-base-color: #105ba3;
+    scrollbar-track-color: #F5F5F5;
+    scrollbar-shadow-color: #1a5f17;
+
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, p, pre, code, form, fieldset, legend, input, button, textarea, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
 
 li {
     list-style: none;
@@ -72,7 +89,7 @@ li {
 }
 
 ::-webkit-scrollbar {
-    width: 2px;
+    width: 8px;
     height: 8px;
     background-color: #105ba3;
 }
@@ -90,7 +107,47 @@ li {
 /*定义滑块 内阴影+圆角*/
 ::-webkit-scrollbar-thumb {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    border-radius: 6px;
     background-color: #105ba3;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #f7f7f7 !important;
+}
+
+.pipeDetailDialog {
+    top: 7em !important;
+    margin-left: 100px;
+    margin-bottom: 0;
+    height: calc(100% - 8em);
+    width: calc(100% - 206px);
+}
+
+.pipeDetailDialog .el-dialog_footer {
+    height: 4.5em;
+}
+
+.pipeDetailDialog .el-dialog__header {
+    height: 2.5em;
+}
+
+.pipeDetailDialog .el-dialog__body {
+    height: calc(100% - 7em);
+    overflow: hidden;
+    padding: 0 5px !important;
+}
+
+.pipeDetailDialog .modeSpan {
+    margin: 0 10px;
+}
+
+#loadingMask {
+    opacity: 0.6;
+}
+
+#navigatorView {
+    margin: 0 0;
+    /*padding: 15px 15px;*/
 }
 .weatherReportPanel{
     position: absolute;

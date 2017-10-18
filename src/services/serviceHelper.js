@@ -55,6 +55,9 @@ define(['config'], function (config) {
                 return encodeURI(url + parameterURL.substring(0, parameterURL.length - 1));
             }
             return url;
+        },
+        getPicUrl: function (picId){
+            return basicUrl + '/uploadFile/downloadFileById?id='+picId+'&token='+userToken;
         }
     }
 });
