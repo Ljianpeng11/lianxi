@@ -29,6 +29,104 @@
     height: 100%;
 }
 
+.right-panel.small {
+    width: 385px;
+    height: 100%;
+}
+.right-panel.small .panel-header {
+    height: 2em;
+    line-height: 2em;
+    background: #5B9BD5;
+    color: #fff;
+    font-size: 1.5em;
+}
+.right-panel.small .video-box, .panel-content-box {
+    height: calc(100% - 3em);
+    width: 100%;
+    overflow-y: auto;
+    font-size: 1.2em;
+}
+.panel-box-title {
+    width: 95%;
+    padding: 0.5em;
+    text-align: center;
+    margin: 0 auto;
+    border-bottom: 1px solid #ccc;
+}
+.panel-box-title .el-radio-group {
+    display: block;
+}
+.panel-box-title .el-radio-button {
+    width: 50%;
+}
+.panel-box-title .el-radio-button__inner {
+    width: 100%;
+}
+.line-pipe-content {
+    font-size: 1.3em;
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+.trace-content-box {
+    padding: 10px 0 5px 0;
+}
+.panel-content-box .queryButton > button {
+    width: 50%;
+}
+.panel-content-box .queryButton {
+    margin-top: 1em;
+    text-align: center;
+}
+.line-pipe-desc {
+    width: 200px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.line-pipe-content li {
+    margin-bottom: 8px;
+}
+.num-box {
+    width: 100%;
+    margin-top: 1.5em;
+    font-size: 0.8em;
+}
+.num-box > div {
+    margin-right: 0.8em;
+}
+.color-dgjxg {
+    background-color: #fff;
+}
+.color-box-sm {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+    vertical-align: middle;
+}
+.color-box {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+    vertical-align: middle;
+}
+.icon-big-small {
+    background: url("../../img/icon/bigsmall.png") center no-repeat;
+    background-size: 100% 100%;
+}
+.icon-rainmix {
+    background: url("../../img/icon/mix.png") center no-repeat;
+    background-size: 100% 100%;
+}
+.icon-nipo {
+    background: url("../../img/icon/nipo.png") center no-repeat;
+    background-size: 70% 70%;
+}
+.color-np {
+    background-color: #78C688;
+}
 .right-panel-enter-active {
     transition: all .2s ease;
 }
@@ -1025,4 +1123,37 @@
     background: #20a0ff;
     color: white;
     line-height: 2em;
+}
+.charts-detail {
+    width: calc(100% - 300px);
+    height: 18em;
+    position: absolute;
+    bottom: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    right: 300px;
+    background: #F4F4F4;
+    border: 1px solid #ccc;
+}
+.charts-detail {
+    width: calc(100% - 300px);
+    height: 18em;
+    position: absolute;
+    bottom: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    right: 300px;
+    background: #F4F4F4;
+    border: 1px solid #ccc;
+}
+#restrospectLineChart {
+    width: 100%;
+    height: 100%;
+    margin-left: -40px;
+}
+
+#restrospectChart {
+    width: 100%;
+    height: 110%;
+    margin-top: -2%;
 }

@@ -11,7 +11,7 @@ var infoWindow = require('./plugin/infoWindow');
 var rightPanel = require('modules/rightPanel');
 var mapHelper = require('utils/mapHelper');
 var tabModel = require('controllers/model/appTabModel');
-
+var retrospectDetail = require('modules/retrospectDetail');
 
 var initPlugin = function (facilityArr, self) {
     global.init();
@@ -55,10 +55,9 @@ var comm = Vue.extend({
             var layerURL = 'http://112.74.51.12:6080/arcgis/rest/services/hwShow201705/MapServer';
             // var centerX = 121.45075120184849;
             // var centerY = 31.25010784918339;
-            // 高青中心
-            var centerX = 117.81125143714908;
-            var centerY = 37.15881538581348;
-            var zoom = 14;
+            var centerX = 117.81853454943274;
+            var centerY = 37.16799099829924;
+            var zoom = 10;
             var currentMap = {};
             var currentView = {};
             var self = this;
@@ -70,6 +69,7 @@ var comm = Vue.extend({
                 currentMap = map;
                 currentView = view;
                 apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
+                apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer', 'lineLayer');
                 mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
                     var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
                     mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
@@ -81,6 +81,10 @@ var comm = Vue.extend({
                     var graView = evt.view;
                     var graLayerView = evt.layerView;
                     var layer = evt.layerView.layer;
+                    var getMap={};
+                    getMap.map = map;
+                    getMap.view = view;
+                    eventHelper.emit('get-map', getMap);
                     graView.on('click',function(event){
                         graView.hitTest(event).then(function(response){
                             var graphic = response.results[0].graphic;
@@ -201,7 +205,6 @@ var comm = Vue.extend({
         eventHelper.on('subFacility-clicked', function (point) {
             console.log(point);
             map.centerAt([parseFloat(point.center[0]) + 0.005, point.center[1]]);
-            debugger;
             this.$refs.rightPanel.open(point.item, point.facilityTypeName);
         }.bind(this));
         eventHelper.on('carDetail-clicked', function (point) {
@@ -212,7 +215,8 @@ var comm = Vue.extend({
     components: {
         'layer-list':layerList,
         'info-window': infoWindow,
-        'right-panel':rightPanel
+        'right-panel':rightPanel,
+        'retrospect-detail':retrospectDetail
     }
 });
 module.exports = comm;

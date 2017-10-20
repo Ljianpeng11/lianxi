@@ -1,6 +1,18 @@
 define(function () {
+    //用于获取token，url头部等
+    var serviceHelper = require('services/serviceHelper');
     var instance = {};
-
+    var graphicsLayer;
+    var slopeGraphicsLayer;
+    var traceAnalysisExtent;
+    var arrowIntervalHandle;
+    var arrowLayer;
+    var arrowLayerHideConfirm = false;
+    var flashIntervalHandle;
+    var currentVue;
+    var currentMapView;
+    var hideConfirm = false;
+    var locationGraphic;
     instance.initTDLayer = function (container, x, y, zoom, success, click) {
         var tileInfo = new instance.TileInfo({
 
@@ -463,6 +475,292 @@ define(function () {
     instance.removeLayers = function (map, layers) {
         map.removeMany(layers);
     };
+    //10.17增加追溯分析
+    //绘制南宁追溯分析查询的管网信息
+    instance.drawNNPolyline = function (result, currentMapView, currentMap) {
+        var lineColor;
+        var that = this;
+        if (!graphicsLayer) {
+            graphicsLayer = getMapGraphicsLayer(currentMap, "nnTraceAbilityAnalysis");
+        }
+        if (!arrowLayer) {
+            arrowLayer = getMapGraphicsLayer(currentMap, "arrowSymbolLayer");
+        }
+
+        var pipeLineResult = result.mapAnalyzeResult.pipeLineResult;
+        var pipeLineArr = [];
+        var pipeStr = '';
+        var cancalStr = '';
+        for (var i = 0; i < pipeLineResult.length; i++) {
+            var pipeLine = pipeLineResult[i];
+
+
+            pipeLineArr.push(...pipeLine);
+            // var line = Polyline({
+            //     "paths": [[[pipeLine.startX, pipeLine.startY], [pipeLine.endX, pipeLine.endY]]],
+            //     "spatialReference": currentMap.spatialReference
+            // });
+            // addArrowToLayer(line, getMapGraphicsLayer("arrowSymbolLayer"), 15, 60);
+        }
+
+        for (var i = 0; i < pipeLineArr.length; i++) {
+            var pipeLineObj = pipeLineArr[i];
+            if (pipeLineObj.ds2 > 0) {
+                cancalStr += pipeLineObj.oid + ',';
+            } else {
+                pipeStr += pipeLineObj.oid + ',';
+            }
+            if (pipeLineObj.sort == "雨水")
+                lineColor = [0, 255, 197];
+            else if (pipeLineObj.sort == "污水")
+                lineColor = [230, 0, 169];
+            else
+                lineColor = [230, 152, 0];
+            var paths = [[[pipeLineObj.startX, pipeLineObj.startY], [pipeLineObj.endX, pipeLineObj.endY]]];
+            var styleObj = {color: lineColor, width: 4}
+            that.createPolyline(graphicsLayer, paths, styleObj);
+            var line = new instance.Polyline({
+                "paths": [[[pipeLineObj.startX, pipeLineObj.startY], [pipeLineObj.endX, pipeLineObj.endY]]],
+                "spatialReference": currentMapView.spatialReference
+            });
+            that.drawArrowPolyline(line, getMapGraphicsLayer(currentMap, "arrowSymbolLayer"), 15, 50, "#2F4F4F");
+        }
+        if (pipeStr.length > 0) {
+            console.warn('pipe(' + pipeStr.substring(0, pipeStr.length - 1) + ')');
+        }
+        if (cancalStr.length > 0) {
+            console.warn('canal(' + cancalStr.substring(0, cancalStr.length - 1) + ')');
+        }
+
+        var slopeGraphicsLayer = getMapGraphicsLayer(currentMap, "nnSlopeGraphicsLayer");
+        var bigSmallsGraphicsLayer = getMapGraphicsLayer(currentMap, "nnBigSmallsGraphicsLayer");
+        var ywsGraphicsLayer = getMapGraphicsLayer(currentMap, "nnywsGraphicsLayer");
+        var arrowSymbolLayer = getMapGraphicsLayer(currentMap, "arrowSymbolLayer");
+        result.slopeGraphicsLayer = slopeGraphicsLayer;
+        result.bigSmallsGraphicsLayer = bigSmallsGraphicsLayer;
+        result.ywsGraphicsLayer = ywsGraphicsLayer;
+        result.arrowSymbolLayer = arrowSymbolLayer;
+        eventHelper.emit('get-trace-data', result);
+    };
+    instance.drawArrowPolyline = function (polyline, layer, length, angleValue, graphicColor) {
+        //线的坐标串
+        var linePoint = polyline.paths;
+        var arrowCount = linePoint.length;
+        // var sfs = new instance.SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+        //     new instance.SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new instance.Color(graphicColor), 2), new instance.Color(graphicColor)
+        // );
+        var symbol = {
+            type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+            color: "#000",
+            style: "solid",
+            outline: {  // autocasts as new SimpleLineSymbol()
+                color: "red",
+                width: 60
+            }
+        };
+        var sfs = new instance.SimpleFillSymbol(symbol);
+        for (var i = 0; i < arrowCount; i++) { //在拐点处绘制箭头
+            var line = linePoint[i];
+            var centerX = (line[0][0] + line[line.length - 1][0]) / 2;
+            var centerY = (line[0][1] + line[line.length - 1][1]) / 2;
+            var centerPoint = new instance.Point([centerX, centerY], currentMapView.spatialReference);
+            var startPoint = new instance.Point([line[0][0], line[0][1]], currentMapView.spatialReference);
+            var endPoint = new instance.Point([line[line.length - 1][0], line[line.length - 1][1]], currentMapView.spatialReference);
+
+            var pixelCenter = currentMapView.toScreen(centerPoint);
+            var pixelStart = currentMapView.toScreen(startPoint);
+            var pixelEnd = currentMapView.toScreen(endPoint);
+            var twoPointDistance = calcTwoPointDistance(pixelStart.x, pixelStart.y, pixelEnd.x, pixelEnd.y);
+            if (twoPointDistance <= 20)
+                continue;
+            var angle = angleValue;//箭头和主线的夹角
+            var r = length; // r/Math.sin(angle)代表箭头长度
+            var delta = 0; //主线斜率，垂直时无斜率
+            var offsetPoint = [];//箭头尾部偏移量
+            var param = 0; //代码简洁考虑
+            var pixelTemX, pixelTemY;//临时点坐标
+            var pixelX, pixelY, pixelX1, pixelY1;//箭头两个点
+
+            if (pixelEnd.x - pixelStart.x == 0) {
+                //斜率不存在是时
+                pixelTemX = pixelEnd.x;
+                offsetPoint[0] = pixelCenter.x - 3;
+                if (pixelEnd.y > pixelStart.y) {
+                    pixelTemY = pixelCenter.y - r;
+                    offsetPoint[1] = pixelCenter.y - (r - 2);
+                } else {
+                    pixelTemY = pixelCenter.y + r;
+                    offsetPoint[1] = pixelCenter.y + (r + 2);
+                }
+                //已知直角三角形两个点坐标及其中一个角，求另外一个点坐标算法
+                pixelX = pixelTemX - r * Math.tan(angle);
+                pixelX1 = pixelTemX + r * Math.tan(angle);
+                pixelY = pixelY1 = pixelTemY;
+            } else {
+                //斜率存在时
+                delta = (pixelEnd.y - pixelStart.y) / (pixelEnd.x - pixelStart.x);
+                param = Math.sqrt(delta * delta + 1);
+
+                if ((pixelEnd.x - pixelStart.x) < 0) {
+                    //第二、三象限
+                    pixelTemX = pixelCenter.x + r / param;
+                    pixelTemY = pixelCenter.y + delta * r / param;
+                    if ((pixelEnd.y - pixelStart.y) < 0) {
+                        //第三象限
+                        offsetPoint[0] = pixelCenter.x + (r - 2) / param;
+                        offsetPoint[1] = pixelCenter.y + delta * (r - 2) / param;
+                    } else {
+                        //第二象限
+                        offsetPoint[0] = pixelCenter.x + (r - 2) / param;
+                        offsetPoint[1] = pixelCenter.y + delta * (r - 2) / param;
+                    }
+                } else {
+                    //第一、四象限
+                    pixelTemX = pixelCenter.x - r / param;
+                    pixelTemY = pixelCenter.y - delta * r / param;
+                    if ((pixelEnd.y - pixelStart.y) < 0) {
+                        //第四象限
+                        offsetPoint[0] = pixelCenter.x - (r - 2) / param;
+                        offsetPoint[1] = pixelCenter.y - delta * (r - 2) / param;
+                    } else {
+                        //第一象限
+                        offsetPoint[0] = pixelCenter.x - (r - 2) / param;
+                        offsetPoint[1] = pixelCenter.y - delta * (r - 2) / param;
+                    }
+                }
+                //已知直角三角形两个点坐标及其中一个角，求另外一个点坐标算法
+                pixelX = pixelTemX + Math.tan(angle) * r * delta / param;
+                pixelY = pixelTemY - Math.tan(angle) * r / param;
+
+                pixelX1 = pixelTemX - Math.tan(angle) * r * delta / param;
+                pixelY1 = pixelTemY + Math.tan(angle) * r / param;
+            }
+            var pointArrow = currentMapView.toMap(new instance.ScreenPoint(pixelX, pixelY));
+            var pointArrow1 = currentMapView.toMap(new instance.ScreenPoint(pixelX1, pixelY1));
+            var pointArrow2 = currentMapView.toMap(new instance.ScreenPoint(offsetPoint[0], offsetPoint[1]));
+            instance.createPolyline(layer,[[pointArrow.x, pointArrow.y], [centerPoint.x, centerPoint.y], [pointArrow1.x, pointArrow1.y], [pointArrow2.x, pointArrow2.y]],
+                {
+                color: [51, 51, 204, 0.9],
+                width: 4
+            })
+        }
+    };
+    instance.getGraphicsLayer = function (LayerId, index, map) {
+        var currentMap;
+        if (!!map) {
+            currentMap = map.map;
+        }
+        var graphicsLayer = null;
+        if (currentMap.findLayerById(LayerId)) {
+            graphicsLayer = currentMap.findLayerById(LayerId);
+        } else {
+            graphicsLayer = new instance.GraphicsLayer({id: LayerId});
+            if (index)
+                currentMap.addMany([graphicsLayer], index);
+            else
+                currentMap.addMany([graphicsLayer]);
+        }
+        return graphicsLayer;
+    };
+    instance.nnTraceAnalysisByRecursive = function (event, traceAnalysisType, vue, cb) {
+        eventHelper.emit('isLoading');
+        var result;
+        var self = this;
+        currentVue = vue;
+        var currentMap = vue.map.map;
+        currentMapView = vue.leftMap;
+        currentVue.showFacilityTraceLoading = true;
+        currentVue.facilityTraceLength = 0;
+        var pointBufferDistance = screenLengthToMapLength(currentMapView, 5);
+        var formData = {};
+        formData.token = serviceHelper.getToken();
+        formData.r = Math.random();
+        formData.x = event.mapPoint.x;
+        formData.y = event.mapPoint.y;
+        formData.pointBufferDistance = pointBufferDistance;
+        if (traceAnalysisType === '上下') {
+            formData.connectUp = "1";
+            formData.connectDown = "1";
+        } else if (traceAnalysisType === '向下') {
+            formData.connectUp = "0";
+            formData.connectDown = "1";
+        } else {
+            formData.connectUp = "1";
+            formData.connectDown = "0";
+        }
+        //mapHelper.setCenter(formData.x,formData.y,currentMap,18);
+        this.clearAnalysisInfo(currentMap);
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: serviceHelper.getBasicPath() + "/pipeAnalyze/flowConnectAnalysis",
+            data: formData,
+            success: function (ajaxResult) {
+                if (ajaxResult) {
+                    if (ajaxResult.success == true) {
+                        result = ajaxResult.data;
+                        if (!result.success) {
+                            if (!!graphicsLayer) {
+                                graphicsLayer.removeAll();
+                            }
+                            if (!!arrowLayer) {
+                                arrowLayer.removeAll();
+                            }
+                            vue.$message.error(result.msg);
+                            eventHelper.emit('closeLoading');
+                            cb(false);
+                            return;
+                        }
+                        self.drawNNPolyline(result, currentMapView, currentMap);
+                        cb(true);
+                    } else {
+                        //后台操作失败的代码
+                        vue.$message.error(ajaxResult.msg);
+                    }
+                    currentVue.showFacilityTraceLoading = false;
+                }
+                eventHelper.emit('closeLoading');
+            }.bind(this),
+            error: function () {
+                currentVue.showFacilityTraceLoading = false;
+                eventHelper.emit('closeLoading');
+            }.bind(this)
+        });
+
+    };
+    instance.clearAnalysisInfo = function (currentMap) {
+        if (!flashIntervalHandle)
+            clearTimeout(flashIntervalHandle);
+        if (!graphicsLayer)
+            graphicsLayer = getMapGraphicsLayer(currentMap, "traceAbilityAnalysis");
+        graphicsLayer.removeAll();
+    };
+    var screenLengthToMapLength = function (map, screenPixel) {
+        var screenWidth = map.width;
+
+        var mapWidth = map.extent.width;
+
+        return (mapWidth / screenWidth) * screenPixel;
+    };
+    var calcTwoPointDistance = function (lat1, lng1, lat2, lng2) {
+        var xdiff = lat2 - lat1;            // 计算两个点的横坐标之差
+        var ydiff = lng2 - lng1;            // 计算两个点的纵坐标之差
+        return Math.pow((xdiff * xdiff + ydiff * ydiff), 0.5);
+    };
+    //获取图层根据Id
+    var getMapGraphicsLayer = function (currentMap, LayerId, index,) {
+        var graphicsLayer = null;
+        if (currentMap.findLayerById(LayerId)) {
+            graphicsLayer = currentMap.findLayerById(LayerId);
+        } else {
+            graphicsLayer = new instance.GraphicsLayer({id: LayerId});
+            if (index)
+                currentMap.addMany([graphicsLayer], index);
+            else
+                currentMap.addMany([graphicsLayer]);
+        }
+        return graphicsLayer;
+    };
     return {
         getInstance: function (cb) {
             if (!!instance.Map) {
@@ -494,6 +792,7 @@ define(function () {
                 'esri/layers/support/TileInfo',
                 "esri/geometry/geometryEngine",
                 "esri/layers/MapImageLayer",
+                "esri/geometry/ScreenPoint",
             ], function (arcgisMap,
                          arcgisPoint,
                          arcgisExtent,
@@ -517,7 +816,8 @@ define(function () {
                          config,
                          TileInfo,
                          geometryEngine,
-                         MapImageLayer) {
+                         MapImageLayer,
+                         ScreenPoint) {
                 instance.Map = arcgisMap;
                 instance.Point = arcgisPoint;
                 instance.Extent = arcgisExtent;
@@ -541,6 +841,7 @@ define(function () {
                 instance.erisConfig = config;
                 instance.TileInfo = TileInfo;
                 instance.MapImageLayer = MapImageLayer;
+                instance.ScreenPoint = ScreenPoint;
                 instance.geometryEngine = geometryEngine;
                 instance.drawConfig = {
                     drawingSymbol: new arcgisSimpleFillSymbol({

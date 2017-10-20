@@ -34,6 +34,18 @@ define(function () {
                 console.log('地图加载完毕！');
             }, clickCb);
         },
+        nnTraceAnalysisByRecursive:function (event, traceAnalysisType, vue, cb) {
+            this.apiInstance.nnTraceAnalysisByRecursive(event, traceAnalysisType, vue, cb);
+        },
+        getGraphicsLayer:function (LayerId, index, map) {
+            return this.apiInstance.getGraphicsLayer(LayerId, index, map);
+        },
+        drawArrowPolyline : function (polyline, layer, length, angleValue, graphicColor){
+            this.apiInstance.drawArrowPolyline(polyline, layer, length, angleValue, graphicColor);
+        },
+        clearAnalysisInfo : function (currentMap){
+            this.apiInstance.clearAnalysisInfo(currentMap);
+        },
         getLayer: function (currentMap, id) {
             var layer = this.apiInstance.getLayer(currentMap, id);
             return layer;
@@ -76,6 +88,9 @@ define(function () {
         },
         createPictureMarkSymbol: function (layer, x, y, imgObj,attributes) {
             return this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj,attributes);
+        },
+        addPictureMarkSymbol: function (layer, x, y, imgObj,attributes) {
+            return this.apiInstance.addPictureMarkSymbol(layer, x, y, imgObj,attributes);
         },
         createPolygon: function (layer, coords, styleObj) {
             return this.apiInstance.createPolygon(layer, coords, styleObj);
