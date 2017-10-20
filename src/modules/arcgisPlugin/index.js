@@ -111,11 +111,8 @@ var comm = Vue.extend({
                 var textObj = {
                     color:'red',
                     text:item.name,
-                    haloColor: "black",
-                    haloSize: "20px",
                     yoffset:-18,
                     verticalAlignment:'top',
-                    declaredClass:'esriTextSymbol',
                     font:{
                         size:12
                     }
