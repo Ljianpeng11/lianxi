@@ -743,7 +743,6 @@ var comm = Vue.extend({
                     mapHelper.createPictureMarkSymbol(self.caseMarkPointLayer, issue.x, issue.y, imgObj,issue);
                 });
             });
-            cb();
             // this.caseMap = mapHelper.getArcGISTiledMap('caseMap', x,y,18,function () {
             //
             //     // mapHelper.addVideoPoint(this.caseMap);
