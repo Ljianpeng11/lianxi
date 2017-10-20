@@ -85,7 +85,6 @@ var comm = Vue.extend({
                     eventHelper.emit('get-map', getMap);
                     graView.on('click',function(event){
                         graView.hitTest(event).then(function(response){
-                            debugger;
                             var graphic = response.results[0].graphic;
                             var attributes = graphic.attributes;
                             // mapHelper.setCenter(graView, evt.mapPoint.x, evt.mapPoint.y);

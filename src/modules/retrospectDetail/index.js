@@ -811,26 +811,16 @@ var comm = Vue.extend({
                 if (!!selectedPipes[i]) {
                     var pipeLine = this.displayData[i];
                     cachePipeLines.push(pipeLine);
-                    mapHelper.addPictureMarkSymbol( this.selectedPipeLineLayer,pipeLine.startX, pipeLine.startY,{url:'./img/markPoint.png',width:'20px',height:'20px'}, {
+                    mapHelper.createPictureMarkSymbol( this.selectedPipeLineLayer,pipeLine.startX, pipeLine.startY,{url:'./img/markPoint.png',width:'20px',height:'20px'}, {
                         id: pipeLine.startUsid,
                         pipeLine: pipeLine,
                         facilityType: 'pipeLine'
                     } );
-                    mapHelper.addPictureMarkSymbol( this.selectedPipeLineLayer,pipeLine.endX, pipeLine.endY,{url:'./img/markPoint.png',width:'20px',height:'20px'}, {
+                    mapHelper.createPictureMarkSymbol( this.selectedPipeLineLayer,pipeLine.endX, pipeLine.endY,{url:'./img/markPoint.png',width:'20px',height:'20px'}, {
                         id: pipeLine.endUsid,
                         pipeLine: pipeLine,
                         facilityType: 'pipeLine'
-                    } );
-                    // mapHelper.createSymbol(false, pipeLine.startX, pipeLine.startY, 'img/markPoint.png', false, {
-                    //     id: pipeLine.startUsid,
-                    //     pipeLine: pipeLine,
-                    //     facilityType: 'pipeLine'
-                    // }, this.selectedPipeLineLayer);
-                    // mapHelper.createSymbol(false, pipeLine.endX, pipeLine.endY, 'img/markPoint.png', false, {
-                    //     id: pipeLine.endUsid,
-                    //     pipeLine: pipeLine,
-                    //     facilityType: 'pipeLine'
-                    // }, this.selectedPipeLineLayer);
+                    });
                 }
             }
             mapHelper.setCenter(this.leftMap,cachePipeLines[parseInt(cachePipeLines.length / 2)].endX, cachePipeLines[parseInt(cachePipeLines.length / 2)].endY);
@@ -966,7 +956,7 @@ var comm = Vue.extend({
                     if (newValue) {
                         for (var i = 0; i < this.yswArr.length; i++) {
                             var ysw = this.yswArr[i];
-                            mapHelper.addPictureMarkSymbol( this.ywsGraphicsLayer,ysw.pipeLine1.endX, ysw.pipeLine1.endY,{url:'./img/icon/bigmix.png',width:'20px',height:'20px'}, {
+                            mapHelper.createPictureMarkSymbol( this.ywsGraphicsLayer,ysw.pipeLine1.endX, ysw.pipeLine1.endY,{url:'./img/icon/bigmix.png',width:'20px',height:'20px'}, {
                                 usID: ysw.pipeLine1.endUsid,
                                 x: ysw.pipeLine1.endX,
                                 y: ysw.pipeLine1.endY,
@@ -1115,7 +1105,7 @@ var comm = Vue.extend({
                     if (newValue) {
                         for (var i = 0; i < this.bigSmallsArr.length; i++) {
                             var bigSmalls = this.bigSmallsArr[i];
-                            var bigSmallGraphics = mapHelper.addPictureMarkSymbol( this.bigSmallsGraphicsLayer,bigSmalls.pipeLine1.endX, bigSmalls.pipeLine1.endY,{url:'./img/icon/bigsmall.png',width:'20px',height:'20px'}, {
+                            var bigSmallGraphics = mapHelper.createPictureMarkSymbol( this.bigSmallsGraphicsLayer,bigSmalls.pipeLine1.endX, bigSmalls.pipeLine1.endY,{url:'./img/icon/bigsmall.png',width:'20px',height:'20px'}, {
                                 usID: bigSmalls.pipeLine1.endUsid,
                                 x: bigSmalls.pipeLine1.endX,
                                 y: bigSmalls.pipeLine1.endY,

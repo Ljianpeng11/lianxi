@@ -89,8 +89,8 @@ define(function () {
         createPictureMarkSymbol: function (layer, x, y, imgObj,attributes) {
             return this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj,attributes);
         },
-        addPictureMarkSymbol: function (layer, x, y, imgObj,attributes) {
-            return this.apiInstance.addPictureMarkSymbol(layer, x, y, imgObj,attributes);
+        createPictureMarkSymbol: function (layer, x, y, imgObj,attributes) {
+            return this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj,attributes);
         },
         createPolygon: function (layer, coords, styleObj) {
             return this.apiInstance.createPolygon(layer, coords, styleObj);
