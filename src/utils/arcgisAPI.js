@@ -74,7 +74,7 @@ define(function () {
         var view = new instance.MapView({
             container: "mapDiv",
             map: map,
-            center: [113.25787804306705,23.082829477877908],
+            center: [113.25787804306705, 23.082829477877908],
             zoom: 18
         });
         tiledLayer.load().then(function () {
@@ -372,7 +372,7 @@ define(function () {
         layer.add(markPoint);
         return markPoint;
     };
-    instance.addPictureMarkSymbol = function (layer, x, y, imgObj,attributes) {
+    instance.addPictureMarkSymbol = function (layer, x, y, imgObj, attributes) {
         var point = new instance.Point({
             longitude: x,
             latitude: y
@@ -389,7 +389,7 @@ define(function () {
         var markPoint = new instance.Graphic({
             geometry: point,
             symbol: markerSymbol,
-            attributes:attributes
+            attributes: attributes
         });
         layer.add(markPoint);
         return markPoint;
@@ -458,14 +458,14 @@ define(function () {
     };
     //10.17增加追溯分析
     //绘制南宁追溯分析查询的管网信息
-    instance.drawNNPolyline = function (result,currentMapView, currentMap) {
+    instance.drawNNPolyline = function (result, currentMapView, currentMap) {
         var lineColor;
         var that = this;
         if (!graphicsLayer) {
-            graphicsLayer = getMapGraphicsLayer(currentMap,"nnTraceAbilityAnalysis");
+            graphicsLayer = getMapGraphicsLayer(currentMap, "nnTraceAbilityAnalysis");
         }
         if (!arrowLayer) {
-            arrowLayer = getMapGraphicsLayer(currentMap,"arrowSymbolLayer");
+            arrowLayer = getMapGraphicsLayer(currentMap, "arrowSymbolLayer");
         }
 
         var pipeLineResult = result.mapAnalyzeResult.pipeLineResult;
@@ -497,14 +497,14 @@ define(function () {
                 lineColor = [230, 0, 169];
             else
                 lineColor = [230, 152, 0];
-            var paths =[[[pipeLineObj.startX, pipeLineObj.startY], [pipeLineObj.endX, pipeLineObj.endY]]];
-            var styleObj ={color:lineColor,width:4}
-            that.createPolyline(graphicsLayer, paths,styleObj );
+            var paths = [[[pipeLineObj.startX, pipeLineObj.startY], [pipeLineObj.endX, pipeLineObj.endY]]];
+            var styleObj = {color: lineColor, width: 4}
+            that.createPolyline(graphicsLayer, paths, styleObj);
             var line = new instance.Polyline({
                 "paths": [[[pipeLineObj.startX, pipeLineObj.startY], [pipeLineObj.endX, pipeLineObj.endY]]],
                 "spatialReference": currentMapView.spatialReference
             });
-            that.drawArrowPolyline(line, getMapGraphicsLayer(currentMap,"arrowSymbolLayer"), 15, 50, "#2F4F4F");
+            that.drawArrowPolyline(line, getMapGraphicsLayer(currentMap, "arrowSymbolLayer"), 15, 50, "#2F4F4F");
         }
         if (pipeStr.length > 0) {
             console.warn('pipe(' + pipeStr.substring(0, pipeStr.length - 1) + ')');
@@ -513,10 +513,10 @@ define(function () {
             console.warn('canal(' + cancalStr.substring(0, cancalStr.length - 1) + ')');
         }
 
-        var slopeGraphicsLayer = getMapGraphicsLayer(currentMap,"nnSlopeGraphicsLayer");
-        var bigSmallsGraphicsLayer = getMapGraphicsLayer(currentMap,"nnBigSmallsGraphicsLayer");
-        var ywsGraphicsLayer = getMapGraphicsLayer(currentMap,"nnywsGraphicsLayer");
-        var arrowSymbolLayer = getMapGraphicsLayer(currentMap,"arrowSymbolLayer");
+        var slopeGraphicsLayer = getMapGraphicsLayer(currentMap, "nnSlopeGraphicsLayer");
+        var bigSmallsGraphicsLayer = getMapGraphicsLayer(currentMap, "nnBigSmallsGraphicsLayer");
+        var ywsGraphicsLayer = getMapGraphicsLayer(currentMap, "nnywsGraphicsLayer");
+        var arrowSymbolLayer = getMapGraphicsLayer(currentMap, "arrowSymbolLayer");
         result.slopeGraphicsLayer = slopeGraphicsLayer;
         result.bigSmallsGraphicsLayer = bigSmallsGraphicsLayer;
         result.ywsGraphicsLayer = ywsGraphicsLayer;
@@ -619,20 +619,14 @@ define(function () {
             var pointArrow = currentMapView.toMap(new instance.ScreenPoint(pixelX, pixelY));
             var pointArrow1 = currentMapView.toMap(new instance.ScreenPoint(pixelX1, pixelY1));
             var pointArrow2 = currentMapView.toMap(new instance.ScreenPoint(offsetPoint[0], offsetPoint[1]));
-
-            var arrowPolygon = new instance.Polyline(currentMapView.spatialReference);
-            arrowPolygon.addPath([pointArrow, centerPoint, pointArrow1, pointArrow2]);
-            var graphic = new instance.Graphic({
-                geometry: arrowPolygon,
-                symbol: sfs,
-            });
-            layer.add(graphic);
-            // var arrowPoint = new Point(centerPoint.x,centerPoint.y);
-            // var graphic = new Graphic(arrowPoint,new TextSymbol(twoPointDistance));
-            // layer.add(graphic);
+            instance.createPolyline(layer,[[pointArrow.x, pointArrow.y], [centerPoint.x, centerPoint.y], [pointArrow1.x, pointArrow1.y], [pointArrow2.x, pointArrow2.y]],
+                {
+                color: [51, 51, 204, 0.9],
+                width: 4
+            })
         }
     };
-    instance.getGraphicsLayer = function (LayerId, index,map) {
+    instance.getGraphicsLayer = function (LayerId, index, map) {
         var currentMap;
         if (!!map) {
             currentMap = map.map;
@@ -698,7 +692,7 @@ define(function () {
                             cb(false);
                             return;
                         }
-                        self.drawNNPolyline(result, currentMapView,currentMap);
+                        self.drawNNPolyline(result, currentMapView, currentMap);
                         cb(true);
                     } else {
                         //后台操作失败的代码
@@ -715,11 +709,11 @@ define(function () {
         });
 
     };
-    instance.clearAnalysisInfo = function (currentMap) {debugger
+    instance.clearAnalysisInfo = function (currentMap) {
         if (!flashIntervalHandle)
             clearTimeout(flashIntervalHandle);
         if (!graphicsLayer)
-            graphicsLayer = getMapGraphicsLayer(currentMap,"traceAbilityAnalysis");
+            graphicsLayer = getMapGraphicsLayer(currentMap, "traceAbilityAnalysis");
         graphicsLayer.removeAll();
     };
     var screenLengthToMapLength = function (map, screenPixel) {
@@ -735,7 +729,7 @@ define(function () {
         return Math.pow((xdiff * xdiff + ydiff * ydiff), 0.5);
     };
     //获取图层根据Id
-    var getMapGraphicsLayer = function (currentMap,LayerId, index,) {
+    var getMapGraphicsLayer = function (currentMap, LayerId, index,) {
         var graphicsLayer = null;
         if (currentMap.findLayerById(LayerId)) {
             graphicsLayer = currentMap.findLayerById(LayerId);
