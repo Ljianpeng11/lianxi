@@ -3,9 +3,6 @@ define(function () {
     var serviceHelper = require('services/serviceHelper');
     var instance = {};
     var graphicsLayer;
-    var slopeGraphicsLayer;
-    var traceAnalysisExtent;
-    var arrowIntervalHandle;
     var arrowLayer;
     var arrowLayerHideConfirm = false;
     var flashIntervalHandle;

@@ -87,6 +87,10 @@ var comm = Vue.extend({
                         graView.hitTest(event).then(function(response){
                             var graphic = response.results[0].graphic;
                             var attributes = graphic.attributes;
+                            if(attributes.facilityType == 'IP'){
+                                eventHelper.emit('open-facilityInfo-dialog',attributes);
+                                return;
+                            }
                             // mapHelper.setCenter(graView, evt.mapPoint.x, evt.mapPoint.y);
                             if(layerId === 'graphicLayer'){
                                 self.$refs.rightPanel.open(attributes.item, attributes.facilityTypeName);
