@@ -1,11 +1,11 @@
-define(['echarts'], function (echarts) {
+define(['echarts', 'moment', 'utils/eventHelper'], function (echarts, moment, eventHelper) {
     return {
         initFloodStation: function (domClass, title, xArr, yArr, yMax, alarmHigh, warnHigh) {
             var myChart = echarts.init($(domClass)[0]);
             var checkHigh = [];
             if (!!warnHigh) {
                 checkHigh = [{
-                    yAxis: alarmHigh * 10,
+                    yAxis: 3.2,
                     label: {
                         normal: {
                             show: true,
@@ -14,7 +14,7 @@ define(['echarts'], function (echarts) {
                         }
                     }
                 }, {
-                    yAxis: warnHigh * 10,
+                    yAxis: 3.2,
                     label: {
                         normal: {
                             show: true,
@@ -25,7 +25,7 @@ define(['echarts'], function (echarts) {
                 }]
             } else {
                 checkHigh = [{
-                    yAxis: alarmHigh,
+                    yAxis: 3.2,
                     label: {
                         normal: {
                             show: true,
@@ -117,7 +117,7 @@ define(['echarts'], function (echarts) {
             }
         },
         initFloodStationCurrent: function (xArr, yArr, yMax, alarmHigh, warnHigh) {
-            if(!!$('.statistics-view')){
+            if (!!$('.statistics-view')) {
                 var myChart = echarts.init($('.statistics-view')[0]);
                 var checkHigh = [];
                 if (!!warnHigh) {
@@ -155,7 +155,7 @@ define(['echarts'], function (echarts) {
                 var optionView = {
                     color: ["#02adee"],
                     title: {
-                        text: "当前水位示意图",
+                        text: "当前积水深度",
                         x: 'center',
                         top: 10
                     },
@@ -194,7 +194,7 @@ define(['echarts'], function (echarts) {
                     ],
                     series: [
                         {
-                            name: '当前水位',
+                            name: '当前积水深度',
                             type: 'bar',
                             barWidth: '80%',
                             data: yArr,
@@ -281,9 +281,12 @@ define(['echarts'], function (echarts) {
             //获取x、y轴随机数
             function randomData() {
                 now = new Date(+now + oneDay);
-                value = value + Math.random() * 20 - 10;
+                value = value + Math.random() * 5 - 10;
                 if (value < 0) {
                     value = 1 - value;
+                }
+                if (value > 100) {
+                    value -= 50;
                 }
                 return {
                     name: now.toString(),
@@ -296,7 +299,8 @@ define(['echarts'], function (echarts) {
 
             //获取随机数
             var data = [];
-            var now = +new Date(1997, 9, 3);
+            var day = moment().get('date') + 1;
+            var now = +new Date(2017, 6, day);
             var oneDay = 24 * 3600 * 1000;
             var value;
             var off = 0;
@@ -304,16 +308,37 @@ define(['echarts'], function (echarts) {
                 value = 0;
                 off = 1;
             } else {
-                value = Math.random() * 1000;
+                value = Math.random() * 10;
             }
-            for (var i = 0; i < 1000; i++) {
+            for (var i = 0; i < 90; i++) {
                 data.push(randomData());
             }
+            var summary = [];
+            var i = 0;
+            var tableData = [];
+
+            data.forEach(function (todayRain) {
+                tableData.push({
+                    deviceUpdateTime: todayRain.value[0],
+                    dValue: todayRain.value[1]
+                })
+                if (summary.length < 1) {
+                    summary.push({
+                        name: todayRain.name,
+                        value: todayRain.value
+                    })
+                } else {
+                    summary.push({
+                        name: todayRain.name,
+                        value: [todayRain.value[0],
+                            todayRain.value[1] + summary[i - 1].value[1]
+                        ]
+                    });
+                }
+                i++;
+            });
+            eventHelper.emit('updateData', tableData.reverse());
             var option3 = {
-                title: {
-                    text: '降雨量',
-                    x: 'center'
-                },
                 tooltip: {
                     trigger: 'axis',
                     formatter: function (params) {
@@ -355,7 +380,7 @@ define(['echarts'], function (echarts) {
                     type: 'line',
                     showSymbol: false,
                     hoverAnimation: false,
-                    data: result.summary
+                    data: summary
                 },
                     {
                         name: '降雨量',
@@ -363,10 +388,14 @@ define(['echarts'], function (echarts) {
                         type: 'bar',
                         showSymbol: false,
                         hoverAnimation: false,
-                        data: result.detail
+                        data: data
                     }]
             };
             myChart.setOption(option3);
+            return {
+                chart: myChart,
+                option: option3
+            }
         },
         initPumpStation: function (domClass) {
             var myChart = echarts.init($(domClass)[0]);

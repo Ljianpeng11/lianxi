@@ -3,15 +3,16 @@
         <div class="panel-header">
             <span class="goBack"><a href='#' class="el-icon-d-arrow-right" @click="closePanel"></a></span>
             <span class="facilityImg" v-bind:class="facilityType"></span>
-            <span class="facilityName">{{facilityName}}</span>
+            <span class="facilityName" v-show="!(facilityType=='CP')">{{facilityName}}</span>
+            <span class="facilityName" v-show="facilityType=='CP'">巡查上报点</span>
             <el-menu :default-active="activeIndex" class="el-menu-demo menu-full" mode="horizontal"
                      @select="switchMode">
                 <el-menu-item index="1" id="realTimeMode">实时监测</el-menu-item>
                 <el-menu-item index="2" id="historicalMode">历史数据</el-menu-item>
             </el-menu>
         </div>
-        <div class="panel-content">
-            <div class="panel-top">
+        <div v-show="!(facilityType=='CP')" class="panel-content">
+            <div class="panel-top" v-bind:class="{singleRow:facilityType=='RF'&&isRealTimeMode||facilityType=='RV'&&isRealTimeMode}">
                 <div class="device-title" v-show='isRealTimeMode'>
                     <span>监控项</span><i class="wifiStatus"></i>
                     <span class="refreshTime">更新时间：{{lastUpdateTime}}</span>
@@ -24,15 +25,19 @@
                         </div>
                         <div class="conciseInfo">
                             <p class="conciseTitle">{{device.name}}
-                                <a @click="showMonitorInfo(device)" class="showMore pull-right" v-show="devices.length > 1">详情</a>
+                                <a @click="showMonitorInfo(device)" class="showMore pull-right"
+                                   v-show="devices.length > 1">详情</a>
                                 <a @click="showInit" class="showMore pull-right" v-show="showBack">返回</a>
                             </p>
                             <el-col class="conciseBody" :span="24">
-                                <el-col :span="device.monitorSpan" class="conciseItem" v-for="monitor in device.items" v-if="monitor.name !== '信号强度'">
+                                <el-col :span="device.monitorSpan" class="conciseItem" v-for="monitor in device.items"
+                                        v-if="monitor.name !== '信号强度'">
                                     <p class="item-top">{{monitor.name}}</p>
                                     <p class="item-bottom" v-if='monitor.status === 0'>正常</p>
                                     <p class="item-bottom" v-if='monitor.status === 1'>正在预警</p>
                                     <p class="item-bottom" v-if='monitor.status === 2'>正在报警</p>
+                                    <p class="item-bottom" v-if='monitor.status === -1'>
+                                        0</p>
                                 </el-col>
                             </el-col>
                         </div>
@@ -40,7 +45,7 @@
                     <monitor ref='monitorPlugin' v-show="devices.length <= 1"></monitor>
                 </div>
             </div>
-            <div class="panel-middle">
+            <div class="panel-middle" v-bind:class="{hideBottom:facilityType=='RV'}">
                 <div class="device-title" v-show='isRealTimeMode'>
                     <span>统计图表</span>
                     <!--<div v-if="facilityType!=='ylz'" class="pull-right">-->
@@ -50,9 +55,10 @@
                 </div>
                 <statistics ref='statisticPlugin'></statistics>
             </div>
-            <div class="panel-bottom">
+            <div class="panel-bottom" v-show="!(facilityType=='RV')"v-bind:class="{singleBottomRow:facilityType=='RF'&&isRealTimeMode||facilityType=='RV'&&isRealTimeMode}">
                 <div class="device-title" v-show='isRealTimeMode'>
-                    <span>实时数据</span>
+                    <span v-show="!(facilityType=='RF')">实时数据</span>
+                    <span v-show="(facilityType=='RV')">每天降雨量</span>
                 </div>
                 <div class="bottom-r">
                     <el-table
@@ -70,6 +76,55 @@
                     </el-table>
                 </div>
             </div>
+        </div>
+        <div v-show="facilityType=='CP'" class="panel-content">
+            <div class="panel-top">
+                <div class="device-title">
+                    <span>上报图片</span>
+                </div>
+                <el-carousel trigger="click">
+                    <el-carousel-item v-for="item in reportImgs" :key="item">
+                        <img :src="item"/>
+                    </el-carousel-item>
+                </el-carousel>
+            </div>
+            <div style="width:100%;height: 45%">
+                <div class="device-title">
+                    <span>案件详情</span>
+                </div>
+                <div>
+                    <table class="table table-striped table-bordered">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <p>问题类型</p>
+                                <p class="text-blue">{{reportType}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>地址</p>
+                                <p class="text-blue">{{reportAddress}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>解决方案</p>
+                                <p class="text-blue">{{reportSolution}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>问题详情描述</p>
+                                <p class="text-blue">{{reportDescription}}</p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
         </div>
     </div>
 </transition>

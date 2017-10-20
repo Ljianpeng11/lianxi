@@ -45,21 +45,25 @@ var comm = Vue.extend({
             drawLineGraphics: [],
             polygonId: 1,
             baseMap:{},
-            graLayer:{}
+            graLayer:{},
+            graphics:[]
         }
     },
     methods: {
         //初始化地图
         initBaseMap: function () {
             var layerURL = 'http://112.74.51.12:6080/arcgis/rest/services/hwShow201705/MapServer';
-            var centerX = 121.45075120184849;
-            var centerY = 31.25010784918339;
-            var zoom = 10;
+            // var centerX = 121.45075120184849;
+            // var centerY = 31.25010784918339;
+            // 高青中心
+            var centerX = 117.81125143714908;
+            var centerY = 37.15881538581348;
+            var zoom = 14;
             var currentMap = {};
             var currentView = {};
             var self = this;
             var apiInstance = mapHelper.getInstance();
-            var map = mapHelper.initTDMap('', centerX, centerY, zoom, function (map, view) {
+            var map = mapHelper.initTDMap("mapDiv", centerX, centerY, zoom, function (map, view) {
                 self.baseMap = map;
                 var apiInstance = mapHelper.getInstance();
                 self.graLayer = apiInstance.createGraphicsLayer(self.baseMap,'graphicLayer');
@@ -73,7 +77,6 @@ var comm = Vue.extend({
                         width: 4
                     })
                 });
-                // debugger;
                 self.graLayer.on('layerview-create',function(evt){
                     var graView = evt.view;
                     var graLayerView = evt.layerView;
@@ -94,6 +97,43 @@ var comm = Vue.extend({
             // }
             );
             return map;
+        },
+        createPoint:function(legend,subFacilities){
+            subFacilities.forEach(function (item) {
+                var icon = !!legend.icon ? legend.icon : legend.facilityTypeName;
+                var newIcon = './img/toolbar/huawei-' + icon + '.png';
+                item.fid = 'f' + legend.id;
+                var imgObj = {
+                    url: newIcon,
+                    width: "30px",
+                    height: "36px"
+                };
+                var textObj = {
+                    color:'red',
+                    text:item.name,
+                    haloColor: "black",
+                    haloSize: "20px",
+                    yoffset:-18,
+                    verticalAlignment:'top',
+                    declaredClass:'esriTextSymbol',
+                    font:{
+                        size:12
+                    }
+                };
+                var attributes = {
+                    'item':item,
+                    'facilityTypeName':legend.facilityTypeName,
+                    'id':item.fid
+                };
+                var graphic = mapHelper.createPictureMarkSymbol(this.graLayer, item.x, item.y, imgObj,attributes);
+                this.graphics.push(graphic);
+                this.graphics.push(mapHelper.createTextSymbol(this.graLayer,item.x,item.y,textObj));
+            }.bind(this));
+            this.facilityArr[legend.facilityTypeName] = {
+                graphics:this.graphics,
+                data:subFacilities,
+                layer:this.graLayer
+            };
         }
     },
     mounted: function () {
@@ -113,57 +153,44 @@ var comm = Vue.extend({
                     eventHelper.emit('loading-end');
                 } else {
                     facilityController.getFacilityByType(legend.id, function (subFacilities) {
-                        // if (legend.facilityTypeName == 'WD') {
-                        //     subFacilities.forEach(function (subFacility) {
-                        //         subFacility.icon = './css/images/huawei-yj.png'
-                        //     })
-                        // } else if (legend.facilityTypeName == 'WP') {
-                        //     subFacilities.forEach(function (subFacility) {
-                        //         subFacility.icon = './css/images/huawei-yld.png'
-                        //     })
+                        // if (legend.facilityTypeName == 'CP') {
+                        //     this.reportPointInterval = setInterval(function () {
+                        //         var cacheFacilities = self.facilityArr[legend.facilityTypeName];
+                        //         facilityController.getFacilityByType(legend.id, function (subFacilities) {
+                        //             debugger;
+                        //             if (cacheFacilities.data.length == subFacilities.length) {
+                        //
+                        //             } else {
+                        //                 self.$notify({
+                        //                     title: '提示信息',
+                        //                     message: '新增巡查上报点',
+                        //                     type: 'warning'
+                        //                 });
+                        //                 var items = [{
+                        //                     title: '上报时间',
+                        //                     content: moment().format('MM-DD HH:mm:ss', new Date())
+                        //                 }, {
+                        //                     title: '案件类型',
+                        //                     content: subFacilities[subFacilities.length - 1].name
+                        //                 }]
+                        //                 eventHelper.emit('alert-point', [{
+                        //                     items: items,
+                        //                     x: subFacilities[subFacilities.length - 1].x,
+                        //                     y: subFacilities[subFacilities.length - 1].y
+                        //                 }]);
+                        //                 mapHelper.removeGraphics(self.facilityArr[legend.facilityTypeName].layer,self.facilityArr[legend.facilityTypeName].graphics);
+                        //                 self.createPoint(legend,subFacilities);
+                        //                 cacheFacilities = self.facilityArr[legend.facilityTypeName];
+                        //             }
+                        //         }.bind(this));
+                        //     }, 1000);
+                        // } else {
+                        //     if (!!self.reportPointInterval) {
+                        //         clearInterval(self.reportPointInterval);
+                        //         eventHelper.emit('alert-point-close');
+                        //     }
                         // }
-                        var graphics = [];
-                        subFacilities.forEach(function (item) {
-                            var icon = !!legend.icon ? legend.icon : legend.facilityTypeName;
-                            var newIcon = './img/toolbar/huawei-' + icon + '.png';
-                            item.fid = 'f' + legend.id;
-                            var imgObj = {
-                                url: newIcon,
-                                width: "30px",
-                                height: "36px"
-                            };
-                            var textObj = {
-                                color:'red',
-                                text:item.name,
-                                // xoffset:3,
-                                yoffset:"30px",
-                                font:{
-                                    size:12
-                                }
-                            };
-                            var graphic = mapHelper.createPictureMarkSymbol(self.graLayer, item.x, item.y, imgObj);
-                            var attributes = [
-                                {
-                                    key:'item',
-                                    value:item
-                                },{
-                                    key:'facilityTypeName',
-                                    value:legend.facilityTypeName
-                                },{
-                                    key:'id',
-                                    value:item.fid
-                                }
-                            ];
-                            attributes.forEach(function(item){
-                                graphic.setAttribute(item.key,item.value);
-                            });
-                            graphics.push(graphic);
-                            graphics.push(mapHelper.createTextSymbol(self.graLayer,item.x,item.y,textObj));
-                        });
-                        self.facilityArr[legend.facilityTypeName] = {
-                            graphics:graphics,
-                            layer:self.graLayer
-                        };
+                        self.createPoint(legend,subFacilities);
                         eventHelper.emit('loading-end');
                     });
                 }
@@ -187,7 +214,7 @@ var comm = Vue.extend({
     },
     components: {
         'layer-list':layerList,
-        // 'info-window': infoWindow,
+        'info-window': infoWindow,
         'right-panel':rightPanel
     }
 });

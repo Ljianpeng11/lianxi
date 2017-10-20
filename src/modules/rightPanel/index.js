@@ -117,7 +117,6 @@ var comm = Vue.extend({
             }
         },
         open: function (facility, facilityTypeName) {
-            debugger;
             if (!!this.historicalCounter) {
                 clearInterval(this.historicalCounter);
             }

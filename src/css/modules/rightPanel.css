@@ -1,7 +1,4 @@
 /*rightPanel模板内容*/
-p{
-    margin:0;
-}
 .right-panel {
     height: inherit;
     background: #f4f4f4;
@@ -15,12 +12,220 @@ p{
     box-shadow: 0 0 15px 3px rgba(0, 0, 0, .2);
 }
 
+.trace-panel-table {
+    height: 22em;
+    overflow-y: auto;
+}
+
+.charts-pager {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.right-panel.small {
+    width: 385px;
+    height: 100%;
+}
+
 .right-panel-enter-active {
     transition: all .2s ease;
 }
 
+.header-font {
+    font-size: 1.3em;
+}
+
+.right-panel.small .panel-header {
+    height: 2em;
+    background: #5B9BD5;
+    color: #fff;
+    font-size: 1.5em;
+}
+
+.pipe-panel-header {
+    line-height: 2.6em;
+    position: absolute;
+    bottom: 18em;
+    width: calc(100% - 300px);
+    text-align: center;
+    background: #5B9BD5;
+    color: #fff;
+}
+
+.right-panel.small .small-panel-top {
+    height: calc(100% - 22em);
+}
+
+.right-panel .small-panel-bottom {
+    height: 24em;
+    position: absolute;
+    bottom: 0;
+}
+
+.right-panel.small .video-box, .panel-content-box {
+    height: calc(100% - 3em);
+    width: 100%;
+    overflow-y: auto;
+    font-size: 1.2em;
+}
+
+.charts-detail {
+    width: calc(100% - 300px);
+    height: 18em;
+    position: absolute;
+    bottom: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    right: 300px;
+    background: #F4F4F4;
+    border: 1px solid #ccc;
+}
+
+#restrospectLineChart {
+    width: 100%;
+    height: 100%;
+    margin-left: -40px;
+}
+
+#restrospectChart {
+    width: 100%;
+    height: 110%;
+    margin-top: -2%;
+}
+
+.swipeNewMap .LayerSwipe .vertical {
+    top: 0 !important;
+}
+
+.mgt10 {
+    margin-top: 10px;
+}
+
+.icon-big-small {
+    background: url("../../img/icon/bigsmalls.png") center no-repeat;
+    background-size: 100% 100%;
+}
+
+.baseMap .LayerSwipe .vertical .handle {
+    width: 14px;
+    height: 32px;
+    margin: -14px 0 0 -6px;
+    top: 60%;
+}
+
+.baseMap .LayerSwipe .vertical {
+    width: 2px;
+}
+
+.icon-nipo {
+    background: url("../../img/icon/nipo.png") center no-repeat;
+    background-size: 70% 70%;
+}
+
+.icon-rainmix {
+    background: url("../../img/icon/mix.png") center no-repeat;
+    background-size: 100% 100%;
+}
+
+.opration-btn-group {
+    padding: 10px 0;
+}
+
+.trace-content-box {
+    padding: 10px 0 5px 0;
+}
+
+.trace-content-box .timeTitle {
+    line-height: 2.5em;
+}
+
+.panel-content-box .queryButton {
+    margin-top: 1em;
+    text-align: center;
+}
+
+.panel-content-box .queryButton > button {
+    width: 50%;
+}
+
+.float-left {
+    float: left !important;
+}
+
+.float-right {
+    float: right !important;
+}
+
+.line-pipe-content {
+    font-size: 1.3em;
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.no-border {
+    border: none !important;
+}
+
+.line-pipe-content li {
+    margin-bottom: 8px;
+}
+
+.line-pipe-content label {
+    margin-bottom: 0;
+}
+
+.line-pipe-desc {
+    width: 200px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.panel-content-box, .video-box {
+    /*margin-top: -1em;*/
+}
+
 .right-panel-leave-active {
     transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.panel-box-title {
+    width: 95%;
+    padding: 0.5em;
+    text-align: center;
+    margin: 0 auto;
+    border-bottom: 1px solid #ccc;
+}
+
+.panel-box-title .el-radio-group {
+    display: block;
+}
+
+.panel-box-title .el-radio-button {
+    width: 50%;
+}
+
+.panel-box-title .el-radio-button__inner {
+    width: 100%;
+}
+
+.goBack.small {
+    width: 1.5em;
+    height: 10em;
+    background: #f4f4f4;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-100%, -50%);
+    box-shadow: -5px 0 10px -1px rgba(0, 0, 0, .2);
+    z-index: 2;
+}
+
+.trace-box {
 }
 
 .right-panel .goBack {
@@ -111,7 +316,7 @@ p{
 .right-panel .panel-header {
     height: 5.2em;
     text-align: center;
-    line-height: 3em;
+    line-height: 2em;
     background: #dcdcdc;
 }
 
@@ -138,6 +343,14 @@ p{
     color: #333;
     font-size: 1.2em;
     vertical-align: middle;
+}
+
+.right-panel .el-carousel {
+    height: calc(100% - 2em);
+}
+
+.right-panel .el-carousel__container {
+    height: 100%;
 }
 
 .panel-header .facilityImg {
@@ -186,6 +399,15 @@ p{
 
 }
 
+.right-panel .singleRow {
+    height: 25%;
+    overflow: hidden;
+}
+
+.singleRow .part-Img-Box {
+    height: 100% !important;
+}
+
 .menu-full .el-menu-item:hover, .menu-full .is-active {
     background: #20a0ff;
     color: #fff;
@@ -195,6 +417,10 @@ p{
 .right-panel-enter, .right-panel-leave-active {
     transform: translateX(10px);
     opacity: 0;
+}
+
+.right-panel .hideBottom {
+    height: 74%;
 }
 
 .right-panel-fix {
@@ -218,6 +444,13 @@ p{
     width: 100%;
     height: 80px;
     padding: 10px;
+}
+
+.right-panel .caseDetail > span {
+    line-height: 1.5em;
+    border: 1px solid #6ea8ae;
+    display: inline-block;
+    width: 50%;
 }
 
 .panel-head .panel-hTitle {
@@ -246,6 +479,10 @@ p{
     color: red;
 }
 
+.text-blue {
+    color: #1C9AF7;
+}
+
 .right-panel-close {
     display: inline-block;
     width: 32px;
@@ -256,7 +493,7 @@ p{
 .panel-content {
     width: 100%;
     height: calc(100% - 5.2em);
-    padding: 0 10px;
+    padding: 5px;
 }
 
 .device-title {
@@ -321,7 +558,9 @@ p{
     margin-top: 2%;
     min-height: 15em;
 }
-
+.right-panel .singleBottomRow {
+    height: 40%;
+}
 .top-l, .middle-l, .bottom-l {
     float: left;
     width: 48px;
@@ -391,42 +630,49 @@ p{
     width: 100%;
     height: 50%;
     display: flex;
-    align-items:center;
-    justify-content:space-between;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.part-Img ,.conciseInfo{
+.part-Img, .conciseInfo {
     height: 100%;
     width: 50%;
 }
-.conciseTitle{
+
+.conciseTitle {
     text-align: center;
     height: 2em;
-    line-height:2em;
+    line-height: 2em;
 }
-.conciseBody{
+
+.conciseBody {
     width: 100%;
-    height:calc(100% - 2em);
-    border:1px solid #b1aa13;
+    height: calc(100% - 2em);
+    border: 1px solid #b1aa13;
 }
-.conciseItem{
-    height:50%;
+
+.conciseItem {
+    height: 50%;
     border-right: 1px solid #b1aa13;
     border-bottom: 1px solid #b1aa13;
 }
-.conciseItem>p{
+
+.conciseItem > p {
     width: 100%;
-    height:50%;
+    height: 50%;
     text-align: center;
 }
-.item-top{
+
+.item-top {
     color: #666;
 }
-.item-bottom{
+
+.item-bottom {
     background: #157DD6;
     color: #fff;
 }
-.showMore{
+
+.showMore {
     margin-right: 1em;
 }
 
@@ -440,6 +686,7 @@ p{
     width: 100%;
     height: 88%;
 }
+
 .cesc-text-p {
     font-size: 12px;
     text-align: center;
@@ -456,10 +703,11 @@ p{
     height: 100%;
     font-size: 12px;
     position: relative;
-    border-right:1px solid #ccc;
+    border-right: 1px solid #ccc;
 }
-.session:last-child{
-    border-right:none;
+
+.session:last-child {
+    border-right: none;
 }
 
 .session b {
@@ -507,6 +755,7 @@ p{
 
 .session3 .label-parent .num {
     color: #fff;
+    left: 8%;
 }
 
 .session3 .label-content {
@@ -528,13 +777,14 @@ p{
     border: 1px solid orange;
     color: orange;
 }
-
 .line-label {
     position: relative;
     left: 120%;
     top: -12px;
 }
-
+.high-warning-line .line-label{
+    top:-5px;
+}
 .high-alert-line {
     border: 1px solid red;
     top: 20%;
@@ -556,7 +806,7 @@ p{
     width: 3em;
     height: 60%;
     position: relative;
-    top: 15%;
+    top: 30%;
     left: 40%;
     transform: translate(-50%);
     background: #fff;
@@ -591,9 +841,11 @@ p{
 }
 
 .label-br {
+    position: absolute;
+    top: 3%;
+    width: 7em;
     font-size: 13px;
-    text-align: left;
-    line-height: 2em;
+    text-align: center;
 }
 
 .label-br > span {
@@ -601,10 +853,10 @@ p{
 }
 
 .num {
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    color: black;
+    position: relative;
+    top: 30%;
+    left: 0;
+    color: #333;
 }
 
 .part-r {
@@ -687,4 +939,90 @@ p{
     width: 1.2em;
     height: 1.2em;
     margin-left: 0.5em;
+}
+
+.cesc-dialog-form {
+    padding: 30px 0;
+}
+
+.cesc-dialog-form .label-left-vertical {
+    margin-bottom: 0;
+    padding-top: 8px;
+    text-align: right;
+}
+
+.cesc-dialog-form .form-group {
+    margin-bottom: 20px;
+}
+
+.color-box {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+    vertical-align: middle;
+}
+
+.color-box-sm {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+    vertical-align: middle;
+}
+
+.color-dgjxg {
+    background-color: #fff;
+}
+
+.color-np {
+    background-color: #78C688;
+}
+
+.color-ywhj {
+    background-color: #074E7C;
+}
+
+.num-box {
+    width: 100%;
+    margin-top: 1.5em;
+    font-size: 0.8em;
+}
+
+.num-box > div {
+    margin-right: 0.8em;
+}
+
+.num-box > div > strong {
+    font-size: 1em;
+}
+
+.restrospectDetail .el-form-item {
+    margin-bottom: 0;
+}
+
+.restrospectDetail .el-form {
+    margin-top: 0.5em;
+}
+
+.restrospectDetail .el-dialog--tiny {
+    width: 35em;
+}
+
+#caseMap {
+    width: 100%;
+    height: 15em;
+    margin-bottom: 0.5em;
+}
+
+.orderSummary .panel-content-box {
+    padding: 0 5px;
+    overflow-x: hidden;
+}
+
+.orderSummary .timeHeader {
+    text-align: center;
+    background: #20a0ff;
+    color: white;
+    line-height: 2em;
 }

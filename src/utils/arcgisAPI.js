@@ -57,10 +57,10 @@ define(function () {
             layers: [tiledLayer, tiledMarkLayer]
         });
         var view = new instance.MapView({
-            container: "mapDiv",
+            container: container,
             map: map,
-            center: [113.32145333290144, 23.10597002506263],
-            zoom: 18
+            center: [x, y],
+            zoom: zoom
         });
         tiledLayer.load().then(function () {
             success(map, view);
@@ -317,9 +317,20 @@ define(function () {
             longitude: x,
             latitude: y
         });
+        if(!textObj){
+            textObj = {
+                color:'red',
+                text:'you are here',
+                xoffset:0,
+                yoffset:0,
+                font:{
+                    size:12
+                }
+            }
+        }
         var textSymbol = new instance.TextSymbol(
              textObj
-            // {
+            //{
             //     color:'#333',
             //     text:'you are here',
             //     xoffset:3,
@@ -361,11 +372,18 @@ define(function () {
         layer.add(markPoint);
         return markPoint;
     };
-    instance.createPictureMarkSymbol = function (layer, x, y, imgObj) {
+    instance.createPictureMarkSymbol = function (layer, x, y, imgObj,attributes) {
         var point = new instance.Point({
             longitude: x,
             latitude: y
         });
+        if(!imgObj){
+            imgObj = {
+                url: "https://webapps-cdn.esri.com/Apps/MegaMenu/img/logo.jpg",
+                width: "8px",
+                height: "8px"
+            }
+        }
         var markerSymbol = new instance.PictureMarkerSymbol(
             imgObj
             /*{
@@ -377,7 +395,8 @@ define(function () {
         // Create a graphic and add the geometry and symbol to it
         var markPoint = new instance.Graphic({
             geometry: point,
-            symbol: markerSymbol
+            symbol: markerSymbol,
+            attributes:attributes
         });
         layer.add(markPoint);
         return markPoint;

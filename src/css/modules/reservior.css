@@ -7,20 +7,22 @@
 .reservoirContent{
     width: inherit;
     height:90%;
-    padding: 20px 0;
+    padding: 5px 0;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
 }
 .reservoirItem{
-    width:25%;
-    height:50%;
+    width:33%;
+    height:33%;
     float: left;
+    border: 1px solid darkseagreen;
 }
 .reservoirItemChart{
     width:100%;
     height:100%;
 }
+
 .marker-box{
     padding: 2px 5px;
     background: red;

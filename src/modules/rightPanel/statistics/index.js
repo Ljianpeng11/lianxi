@@ -9,7 +9,93 @@ var reservoir = require('modules/rightPanel/reservoir');
 var reservoirHistory = require('modules/rightPanel/reservoir/reservoirHistory');
 var statisticsController = require('controllers/statisticsController');
 var eventHelper = require('utils/eventHelper');
+var mockResult = {
+    data: [
+        {
+            itemId: 'RC_WQM_waterTemperature',
+            dValue: 15
+        },
+        {
+            itemId: 'RC_WQM_ph',
+            dValue: 5.3
+        }, {
+            itemId: 'RC_WQM_dissolvedOxygen',
+            dValue: 3.1
+        }, {
+            itemId: 'RC_WQM_permanganateIndex',
+            dValue: 10.2
+        }, {
+            itemId: 'RC_WQM_fiveDayOxygenDemand',
+            dValue: 5.3
+        }, {
+            itemId: 'RC_WQM_ammoniaNitrogen',
+            dValue: 1.45
+        }, {
+            itemId: 'RC_WQM_totalPhosphorus',
+            dValue: 1.22
+        }, {
+            itemId: 'RC_total',
+            dValue: 5
+        },
 
+    ]
+};
+var mockItems = [
+    {
+        "itemID": "RC_WQM_waterTemperature",
+        "name": "水温",
+        "itemTypeName": "RC_WQM_waterTemperature",
+        "unit": "°C"
+    },
+    {
+        "itemID": "RC_WQM_ph",
+        "name": "PH值",
+        "itemTypeName": "RC_WQM_ph",
+        "unit": ""
+    },
+    {
+        "itemID": "RC_WQM_dissolvedOxygen",
+        "name": "溶解氧",
+        "itemTypeName": "RC_WQM_dissolvedOxygen",
+        "unit": "mg/L"
+    },
+    {
+        "itemID": "RC_WQM_permanganateIndex",
+        "name": "高锰酸盐指数",
+        "itemTypeName": "RC_WQM_permanganateIndex",
+        "unit": "mg/L"
+    },
+    {
+        "itemID": "RC_WQM_chemicalOxygenDemand",
+        "name": "化学需氧量",
+        "itemTypeName": "RC_WQM_permanganateIndex",
+        "unit": "mg/L"
+    },
+    {
+        "itemID": "RC_WQM_fiveDayOxygenDemand",
+        "name": "五日生化需氧量",
+        "itemTypeName": "RC_WQM_fiveDayOxygenDemand",
+        "unit": "mg/L"
+    },
+    {
+        "itemID": "RC_WQM_ammoniaNitrogen",
+        "name": "氨氮",
+        "itemTypeName": "RC_WQM_ammoniaNitrogen",
+        "unit": "mg/L"
+    },
+    {
+        "itemID": "RC_WQM_totalPhosphorus",
+        "name": "总磷",
+        "itemTypeName": "RC_WQM_totalPhosphorus",
+        "unit": "mg/L"
+    },
+    {
+        "itemID": "RC_total",
+        "name": "综合指标",
+        "itemTypeName": "RC_total",
+        "unit": "水质等级"
+    }
+];
 //itemTypeName "waterLevel"
 var getMonitorItem = function (monitorType, devices) {
     var result = {};
@@ -29,7 +115,7 @@ var comm = Vue.extend({
     data: function () {
         return {
             rightPanelOpen: true,
-            showStatisticsView: true,
+            showStatisticsView: false,
             showHistoricalStatisticsView: false,
             showLockStationView: false,
             facility: {},
@@ -42,12 +128,15 @@ var comm = Vue.extend({
     },
     mounted: function () {
         // 基于准备好的dom，初始化echarts实例
+        this.currentGraph = {};
         this.$on('init-statistic', function (parameter) {
+            if (!!this.currentGraph && !!this.currentGraph.chart) {
+                this.currentGraph.chart.clear();
+            }
             this.devices = parameter.devices;
             this.isPumpStation = false;
             this.isReservoir = false;
             this.facility = parameter.facility;
-            this.showStatisticsView = true;
             this.showHistoricalStatisticsView = false;
             var time = [moment().format('YYYY-MM-DD hh:mm', new Date())];
             var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
@@ -56,6 +145,7 @@ var comm = Vue.extend({
             this.monitorItem = getMonitorItem('waterLevel', parameter.devices);
             // setInterval(function(){
             if (parameter.facility.facilityTypeName === 'WP' || parameter.facility.facilityTypeName === 'WD') {
+                this.showStatisticsView = true;
                 controller.getHistoricalDataByMonitor(this.monitorItem.itemID, startDate, endDate, function (result) {
                     var xArr = [];
                     var yArr = [];
@@ -67,22 +157,27 @@ var comm = Vue.extend({
                             max = historic.dValue;
                         }
                     });
-                    if (parameter.facility.facilityTypeName === 'WP') {
-                        this.facilityHistoryGraphArr[parameter.facility.facilityTypeName] = statisticsHelper.initFloodStation('.statistics-main', '易涝点积水实时监控', xArr, yArr, max, this.monitorItem.alarmHeight);
-                    } else {
-                        this.facilityHistoryGraphArr[parameter.facility.facilityTypeName] = statisticsHelper.initFloodStation('.statistics-main', '井下水深实时监控', xArr, yArr, max, this.monitorItem.alarmHeight, this.monitorItem.warningHeight);
-                    }
+                    this.$nextTick(function () {
+                        if (parameter.facility.facilityTypeName === 'WP') {
+                            this.facilityHistoryGraphArr[parameter.facility.facilityTypeName] = statisticsHelper.initFloodStation('.statistics-main', '河道水位实时监控', xArr, yArr, max, parseFloat(this.monitorItem.alarmHeight));
+                        } else {
+                            this.facilityHistoryGraphArr[parameter.facility.facilityTypeName] = statisticsHelper.initFloodStation('.statistics-main', '井下水深实时监控', xArr, yArr, max, parseFloat(this.monitorItem.alarmHeight), parseFloat(this.monitorItem.warningHeight));
+                        }
+                        this.currentGraph = this.facilityHistoryGraphArr[parameter.facility.facilityTypeName];
+                        this.currentGraph.chart.resize();
+                    }.bind(this));
                 }.bind(this));
             } else if (parameter.facility.facilityTypeName === 'RF') {
                 this.showStatisticsView = false;
                 this.$nextTick(function () {
-                    this.monitorItem = getMonitorItem('pluviometer', parameter.devices);
-                    statisticsController.getRainDetail(this.monitorItem.itemID, function (result) {
-                        statisticsHelper.initRainStation('.statistics-main', result);
-                        eventHelper.emit('closeLoading');
-
+                    this.currentGraph = statisticsHelper.initRainStation('#statistics-main', {
+                        summary: [],
+                        detail: []
                     });
+                    this.currentGraph.chart.resize();
                 }.bind(this));
+
+                eventHelper.emit('closeLoading');
             }
             else if (parameter.facility.facilityTypeName === 'PP') {
                 this.isPumpStation = true;
@@ -124,29 +219,22 @@ var comm = Vue.extend({
                 this.isPumpStationStatisticsActive = false;
             } else if (parameter.facility.facilityTypeName === 'RV') {
                 var self = this;
-                this.devices.forEach(function (device) {
-                    if (device.deviceTypeName.indexOf('waterQualityMonitor') !== -1) {
-                        self.$refs.reservoir.init(device.items);
-                        return;
-                    }
-                });
+                self.$refs.reservoir.init(mockItems);
                 this.isReservoir = true;
                 eventHelper.emit('isLoading');
+                setTimeout(function () {
+                    this.$refs.reservoir.update(mockResult);
+                }.bind(this), 1000);
             } else if (parameter.facility.facilityTypeName === 'RC') {
                 var self = this;
-                this.devices.forEach(function (device) {
-                    if (device.deviceTypeName.indexOf('waterQualityMonitor') !== -1) {
-                        self.$refs.reservoir.init(device.items);
-                        return;
-                    }
-                });
+                self.$refs.reservoir.init(device.items);
                 this.isReservoir = true;
                 eventHelper.emit('isLoading');
             }
         }.bind(this));
         this.$on('update-statistic', function (result) {
             result.data.forEach(function (monitor) {
-                if (this.monitorItem.itemID === monitor.itemId) {
+                if (!!this.monitorItem && this.monitorItem.itemID === monitor.itemId) {
                     if (result.facility.facilityTypeName === 'WP') {
                         if (!!this.facilityHistoryGraphArr[result.facility.facilityTypeName]) {
                             var timeLength = this.facilityHistoryGraphArr[result.facility.facilityTypeName].option.xAxis[0].data.length;
@@ -155,14 +243,6 @@ var comm = Vue.extend({
                                 this.facilityHistoryGraphArr[result.facility.facilityTypeName].option.xAxis[0].data.push(monitor.deviceUpdateTime);
                                 this.facilityHistoryGraphArr[result.facility.facilityTypeName].chart.setOption(this.facilityHistoryGraphArr[result.facility.facilityTypeName].option);
                             }
-                        }
-                        if (!!this.facilityCurrentGraphArr[result.facility.facilityTypeName]) {
-                            this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.series[0].data = [monitor.dValue.toFixed(2)];
-                            this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.xAxis[0].data = [monitor.deviceUpdateTime];
-                            this.facilityCurrentGraphArr[result.facility.facilityTypeName].chart.setOption(this.facilityCurrentGraphArr[result.facility.facilityTypeName].option);
-                        }
-                        else {
-                            this.facilityCurrentGraphArr[result.facility.facilityTypeName] = statisticsHelper.initFloodStationCurrent([monitor.deviceUpdateTime], [monitor.dValue.toFixed(2)], (monitor.dValue * 1.2).toFixed(2), this.monitorItem.alarmHeight);
                         }
                     } else if (result.facility.facilityTypeName === 'WD') {
                         if (!!this.facilityHistoryGraphArr[result.facility.facilityTypeName]) {
@@ -174,26 +254,6 @@ var comm = Vue.extend({
 
                             }
                         }
-                        if (monitor.dValue > this.monitorItem.warnHigh) {
-                            if (!!this.facilityCurrentGraphArr[result.facility.facilityTypeName]) {
-                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.xAxis[0].data = [monitor.deviceUpdateTime];
-                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.series[0].data = [monitor.dValue.toFixed(2)];
-                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].chart.setOption(this.facilityCurrentGraphArr[result.facility.facilityTypeName].option);
-                            }
-                            else {
-                                this.facilityCurrentGraphArr[result.facility.facilityTypeName] = statisticsHelper.initFloodStationCurrentAlarm([monitor.deviceUpdateTime], [monitor.dValue.toFixed(2)], (monitor.dValue * 1.2).toFixed(2), this.monitorItem.alarmHeight, this.monitorItem.warningHeight);
-                            }
-                        }
-                        else {
-                            if (!!this.facilityCurrentGraphArr[result.facility.facilityTypeName]) {
-                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.xAxis[0].data = [monitor.deviceUpdateTime];
-                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.series[0].data = [monitor.dValue.toFixed(2)];
-                                this.facilityCurrentGraphArr[result.facility.facilityTypeName].chart.setOption(this.facilityCurrentGraphArr[result.facility.facilityTypeName].option);
-                            }
-                            else {
-                                statisticsHelper.initFloodStationCurrent([monitor.deviceUpdateTime], [monitor.dValue.toFixed(2)], (monitor.dValue + 5).toFixed(2), this.monitorItem.wellLidHeight, this.monitorItem.pipeHeight);
-                            }
-                        }
                     } else if (result.facility.facilityTypeName === 'PP' || result.facility.facilityTypeName === 'SG') {
                         pumpStationHelper.initPumpStation('泵站实时监测', ['泵前水位', '泵后水位'], ['2016-12-1', '2016-12-2', '2016-12-3'], [[1, 2, 3], [3, 4, 1]]);
                     } else if (result.facility.facilityTypeName === 'RF') {
@@ -201,6 +261,18 @@ var comm = Vue.extend({
                     }
                     else if (result.facility.facilityTypeName === 'RV' || result.facility.facilityTypeName === 'RC') {
                         this.$refs.reservoir.update(result);
+                    }
+                }
+                else if (monitor.itemId.indexOf('stressWaterLine') > -1) {
+                    if (!!this.facilityCurrentGraphArr[result.facility.facilityTypeName]) {
+                        this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.series[0].data = [monitor.dValue.toFixed(2)];
+                        this.facilityCurrentGraphArr[result.facility.facilityTypeName].option.xAxis[0].data = [monitor.deviceUpdateTime];
+                        this.facilityCurrentGraphArr[result.facility.facilityTypeName].chart.setOption(this.facilityCurrentGraphArr[result.facility.facilityTypeName].option);
+                    }
+                    else {
+                        if (monitor.itemId.indexOf('stressWaterLine') > -1) {
+                            this.facilityCurrentGraphArr[result.facility.facilityTypeName] = statisticsHelper.initFloodStationCurrent([monitor.deviceUpdateTime], [monitor.dValue.toFixed(2)], (monitor.dValue * 1.2).toFixed(2), this.monitorItem.alarmHeight);
+                        }
                     }
                 }
             }.bind(this));

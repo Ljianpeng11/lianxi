@@ -74,8 +74,8 @@ define(function () {
         createSymbol: function (layer, x, y, styleObj) {
             return this.apiInstance.createSymbol(layer, x, y, styleObj);
         },
-        createPictureMarkSymbol: function (layer, x, y, imgObj) {
-            return this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj);
+        createPictureMarkSymbol: function (layer, x, y, imgObj,attributes) {
+            return this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj,attributes);
         },
         createPolygon: function (layer, coords, styleObj) {
             return this.apiInstance.createPolygon(layer, coords, styleObj);

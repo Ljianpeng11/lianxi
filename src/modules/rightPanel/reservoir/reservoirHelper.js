@@ -112,9 +112,11 @@ define(function () {
                 else if (value > 2.01) {
                     return 6;
                 }
+            } else {
+                return value;
             }
         },
-        transferGradeTitle : function(grade){
+        transferGradeTitle: function (grade) {
             //  8,25,41,60,76,93
             switch (grade) {
                 case 1:
@@ -132,5 +134,5 @@ define(function () {
             }
         }
 
-}
+    }
 })

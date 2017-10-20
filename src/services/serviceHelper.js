@@ -4,22 +4,56 @@ define(['config'], function (config) {
     var serviceEndpoint = {
         basicPath: basicUrl,
         login: basicUrl + '/login/loginValid',
+        userRole: basicUrl + '/user/getRole',
         userMenu: basicUrl + '/user/getMenu',
+        getAllFacilityType: basicUrl + '/facility/getAllFacilitysType',
+        deviceDetail: basicUrl + '/device/getDeviceInfosByFacilityId',
         makeOrder: basicUrl + '/orders/save',
         queryMenu: basicUrl + '/orders/menu',
         queryEmployee: basicUrl + '/employee',
-        refreshToken: basicUrl + 'login/updateToken',
+        refreshToken: basicUrl + '/login/updateToken',
+        monitorRealTimeValue:basicUrl+'/dataReal/getDataRealByItemIds',
+        getHistoricalDate:basicUrl+'/dataHistory/getDataHistoryByItemId',
+        getFacilityByType:basicUrl+'/facility/getOneTypeFacilitys',
+        getAllFeatures: basicUrl + '/feature/getFeatureByCurrentUser',
+        getFeatureDetail: basicUrl + '/feature/getFeatureById',
+        addFeature: basicUrl + '/feature/addEditFeature',
+        deleteFeature: basicUrl +  '/feature/deleteFeatureById',
+        updateBuilding: basicUrl +  '/drainageFamily/addEditDrainageFamily',
+        addSetUpPipe: basicUrl +  '/pipePoint/addSetUpPipe',
+        addPipePoint: basicUrl +  '/pipePoint/addPipePoint',
+        addPreFacilities: basicUrl +  '/pipePoint/addPreFacilities',
+        formatLocation: basicUrl +  '/coordTrans/wgs84ToGz',
+        uploadFile: basicUrl +  '/uploadFile/uploadFileByBase64',
+        addPipeLine:basicUrl+'/pipeLine/addPipeLine',
+        getUploadFile:basicUrl+'/uploadFile/getUploadFilesByBizId',
+        downloadFile:basicUrl+'/uploadFile/downloadFileById',
+        getUserRoleList:basicUrl+'/role/list',
+        getUserByRoleId:basicUrl+'/user/getUserByRoleId',
+        listUserByRole:basicUrl+'/app/listUserByRole',
+        removeAuthUser:basicUrl+'/user/removeAuthUser',
+        authUser:basicUrl+'/user/authUser',
+        getMonitorDetail:basicUrl+'/psJkDataHis/getItemDimHistoryData',
+        getMonitorPoint:basicUrl+'/agsupport_nn/rest/pscomb/getStationByCoordinate',
+        queryFacilityByArea:basicUrl+'/pipeAnalyze/boxSelectStatistics',
         queryOrder: basicUrl + '/orders/query',
         getAllFacilityType: basicUrl + '/facility/getAllFacilitysType',
         getCarList:basicUrl+'/truck/getTruckList',
         getFacilityByType:basicUrl+'/facility/getOneTypeFacilitys',
         getFacilityDetail:basicUrl+'/facility/getOneFacilityInfo',
-        getHistoricalDate:basicUrl+'/dataHistory/getDataHistoryByItemId',
         deviceDetail:basicUrl+'/device/getDeviceInfosByFacilityId',
-        monitorRealTimeValue:basicUrl+'dataReal/getDataRealByItemIds',
         getCarHistoryCount:basicUrl+'/truck/getTruckHistoryTrackCount',
-        getMonitorDetailMsg:basicUrl+'/facility/getOneFacilityInfo',
-        getFacilityLists:basicUrl+'/facility/filterFacility',
+        getDeviceList:basicUrl+'/iotDevice/list',
+        getDeviceObject:basicUrl+'/iotDevice/get',
+        getDeviceInfo:basicUrl+'/iotDevice/getDeviceInfo',
+        getAllFacilities:basicUrl+'/facility/list',
+        getDevicesByFacility:basicUrl+'/device/list',
+        getMonitorsByDevice:basicUrl+'/item/list',
+        getMonitorDetailByDevice:basicUrl+'/item/get',
+        saveMonitor:basicUrl+'/item/save',
+        getItemFieldByItemTypeId:basicUrl+'/itemType/getItemFieldByItemTypeId',
+        saveIotDeviceInfo:basicUrl+'/iotDevice/save',
+        sendDataCommand:basicUrl+'/iotDevice/registerSendDataCommand'
     }
     return {
         setToken: function (token) {
@@ -30,6 +64,16 @@ define(['config'], function (config) {
         },
         getBasicPath: function () {
             return serviceEndpoint['basicPath'];
+        },
+        //获取ajax请求默认参数（所有ajax请求都必须有的参数）
+        getDefaultAjaxParam: function () {
+            var formData = {};
+            //token登录用
+            formData.token = this.getToken();
+            //随机数，防止缓存
+            formData.r = Math.random();
+
+            return formData;
         },
         getPath: function (connectionObj) {
             var url;

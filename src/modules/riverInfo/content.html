@@ -1,0 +1,76 @@
+<div class="mainContent river-info">
+    <div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title" @click="showQueryPanel = !showQueryPanel">
+                    <h2>河湖信息
+                        <small>河流及河长信息</small>
+                    </h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link">
+                                <i v-show='showQueryPanel' class="fa fa-chevron-up"></i>
+                                <i v-show='!showQueryPanel' class="fa fa-chevron-down"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <el-collapse-transition>
+                    <div class="x_content" v-show="showQueryPanel">
+                        <div>
+                            <el-input placeholder="河涌信息" v-model="gqRiver"></el-input>
+                            <el-select v-model="gqArea" placeholder="请选择区">
+                                <el-option
+                                        v-for="item in gqAreas"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                            <el-button type="primary" @click="search">查询</el-button>
+                        </div>
+                         <div style="width: 100%;margin-top: 20px;">
+                             <el-table
+                                     :data="displayData"
+                                     style="width: 100%;">
+                                 <el-table-column
+                                         prop="riverName"
+                                         label="河流名">
+                                 </el-table-column>
+                                 <el-table-column
+                                         prop="riverStart"
+                                         label="起始点">
+                                 </el-table-column>
+                                 <el-table-column
+                                         prop="riverEnd"
+                                         label="终点">
+                                 </el-table-column>
+                                 <el-table-column
+                                         prop="riverArea"
+                                         label="所属县">
+                                 </el-table-column>
+                                 <el-table-column
+                                         prop="riverTown"
+                                         label="所属镇">
+                                 </el-table-column>
+                                 <el-table-column
+                                         prop="riverMaster"
+                                         label="河长">
+                                 </el-table-column>
+                                 <el-table-column
+                                         prop="job"
+                                         label="职务">
+                                 </el-table-column>
+                                 <el-table-column
+                                         prop="phone"
+                                         label="电话">
+                                 </el-table-column>
+                             </el-table>
+                         </div>
+                    </div>
+                </el-collapse-transition>
+            </div>
+        </div>
+    </div>
+</div>
