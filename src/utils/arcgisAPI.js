@@ -627,7 +627,7 @@ define(function () {
                 geometry: arrowPolygon,
                 symbol: sfs,
             });
-            layer.addMany([graphic]);
+            layer.addMany(graphic);
             // var arrowPoint = new Point(centerPoint.x,centerPoint.y);
             // var graphic = new Graphic(arrowPoint,new TextSymbol(twoPointDistance));
             // layer.add(graphic);
