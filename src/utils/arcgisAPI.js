@@ -9,7 +9,6 @@ define(function () {
     var arrowLayer;
     var arrowLayerHideConfirm = false;
     var flashIntervalHandle;
-    var currentMap;
     var currentVue;
     var currentMapView;
     var hideConfirm = false;
@@ -75,7 +74,7 @@ define(function () {
         var view = new instance.MapView({
             container: "mapDiv",
             map: map,
-            center: [117.81853454943274, 37.16799099829924],
+            center: [113.25787804306705,23.082829477877908],
             zoom: 18
         });
         tiledLayer.load().then(function () {
@@ -459,14 +458,14 @@ define(function () {
     };
     //10.17增加追溯分析
     //绘制南宁追溯分析查询的管网信息
-    instance.drawNNPolyline = function (result, currentMap) {
+    instance.drawNNPolyline = function (result,currentMapView, currentMap) {
         var lineColor;
         var that = this;
         if (!graphicsLayer) {
-            graphicsLayer = getMapGraphicsLayer("nnTraceAbilityAnalysis");
+            graphicsLayer = getMapGraphicsLayer(currentMap,"nnTraceAbilityAnalysis");
         }
         if (!arrowLayer) {
-            arrowLayer = getMapGraphicsLayer("arrowSymbolLayer");
+            arrowLayer = getMapGraphicsLayer(currentMap,"arrowSymbolLayer");
         }
 
         var pipeLineResult = result.mapAnalyzeResult.pipeLineResult;
@@ -505,7 +504,7 @@ define(function () {
                 "paths": [[[pipeLineObj.startX, pipeLineObj.startY], [pipeLineObj.endX, pipeLineObj.endY]]],
                 "spatialReference": currentMapView.spatialReference
             });
-            that.drawArrowPolyline(line, getMapGraphicsLayer("arrowSymbolLayer"), 15, 50, "#2F4F4F");
+            that.drawArrowPolyline(line, getMapGraphicsLayer(currentMap,"arrowSymbolLayer"), 15, 50, "#2F4F4F");
         }
         if (pipeStr.length > 0) {
             console.warn('pipe(' + pipeStr.substring(0, pipeStr.length - 1) + ')');
@@ -514,10 +513,10 @@ define(function () {
             console.warn('canal(' + cancalStr.substring(0, cancalStr.length - 1) + ')');
         }
 
-        var slopeGraphicsLayer = getMapGraphicsLayer("nnSlopeGraphicsLayer");
-        var bigSmallsGraphicsLayer = getMapGraphicsLayer("nnBigSmallsGraphicsLayer");
-        var ywsGraphicsLayer = getMapGraphicsLayer("nnywsGraphicsLayer");
-        var arrowSymbolLayer = getMapGraphicsLayer("arrowSymbolLayer");
+        var slopeGraphicsLayer = getMapGraphicsLayer(currentMap,"nnSlopeGraphicsLayer");
+        var bigSmallsGraphicsLayer = getMapGraphicsLayer(currentMap,"nnBigSmallsGraphicsLayer");
+        var ywsGraphicsLayer = getMapGraphicsLayer(currentMap,"nnywsGraphicsLayer");
+        var arrowSymbolLayer = getMapGraphicsLayer(currentMap,"arrowSymbolLayer");
         result.slopeGraphicsLayer = slopeGraphicsLayer;
         result.bigSmallsGraphicsLayer = bigSmallsGraphicsLayer;
         result.ywsGraphicsLayer = ywsGraphicsLayer;
@@ -627,13 +626,14 @@ define(function () {
                 geometry: arrowPolygon,
                 symbol: sfs,
             });
-            layer.addMany(graphic);
+            layer.add(graphic);
             // var arrowPoint = new Point(centerPoint.x,centerPoint.y);
             // var graphic = new Graphic(arrowPoint,new TextSymbol(twoPointDistance));
             // layer.add(graphic);
         }
     };
     instance.getGraphicsLayer = function (LayerId, index,map) {
+        var currentMap;
         if (!!map) {
             currentMap = map.map;
         }
@@ -654,7 +654,7 @@ define(function () {
         var result;
         var self = this;
         currentVue = vue;
-        currentMap = vue.map.map;
+        var currentMap = vue.map.map;
         currentMapView = vue.leftMap;
         currentVue.showFacilityTraceLoading = true;
         currentVue.facilityTraceLength = 0;
@@ -676,7 +676,7 @@ define(function () {
             formData.connectDown = "0";
         }
         //mapHelper.setCenter(formData.x,formData.y,currentMap,18);
-        this.clearAnalysisInfo();
+        this.clearAnalysisInfo(currentMap);
         $.ajax({
             type: "get",
             dataType: "json",
@@ -698,7 +698,7 @@ define(function () {
                             cb(false);
                             return;
                         }
-                        self.drawNNPolyline(result, currentMapView);
+                        self.drawNNPolyline(result, currentMapView,currentMap);
                         cb(true);
                     } else {
                         //后台操作失败的代码
@@ -715,11 +715,11 @@ define(function () {
         });
 
     };
-    instance.clearAnalysisInfo = function () {
+    instance.clearAnalysisInfo = function (currentMap) {debugger
         if (!flashIntervalHandle)
             clearTimeout(flashIntervalHandle);
         if (!graphicsLayer)
-            graphicsLayer = getMapGraphicsLayer("traceAbilityAnalysis");
+            graphicsLayer = getMapGraphicsLayer(currentMap,"traceAbilityAnalysis");
         graphicsLayer.removeAll();
     };
     var screenLengthToMapLength = function (map, screenPixel) {
@@ -735,7 +735,7 @@ define(function () {
         return Math.pow((xdiff * xdiff + ydiff * ydiff), 0.5);
     };
     //获取图层根据Id
-    var getMapGraphicsLayer = function (LayerId, index) {
+    var getMapGraphicsLayer = function (currentMap,LayerId, index,) {
         var graphicsLayer = null;
         if (currentMap.findLayerById(LayerId)) {
             graphicsLayer = currentMap.findLayerById(LayerId);

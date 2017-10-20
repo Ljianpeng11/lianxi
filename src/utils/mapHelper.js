@@ -43,8 +43,8 @@ define(function () {
         drawArrowPolyline : function (polyline, layer, length, angleValue, graphicColor){
             this.apiInstance.drawArrowPolyline(polyline, layer, length, angleValue, graphicColor);
         },
-        clearAnalysisInfo : function (){
-            this.apiInstance.clearAnalysisInfo();
+        clearAnalysisInfo : function (currentMap){
+            this.apiInstance.clearAnalysisInfo(currentMap);
         },
         getLayer: function (currentMap, id) {
             var layer = this.apiInstance.getLayer(currentMap, id);

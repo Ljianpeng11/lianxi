@@ -65,7 +65,7 @@ var comm = Vue.extend({
                 currentMap = map;
                 currentView = view;
                 apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
-                apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gq_gzgx/gq_gzgx/MapServer', 'lineLayer');
+                apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer', 'lineLayer');
                 mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
                     var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
                     mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {

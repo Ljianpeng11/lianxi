@@ -1203,7 +1203,7 @@ var comm = Vue.extend({
             this.$message('关闭管网追溯分析功能');
             this.isQueryTrace = false;
             // this.currentmap.setMapCursor("default");
-            mapHelper.clearAnalysisInfo();
+            mapHelper.clearAnalysisInfo(this.currentmap);
             this.tableData = [];
             this.showFacilityTraceResult = false;
         },
