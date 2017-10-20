@@ -1,0 +1,261 @@
+<transition name="right-panel">
+    <div v-if="smallRightPanelOpen" class="restrospectDetail">
+        <div class='right-panel small'>
+            <div class="goBack small"><a href='#' class="el-icon-d-arrow-right" @click="closePanel"></a></div>
+            <div class="small-panel-top">
+                <div class="panel-header">
+                    <span class="header-font">管网追溯分析</span>
+                </div>
+                <div class="panel-content-box">
+                    <div class="panel-box-title">
+                        <el-radio-group v-model="checked" ref="chartControl" @change="chartController">
+                            <el-radio-button label="1">详细图</el-radio-button>
+                            <el-radio-button label="2">概要图</el-radio-button>
+                        </el-radio-group>
+                    </div>
+                    <div class="line-pipe-content">
+                        <div class="trace-content-box clearfix">
+                            <div class="float-left">
+                                <span>开启与暂停追溯</span>
+                            </div>
+                            <div class="float-right">
+                                <el-switch
+                                        v-model="traceSwitch"
+                                        on-color="#13ce66"
+                                        off-color="#20A0FF"
+                                        on-text="打开"
+                                        off-text="暂停"
+                                        width="80">
+                                </el-switch>
+                            </div>
+                        </div>
+                        <div class="trace-content-box clearfix">
+                            <div class="float-left mgt10">
+                                <span>追溯模式</span>
+                            </div>
+                            <div class="float-right">
+                                <el-radio-group v-model="traceAnalysisType">
+                                    <el-radio-button label="上下"></el-radio-button>
+                                    <el-radio-button label="向上"></el-radio-button>
+                                    <el-radio-button label="向下"></el-radio-button>
+                                </el-radio-group>
+                            </div>
+                        </div>
+                        <div class="trace-content-box clearfix">
+                            <div class="float-left">
+                                <span class="timeTitle">起始时间</span>
+                            </div>
+                            <div class="float-right">
+                                <el-date-picker
+
+                                        v-model="startDate"
+                                        align="right"
+                                        type="datetime"
+                                        placeholder="起始时间"
+                                        :picker-options="pickerOptions1">
+                                </el-date-picker>
+                            </div>
+                        </div>
+                        <div class="trace-content-box clearfix">
+                            <div class="float-left">
+                                <span class="timeTitle">結束时间</span>
+                            </div>
+                            <div class="float-right">
+                                <el-date-picker
+                                        v-model="endDate"
+                                        align="right"
+                                        type="datetime"
+                                        placeholder="結束时间"
+                                        :picker-options="pickerOptions1">
+                                </el-date-picker>
+                            </div>
+                        </div>
+                        <div class="queryButton">
+                            <el-button type="warning" icon="search" @click="queryMonitorData">查询</el-button>
+                        </div>
+                        <!--<el-button @click="openTrace">启动追溯类型</el-button>-->
+                    </div>
+                    <ul class="line-pipe-content no-border">
+                        <li class="clearfix">
+                            <div class="line-pipe-desc float-left">
+                                <i class="color-box color-dgjxg icon-big-small"></i>
+                                <span>大管接小管:</span>
+
+                            </div>
+                            <div class="float-right">
+                                <el-switch
+                                        @change="getBigSmalls"
+                                        v-model="bigSmalls"
+                                        on-color="#13ce66"
+                                        off-color="#20A0FF"
+                                        on-text="打开"
+                                        off-text="关闭"
+                                        width="80">
+                                </el-switch>
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="line-pipe-desc float-left">
+                                <i class="color-box color-np icon-nipo"></i>
+                                <span>逆坡:</span>
+                            </div>
+                            <div class="float-right">
+                                <el-switch
+                                        @change="getSlope"
+                                        v-model="slopes"
+                                        on-color="#13ce66"
+                                        off-color="#20A0FF"
+                                        on-text="打开"
+                                        off-text="关闭"
+                                        width="80">
+                                </el-switch>
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="line-pipe-desc float-left">
+                                <i class="color-box icon-rainmix"></i>
+                                <span>雨污混接:</span>
+                            </div>
+                            <div class="float-right">
+                                <el-switch
+                                        @change="getYsw"
+                                        v-model="ysw"
+                                        on-color="#13ce66"
+                                        off-color="#20A0FF"
+                                        on-text="打开"
+                                        off-text="关闭"
+                                        width="80">
+                                </el-switch>
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="num-box clearfix">
+                                <div class="pull-left">
+                                    <i class="color-box-sm color-dgjxg icon-big-small"></i>
+                                    <span>大管接小管:</span>
+                                    <span><strong>{{pipeBigSmalls}}</strong></span>
+                                </div>
+                                <div class="pull-left">
+                                    <i class="color-box-sm color-np icon-nipo"></i>
+                                    <span>逆坡:</span>
+                                    <span><strong>{{slopesCount}}</strong></span>
+                                </div>
+                                <div class="pull-left">
+                                    <i class="color-box-sm icon-rainmix"></i>
+                                    <span>雨污混接:</span>
+                                    <span><strong>{{rainMixCount}}</strong></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>追溯管线总长度：</span>
+                            <span>{{linePipeLong}}米</span>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="trace-panel-table">
+                <el-table
+                        :data="pipeLineTableData"
+                        max-height="250"
+                        style="width: 100%">
+                    <el-table-column
+                            prop="pipeLineId"
+                            label="管线编号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="pipeLineLong"
+                            label="管线长度">
+                    </el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="120">
+                        <template scope="scope">
+                            <el-button
+                                    @click.native.prevent="showPipeRow(scope.$index, pipeLineTableData)"
+                                    type="text"
+                                    size="small">
+                                显示管线
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="small-panel-bottom" v-show="showQueryResult">
+                <div class="panel-header">
+                    <span class="header-font">监控点视频</span>
+                </div>
+                <video class="video-box" autoplay="autoplay" controls autobuffer>
+                    <source src="./video/test.webm" type='video/webm'/>
+                </video>
+            </div>
+        </div>
+        <div class="pipe-panel-header" v-show="crossSectionCharts ||lineCharts ">
+            <div class="charts-pager">
+                <el-pagination v-show="totalPage/pageSize >1"
+                               @current-change="handleCurrentPageChange"
+                               :current-page="currentPage4"
+                               :page-size="pageSize"
+                               layout="prev, pager, next "
+                               :total="totalPage">
+                </el-pagination>
+            </div>
+            <span class="header-font" v-show="crossSectionCharts">管道剖面图</span>
+            <span class="header-font" v-show="lineCharts">管道概览图</span>
+        </div>
+        <div class="charts-detail" v-show="crossSectionCharts">
+            <!--
+                        <div id="restrospectChart" :style="analyzeResultStyle"></div>
+            -->
+            <div id="restrospectChart"></div>
+        </div>
+        <div class="charts-detail" v-show="lineCharts">
+            <div id="restrospectLineChart"></div>
+        </div>
+        <el-dialog
+                title="派发工单"
+                :visible.sync="dialogVisible"
+                size="tiny">
+            <el-form :model="form" label-width="85px" label-position="left">
+                <el-form-item label="日期">
+                    <el-input v-model="form.date"></el-input>
+                </el-form-item>
+                <el-form-item label="案件类型">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="问题点编号">
+                    <el-input v-model="form.usID"></el-input>
+                </el-form-item>
+                <el-form-item label="上游管径">
+                    <el-input v-model="form.upSize"></el-input>
+                </el-form-item>
+                <el-form-item label="下游管径">
+                    <el-input v-model="form.downSize"></el-input>
+                </el-form-item>
+                <el-form-item label="权属单位">
+                    <el-input v-model="form.owner"></el-input>
+                </el-form-item>
+                <el-form-item label="地图示意">
+                    <div id="caseMap"></div>
+                </el-form-item>
+                <el-form-item label="坐标">
+                    <el-input v-model="form.coord"></el-input>
+                </el-form-item>
+                <el-form-item label="流转部门">
+                    <el-select v-model="form.handler" placeholder="请选择流转部门" style="width: 100%;">
+                        <el-option label="净水公司" value="1"></el-option>
+                        <el-option label="区属单位" value="2"></el-option>
+                        <el-option label="其他" value="3"></el-option>
+                    </el-select>
+
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false;submitCase()">派发</el-button>
+  </span>
+        </el-dialog>
+    </div>
+</transition>

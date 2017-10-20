@@ -34,6 +34,18 @@ define(function () {
                 console.log('地图加载完毕！');
             }, clickCb);
         },
+        nnTraceAnalysisByRecursive:function (event, traceAnalysisType, vue, cb) {
+            this.apiInstance.nnTraceAnalysisByRecursive(event, traceAnalysisType, vue, cb);
+        },
+        getGraphicsLayer:function (LayerId, index, map) {
+            return this.apiInstance.getGraphicsLayer(LayerId, index, map);
+        },
+        drawArrowPolyline : function (polyline, layer, length, angleValue, graphicColor){
+            this.apiInstance.drawArrowPolyline(polyline, layer, length, angleValue, graphicColor);
+        },
+        clearAnalysisInfo : function (){
+            this.apiInstance.clearAnalysisInfo();
+        },
         getLayer: function (currentMap, id) {
             var layer = this.apiInstance.getLayer(currentMap, id);
             return layer;
@@ -66,13 +78,16 @@ define(function () {
             }
         },
         createPolyline: function (layer, paths, styleObj) {
-            this.apiInstance.createPolyline(layer, paths, styleObj);
+            return this.apiInstance.createPolyline(layer, paths, styleObj);
         },
         createMakerSymbol: function (layer, x, y, styleObj) {
             this.apiInstance.createSymbol(layer, x, y, styleObj);
         },
         createPictureMarkSymbol: function (layer, x, y, imgObj) {
             return this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj);
+        },
+        addPictureMarkSymbol: function (layer, x, y, imgObj,attributes) {
+            return this.apiInstance.addPictureMarkSymbol(layer, x, y, imgObj,attributes);
         },
         createPolygon: function (layer, coords, styleObj) {
             this.apiInstance.createPolygon(layer, coords, styleObj);

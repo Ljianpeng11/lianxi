@@ -11,7 +11,7 @@ var infoWindow = require('./plugin/infoWindow');
 var rightPanel = require('modules/rightPanel');
 var mapHelper = require('utils/mapHelper');
 var tabModel = require('controllers/model/appTabModel');
-
+var retrospectDetail = require('modules/retrospectDetail');
 
 var initPlugin = function (facilityArr, self) {
     global.init();
@@ -51,8 +51,10 @@ var comm = Vue.extend({
         //初始化地图
         initBaseMap: function () {
             var layerURL = 'http://112.74.51.12:6080/arcgis/rest/services/hwShow201705/MapServer';
-            var centerX = 121.45075120184849;
-            var centerY = 31.25010784918339;
+            // var centerX = 121.45075120184849;
+            // var centerY = 31.25010784918339;
+            var centerX = 117.81853454943274;
+            var centerY = 37.16799099829924;
             var zoom = 10;
             var currentMap = {};
             var currentView = {};
@@ -63,6 +65,7 @@ var comm = Vue.extend({
                 currentMap = map;
                 currentView = view;
                 apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
+                apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gq_gzgx/gq_gzgx/MapServer', 'lineLayer');
                 mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
                     var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
                     mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
@@ -70,9 +73,14 @@ var comm = Vue.extend({
                         width: 4
                     })
                 });
+                //10.17
+                var getMap={};
+                getMap.map = map;
+                getMap.view = view;
+                eventHelper.emit('get-map', getMap);
             }, function (evt) {
                 console.log(evt);
-                mapHelper.setCenter(currentView, evt.mapPoint.x, evt.mapPoint.y);
+                // mapHelper.setCenter(currentView, evt.mapPoint.x, evt.mapPoint.y);
             });
             return map;
         }
@@ -121,7 +129,7 @@ var comm = Vue.extend({
                                 size:'8px'
                             };
                             graphics.push(mapHelper.createPictureMarkSymbol(graLayer, item.x, item.y, imgObj));
-                            markerSymbols.push(mapHelper.createMarkerSymbol(graLayer,item.x,item.y,styleObj))
+                            // markerSymbols.push(mapHelper.createMarkerSymbol(graLayer,item.x,item.y,styleObj))
                         });
                         self.facilityArr[legend.facilityTypeName] = {
                             graphics:graphics,
@@ -150,7 +158,8 @@ var comm = Vue.extend({
     components: {
         'layer-list':layerList,
         'info-window': infoWindow,
-        'right-panel':rightPanel
+        'right-panel':rightPanel,
+        'retrospect-detail':retrospectDetail
     }
 });
 module.exports = comm;
