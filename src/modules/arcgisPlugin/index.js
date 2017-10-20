@@ -53,11 +53,9 @@ var comm = Vue.extend({
         //初始化地图
         initBaseMap: function () {
             var layerURL = 'http://112.74.51.12:6080/arcgis/rest/services/hwShow201705/MapServer';
-            // var centerX = 121.45075120184849;
-            // var centerY = 31.25010784918339;
-            var centerX = 117.81853454943274;
-            var centerY = 37.16799099829924;
-            var zoom = 10;
+            var centerX = 113.25632146945043;
+            var centerY = 23.080910339385692;
+            var zoom = 18;
             var currentMap = {};
             var currentView = {};
             var self = this;
@@ -80,17 +78,21 @@ var comm = Vue.extend({
                 self.graLayer.on('layerview-create',function(evt){
                     var graView = evt.view;
                     var graLayerView = evt.layerView;
-                    var layer = evt.layerView.layer;
+                    var layerId = evt.layerView.layer.id;
                     var getMap={};
                     getMap.map = map;
                     getMap.view = view;
                     eventHelper.emit('get-map', getMap);
                     graView.on('click',function(event){
                         graView.hitTest(event).then(function(response){
+                            debugger;
                             var graphic = response.results[0].graphic;
                             var attributes = graphic.attributes;
                             // mapHelper.setCenter(graView, evt.mapPoint.x, evt.mapPoint.y);
-                            self.$refs.rightPanel.open(attributes.item, attributes.facilityTypeName);
+                            if(layerId === 'graphicLayer'){
+                                self.$refs.rightPanel.open(attributes.item, attributes.facilityTypeName);
+                                return;
+                            }
                         });
                     });
                 });
