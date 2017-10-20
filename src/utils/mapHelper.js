@@ -40,6 +40,9 @@ define(function () {
         getGraphicsLayer:function (LayerId, index, map) {
             return this.apiInstance.getGraphicsLayer(LayerId, index, map);
         },
+        createGraphicsLayer : function (map, id){
+            return this.apiInstance.createGraphicsLayer(map, id);
+        },
         drawArrowPolyline : function (polyline, layer, length, angleValue, graphicColor){
             this.apiInstance.drawArrowPolyline(polyline, layer, length, angleValue, graphicColor);
         },
