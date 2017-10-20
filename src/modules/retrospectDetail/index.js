@@ -851,17 +851,7 @@ var comm = Vue.extend({
                         id: pipeLine.endUsid,
                         pipeLine: pipeLine,
                         facilityType: 'pipeLine'
-                    } );
-                    // mapHelper.createSymbol(false, pipeLine.startX, pipeLine.startY, 'img/markPoint.png', false, {
-                    //     id: pipeLine.startUsid,
-                    //     pipeLine: pipeLine,
-                    //     facilityType: 'pipeLine'
-                    // }, this.selectedPipeLineLayer);
-                    // mapHelper.createSymbol(false, pipeLine.endX, pipeLine.endY, 'img/markPoint.png', false, {
-                    //     id: pipeLine.endUsid,
-                    //     pipeLine: pipeLine,
-                    //     facilityType: 'pipeLine'
-                    // }, this.selectedPipeLineLayer);
+                    });
                 }
             }
             mapHelper.setCenter(this.leftMap,cachePipeLines[parseInt(cachePipeLines.length / 2)].endX, cachePipeLines[parseInt(cachePipeLines.length / 2)].endY);
