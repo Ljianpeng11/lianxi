@@ -51,6 +51,27 @@ var comm = Vue.extend({
             if(!indeterminate){
                 eventHelper.emit('openMapLegend', data);
             }
+        },
+        renderContent(h, { node, data, store }) {
+            console.log(node,data,store);
+            let icon = './img/toolbar/huawei-'+data.icon+'.png';
+            let showIcon = data.showIcon;
+            if(!!data.children){
+                return (
+                    <span>
+                    <span>{node.label}</span>
+                    </span>);
+            }else{
+                return (
+                    <span>
+                    <span>
+                    <span>{node.label}</span>
+                </span>
+                <span style="float: right; margin: 5px">
+                    <img src={icon} width='20px' height='24px'/>
+                    </span>
+                    </span>);
+            }
         }
     },
     components: {}
