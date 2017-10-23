@@ -141,15 +141,15 @@ var comm = Vue.extend({
                 var facilityID = facility.id;
                 if (facilityTypeName == 'WP') {
                     this.facilityType = 'yld';
-                    this.facilityPic = '../src/img/huawei-demo.jpg';
+                    this.facilityPic = './img/huawei-demo.jpg';
                 } else if (facilityTypeName == 'WD') {
                     this.facilityType = 'yj';
-                    this.facilityPic = '../src/img/huawei-demo.jpg';
+                    this.facilityPic = './img/huawei-demo.jpg';
                 } else if (facilityTypeName == 'RF') {
-                    this.facilityPic = '../src/img/ylj.png';
+                    this.facilityPic = './img/ylj.png';
                     this.facilityType = facilityTypeName;
                 } else if (facilityTypeName == 'DS') {
-                    this.facilityPic = '../src/img/ylj.png';
+                    this.facilityPic = './img/ylj.png';
                     this.facilityType = facilityTypeName;
 
                 } else if (facilityTypeName == 'CP') {
@@ -308,13 +308,6 @@ var comm = Vue.extend({
 
         },
         switchMode: function (key, keyPath) {
-            if (!this.isRealTimeMode) {
-                this.$message({
-                    message: '暂无历史数据！',
-                    type: 'warning'
-                });
-                return;
-            }
             this.isRealTimeMode = key === '1';
             if (!this.isRealTimeMode) {
                 eventHelper.emit('isLoading');

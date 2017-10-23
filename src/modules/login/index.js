@@ -20,6 +20,7 @@ var comm = Vue.extend({
                 $('#loginPanel').hide();
                 this.loginComplete = true;
             }.bind(this), function (error) {
+                $('#app').hide();
                 eventHelper.emit('loading-end');
                 this.$message.error('密码错误');
             }.bind(this));

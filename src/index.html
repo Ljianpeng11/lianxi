@@ -16,6 +16,7 @@
     <script type="text/javascript">
         function login() {
             $('#loadingMask').show();
+            $('#app').show();
             var timmer = setInterval(function () {
                 if (!!window.eventHelper) {
                     window.eventHelper.emit('startLogin');
