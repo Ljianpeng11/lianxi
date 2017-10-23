@@ -1441,27 +1441,27 @@ table.dataTable td.focus {
 }
 
 .paginate_disabled_previous {
-    background: url("../images/back_disabled.png") no-repeat top left;
+    background: url("../img/back_disabled.png") no-repeat top left;
 }
 
 .paginate_enabled_previous {
-    background: url("../images/back_enabled.png") no-repeat top left;
+    background: url("../img/back_enabled.png") no-repeat top left;
 }
 
 .paginate_enabled_previous:hover {
-    background: url("../images/back_enabled_hover.png") no-repeat top left;
+    background: url("../img/back_enabled_hover.png") no-repeat top left;
 }
 
 .paginate_disabled_next {
-    background: url("../images/forward_disabled.png") no-repeat top right;
+    background: url("../img/forward_disabled.png") no-repeat top right;
 }
 
 .paginate_enabled_next {
-    background: url("../images/forward_enabled.png") no-repeat top right;
+    background: url("../img/forward_enabled.png") no-repeat top right;
 }
 
 .paginate_enabled_next:hover {
-    background: url("../images/forward_enabled_hover.png") no-repeat top right;
+    background: url("../img/forward_enabled_hover.png") no-repeat top right;
 }
 
 table.display {
@@ -3865,7 +3865,7 @@ ul.project_files li a i {
     right: 0;
     bottom: 0;
     left: 0;
-    background: #fff url("../images/loading.gif") no-repeat center center;
+    background: #fff url("../img/loading.gif") no-repeat center center;
     opacity: .75;
     filter: alpha(opacity=75);
     z-index: 20140628;
