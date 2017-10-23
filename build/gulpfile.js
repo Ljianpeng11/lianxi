@@ -99,6 +99,7 @@ gulp.task('webpack-build',['concat-lib'],function () {
 });
 gulp.task('copy-vendors',function(){
     gulp.src('../vendors/**/**').pipe(gulp.dest('../release/vendors'));
+    gulp.src('../src/css/login.css').pipe(gulp.dest('../release/css'));
     gulp.src('../build/dist/vendor.dll.js').pipe(gulp.dest('../release'));
     gulp.src('../startCDN.bat').pipe(gulp.dest('../release'));
     gulp.src('../src/img/**/**').pipe(gulp.dest('../release/img'));

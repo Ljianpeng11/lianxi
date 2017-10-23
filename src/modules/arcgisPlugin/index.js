@@ -7,11 +7,11 @@ var mapType = require('./plugin/mapType/mapType');
 var layerList = require('./plugin/layerList');
 var global = require('./plugin/global');
 var facilityController = require('controllers/facilityController');
-var arcgisHelper = require('./plugin/arcgisExpand/arcgis-load-map');
 var infoWindow = require('./plugin/infoWindow');
+var rightPanel = require('modules/rightPanel');
 var mapHelper = require('utils/mapHelper');
 var tabModel = require('controllers/model/appTabModel');
-
+var retrospectDetail = require('modules/retrospectDetail');
 
 var initPlugin = function (facilityArr, self) {
     global.init();
@@ -44,34 +44,102 @@ var comm = Vue.extend({
             drawPointGraphics: [],
             drawLineGraphics: [],
             polygonId: 1,
+            baseMap:{},
+            graLayer:{},
+            graphics:[]
         }
     },
     methods: {
         //初始化地图
         initBaseMap: function () {
             var layerURL = 'http://112.74.51.12:6080/arcgis/rest/services/hwShow201705/MapServer';
-            var centerX = 121.45075120184849;
-            var centerY = 31.25010784918339;
-            var zoom = 10;
+            var centerX = 113.25632146945043;
+            var centerY = 23.080910339385692;
+            var zoom = 18;
             var currentMap = {};
             var currentView = {};
+            var self = this;
             var apiInstance = mapHelper.getInstance();
-            var map = mapHelper.initTDMap('', centerX, centerY, zoom, function (map, view) {
+            var map = mapHelper.initTDMap("mapDiv", centerX, centerY, zoom, function (map, view) {
+                self.baseMap = map;
+                var apiInstance = mapHelper.getInstance();
+                self.graLayer = apiInstance.createGraphicsLayer(self.baseMap,'graphicLayer');
                 currentMap = map;
                 currentView = view;
                 apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
+                apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer', 'lineLayer');
                 mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
                     var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
                     mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
                         color: [226, 119, 40],
                         width: 4
                     })
-                })
-            }, function (evt) {
-                console.log(evt);
-                mapHelper.setCenter(currentView, evt.mapPoint.x, evt.mapPoint.y);
-            });
+                });
+                self.graLayer.on('layerview-create',function(evt){
+                    var graView = evt.view;
+                    var graLayerView = evt.layerView;
+                    var layerId = evt.layerView.layer.id;
+                    var getMap={};
+                    getMap.map = map;
+                    getMap.view = view;
+                    eventHelper.emit('get-map', getMap);
+                    graView.on('click',function(event){
+                        graView.hitTest(event).then(function(response){
+                            var graphic = response.results[0].graphic;
+                            var attributes = graphic.attributes;
+                            if(attributes.facilityType == 'IP'){
+                                eventHelper.emit('open-facilityInfo-dialog',attributes);
+                                return;
+                            }
+                            // mapHelper.setCenter(graView, evt.mapPoint.x, evt.mapPoint.y);
+                            if(layerId === 'graphicLayer'){
+                                self.$refs.rightPanel.open(attributes.item, attributes.facilityTypeName);
+                                return;
+                            }
+                        });
+                    });
+                });
+            }
+            // , function (evt) {
+            //     console.log(evt);
+            //     mapHelper.setCenter(currentView, evt.mapPoint.x, evt.mapPoint.y);
+            // }
+            );
             return map;
+        },
+        createPoint:function(legend,subFacilities){
+            subFacilities.forEach(function (item) {
+                var icon = !!legend.icon ? legend.icon : legend.facilityTypeName;
+                var newIcon = './img/toolbar/huawei-' + icon + '.png';
+                item.fid = 'f' + legend.id;
+                var imgObj = {
+                    url: newIcon,
+                    width: "30px",
+                    height: "36px"
+                };
+                var textObj = {
+                    color:'red',
+                    text:item.name,
+                    yoffset:-18,
+                    verticalAlignment:'top',
+                    font:{
+                        size:12
+                    }
+                };
+                var attributes = {
+                    'item':item,
+                    'facilityTypeName':legend.facilityTypeName,
+                    'id':item.fid
+                };
+                var graphic = mapHelper.createPictureMarkSymbol(this.graLayer, item.x, item.y, imgObj,attributes);
+                this.graphics.push(graphic);
+                this.graphics.push(mapHelper.createTextSymbol(this.graLayer,item.x,item.y,textObj));
+            }.bind(this));
+            this.facilityArr[legend.facilityTypeName] = {
+                graphics:this.graphics,
+                data:subFacilities,
+                layer:this.graLayer
+            };
         }
     },
     mounted: function () {
@@ -80,40 +148,62 @@ var comm = Vue.extend({
         initPlugin(this.facilityArr, this);
         var self = this;
         //初始化地图
-        var map = this.initBaseMap();
-        //创建地图并把地图对象穿进去
-        eventHelper.emit('mapCreated', map);
-        this.leftMap = map;
+        this.initBaseMap();
         eventHelper.on('openMapLegend', function (legend) {
             eventHelper.emit('loading-start');
             console.log(legend);
             if (!!legend.showIcon) {
                 var cacheFacilities = self.facilityArr[legend.facilityTypeName];
                 if (!!cacheFacilities && cacheFacilities.length > 0) {
-                    arcgisHelper.createPoints(cacheFacilities, legend, true);
+                    // arcgisHelper.createPoints(cacheFacilities, legend, true);
                     eventHelper.emit('loading-end');
                 } else {
                     facilityController.getFacilityByType(legend.id, function (subFacilities) {
-                        if (legend.facilityTypeName == 'WD') {
-                            subFacilities.forEach(function (subFacility) {
-                                subFacility.icon = './css/images/huawei-yj.png'
-                            })
-                        } else if (legend.facilityTypeName == 'WP') {
-                            subFacilities.forEach(function (subFacility) {
-                                subFacility.icon = './css/images/huawei-yld.png'
-                            })
-                        }
-                        debugger;
-                        var graLayer = arcgisHelper.createPoints(subFacilities, legend, true);
-                        self.facilityArr[legend.facilityTypeName] = {
-                            data: subFacilities,
-                            layer: graLayer
-                        };
+                        // if (legend.facilityTypeName == 'CP') {
+                        //     this.reportPointInterval = setInterval(function () {
+                        //         var cacheFacilities = self.facilityArr[legend.facilityTypeName];
+                        //         facilityController.getFacilityByType(legend.id, function (subFacilities) {
+                        //             debugger;
+                        //             if (cacheFacilities.data.length == subFacilities.length) {
+                        //
+                        //             } else {
+                        //                 self.$notify({
+                        //                     title: '提示信息',
+                        //                     message: '新增巡查上报点',
+                        //                     type: 'warning'
+                        //                 });
+                        //                 var items = [{
+                        //                     title: '上报时间',
+                        //                     content: moment().format('MM-DD HH:mm:ss', new Date())
+                        //                 }, {
+                        //                     title: '案件类型',
+                        //                     content: subFacilities[subFacilities.length - 1].name
+                        //                 }]
+                        //                 eventHelper.emit('alert-point', [{
+                        //                     items: items,
+                        //                     x: subFacilities[subFacilities.length - 1].x,
+                        //                     y: subFacilities[subFacilities.length - 1].y
+                        //                 }]);
+                        //                 mapHelper.removeGraphics(self.facilityArr[legend.facilityTypeName].layer,self.facilityArr[legend.facilityTypeName].graphics);
+                        //                 self.createPoint(legend,subFacilities);
+                        //                 cacheFacilities = self.facilityArr[legend.facilityTypeName];
+                        //             }
+                        //         }.bind(this));
+                        //     }, 1000);
+                        // } else {
+                        //     if (!!self.reportPointInterval) {
+                        //         clearInterval(self.reportPointInterval);
+                        //         eventHelper.emit('alert-point-close');
+                        //     }
+                        // }
+                        self.createPoint(legend,subFacilities);
                         eventHelper.emit('loading-end');
                     });
                 }
             } else {
-                arcgisHelper.removePoints(self.facilityArr[legend.facilityTypeName]);
+                var layer = self.facilityArr[legend.facilityTypeName].layer;
+                var graphics = self.facilityArr[legend.facilityTypeName].graphics;
+                mapHelper.removeGraphics(layer,graphics);
                 eventHelper.emit('loading-end');
             }
         }.bind(this));
@@ -129,7 +219,9 @@ var comm = Vue.extend({
     },
     components: {
         'layer-list':layerList,
-        'info-window': infoWindow
+        'info-window': infoWindow,
+        'right-panel':rightPanel,
+        'retrospect-detail':retrospectDetail
     }
 });
 module.exports = comm;

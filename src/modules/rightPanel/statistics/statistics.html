@@ -1,7 +1,7 @@
 <div class="middle-r">
     <pump-stations v-show="isPumpStation && !showHistoricalStatisticsView &&!isPumpStationStatisticsActive"></pump-stations>
     <reservoir v-show="isReservoir && !showHistoricalStatisticsView" ref="reservoir"></reservoir>
-    <div class='statistics-main' :class='{fullStatistics:!showStatisticsView}' v-show='!showHistoricalStatisticsView &&isPumpStationStatisticsActive && !isReservoir'></div>
+    <div class='statistics-main' id="statistics-main" :class='{fullStatistics:!showStatisticsView}' v-show='!showHistoricalStatisticsView &&isPumpStationStatisticsActive && !isReservoir'></div>
     <div class="statistics-view" v-show='showStatisticsView &&!showHistoricalStatisticsView && !isReservoir'></div>
     <div class='statistics-main-history' v-show='showHistoricalStatisticsView && !isReservoir'></div>
     <div class='statistics-main-history statistics-main-history-pump' v-show='showHistoricalStatisticsView && isPumpStation'></div>

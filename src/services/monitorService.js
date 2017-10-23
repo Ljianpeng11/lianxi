@@ -26,6 +26,7 @@ define(['./serviceHelper'],function(serviceHelper){
 				}
 			};
 			$.get(serviceHelper.getPath(parameter),function(result,errorCb){
+                console.log(result);
 			if(!!result){
 			if(!!result.success){
 				cb(result.data);

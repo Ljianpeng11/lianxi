@@ -5,32 +5,32 @@ var eventHelper = require('../../utils/eventHelper');
 var comm = Vue.extend({
     template: template,
     data: function () {
-        return {
-            ruleForm10: {
-                name: '',
-                sex:'',
-                eMail:'',
-                telphone:'',
-                date:''
-            },
-            password: '123456',
-            userName: 'eadmin',
-            loginComplete: false
-        }
+        return {}
     },
     methods: {
         login: function () {
             eventHelper.emit('loading-start');
-            loginCtrl.login(this.userName, this.password, function (token) {
+            var userName = $('#userName').val();
+            var password = $('#password').val();
+            loginCtrl.login(userName, password, function (token) {
                 eventHelper.emit('loading-end');
                 eventHelper.emit('loginSuccess', token);
                 console.log('Login Success:', token);
+                $('#app').show();
+                $('#loginPanel').hide();
                 this.loginComplete = true;
+            }.bind(this), function (error) {
+                $('#app').hide();
+                eventHelper.emit('loading-end');
+                this.$message.error('密码错误');
             }.bind(this));
         }
     },
     mounted: function () {
         var cache = window.sessionStorage.getItem('cescToken');
+        eventHelper.on('startLogin', function () {
+            this.login();
+        }.bind(this));
         if (!!cache) {
             this.$nextTick(function () {
                 loginCtrl.setToken(cache);
@@ -38,6 +38,8 @@ var comm = Vue.extend({
                 eventHelper.emit('loginSuccess', cache);
                 console.log('Login Success:', cache);
                 this.loginComplete = true;
+                $('#app').show();
+                $('#loginPanel').hide();
             }.bind(this));
         }
         /* if (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0) {

@@ -6,12 +6,12 @@
     <div id="draw-line" class="esri-widget-button esri-widget esri-interactive">
         <span class="esri-icon-polyline"></span>
     </div>
-    <div id="draw-point" class="esri-widget-button esri-widget esri-interactive">
-        <span class=esri-icon-map-pin></span>
-    </div>
-    <div id="draw-polygon" class="esri-widget-button esri-widget esri-interactive">
-        <span class=esri-icon-polygon></span>
-    </div>
+    <!--<div id="draw-point" class="esri-widget-button esri-widget esri-interactive">-->
+        <!--<span class=esri-icon-map-pin></span>-->
+    <!--</div>-->
+    <!--<div id="draw-polygon" class="esri-widget-button esri-widget esri-interactive">-->
+        <!--<span class=esri-icon-polygon></span>-->
+    <!--</div>-->
     <div id="toolBar" v-show="showtools"></div>
     <div id="mapType" v-show="showtools"></div>
     <layer-list ref="mapLegend"></layer-list>
@@ -65,4 +65,5 @@
     <!--right panel end-->
     <!--dialog start-->
     <info-window></info-window>
+    <retrospect-detail></retrospect-detail>
 </div>

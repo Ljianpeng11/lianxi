@@ -1,8 +1,6 @@
 @import "./app.css";
 @import "./custom.css";
 @import "./iconfont/iconfont.css";
-@import "./modules/appDemoForm.css";
-@import "./modules/login.css";
 @import "./modules/loaders.css";
 @import "./modules/appTab.css";
 @import "./modules/menu.css";
@@ -15,7 +13,6 @@
 @import "./modules/dateController.css";
 @import "./modules/pumpStationBar.css";
 @import "./modules/pumpStations.css";
-@import "./modules/weatherReport.css";
 @import "./modules/reservior.css";
 @import "./modules/reserviorHistory.css";
 @import "./modules/flexMapLegend.css";
