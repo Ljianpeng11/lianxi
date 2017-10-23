@@ -1,0 +1,139 @@
+<transition name="right-panel">
+    <div v-show='rightPanelOpen' class='right-panel facilityManagePanel'>
+        <div class="goBack"><a href='#' class="el-icon-d-arrow-right" @click="closePanel"></a></div>
+        <div class="panel-header">
+            <div v-if="!isNew"> {{device.text}} IMEI: {{device.imei}}</div>
+            <div v-if="isNew">新增设备</div>
+        </div>
+        <div>
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="设备管理" name="first">
+                    <div class="panel-content">
+                        <el-form ref="deviceInfo" :model="deviceInfo" label-width="80px">
+                            <el-form-item label="设备名">
+                                <el-input v-model="device.text" :disabled="!editAble"></el-input>
+                            </el-form-item>
+                            <el-form-item label="IMEI">
+                                <el-input v-model="device.imei" :disabled="!editAble"></el-input>
+                            </el-form-item>
+                            <el-form-item label="Manufacturer Id">
+                                <el-input v-model="deviceInfo.manufacturerId" :disabled="!editAble"></el-input>
+                            </el-form-item>
+                            <el-form-item label="Manufacturer Name">
+                                <el-input v-model="deviceInfo.manufacturerName" :disabled="!editAble"></el-input>
+                            </el-form-item>
+                            <el-form-item label="Device Type">
+                                <el-input v-model="deviceInfo.deviceType" :disabled="!editAble"></el-input>
+                            </el-form-item>
+                            <el-form-item label="Model">
+                                <el-input v-model="deviceInfo.model" :disabled="!editAble"></el-input>
+                            </el-form-item>
+                            <el-form-item label="Protocol Type">
+                                <el-input v-model="deviceInfo.protocolType" :disabled="!editAble"></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <div class="cmdPanel">
+                            <el-button type="primary" icon="upload" @click="showCommandPanel = true;cmdType=''">发送命令
+                            </el-button>
+                        </div>
+                        <div class="cmdPanel">
+                            <el-button type="primary" icon="search">查询命令</el-button>
+                        </div>
+                        <div class="cmdPanel">
+                            <el-button type="primary" icon="menu">设备信息</el-button>
+                        </div>
+                        <div class="cmdPanel">
+                            <el-button type="primary" icon="circle-cross">删除设备</el-button>
+                        </div>
+                        <div class="cmdPanel">
+                            <el-button type="primary" icon="warning">取消注册</el-button>
+                        </div>
+                        <div class="cmdPanel">
+                            <el-button type="primary" icon="document">注册设备</el-button>
+                        </div>
+
+
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="监测项配置" name="second">
+                    <div class="panel-content">
+                        <el-form ref="monitorInfo" :model="monitorInfo" label-width="80px">
+                            <el-form-item label="测站">
+                                <el-select ref='facilitySelector' v-model="monitorInfo.facility" placeholder="测站">
+                                    <el-option v-for="item in facilities"
+                                               :key="item.id"
+                                               :label="item.name"
+                                               :value="item"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="设备">
+                                <el-select ref='deviceSelector' v-model="monitorInfo.device" placeholder="设备">
+                                    <el-option v-for="item in devices"
+                                               :key="item.id"
+                                               :label="item.name + '-'+item.id"
+                                               :value="item"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-form>
+                        <div v-show="showMappingTable">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td>IOT ID</td>
+                                    <td>监测项</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="item in iotMonitors">
+                                    <td>{{item.iotID}}</td>
+                                    <td>
+                                        <el-select v-model="item.monitorItem"
+                                                   placeholder="测站">
+                                            <el-option v-for="monitor in monitors"
+                                                       :key="monitor.id"
+                                                       :label="monitor.id+'-'+monitor.itemTypeId"
+                                                       :value="monitor"></el-option>
+                                        </el-select>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="submitButton">
+                                <el-button type="primary" @click="saveMapping">保存<i
+                                        class="el-icon-upload el-icon--right"></i></el-button>
+                            </div>
+                        </div>
+                    </div>
+                </el-tab-pane>
+
+            </el-tabs>
+        </div>
+        <el-dialog
+                title="发送命令"
+                :visible.sync="showCommandPanel"
+                size="tiny">
+            <span class="commandTitle">命令类型</span>
+            <el-select v-model="cmdType" placeholder="请选择命令类型">
+                <el-option label="设备重启" value="10"></el-option>
+                <el-option value=11 label="水位正常频率(单位:秒)"></el-option>
+                <el-option value=12 label="预警值(单位:厘米)"></el-option>
+                <el-option value=13 label="预警频率(单位:分钟)"></el-option>
+                <el-option value=14 label="警告值(单位:厘米)"></el-option>
+                <el-option value=15 label="警告频率(单位:分钟)"></el-option>
+                <el-option value=16 label="IP地址高位"></el-option>
+                <el-option value=17 label="IP地址低位"></el-option>
+            </el-select>
+            <div v-show="cmdType==11">
+                <span class="commandTitle commandValue">采集频率</span>
+                <el-slider v-model="commandValue" :step="10" show-stops :format-tooltip="formatTooltip"></el-slider>
+                <span class="commandDisplay">{{formatCommandValue}}</span>
+            </div>
+            <div v-show="cmdType==11" class="commandButton">
+                <el-button type="text" type="info" @click="showCommandPanel = false">返回</el-button>
+                <el-button type="text" type="danger" @click="sendCommand">发送</el-button>
+            </div>
+        </el-dialog>
+    </div>
+
+
+</transition>
