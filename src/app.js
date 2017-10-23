@@ -17,7 +17,7 @@ var arcgisAPI = require('utils/arcgisAPI');
 var mapHelper = require('utils/mapHelper');
 Vue.use(ElementUI);
 Vue.use(VueRouter);
-window.eventHelper = eventHelper;
+
 // 2. 定义路由
 // 每个路由应该映射一个组件。 其中"component" 可以是
 // 通过 Vue.extend() 创建的组件构造器，
@@ -49,6 +49,7 @@ var app = new Vue({
         $('#loadingMask').hide();
         eventHelper.on('loginSuccess', function () {
             this.isLoginSuccess = true;
+          //  $('#app').show();
         }.bind(this));
         eventHelper.on('loading-start', function () {
             $('#loadingMask').show();
@@ -59,6 +60,7 @@ var app = new Vue({
         eventHelper.on('toggle-menu', function (flag) {
             this.isMenuToggleOff = flag;
         }.bind(this));
+        window.eventHelper = eventHelper;
     }, data: function () {
         return {
             isLoginSuccess: false,

@@ -12,6 +12,18 @@
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
     <title>智慧水务在线监测系统</title>
+    <link rel="stylesheet" href="./css/login.css">
+    <script type="text/javascript">
+        function login() {
+            $('#loadingMask').show();
+            var timmer = setInterval(function () {
+                if (!!window.eventHelper) {
+                    window.eventHelper.emit('startLogin');
+                    clearInterval(timmer);
+                }
+            }, 10);
+        };
+    </script>
     <link rel="stylesheet" href="http://120.77.246.153:9000/element-ui/lib/theme-default/index.css">
     <link rel="stylesheet" href="../vendors/loaders.css">
 
@@ -29,6 +41,29 @@
 </head>
 
 <body class="nav-md">
+<div class="bg-login" id="loginPanel">
+    <div class="loginPanel">
+        <p class="logo"><img src="./img/login/logo.png"></p>
+        <div class="srk-login">
+            <p class="title-l">用户登录</p>
+            <ul>
+                <li class="srk">
+                    <input class="user" id='userName' type="text" placeholder="用户名">
+                    <input class="password" id='password' type="password" placeholder="密码">
+                </li>
+                <li class="jj-t">
+                    <input class="mui-switch mui-switch-anim" type="checkbox">
+                    <span>记住用户名</span>
+                </li>
+                <li class="btn-login"><a onclick="login();">登录</a></li>
+                <li>
+                    <a class="forget" href="#">忘记密码？</a>
+                    <a class="reg" href="#">注册</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 <div id="app">
     <div class="loader loaded" id="loadingMask">
         <div class="loader-inner ball-pulse-rise">
@@ -39,8 +74,6 @@
             <div></div>
         </div>
     </div>
-    <app-login v-show="!isLoginSuccess"></app-login>
-
     <div class="container body" v-show="isLoginSuccess">
         <div class="col-md-3 left_col" :class="{minMenu:isMenuToggleOff}">
             <div class="scroll-view">
@@ -84,9 +117,10 @@
                    </footer>-->
         <!-- /footer content -->
     </div>
+    <app-login></app-login>
 </div>
 <!-- jQuery -->
-<script src="../vendors/jquery/dist/jquery.min.js" ></script>
+<script src="../vendors/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap -->
 <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="http://120.77.246.153:9000/vue/dist/vue.min.js"></script>
@@ -98,19 +132,19 @@
         define: define,
         dojo: dojo
     }
-/*    require([
-        "esri/Basemap",
-        "esri/layers/TileLayer",
-        "esri/Map",
-        "esri/views/MapView",
-        "dojo/domReady!"
-    ], function (Basemap, TileLayer, Map, MapView) {
-        console.log(Basemap);
-        console.log(TileLayer);
-        console.log(Map);
-        console.log(MapView);
+    /*    require([
+     "esri/Basemap",
+     "esri/layers/TileLayer",
+     "esri/Map",
+     "esri/views/MapView",
+     "dojo/domReady!"
+     ], function (Basemap, TileLayer, Map, MapView) {
+     console.log(Basemap);
+     console.log(TileLayer);
+     console.log(Map);
+     console.log(MapView);
 
-    });*/
+     });*/
 </script>
 
 
@@ -137,5 +171,6 @@
 </script> build-->
 <!-- Custom Theme Scripts -->
 <script src="../vendors/custom.js"></script>
+
 </body>
 </html>

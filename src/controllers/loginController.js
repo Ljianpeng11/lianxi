@@ -1,7 +1,7 @@
 define(['services/loginService','services/serviceHelper'],function(loginService,serviceHelper){
     return{
-        login:function(userName,password,cb){
-            loginService.login(userName,password,cb);
+        login:function(userName,password,cb,error){
+            loginService.login(userName,password,cb,error);
         },
         getUserRole:function(token,cb){
             loginService.getUserRole(token,cb,function(){

@@ -1,11 +1,12 @@
-html,body{
-    width:100%;
+html, body {
+    width: 100%;
     height: 100%;
 }
+
 .bg-login {
     width: 100%;
     height: 100%;
-    background: url(../images/loginbg.jpg) center bottom no-repeat;
+    background: url(../img/loginbg.jpg) center bottom no-repeat;
     background-size: 100% auto;
 }
 
@@ -40,6 +41,7 @@ html,body{
 .srk-login ul li {
     padding: 5px 20px;
     text-align: center;
+    list-style-type: none;
 }
 
 .srk-login .srk input {
@@ -68,14 +70,16 @@ html,body{
 
 .btn-login a:hover {
     background: #ff9000;
+    cursor: pointer;
 }
 
 .srk-login .srk .user {
-    background: #fff url(../images/user.png) 15px center no-repeat;
+    background: #fff url(../img/user.png) 15px center no-repeat;
+    background-size: 25px;
 }
 
 .srk-login .srk .password {
-    background: #fff url(../images/password.png) 15px center no-repeat;
+    background: #fff url(../img/password.png) 15px center no-repeat;
 }
 
 .nocheck {
@@ -171,4 +175,15 @@ html,body{
 
 .mui-switch.mui-switch-anim:checked:before {
     transition: left 0.3s;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
 }

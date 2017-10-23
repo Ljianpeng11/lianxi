@@ -739,8 +739,12 @@ var comm = Vue.extend({
                         color: [226, 119, 40],
                         width: 4
                     })
-                    self.caseMarkPointLayer = mapHelper.getGraphicsLayer('caseMarkPointLayer', 10, currentMap);
+                });
+                currentView.then(function () {
+                    self.caseMarkPointLayer = mapHelper.createGraphicsLayer( currentMap,'caseMarkPointLayer');
                     mapHelper.createPictureMarkSymbol(self.caseMarkPointLayer, issue.x, issue.y, imgObj,issue);
+                },function (error) {
+                    console.log(error);
                 });
             });
             // this.caseMap = mapHelper.getArcGISTiledMap('caseMap', x,y,18,function () {

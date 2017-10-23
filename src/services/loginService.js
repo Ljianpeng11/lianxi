@@ -1,6 +1,6 @@
 define(['./serviceHelper'], function (serviceHelper) {
     return {
-        login: function (userName, password, cb) {
+        login: function (userName, password, cb, errorCb) {
             var parameter = {
                 id: 'login',
                 parameter: {
@@ -27,6 +27,9 @@ define(['./serviceHelper'], function (serviceHelper) {
                                 }
                             });
                         }, 30000);
+                    } else {
+                        errorCb();
+
                     }
                 }
                 else {
