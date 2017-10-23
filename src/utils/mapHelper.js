@@ -40,6 +40,9 @@ define(function () {
         getGraphicsLayer:function (LayerId, index, map) {
             return this.apiInstance.getGraphicsLayer(LayerId, index, map);
         },
+        createGraphicsLayer : function (map, id){
+            return this.apiInstance.createGraphicsLayer(map, id);
+        },
         drawArrowPolyline : function (polyline, layer, length, angleValue, graphicColor){
             this.apiInstance.drawArrowPolyline(polyline, layer, length, angleValue, graphicColor);
         },
@@ -95,7 +98,18 @@ define(function () {
         createPolygon: function (layer, coords, styleObj) {
             return this.apiInstance.createPolygon(layer, coords, styleObj);
         },
-
+        //获取caseMap
+        // getArcGISTiledMap: function (leftID,centerX, centerY, zoom, cb) {
+        //     var leftMap = this.initTDMap(leftID,centerX, centerY, zoom, cb);
+        //     setTimeout(function () {
+        //         cb(leftMap);
+        //     },100);
+        //     apiInstance.createMapImageLayer(leftMap, 'http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer', 'lineLayer');
+        //     // var leftLayer = new ArcGISDynamicMapServiceLayer('http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer');
+        //     // var leftMap = this.initArcGISTiledMap(leftID, 'http://10.194.148.18:6080/arcgis/rest/services/guangzhoumap_gz/MapServer', cb);
+        //     // leftMap.addLayer(leftLayer);
+        //     return leftMap
+        // },
         //设置地图中心点和地图显示层
         setCenter: function (view, x, y, zoom) {
             this.apiInstance.setCenter(view, x, y, zoom)

@@ -627,6 +627,9 @@ var comm = Vue.extend({
             }
             // this.initEcharts();
         }.bind(this));
+        eventHelper.on('open-facilityInfo-dialog',function (attributes) {
+            this.createCase(attributes);
+        }.bind(this));
         eventHelper.on('get-map', function (map) {
             // map.view.on('click',function () {
             //     console.log(123);
@@ -648,7 +651,7 @@ var comm = Vue.extend({
                     this.showPipeLine(evt.graphic.attributes);
                     return;
                 }
-                if (!!evt.graphic && !!evt.graphic.attributes && evt.graphic.attributes.facilityType == 'IP') {debugger
+                if (!!evt.graphic && !!evt.graphic.attributes && evt.graphic.attributes.facilityType == 'IP') {
                     this.createCase(evt.graphic.attributes);
                     return;
                 }
@@ -719,15 +722,40 @@ var comm = Vue.extend({
                 if (this.crossSectionCharts || this.lineCharts)
                     this.previewChange();
         },
-        initCaseMap: function (cb) {
-            this.caseMap = mapHelper.getArcGISTiledMap('caseMap', function () {
-                mapHelper.addVideoPoint(this.caseMap);
-                mapHelper.addFacilityLayer(this.caseMap);
-                mapHelper.addLieDeMaskLayer(this.caseMap);
-                this.caseMap.disableScrollWheelZoom();
-                this.caseMap.hideZoomSlider();
-                cb()
-            }.bind(this));
+        initCaseMap: function (x,y,imgObj,issue) {
+            var self = this;
+            var apiInstance = mapHelper.getInstance();
+            var centerX = x;
+            var centerY = y;
+            self.caseMap = mapHelper.initTDMap('caseMap', centerX, centerY, 18, function (map, view) {
+                var apiInstance = mapHelper.getInstance();
+                apiInstance.createGraphicsLayer(map,'graphicLayersmall');
+                var currentMap = map;
+                var currentView = view;
+                apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer', 'lineLayer');
+                mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
+                    var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
+                    mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
+                        color: [226, 119, 40],
+                        width: 4
+                    })
+                });
+                currentView.then(function () {
+                    self.caseMarkPointLayer = mapHelper.createGraphicsLayer( currentMap,'caseMarkPointLayer');
+                    mapHelper.createPictureMarkSymbol(self.caseMarkPointLayer, issue.x, issue.y, imgObj,issue);
+                },function (error) {
+                    console.log(error);
+                });
+            });
+            // this.caseMap = mapHelper.getArcGISTiledMap('caseMap', x,y,18,function () {
+            //
+            //     // mapHelper.addVideoPoint(this.caseMap);
+            //     // mapHelper.addFacilityLayer(this.caseMap);
+            //     // mapHelper.addLieDeMaskLayer(this.caseMap);
+            //     // this.caseMap.disableScrollWheelZoom();
+            //     // this.caseMap.hideZoomSlider();
+            //     cb()
+            // }.bind(this));
         },
         submitCase: function () {
             this.$message({
@@ -735,7 +763,7 @@ var comm = Vue.extend({
                 type: 'success'
             });
         },
-        createCase: function (issue) {debugger;
+        createCase: function (issue) {
 
             this.form.usID = '';
             this.form.coord = '';
@@ -743,20 +771,26 @@ var comm = Vue.extend({
             this.form.downSize = '';
             this.form.handler = '';
             this.dialogVisible = true;
-            var icon = './img/icon/bigsmall.png';
+            // var icon = './img/icon/bigsmall.png';
+            var imgObj = {
+                url: "./img/icon/bigsmall.png",
+                width: "20px",
+                height: "20px"
+            };
             if (issue.type == 'YW') {
                 this.form.name = '雨污混接';
-                icon = './img/icon/mix.png';
+                // icon = './img/icon/mix.png';
+                imgObj = {
+                    url: "./img/icon/mix.png",
+                    width: "20px",
+                    height: "20px"
+                };
             } else {
                 this.form.name = '大管接小管';
             }
             this.$nextTick(function () {
                 if (!this.caseMap) {
-                    this.initCaseMap(function () {
-                        this.caseMarkPointLayer = mapHelper.getGraphicsLayer('caseMarkPointLayer', 1, this.caseMap);
-                        mapHelper.createSymbol(false, issue.x, issue.y, icon, false, false, this.caseMarkPointLayer);
-                        mapHelper.locationAndZoom(issue.x, issue.y, 16, this.caseMap);
-                    }.bind(this));
+                    this.initCaseMap(issue.x,issue.y,imgObj,issue);
                 } else {
                     this.caseMarkPointLayer.removeAll();
                     mapHelper.locationAndZoom(issue.x, issue.y, 16, this.caseMap);
@@ -1114,15 +1148,15 @@ var comm = Vue.extend({
                                 facilityType: 'IP',
                                 type: 'BS'
                             }, );
-                            this.bigSmallsGraphicsLayer.on('layerview-create',function(evt){
-                                var view = evt.view;
-                                view.on('click',function(event){
-                                    view.hitTest(event).then(function(response){
-                                        var graphic = response.result[0].graphic;
-                                        this.createCase(graphic.attributes);
-                                    }.bind(this));
-                                }.bind(this));
-                            }.bind(this));
+                            // this.bigSmallsGraphicsLayer.on('layerview-create',function(evt){
+                            //     var view = evt.view;
+                            //     view.on('click',function(event){
+                            //         view.hitTest(event).then(function(response){
+                            //             var graphic = response.result[0].graphic;
+                            //             this.createCase(graphic.attributes);
+                            //         }.bind(this));
+                            //     }.bind(this));
+                            // }.bind(this));
                         }
 
                     } else {
