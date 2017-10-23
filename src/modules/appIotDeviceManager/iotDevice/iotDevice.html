@@ -1,11 +1,11 @@
 <div class="mainContent">
-    <div v-bind:id="mainContentDivId" class="row clearfix">
-        <div class="col-md-6 col-sm-6 col-xs-12 bigPanel">
+    <div v-bind:id="mainContentDivId" class="row clearfix cesc-tab-content">
+        <div class="col-md-6 col-sm-6 col-xs-12 bigPanel" v-show="containerMain.showList">
             <div class="x_panel">
                 <div class="x_title">
                     <!--标题-->
                     <h2>
-                        Iot设备
+                        IOT设备
                     </h2>
                     <div class="clearfix"></div>
                 </div>
@@ -20,14 +20,6 @@
                         <button type="button" class="btn btn-outline btn-default" title="删除"
                                 v-on:click="containerMain.del">
                             <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                    <div class="btn-group hidden-xs" role="group">
-                        <button type="button" class="btn btn-outline btn-default" v-on:click="containerMain.login">
-                            登录
-                        </button>
-                        <button type="button" class="btn btn-outline btn-default" v-on:click="containerMain.getLoginInfo">
-                            获取登录信息
                         </button>
                     </div>
                     <!--右侧搜索栏-->
@@ -94,6 +86,30 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">iot设备类型：</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control"
+                                                v-model='containerMain.currentEntity.iotDeviceTypeId'
+                                                v-on:change="containerMain.iotDeviceTypeIdChange">
+                                            <option v-for="option in containerMain.iotDeviceTypeIds"
+                                                    v-bind:value="option.id">
+                                                {{ option.nameCn }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">发送频率：</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control"
+                                               v-model="containerMain.currentEntity.sendFreq">
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <!--这里还可以加底部（footer），详见bootstrap官网-->
@@ -102,5 +118,7 @@
         </div>
 
         <modifyDeviceInfo ref="modifyDeviceInfo1"></modifyDeviceInfo>
+        <commandInfo ref="commandInfo1"></commandInfo>
+        <containerDeviceCommands ref="containerDeviceCommands1"></containerDeviceCommands>
     </div>
 </div>

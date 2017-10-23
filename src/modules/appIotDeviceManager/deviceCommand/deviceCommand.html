@@ -1,0 +1,123 @@
+<div class="mainContent">
+    <div v-bind:id="mainContentDivId" class="row clearfix cesc-tab-content">
+        <div class="col-md-6 col-sm-6 col-xs-12 bigPanel" v-show="containerMain.showList">
+            <div class="x_panel">
+                <div class="x_title">
+                    <!--标题-->
+                    <h2>
+                        设备命令
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <!--左侧工具栏-->
+                    <div class="btn-group hidden-xs" role="group">
+                        <!--vue的单击事件绑定 v-on:click="xxx"-->
+                        <button ype="button" class="btn btn-outline btn-default" v-on:click="containerMain.reSend">重新发送</button>
+
+                        <!--                        <button type="button" class="btn btn-outline btn-default" title="新增"
+                                                        v-on:click="containerMain.add">
+                                                    <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline btn-default" title="删除"
+                                                        v-on:click="containerMain.del">
+                                                    <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                                                </button>-->
+                    </div>
+                    <form class="form-inline pull-right">
+                        <div class="form-group">
+                            <!--查询条件自动绑定到容器的toolbarQueryParam对象的具体属性，查询时会自动传到后台
+                            如果vue的绑定不能满足，可以把查询条件在容器的getCustomQueryParam方法写入-->
+                            <input type="text" class="form-control" placeholder="设备名称"
+                                   v-model="containerMain.toolbarQueryParam.iotDeviceName">
+                            <select class="form-control" v-model="containerMain.toolbarQueryParam._state">
+                                <option value="0">未发送</option>
+                                <option value="1">发送成功</option>
+                                <option value="2">发送失败</option>
+                            </select>
+                            <input type="text" class="form-control" placeholder="imei码"
+                                   v-model="containerMain.toolbarQueryParam.imei">
+                            <input type="text" class="form-control datetimepicker " placeholder="创建时间-起始"
+                                   v-model="containerMain.toolbarQueryParam.createDate_start" readonly>
+                            <input type="text" class="form-control dtp-format1" placeholder="创建时间-终止"
+                                   v-model="containerMain.toolbarQueryParam.createDate_end" readonly>
+                        </div>
+                        <!--查询点击事件-->
+                        <button type="button" class="btn btn-default btn-outline" title="查询" v-on:click="containerMain.search">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </form>
+                    <table id="tableMain">
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!--表单（弹窗）-->
+        <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
+        <div id="formMain" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!--标题部分-->
+                        <!--关闭按钮-->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <!--标题-->
+                        <h4 class="modal-title"></h4>
+                        <!--顶部按钮-->
+                        <button type="button" class="btn btn-primary" v-on:click='containerMain.submit'>保存</button>
+                    </div>
+                    <div class="modal-body">
+                        <!--内容部分-->
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">创建用户名：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control"
+                                               v-model="containerMain.currentEntity.createUser">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">创建时间：</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control datetimepicker" type="text"
+                                               v-model="containerMain.currentEntity.createDate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">发送时间：</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control datetimepicker" type="text"
+                                               v-model="containerMain.currentEntity.sendDate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">状态：</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" v-model="containerMain.currentEntity._state">
+                                            <option value="0">未发送</option>
+                                            <option value="1">发送成功</option>
+                                            <option value="2">发送失败</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--这里还可以加底部（footer），详见bootstrap官网-->
+                </div>
+            </div>
+        </div>
+
+        <!--html中引用vue组件-->
+        <deviceCommandItem ref="deviceCommandItem1"></deviceCommandItem>
+    </div>
+</div>

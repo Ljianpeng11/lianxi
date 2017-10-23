@@ -10,6 +10,8 @@ var crudBase = require('modules/common/crud/crudBase');
 var container = require('modules/common/crud/listContainer');
 
 var modifyDeviceInfo = require('modules/appIotDeviceManager/modifyDeviceInfo');
+var commandInfo = require('modules/appIotDeviceManager/commandInfo');
+var containerDeviceCommands = require('./containerDeviceCommands');
 
 var comm = crudBase.extend({
     //设置模板
@@ -20,6 +22,8 @@ var comm = crudBase.extend({
     components: {
         //引用vue组件
         'modifyDeviceInfo': modifyDeviceInfo,
+        'commandInfo': commandInfo,
+        'containerDeviceCommands': containerDeviceCommands
     },
     created: function () {
         //列表容器定义，一个容器代表一个表的编辑，有子表就要为子表设置容器
@@ -28,13 +32,20 @@ var comm = crudBase.extend({
         this.containerMain = new container({
             data: function () {
                 return {
+
+                    iotDeviceTypeIds: {},
                     //是否添加默认的操作列（当需要自定义操作列的功能时可以设为false）
                     addDefaultOperateColumn: false,
                 }
             },
+
             methods: {
-                //登录
-                login: function () {
+                // //刷新列表后的回调
+                // afterRefreshListHandler: function () {
+                //     // layer.msg('afterRefreshListHandler');
+                // },
+                //获取设备状态
+                getDeviceStatus: function () {
                     var formData = {};
                     formData.token = serviceHelper.getToken();
                     formData.r = Math.random();
@@ -42,39 +53,16 @@ var comm = crudBase.extend({
                     $.ajax({
                         type: "get",
                         dataType: "json",
-                        url: serviceHelper.getBasicPath() + this.controllerUrl + "/login",
+                        url: serviceHelper.getBasicPath() + this.controllerUrl + "/getDeviceStatus",
                         data: formData,
                         success: function (ajaxResult) {
                             if (ajaxResult) {
                                 if (ajaxResult.success == true) {
                                     var result = ajaxResult.data;
 
-                                    layer.msg("登录成功");
-                                } else {
-                                    //后台操作失败的代码
-                                    alert(ajaxResult.msg);
-                                }
-                            }
-                        }.bind(this)
-                    });
-                },
-                //获取登录信息
-                getLoginInfo: function () {
-                    var formData = {};
-                    formData.token = serviceHelper.getToken();
-                    formData.r = Math.random();
+                                    layer.msg("操作成功");
 
-                    $.ajax({
-                        type: "get",
-                        dataType: "json",
-                        url: serviceHelper.getBasicPath() + this.controllerUrl + "/getLoginInfo",
-                        data: formData,
-                        success: function (ajaxResult) {
-                            if (ajaxResult) {
-                                if (ajaxResult.success == true) {
-                                    var result = ajaxResult.data;
-
-                                    layer.msg(result);
+                                    this.refreshList();
                                 } else {
                                     //后台操作失败的代码
                                     alert(ajaxResult.msg);
@@ -119,7 +107,7 @@ var comm = crudBase.extend({
                     }.bind(this);
 
                     //弹出窗口
-                    this.vm.$refs.modifyDeviceInfo1.showForm();
+                    this.vm.$refs.modifyDeviceInfo1.showForm(row);
                 },
                 //获取设备信息
                 getDeviceInfo: function (e, value, row, index) {
@@ -142,6 +130,35 @@ var comm = crudBase.extend({
                                     console.log(result);
 
                                     layer.msg("此消息同时输出到浏览器的console。" + result);
+                                } else {
+                                    //后台操作失败的代码
+                                    alert(ajaxResult.msg);
+                                }
+                            }
+                        }.bind(this)
+                    });
+                },
+                //订阅设备信息
+                subscribeDeviceInfo: function (e, value, row, index) {
+                    var formData = {};
+                    formData.token = serviceHelper.getToken();
+                    formData.r = Math.random();
+                    formData.iotDeviceId = row.iotDeviceId;
+
+                    $.ajax({
+                        type: "get",
+                        dataType: "json",
+                        url: serviceHelper.getBasicPath() + this.controllerUrl + "/subscribeDeviceInfo",
+                        data: formData,
+                        success: function (ajaxResult) {
+                            if (ajaxResult) {
+                                if (ajaxResult.success == true) {
+                                    var result = ajaxResult.data;
+
+                                    //消息太长，输出到console方便看
+                                    //console.log(result);
+
+                                    layer.msg("操作成功");
                                 } else {
                                     //后台操作失败的代码
                                     alert(ajaxResult.msg);
@@ -178,7 +195,8 @@ var comm = crudBase.extend({
                         }.bind(this)
                     });
                 },
-                registerSendDataCommand: function (e, value, row, index) {
+
+                deleteRegisterDevice: function (e, value, row, index) {
                     var formData = {};
                     formData.token = serviceHelper.getToken();
                     formData.r = Math.random();
@@ -187,14 +205,14 @@ var comm = crudBase.extend({
                     $.ajax({
                         type: "get",
                         dataType: "json",
-                        url: serviceHelper.getBasicPath() + this.controllerUrl + "/registerSendDataCommand",
+                        url: serviceHelper.getBasicPath() + this.controllerUrl + "/deleteRegisterDevice",
                         data: formData,
                         success: function (ajaxResult) {
                             if (ajaxResult) {
                                 if (ajaxResult.success == true) {
                                     var result = ajaxResult.data;
-
-                                    layer.msg("操作成功");
+                                    //取消注册后重新刷新列表
+                                    this.refreshList();
                                 } else {
                                     //后台操作失败的代码
                                     alert(ajaxResult.msg);
@@ -203,23 +221,61 @@ var comm = crudBase.extend({
                         }.bind(this)
                     });
                 },
-                getDeviceCommands: function (e, value, row, index) {
+                registerSendDataCommand: function (e, value, row, index) {
+                    //每次点击都清空旧数据
+                    this.vm.$refs.commandInfo1.commandAddress="";
+                    this.vm.$refs.commandInfo1.commandValue="";
+                    this.vm.$refs.commandInfo1.cleanCommand();
+
+                    //点击确定后的回调，可以这样获取到从组件传过来的值
+                    this.vm.$refs.commandInfo1.okHandler = function () {
+                        var formData = {};
+                        formData.token = serviceHelper.getToken();
+                        formData.r = Math.random();
+                        formData.iotDeviceId = row.iotDeviceId;
+                        formData.id = row.id;
+                        formData.watingPostCommand = this.vm.$refs.commandInfo1.watingPostCommand;
+                        formData.watingPostCommand = $("#wating_post_command").val();
+
+                        $.ajax({
+                            type: "get",
+                            dataType: "json",
+                            url: serviceHelper.getBasicPath() + this.controllerUrl + "/registerSendDataCommand",
+                            data: formData,
+                            success: function (ajaxResult) {
+                                if (ajaxResult) {
+                                    if (ajaxResult.success == true) {
+                                        var result = ajaxResult.data;
+
+                                        layer.msg("系统已保存数据，等候发送",{time:1200});
+                                    } else {
+                                        //后台操作失败的代码
+                                        alert(ajaxResult.msg);
+                                    }
+                                }
+                            }.bind(this)
+                        });
+                    }.bind(this);
+
+                    //弹出窗口
+                    this.vm.$refs.commandInfo1.showForm();
+                },
+                iotDeviceTypeIdChange: function () {
+
                     var formData = {};
                     formData.token = serviceHelper.getToken();
                     formData.r = Math.random();
-                    formData.iotDeviceId = row.iotDeviceId;
 
                     $.ajax({
                         type: "get",
                         dataType: "json",
-                        url: serviceHelper.getBasicPath() + this.controllerUrl + "/getDeviceCommands",
+                        url: serviceHelper.getBasicPath() + this.controllerUrl + "/getInitIotDeviceTypeValue",
                         data: formData,
                         success: function (ajaxResult) {
                             if (ajaxResult) {
                                 if (ajaxResult.success == true) {
                                     var result = ajaxResult.data;
-
-                                    layer.msg("操作成功");
+                                    this.iotDeviceTypeIds = result.iotDeviceTypeIds;
                                 } else {
                                     //后台操作失败的代码
                                     alert(ajaxResult.msg);
@@ -230,9 +286,12 @@ var comm = crudBase.extend({
                 },
             }
         });
+
     },
     mounted: function () {
-        //容器初始化，初始化必须在页面加载完成，也就是mounted时触发
+        this.containerDeviceCommands = this.$refs.containerDeviceCommands1;
+        //初始化
+        this.containerDeviceCommands.initContainer(this);
         //参数：this（传入全局vue对象）；controller的url；grid的列头设置
         this.containerMain.init(this, "/iotDevice", [{
             //checkbox列，用于勾选多选行
@@ -242,12 +301,18 @@ var comm = crudBase.extend({
             field: 'name',
             title: '名称'
         }, {
+            field: 'iotDeviceTypeId',
+            title: 'Iot设备类型'
+        }, {
             field: 'imei',
             title: 'IMEI'
         }, {
             field: 'iotDeviceId',
             title: 'Iot设备Id'
-        }, {
+        },/* {
+            field: 'ifOnline',
+            title: '是否在线'
+        }, */{
             field: 'operate',
             title: '操作',
             align: 'center',
@@ -265,6 +330,9 @@ var comm = crudBase.extend({
                 'click .getDeviceInfo': function (e, value, row, index) {
                     this.getDeviceInfo(e, value, row, index);
                 }.bind(this.containerMain),
+                'click .subscribeDeviceInfo': function (e, value, row, index) {
+                    this.subscribeDeviceInfo(e, value, row, index);
+                }.bind(this.containerMain),
                 'click .modifyDeviceInfo': function (e, value, row, index) {
                     this.modifyDeviceInfo(e, value, row, index);
                 }.bind(this.containerMain),
@@ -275,7 +343,11 @@ var comm = crudBase.extend({
                     this.registerSendDataCommand(e, value, row, index);
                 }.bind(this.containerMain),
                 'click .getDeviceCommands': function (e, value, row, index) {
-                    this.getDeviceCommands(e, value, row, index);
+                    this.vm.showContainerDeviceCommands(e, value, row, index);
+                }.bind(this.containerMain),
+                'click .deleteRegisterDevice': function (e, value, row, index) {
+                    //编辑
+                    this.deleteRegisterDevice(e, value, row, index);
                 }.bind(this.containerMain),
             },
             //操作类的内容
@@ -285,11 +357,17 @@ var comm = crudBase.extend({
                     '<a class="registerDevice" href="javascript:;" title="">',
                     '注册设备',
                     '</a>  ',
+                    '<a class="deleteRegisterDevice" href="javascript:;" title="">',
+                    '取消注册',
+                    '</a>  ',
                     '<a class="modifyDeviceInfo" href="javascript:;" title="">',
                     '修改设备信息',
                     '</a>  ',
                     '<a class="getDeviceInfo" href="javascript:;" title="">',
                     '获取设备信息',
+                    '</a>  ',
+                    '<a class="subscribeDeviceInfo" href="javascript:;" title="">',
+                    '订阅设备信息',
                     '</a>  ',
                     '<a class="registerSendDataCommand" href="javascript:;" title="">',
                     '注册发送数据命令',
@@ -306,11 +384,25 @@ var comm = crudBase.extend({
                 ].join('');
             }
         }]);
-
         //刷新列表
         this.containerMain.refreshList();
+
+        //加载elte设备类型值
+        this.containerMain.iotDeviceTypeIdChange();
     },
-    methods: {}
+    methods: {
+        //显示设备命令列表
+        showContainerDeviceCommands: function (e, value, row, index) {
+            //隐藏前一列表
+            this.containerMain.showList = false;
+            //对下一列表容器赋值外键
+            this.containerDeviceCommands["currentIotDeviceId"] = row.iotDeviceId;
+            //对下一列表容器赋值当前列表容器
+            this.containerDeviceCommands.lastContainer = this.containerMain;
+            //刷新并显示下一列表
+            this.containerDeviceCommands.refreshList(this);
+        },
+    }
 });
 
 module.exports = comm;

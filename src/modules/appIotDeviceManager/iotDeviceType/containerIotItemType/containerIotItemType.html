@@ -1,0 +1,198 @@
+<div>
+    <!--列表（监测项类型字段）-->
+    <div class="col-md-6 col-sm-6 col-xs-12 bigPanel" v-show="showList">
+        <div class="x_panel">
+            <div class="x_title">
+                <!--标题-->
+                <h2>
+                    IOT监测项类型
+                </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <!--左侧工具栏-->
+                <div class="btn-group hidden-xs" role="group">
+                    <!--子表返回主表的返回按钮-->
+                    <button type="button" class="btn btn-outline btn-default" title="返回"
+                            v-on:click="backToLastList">
+                        <i class="glyphicon glyphicon-menu-left" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="btn-group hidden-xs" role="group">
+                    <!--vue的单击事件绑定 v-on:click="xxx"-->
+                    <button type="button" class="btn btn-outline btn-default" title="新增"
+                            v-on:click="add">
+                        <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline btn-default" title="删除"
+                            v-on:click="del">
+                        <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="btn-group hidden-xs" role="group">
+                    <button type="button" class="btn btn-outline btn-default" v-on:click="showFormUploadFromProfile">
+                        从profile文件导入
+                    </button>
+                </div>
+                <!--右侧搜索栏-->
+                <!--<form class="form-inline pull-right">-->
+                <!--&lt;!&ndash;查询点击事件&ndash;&gt;-->
+                <!--<button type="button" class="btn btn-default btn-outline" title="查询"-->
+                <!--v-on:click="search">-->
+                <!--<i class="glyphicon glyphicon-search"></i>-->
+                <!--</button>-->
+                <!--</form>-->
+                <!--表格控件，控件定义在js-->
+                <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
+                <table id="tableIotItemType">
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--表单（弹窗）（监测项类型字段）-->
+    <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
+    <div id="formIotItemType" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!--标题部分-->
+                    <!--关闭按钮-->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <!--标题-->
+                    <h4 class="modal-title"></h4>
+                    <!--顶部按钮-->
+                    <button type="button" class="btn btn-primary" v-on:click='submit'>保存
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!--内容部分-->
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">名称：</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control"
+                                           v-model="currentEntity.name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">中文名：</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control"
+                                           v-model="currentEntity.nameCn">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">类标识：</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control"
+                                           v-model="currentEntity.classId">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">单位转换符号：</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" v-model="currentEntity.translateSymbol">
+                                        <option value=""></option>
+                                        <option value="add">加</option>
+                                        <option value="minus">减</option>
+                                        <option value="multi"> 乘</option>
+                                        <option value="divi"> 除</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='form-group'>
+                                <label class='col-sm-3 control-label'>单位转换值：</label>
+                                <div class='col-sm-9'>
+                                    <input type='number' class='form-control' placeholder=''
+                                           v-model='currentEntity.translateValue'>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='form-group'>
+                                <label class='col-sm-3 control-label'>最大值：</label>
+                                <div class='col-sm-9'>
+                                    <input type='number' class='form-control' placeholder=''
+                                           v-model='currentEntity.maxVal'>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='form-group'>
+                                <label class='col-sm-3 control-label'>最小值：</label>
+                                <div class='col-sm-9'>
+                                    <input type='number' class='form-control' placeholder=''
+                                           v-model='currentEntity.minVal'>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='form-group'>
+                                <label class='col-sm-3 control-label'>报文起始索引：</label>
+                                <div class='col-sm-9'>
+                                    <input type='number' class='form-control' placeholder=''
+                                           v-model='currentEntity.reportStartIndex'>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='form-group'>
+                                <label class='col-sm-3 control-label'>报文长度：</label>
+                                <div class='col-sm-9'>
+                                    <input type='number' class='form-control' placeholder=''
+                                           v-model='currentEntity.reportLength'>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--表单（弹窗）（上传profile文件）-->
+    <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
+    <div id="formUploadFromProfile" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!--标题部分-->
+                    <!--关闭按钮-->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            v-on:click="closeNRefresh"><span
+                            aria-hidden="true">&times;</span></button>
+                    <!--标题-->
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <!--内容部分-->
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">文件：</label>
+                                <div class="col-sm-9">
+                                    <div class="input-fix">
+                                        <input id="inputUploadProfile" type="file" multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--这里还可以加底部（footer），详见bootstrap官网-->
+            </div>
+        </div>
+    </div>
+
+</div>

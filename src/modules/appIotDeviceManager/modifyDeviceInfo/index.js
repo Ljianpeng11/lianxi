@@ -37,9 +37,40 @@ module.exports = Vue.extend({
 
         },
         //弹窗
-        showForm: function () {
+        showForm: function (row) {
             //弹出模态窗
             $("#" + this.divId).modal("show");
+
+            //获取设备信息
+            var formData = {};
+            formData.token = serviceHelper.getToken();
+            formData.r = Math.random();
+            formData.id = row.id;
+
+
+            $.ajax({
+                type: "get",
+                dataType: "json",
+                url: serviceHelper.getBasicPath() + "/iotDevice/getModifyDeviceInfo",
+                data: formData,
+                success: function (ajaxResult) {
+                    if (ajaxResult) {
+                        if (ajaxResult.success == true) {
+                            var result = ajaxResult.data;
+
+                            this.manufacturerId = result.manufacturerId;
+                            this.manufacturerName = result.manufacturerName;
+                            this.deviceType = result.deviceType;
+                            this.model = result.model;
+                            this.protocolType = result.protocolType;
+
+                        } else {
+                            //后台操作失败的代码
+                            alert(ajaxResult.msg);
+                        }
+                    }
+                }.bind(this)
+            });
         },
         //关闭窗体
         hideForm: function () {

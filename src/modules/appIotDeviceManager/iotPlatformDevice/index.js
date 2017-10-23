@@ -25,7 +25,7 @@ var comm = crudBase.extend({
                     //是否添加默认的操作列（当需要自定义操作列的功能时可以设为false）
                     addDefaultOperateColumn: false,
                     //是否分页
-                    pagination: false,
+                    // pagination: false,
                     //是否能编辑（影响编辑功能，例如双击编辑功能）
                     canEdit: false,
                 }
