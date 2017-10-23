@@ -15,6 +15,7 @@ var copy= require("gulp-copy");
 var zip = require("gulp-zip");
 var rimraf = require("rimraf");
 var git = require('gulp-git');
+var serverIP = '120.77.246.153:13731';
 
 /**
  * 合并lib文件
@@ -79,30 +80,29 @@ gulp.task('webpack-build',['concat-lib'],function () {
                 jsName = file;
             }
         }
-        var originPath = 'src="../release/app.bundle.js">';
-        var newPath = '123';
         gulp.src('../src/index.html')
-        .pipe(greplace('../release/','./'))
-        .pipe(greplace('../lib','http://120.77.246.153:9000'))
-        .pipe(greplace('../lib','http://120.77.246.153:9000'))
-        .pipe(greplace('../vendors','./vendors'))
-        .pipe(greplace('<!--build',''))
-        .pipe(greplace('build-->',''))
-        .pipe(greplace('devStart-->',''))
-        .pipe(greplace('<!--devEnd',''))
-      //  .pipe(greplace(originPath,newPath))
-        .pipe(greplace('../build/dist/vendor.dll.js',''))
-        .pipe(greplace('./css/main.css',cssName))
-         .pipe(greplace('app.bundle.js',jsName))
-        .pipe(gulp.dest('../release'));
+            .pipe(greplace('../release/','./'))
+            .pipe(greplace('../lib/arcgis', 'http://' + serverIP + '/lib/arcgis'))
+            .pipe(greplace('../lib/arcgis', 'http://' + serverIP + '/lib/arcgis'))
+            .pipe(greplace('../vendors','./vendors'))
+            .pipe(greplace('<!--build',''))
+            .pipe(greplace('build-->',''))
+            .pipe(greplace('devStart-->',''))
+            .pipe(greplace('<!--devEnd',''))
+            .pipe(greplace('../build/dist/vendor.dll.js',''))
+            .pipe(greplace('./css/main.css',cssName))
+            .pipe(greplace('app.bundle.js',jsName))
+            .pipe(gulp.dest('../release'));
     });
 });
 gulp.task('copy-vendors',function(){
     gulp.src('../vendors/**/**').pipe(gulp.dest('../release/vendors'));
-    gulp.src('../src/css/login.css').pipe(gulp.dest('../release/css'));
-    gulp.src('../build/dist/vendor.dll.js').pipe(gulp.dest('../release'));
-    gulp.src('../startCDN.bat').pipe(gulp.dest('../release'));
+    gulp.src('../lib/**/**').pipe(greplace('localhost:9000', serverIP)).pipe(gulp.dest('../release/lib'));
     gulp.src('../src/img/**/**').pipe(gulp.dest('../release/img'));
+    gulp.src('../src/css/**/**').pipe(gulp.dest('../release/css'));
+    gulp.src('../build/dist/vendor.dll.js').pipe(gulp.dest('../release'));
+    gulp.src('../src/css/login.css').pipe(gulp.dest('../release/css'));
+    gulp.src('../startCDN.bat').pipe(gulp.dest('../release'));
 });
 gulp.task('upload-source',function(){
     //TODO
@@ -110,39 +110,39 @@ gulp.task('upload-source',function(){
     //2.正则匹配index.html，替换js文件路径为CDN路径，将index.html写入release
     // 此工作可尝试用webpack插件https://github.com/ampedandwired/html-webpack-plugin完成
     gulp.src('../src/index.html')
-        //.pipe(greplace(/xxxxx/g,"xxxxx"))
+    //.pipe(greplace(/xxxxx/g,"xxxxx"))
         .pipe(gulp.dest('../release'));
 });
 gulp.task("bump-version",function(){
     return gulp.src(['../package.json']).pipe(bump({type:"path"}).on('error',gutil.log)).pipe(gulp.dest('../'));
 });
 gulp.task('copy:dist',function(){
-version = getPackageJsonVersion();
-var steam = gulp.src(['../release/*','../package.json']).pipe(copy('../publish/'+version+'/',{
-    prefix:2
-})).on('error',function(error){
-    console.log(error);
-});
-return steam;
+    version = getPackageJsonVersion();
+    var steam = gulp.src(['../release/*','../package.json']).pipe(copy('../publish/'+version+'/',{
+        prefix:2
+    })).on('error',function(error){
+        console.log(error);
+    });
+    return steam;
 });
 function getPackageJsonVersion(){
-return JSON.parse(fs.readFileSync('../package.json','utf8')).version;
+    return JSON.parse(fs.readFileSync('../package.json','utf8')).version;
 };
 gulp.task('gitPush',function(cb){
     git.push('origin','master',{args:'--tags'},cb);
 });
 gulp.task('tag',function(cb){
-version = getPackageJsonVersion();
-git.tag(version,'Created tag for version: '+version,function(){
-    git.push('origin','master',{args:'--tags'},cb);
-});
+    version = getPackageJsonVersion();
+    git.tag(version,'Created tag for version: '+version,function(){
+        git.push('origin','master',{args:'--tags'},cb);
+    });
 });
 gulp.task('push-version-file',function(cb){
     version = getPackageJsonVersion();
     return gulp.src('../package.json',{buffer:false}).pipe(git.add()).pipe(git.commit('Upgrade the version to '+version));
 });
 gulp.task('clean',function(cb){
-rimraf('../release',cb);
+    rimraf('../release',cb);
 });
 gulp.task('ZIP',function(){
     return gulp.src(['../package.json','../release/**/*']).pipe(zip('../publish/vue-test-'+version+'.zip')).pipe(gulp.dest('C:/publish/'));
