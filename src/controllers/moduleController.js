@@ -39,7 +39,13 @@ define([
     'modules/appDemo1/treeDemo',
     'modules/appDemo1/treeDemoExt',
     'modules/appAlarmManager/alarmType',
-    'modules/appAlarmManager/alarm'
+    'modules/appAlarmManager/alarm',
+    'modules/appIotDeviceManager/iotDevice',
+    'modules/appIotDeviceManager/iotDeviceType',
+    'modules/appIotDeviceManager/iotPlatformDevice',
+    'modules/facilityManageGraph',
+    'modules/appIotDeviceManager/deviceCommand',
+    'modules/appIotDeviceManager/eiotMaintenance'
 ], function (appContent,
              appDemoForm,
              elementForm,
@@ -80,7 +86,13 @@ define([
              treeDemo,
              treeDemoExt,
              alarmType,
-             alarm){
+             alarm,
+             iotDevice,
+             iotDeviceType,
+             iotPlatformDevice,
+             facilityManageGraph,
+             deviceCommand,
+             eiotMaintenance){
     return {
         'app-content': appContent,
         'app-demo-form': appDemoForm,
@@ -122,6 +134,12 @@ define([
         'treeDemo': treeDemo,
         'treeDemoExt': treeDemoExt,
         'alarmType': alarmType,
-        'alarm':alarm
+        'alarm':alarm,
+        'iotDevice': iotDevice,
+        'iotDeviceType': iotDeviceType,
+        'iotPlatformDevice': iotPlatformDevice,
+        'facility-manage-graph': facilityManageGraph,
+        'deviceCommand': deviceCommand,
+        'eiotMaintenance': eiotMaintenance
     }
 });
