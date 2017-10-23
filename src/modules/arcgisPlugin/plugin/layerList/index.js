@@ -12,8 +12,8 @@ var comm = Vue.extend({
                 children: 'children',
                 label: 'title'
             },
-            legendList:[],
-            checkList:[]
+            legendList: [],
+            checkList: []
         }
     },
     mounted: function () {
@@ -22,7 +22,7 @@ var comm = Vue.extend({
     methods: {
         init: function (list) {
             var legendItem = [];
-            list.forEach(function (type,index) {
+            list.forEach(function (type, index) {
                 var facility = {
                     id: type.id,
                     title: type.nameCn,
@@ -31,37 +31,40 @@ var comm = Vue.extend({
                     showIcon: true,
                     showSub: false
                 };
-                if(facility.showIcon){
+                if (facility.showIcon) {
                     this.checkList.push(facility.id);
                 }
                 legendItem.push(facility);
                 eventHelper.emit('openMapLegend', facility);
             }.bind(this));
             this.legendList = [{
-                id:1,
-                title:'测站',
+                id: 1,
+                title: '测站',
                 disabled: true,
                 showIcon: true,
                 showSub: false,
-                children:legendItem
+                children: legendItem
             }];
         },
-        handleCheckChange:function(data,checked,indeterminate){
+        handleCheckChange: function (data, checked, indeterminate) {
             data.showIcon = checked;
-            if(!indeterminate){
+            if (!indeterminate) {
                 eventHelper.emit('openMapLegend', data);
             }
         },
-        renderContent(h, { node, data, store }) {
-            console.log(node,data,store);
-            let icon = './img/toolbar/huawei-'+data.icon+'.png';
+        renderContent(h, {node, data, store}) {
+            // console.log(node,data,store);
+            if (!data.icon) {
+                data.icon = 'default';
+            }
+            let icon = './img/toolbar/huawei-' + data.icon + '.png';
             let showIcon = data.showIcon;
-            if(!!data.children){
+            if (!!data.children) {
                 return (
                     <span>
                     <span>{node.label}</span>
                     </span>);
-            }else{
+            } else {
                 return (
                     <span>
                     <span>

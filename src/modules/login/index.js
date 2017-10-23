@@ -16,11 +16,10 @@ var comm = Vue.extend({
                 eventHelper.emit('loading-end');
                 eventHelper.emit('loginSuccess', token);
                 console.log('Login Success:', token);
-                $('#app').show();
-                $('#loginPanel').hide();
                 this.loginComplete = true;
             }.bind(this), function (error) {
                 $('#app').hide();
+                $('#loginPanel').show();
                 eventHelper.emit('loading-end');
                 this.$message.error('密码错误');
             }.bind(this));
@@ -38,8 +37,6 @@ var comm = Vue.extend({
                 eventHelper.emit('loginSuccess', cache);
                 console.log('Login Success:', cache);
                 this.loginComplete = true;
-                $('#app').show();
-                $('#loginPanel').hide();
             }.bind(this));
         }
         /* if (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0) {
