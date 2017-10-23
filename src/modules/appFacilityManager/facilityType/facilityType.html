@@ -1,5 +1,5 @@
 <div class="mainContent">
-    <div v-bind:id="mainContentDivId" class="row clearfix">
+    <div v-bind:id="mainContentDivId" class="row clearfix cesc-tab-content">
         <!--主表，测站类型-->
         <div class="col-md-6 col-sm-6 col-xs-12 bigPanel" v-show="containerMain.showList">
             <div class="x_panel">
@@ -72,6 +72,15 @@
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control"
                                                v-model="containerMain.currentEntity.nameCn">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">图标名称：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control"
+                                               v-model="containerMain.currentEntity.icon">
                                     </div>
                                 </div>
                             </div>
