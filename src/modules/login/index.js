@@ -8,13 +8,15 @@ var comm = Vue.extend({
         return {}
     },
     methods: {
-        login: function () {
+        login: function (cache) {
             eventHelper.emit('loading-start');
             var userName = $('#userName').val();
             var password = $('#password').val();
             loginCtrl.login(userName, password, function (token) {
                 eventHelper.emit('loading-end');
-                eventHelper.emit('loginSuccess', token);
+                if(!cache){
+                    eventHelper.emit('loginSuccess', token);
+                }
                 console.log('Login Success:', token);
                 this.loginComplete = true;
             }.bind(this), function (error) {
@@ -28,7 +30,7 @@ var comm = Vue.extend({
     mounted: function () {
         var cache = window.sessionStorage.getItem('cescToken');
         eventHelper.on('startLogin', function () {
-            this.login();
+            this.login(cache);
         }.bind(this));
         if (!!cache) {
             this.$nextTick(function () {

@@ -27,6 +27,7 @@
 @import "./modules/appCarPlayback.css";
 @import "./modules/cescInfoWindow.css";
 @import "./modules/layerList.css";
+@import "./modules/emergencyRescue.css";
 :root {
     --base-color:#105ba3;
 

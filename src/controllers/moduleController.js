@@ -45,7 +45,8 @@ define([
     'modules/appIotDeviceManager/iotPlatformDevice',
     'modules/facilityManageGraph',
     'modules/appIotDeviceManager/deviceCommand',
-    'modules/appIotDeviceManager/eiotMaintenance'
+    'modules/appIotDeviceManager/eiotMaintenance',
+    'modules/emergencyRescue',
 ], function (appContent,
              appDemoForm,
              elementForm,
@@ -92,7 +93,8 @@ define([
              iotPlatformDevice,
              facilityManageGraph,
              deviceCommand,
-             eiotMaintenance){
+             eiotMaintenance,
+             emergencyRescue){
     return {
         'app-content': appContent,
         'app-demo-form': appDemoForm,
@@ -140,6 +142,7 @@ define([
         'iotPlatformDevice': iotPlatformDevice,
         'facility-manage-graph': facilityManageGraph,
         'deviceCommand': deviceCommand,
-        'eiotMaintenance': eiotMaintenance
+        'eiotMaintenance': eiotMaintenance,
+        'emergency-rescue':emergencyRescue
     }
 });

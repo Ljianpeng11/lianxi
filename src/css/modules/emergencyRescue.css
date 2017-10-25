@@ -1,0 +1,78 @@
+.emegencyBox{
+    height:100%;
+}
+.emegency-left,.emegency-middle,.emegency-right{
+    height:100%;
+}
+.erLeftItem,.erRightItem{
+    width: 100%;
+    font-size:1.2em;
+}
+.erLeftItem{
+    height:37%;
+}
+.erLeftItem:first-child{
+    height:auto;
+}
+.erLeftItem:not(:first-child){
+    height: calc(50% - 118px);
+}
+.erItemTitle{
+    height: 2em;
+    line-height: 2em;
+    text-align: center;
+    color: #31708f;
+    background-color: #d9edf7;
+}
+.erItemContent,.lqItemContent{
+    height:calc(100% - 2em);
+}
+.lqItemContent{
+    padding: 0.5em 1em;
+    background: #fff;
+    border: 1px solid #dfe6ec;
+    border-top: none;
+}
+.videoBox{
+    width:100%;
+}
+.erImg{
+    width:100%;
+    height:100%;
+}
+.emegency-middle{
+    position: relative;
+}
+.erPlayGroup{
+    position: absolute;
+    right:1em;
+    bottom:1em;
+    font-size: 1.2em;
+}
+.erRightItem:nth-child(1){
+    height: 12%;
+}
+.erRightItem:nth-child(2){
+    height:38%;
+}
+.erRightItem:nth-child(3){
+    height:50%;
+}
+.erRightItem:nth-child(1) .erItemContent{
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+}
+.textItem{
+    width:100%;
+    text-indent:2em;
+    font-size:0.9em;
+}
+.weatherRainChart{
+    width:100%;
+    height:15em;
+}
+#erMapView{
+    width: 100%;
+    height:calc(100% - 15em);
+}

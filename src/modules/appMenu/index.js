@@ -187,7 +187,7 @@ var comm = Vue.extend({
                     console.log(menus);
                     menus.forEach(function (menu) {
                         menu.openSecondary = false;
-                    })
+                    });
                     this.menuList = this.menuList.concat(menus);
                     this.$nextTick(function () {
                         this.initMenu();
