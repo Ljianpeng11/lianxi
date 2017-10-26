@@ -12,6 +12,14 @@ var comm = Vue.extend({
         return {
             logTableHeight:'',
             tableHeight:'',
+            todayInfo:{
+                'todayDate':'',
+                'todayTime':'',
+                'iconId':'',
+                'todayDegree':'',
+                'type':''
+            },
+            weatherData:[],
             logData:[],
             emergencyData:[{
                 name:'黄文峰',
@@ -55,24 +63,116 @@ var comm = Vue.extend({
     methods: {
         handleClick(row) {
             console.log(row);
+        },
+        setTodayDate:function(){
+            var self = this;
+            setInterval(function(){
+                var today = moment(new Date());
+                var todayDate = today.weekday();
+                var newDate;
+                switch(todayDate){
+                    case 0:newDate = '星期一';break;
+                    case 1:newDate = '星期二';break;
+                    case 2:newDate = '星期三';break;
+                    case 3:newDate = '星期四';break;
+                    case 4:newDate = '星期五';break;
+                    case 5:newDate = '星期六';break;
+                    case 6:newDate = '星期日';break;
+                    default:break;
+                }
+                var second;
+                if(today.second() < 10){
+                    second = "0"+today.second();
+                }else{
+                    second = today.second();
+                }
+                var todayTime = today.year()+'-'+today.month()+'-'+today.date()+'  '+today.hour()+':'+today.minute()+':'+second;
+                self.todayInfo.todayDate = newDate;
+                self.todayInfo.todayTime = todayTime;
+            },1000);
+        },
+        loadWeatherData:function(data){
+            var yesterday = data.yesterday;
+            var forecastArr = data.forecast;
+            this.dealArr(yesterday,0);
+            forecastArr.forEach(function(val,index){
+                this.dealArr(val,index+1);
+            }.bind(this));
+        },
+        dealArr:function(val,index){
+            var date = val.date.slice(val.date.length -3,val.date.length);
+            var degree = val.low.split(' ')[1].substr(0,2)+'~'+val.high.split(' ')[1];
+            var r = /^.+?\[(.+?\[(.+?)\])\].*$/;
+            if(!!val.fengli){
+                var fengli = val.fengli.match(r)[2];
+            }else{
+                var fengli = val.fl.match(r)[2];
+            }
+            var arr = {
+                iconId:'icon_'+index,
+                date:date,
+                degree:degree,
+                fengli:fengli,
+                type:val.type
+            };
+            this.weatherData.push(arr);
+            this.$nextTick(function(){
+                this.setIcon(arr);
+            }.bind(this));
+        },
+        chooseWeatherIcon:function(degree){
+
+        },
+        setIcon:function(iconItem){
+            //天气图标
+            var icons = new Skycons();
+            if(iconItem.type === '晴'){
+                icons.set(iconItem.iconId, "partly-cloudy-day");
+            }else if(iconItem.type === '雨'){
+                icons.set(iconItem.iconId,"rain");
+            }else if(iconItem.type === '阴'){
+                icons.set(iconItem.iconId,"fog");
+            }else if(iconItem.type === '多云'){
+                icons.set(iconItem.iconId,"cloudy");
+            }else if(iconItem.type === '雪'){
+                icons.set(iconItem.iconId,"snow");
+            }
+            icons.play();
+            // list  = [
+            //     "clear-day", "clear-night", "partly-cloudy-day",
+            //     "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
+            //     "fog"
+            // ]
+
         }
     },
     mounted: function () {
-        //天气图标
-        var icons = new Skycons(),
-            list  = [
-                "clear-day", "clear-night", "partly-cloudy-day",
-                "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                "fog"
-            ],
-            i;
-
-        for(i = list.length; i--; )
-            icons.set(list[i], list[i]);
-
-        icons.play();
+        //获取天气数据
+        var weatherDatas;
+        var self = this;
+        $.ajax({
+            url:"http://wthrcdn.etouch.cn/weather_mini?city=广州",
+            dataType:'jsonp',
+            data:'',
+            success:function(result) {
+               weatherDatas = result.data;
+               self.todayInfo.todayDegree = weatherDatas.wendu;
+               self.todayInfo.iconId = 'todayIcon';
+               self.todayInfo.type = '雨';
+               self.setTodayDate();
+               self.loadWeatherData(weatherDatas);
+               self.$nextTick(function(){
+                   self.setIcon(self.todayInfo);
+               },200);
+            },
+            error:function(){
+                alert('无法获取天气数据');
+            }
+        });
+        //设置table高度
         this.logTableHeight = $(".erItemContent").eq(3).height();
         this.tableHeight = $(".erItemContent").eq(4).height();
+        //雨量数据图表
         var xData = [],yData1 = [],yData2 = [];
         swmmTimeData.forEach(function(val,index){
            var data = val.dataMillisecond.toString();

@@ -2,23 +2,24 @@
    <el-col :span="24" class="emegencyBox">
       <el-col :span="5" class="emegency-left">
          <div class="erLeftItem">
-            <div class="erItemTitle">视频监控</div>
-            <video class="videoBox" autoplay="autoplay" controls autobuffer>
-               <source src="./video/VID.webm" type='video/webm'/>
-            </video>
+             <div class="erItemTitle">应急预案</div>
+             <div class="erItemContent">
+                 <p class="textItem">市级预案&nbsp;&nbsp;<b class="text-danger">II级应急响应</b></p>
+                 <p class="textItem">区级预案&nbsp;&nbsp;<b class="text-danger">II级应急响应</b></p>
+             </div>
          </div>
          <div class="erLeftItem">
             <div class="erItemTitle">天气预报</div>
-            <div class="erItemContent lqItemContent">
+            <div class="erItemContent tqItemContent">
                <div class="row">
                   <div class="col-sm-12">
-                     <div class="temperature"><b>星期一</b>,早上 07:30</div>
+                     <div class="temperature"><b>{{todayInfo.todayDate}}</b>,{{todayInfo.todayTime}}</div>
                   </div>
                </div>
-               <div class="row">
+               <div class="row" style="width: 100%;margin: 1em 0;">
                   <div class="col-sm-4">
                      <div class="weather-icon">
-                        <canvas height="84" width="84" id="partly-cloudy-day"></canvas>
+                        <canvas height="84" width="84" :id="todayInfo.iconId"></canvas>
                      </div>
                   </div>
                   <div class="col-sm-4">
@@ -28,7 +29,7 @@
                   </div>
                   <div class="col-sm-4">
                      <div class="weather-text pull-right">
-                        <h3 class="degrees" style="font-size:2em;">23</h3>
+                        <h3 class="degrees" style="font-size:2em;">{{todayInfo.todayDegree}}</h3>
                      </div>
                   </div>
                </div>
@@ -36,54 +37,14 @@
                <div class="clearfix"></div>
 
                <div class="row weather-days">
-                  <div class="col-sm-2">
-                     <div class="daily-weather">
-                        <h2 class="day">Mon</h2>
-                        <h3 class="degrees">25</h3>
-                        <canvas id="clear-day" width="32" height="32"></canvas>
-                        <h5>15 <i>km/h</i></h5>
-                     </div>
-                  </div>
-                  <div class="col-sm-2">
-                     <div class="daily-weather">
-                        <h2 class="day">Tue</h2>
-                        <h3 class="degrees">25</h3>
-                        <canvas height="32" width="32" id="rain"></canvas>
-                        <h5>12 <i>km/h</i></h5>
-                     </div>
-                  </div>
-                  <div class="col-sm-2">
-                     <div class="daily-weather">
-                        <h2 class="day">Wed</h2>
-                        <h3 class="degrees">27</h3>
-                        <canvas height="32" width="32" id="snow"></canvas>
-                        <h5>14 <i>km/h</i></h5>
-                     </div>
-                  </div>
-                  <div class="col-sm-2">
-                     <div class="daily-weather">
-                        <h2 class="day">Thu</h2>
-                        <h3 class="degrees">28</h3>
-                        <canvas height="32" width="32" id="sleet"></canvas>
-                        <h5>15 <i>km/h</i></h5>
-                     </div>
-                  </div>
-                  <div class="col-sm-2">
-                     <div class="daily-weather">
-                        <h2 class="day">Fri</h2>
-                        <h3 class="degrees">28</h3>
-                        <canvas height="32" width="32" id="wind"></canvas>
-                        <h5>11 <i>km/h</i></h5>
-                     </div>
-                  </div>
-                  <div class="col-sm-2">
-                     <div class="daily-weather">
-                        <h2 class="day">Sat</h2>
-                        <h3 class="degrees">26</h3>
-                        <canvas height="32" width="32" id="cloudy"></canvas>
-                        <h5>10 <i>km/h</i></h5>
-                     </div>
-                  </div>
+                   <div class="col-sm-2" v-for="item in weatherData">
+                       <div class="daily-weather">
+                           <h2 class="day">{{item.date}}</h2>
+                           <h3 class="newDegrees">{{item.degree}}</h3>
+                           <canvas :id="item.iconId" width="32" height="32"></canvas>
+                           <h5 style="margin-top:0.5em;">{{item.fengli}}</h5>
+                       </div>
+                   </div>
                   <div class="clearfix"></div>
                </div>
             </div>
@@ -109,11 +70,10 @@
       </el-col>
       <el-col :span="5" class="emegency-right">
          <div class="erRightItem">
-            <div class="erItemTitle">应急预案</div>
-            <div class="erItemContent">
-               <p class="textItem">市级预案&nbsp;&nbsp;<b class="text-danger">II级应急响应</b></p>
-               <p class="textItem">区级预案&nbsp;&nbsp;<b class="text-danger">II级应急响应</b></p>
-            </div>
+             <div class="erItemTitle">视频监控</div>
+             <video class="videoBox" autoplay="autoplay" controls autobuffer>
+                 <source src="./video/VID.webm" type='video/webm'/>
+             </video>
          </div>
          <div class="erRightItem">
             <div class="erItemTitle">督办日志</div>
