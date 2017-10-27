@@ -71,13 +71,13 @@ var comm = Vue.extend({
                 var todayDate = today.weekday();
                 var newDate;
                 switch(todayDate){
-                    case 0:newDate = '星期一';break;
-                    case 1:newDate = '星期二';break;
-                    case 2:newDate = '星期三';break;
-                    case 3:newDate = '星期四';break;
-                    case 4:newDate = '星期五';break;
-                    case 5:newDate = '星期六';break;
-                    case 6:newDate = '星期日';break;
+                    case 1:newDate = '星期一';break;
+                    case 2:newDate = '星期二';break;
+                    case 3:newDate = '星期三';break;
+                    case 4:newDate = '星期四';break;
+                    case 5:newDate = '星期五';break;
+                    case 6:newDate = '星期六';break;
+                    case 7:newDate = '星期日';break;
                     default:break;
                 }
                 var second;
@@ -86,7 +86,7 @@ var comm = Vue.extend({
                 }else{
                     second = today.second();
                 }
-                var todayTime = today.year()+'-'+today.month()+'-'+today.date()+'  '+today.hour()+':'+today.minute()+':'+second;
+                var todayTime = today.year()+'-'+(today.month()+1)+'-'+today.date()+'  '+today.hour()+':'+today.minute()+':'+second;
                 self.todayInfo.todayDate = newDate;
                 self.todayInfo.todayTime = todayTime;
             },1000);
@@ -207,7 +207,7 @@ var comm = Vue.extend({
                 },
                 grid:{
                     left:'5%',
-                    right:'5%',
+                    right:'8%',
                     bottom:'20%',
                     top:'15%'
                 },
@@ -249,8 +249,7 @@ var comm = Vue.extend({
                         type: 'line',
                         symbolSize:4,
                         tooltip: {
-                            trigger: 'axis',
-                            formatter: '{a} <br/>{b}日: {c}元'
+                            trigger: 'axis'
                         },
                         smooth: true,
                         itemStyle: {
@@ -272,8 +271,7 @@ var comm = Vue.extend({
                         symbol:'diamond',
                         symbolSize:4,
                         tooltip: {
-                            trigger: 'axis',
-                            formatter: '{a} <br/>{b}日: {c}元'
+                            trigger: 'axis'
                         },
                         yAxisIndex: 1,
                         smooth: true,
@@ -285,6 +283,38 @@ var comm = Vue.extend({
                                 },
                                 areaStyle: {
                                     color: 'rgba(67,67,72, 0.8)'
+                                }
+                            }
+                        },
+                        markLine:{
+                            lineStyle:{
+                                normal:{
+                                    color:'red',
+                                    width:2,
+                                    type:'solid'
+                                }
+                            },
+                            symbolSize:0,
+                            data: [{
+                                yAxis: 2.3,
+                                label:{
+                                    normal:{
+                                        show:true,
+                                        formatter: '超越管顶'
+                                    }
+                                }
+                            }, {
+                                yAxis: 7,
+                                label:{
+                                    normal:{
+                                        show:true,
+                                        formatter: '超越井盖'
+                                    }
+                                }
+                            }],
+                            label:{
+                                normal:{
+                                    formatter:'{b}:{d}'
                                 }
                             }
                         },
