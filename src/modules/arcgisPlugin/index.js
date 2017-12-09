@@ -10,6 +10,7 @@ var facilityController = require('controllers/facilityController');
 var infoWindow = require('./plugin/infoWindow');
 var rightPanel = require('modules/rightPanel');
 var mapHelper = require('utils/mapHelper');
+var infoBoard = require('modules/emergencyRescue/infoBoard');
 var tabModel = require('controllers/model/appTabModel');
 var retrospectDetail = require('modules/retrospectDetail');
 
@@ -53,20 +54,23 @@ var comm = Vue.extend({
         //初始化地图
         initBaseMap: function () {
             var layerURL = 'http://112.74.51.12:6080/arcgis/rest/services/hwShow201705/MapServer';
-            var centerX = 113.25632146945043;
-            var centerY = 23.080910339385692;
-            var zoom = 18;
+
+            var centerX = 117.80633295234286;
+            var centerY = 37.18682244869559;
+            var zoom = 10;
             var currentMap = {};
             var currentView = {};
             var self = this;
             var apiInstance = mapHelper.getInstance();
-            var map = mapHelper.initTDMap("mapDiv", centerX, centerY, zoom, function (map, view) {
+
+            //var map = mapHelper.initTDMap("mapDiv", centerX, centerY, zoom, function (map, view) {
+            var map = mapHelper.initSuperMap("mapDiv", centerX, centerY, zoom, function (map, view) {
                 self.baseMap = map;
                 var apiInstance = mapHelper.getInstance();
                 self.graLayer = apiInstance.createGraphicsLayer(self.baseMap,'graphicLayer');
                 currentMap = map;
                 currentView = view;
-                apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
+                //apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
                 apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer', 'lineLayer');
                 mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
                     var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
@@ -216,12 +220,21 @@ var comm = Vue.extend({
             console.log(point);
             this.$refs.carDetail.open(point.item);
         }.bind(this));
+        eventHelper.on('changeMap', function () {
+            this.baseMap.layers.items[0].visible=false;
+            this.baseMap.layers.items[1].visible=true;
+        }.bind(this));
+        eventHelper.on('changeMap1', function () {
+            this.baseMap.layers.items[1].visible=false;
+            this.baseMap.layers.items[0].visible=true;
+        }.bind(this));
     },
     components: {
         'layer-list':layerList,
         'info-window': infoWindow,
         'right-panel':rightPanel,
-        'retrospect-detail':retrospectDetail
+        'retrospect-detail':retrospectDetail,
+        'info-board':infoBoard,
     }
 });
 module.exports = comm;
