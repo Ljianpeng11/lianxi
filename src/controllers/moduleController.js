@@ -62,7 +62,7 @@ define([
     'modules/se/serviceInvokeCountStats',
     'modules/se/serviceUserInvokeCountStats',
     'modules/se/userServiceInvokeCountStats',
-    'modules/emergencyRescue/emergenCommand/dispatcheCenter/dispatcheCenter'
+    'modules/emergencyRescue/emergenCommand/dispatcheCenter'
 ], function (appContent,
              appDemoForm,
              elementForm,

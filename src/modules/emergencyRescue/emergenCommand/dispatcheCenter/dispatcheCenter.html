@@ -2,13 +2,6 @@
    <el-col :span="24" class="emegencyBox">
       <el-col :span="5" class="emegency-left">
          <div class="erLeftItem">
-             <div class="erItemTitle">应急预案</div>
-             <div class="erItemContent">
-                 <p class="textItem">市级预案&nbsp;&nbsp;<b class="text-danger">II级应急响应</b></p>
-                 <p class="textItem">区级预案&nbsp;&nbsp;<b class="text-danger">II级应急响应</b></p>
-             </div>
-         </div>
-         <div class="erLeftItem">
             <div class="erItemTitle">天气预报</div>
             <div class="erItemContent tqItemContent">
                <div class="row">
@@ -52,12 +45,10 @@
          <div class="erLeftItem">
             <div class="erItemTitle">气象雷达监测</div>
             <div class="erItemContent">
-               <img class="erImg" src="../../img/emegency/raida.png"/>
             </div>
          </div>
       </el-col>
       <el-col :span="14" class="emegency-middle">
-         <div class="weatherRainChart"></div>
          <div id="erMapView"></div>
          <div class="erPlayGroup">
             <div class="erItemTitle">涝情回放</div>
@@ -70,10 +61,10 @@
       </el-col>
       <el-col :span="5" class="emegency-right">
          <div class="erRightItem">
-             <div class="erItemTitle">视频监控</div>
-             <video class="videoBox" autoplay="autoplay" controls autobuffer>
-                 <source src="./video/VID.webm" type='video/webm'/>
-             </video>
+            <div class="erItemTitle">应急预案</div>
+            <div class="erItemContent">
+               <p class="textItem">当前启动预案<b class="text-danger">II级应急响应</b></p>
+            </div>
          </div>
          <div class="erRightItem">
             <div class="erItemTitle">督办日志</div>
