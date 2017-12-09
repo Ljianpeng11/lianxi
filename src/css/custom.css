@@ -219,16 +219,17 @@
 .nav_menu > nav {
     width: 100%;
     height: 100%;
+    line-height: 4em;
 }
 
 .nav_menu .title {
     width: 30%;
-    height: 100%;
+    height: inherit;
     font-size: 2em;
     display: inline-block;
-    padding-top: 0.2em;
-    padding-left: 1em;
     color: #0F4D8B;
+    margin: 0;
+    padding-left:1em;
 }
 
 @media (min-width: 480px) {
@@ -240,11 +241,11 @@
 .nav-md .container.body .col-md-3.left_col {
     width: 200px;
     padding: 0;
-    position: absolute;
+    /* position: absolute; */
     display: -ms-flexbox;
     display: flex;
     z-index: 99;
-    height: 95%;
+    height: 100%;
 }
 
 .nav-md .container.body .col-md-3.left_col.menu_fixed {
