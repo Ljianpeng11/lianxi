@@ -12,16 +12,9 @@ var facilityController = require('controllers/facilityController');
 var infoWindow = require('./plugin/infoWindow');
 var rightPanel = require('modules/rightPanel');
 var mapHelper = require('utils/mapHelper');
-var infoBoard = require('modules/emergencyRescue/infoBoard');
+var infoBoard = require('modules/emergencyRescue/mapTool/infoBoard');
 var tabModel = require('controllers/model/appTabModel');
 var retrospectDetail = require('modules/retrospectDetail');
-
-var initPlugin = function (facilityArr, self) {
-    global.init();
-    facilityController.getAllFacilityType(function (list) {
-        self.$refs.mapLegend.init(list);
-    });
-}
 
 // 定义组件
 var comm = Vue.extend({
@@ -154,12 +147,18 @@ var comm = Vue.extend({
                 message: h('i', {style: 'color: teal'}, '请把易涝点水位监测，窨井水位监测的数据采集频率设置为10s/次')
             });
 
+        },
+        initPlugin: function (facilityArr, self) {
+            global.init();
+            facilityController.getAllFacilityType(function (list) {
+                self.$refs.mapLegend.init(list);
+            });
         }
     },
     mounted: function () {
         //加载设备
         this.facilityArr = {};
-        initPlugin(this.facilityArr, this);
+        //this.initPlugin(this.facilityArr, this);
         var self = this;
         //初始化地图
         this.initBaseMap();
@@ -238,7 +237,6 @@ var comm = Vue.extend({
             this.baseMap.layers.items[1].visible=false;
             this.baseMap.layers.items[0].visible=true;
         }.bind(this));
-
     },
     components: {
         'layer-list':layerList,

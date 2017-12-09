@@ -1,0 +1,127 @@
+<div class="mainContent">
+   <el-col :span="24" class="emegencyBox">
+      <el-col :span="5" class="emegency-left">
+         <div class="erLeftItem">
+             <div class="erItemTitle">应急预案</div>
+             <div class="erItemContent">
+                 <p class="textItem">市级预案&nbsp;&nbsp;<b class="text-danger">II级应急响应</b></p>
+                 <p class="textItem">区级预案&nbsp;&nbsp;<b class="text-danger">II级应急响应</b></p>
+             </div>
+         </div>
+         <div class="erLeftItem">
+            <div class="erItemTitle">天气预报</div>
+            <div class="erItemContent tqItemContent">
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="temperature"><b>{{todayInfo.todayDate}}</b>,{{todayInfo.todayTime}}</div>
+                  </div>
+               </div>
+               <div class="row" style="width: 100%;margin: 1em 0;">
+                  <div class="col-sm-4">
+                     <div class="weather-icon">
+                        <canvas height="84" width="84" :id="todayInfo.iconId"></canvas>
+                     </div>
+                  </div>
+                  <div class="col-sm-4">
+                     <div class="weather-text">
+                        <h2>广州市<br><br><i style="font-size:14px;">海珠区</i></h2>
+                     </div>
+                  </div>
+                  <div class="col-sm-4">
+                     <div class="weather-text pull-right">
+                        <h3 class="degrees" style="font-size:2em;">{{todayInfo.todayDegree}}</h3>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="clearfix"></div>
+
+               <div class="row weather-days">
+                   <div class="col-sm-2" v-for="item in weatherData">
+                       <div class="daily-weather">
+                           <h2 class="day">{{item.date}}</h2>
+                           <h3 class="newDegrees">{{item.degree}}</h3>
+                           <canvas :id="item.iconId" width="32" height="32"></canvas>
+                           <h5 style="margin-top:0.5em;">{{item.fengli}}</h5>
+                       </div>
+                   </div>
+                  <div class="clearfix"></div>
+               </div>
+            </div>
+         </div>
+         <div class="erLeftItem">
+            <div class="erItemTitle">气象雷达监测</div>
+            <div class="erItemContent">
+               <img class="erImg" src="../../img/emegency/raida.png"/>
+            </div>
+         </div>
+      </el-col>
+      <el-col :span="14" class="emegency-middle">
+         <div class="weatherRainChart"></div>
+         <div id="erMapView"></div>
+         <div class="erPlayGroup">
+            <div class="erItemTitle">涝情回放</div>
+            <div class="lqItemContent">
+               <el-button type="primary">开始回放</el-button>
+               <el-button type="warning">暂停回放</el-button>
+               <el-button type="info">重置</el-button>
+            </div>
+         </div>
+      </el-col>
+      <el-col :span="5" class="emegency-right">
+         <div class="erRightItem">
+             <div class="erItemTitle">视频监控</div>
+             <video class="videoBox" autoplay="autoplay" controls autobuffer>
+                 <source src="./video/VID.webm" type='video/webm'/>
+             </video>
+         </div>
+         <div class="erRightItem">
+            <div class="erItemTitle">督办日志</div>
+            <div class="erItemContent">
+               <el-table
+                       :data="logData"
+                       style="width: 100%"
+                       :height="logTableHeight">
+                  <el-table-column
+                          prop="address"
+                          label="隶属部门">
+                  </el-table-column>
+                  <el-table-column
+                          prop="status"
+                          label="状态">
+                  </el-table-column>
+                  <el-table-column
+                          prop="date"
+                          label="日期">
+                  </el-table-column>
+               </el-table>
+            </div>
+         </div>
+         <div class="erRightItem">
+            <div class="erItemTitle">应急队伍</div>
+            <div class="erItemContent">
+               <el-table
+                       :data="emergencyData"
+                       style="width: 100%;"
+                        :max-height="tableHeight">
+                  <el-table-column
+                          label="操作">
+                     <template scope="scope">
+                        <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
+                        <i class="icon iconfont icon-tuding" @click="handleClick(scope.row)"></i>
+                     </template>
+                  </el-table-column>
+                  <el-table-column
+                          prop="name"
+                          label="姓名">
+                  </el-table-column>
+                  <el-table-column
+                          prop="department"
+                          label="隶属部门">
+                  </el-table-column>
+               </el-table>
+            </div>
+         </div>
+      </el-col>
+   </el-col>
+</div>
