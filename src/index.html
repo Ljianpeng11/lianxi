@@ -20,7 +20,7 @@
             $('#app').show();
             var timmer = setInterval(function () {
                 if (!!window.eventHelper) {
-                    window.eventHelper.emit('startLogin');
+                    window.eventHelper.emit('login-start');
                     clearInterval(timmer);
                 }
             }, 10);
