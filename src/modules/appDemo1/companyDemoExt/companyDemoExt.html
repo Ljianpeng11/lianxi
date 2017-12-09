@@ -1,8 +1,8 @@
 <div class="mainContent">
-    <div v-bind:id="mainContentDivId" class="row clearfix">
+    <div :id="mainContentDivId" class="row clearfix cesc-tab-content">
         <!--列表（公司）-->
         <div class="col-md-6 col-sm-6 col-xs-12 bigPanel" v-show="containerMain.showList">
-            <div class="x_panel">
+            <div class="x_panel animated fadeIn">
                 <div class="x_title">
                     <!--标题-->
                     <h2>
@@ -15,26 +15,76 @@
                     <div class="btn-group hidden-xs" role="group">
                         <!--vue的单击事件绑定 v-on:click="xxx"-->
                         <button type="button" class="btn btn-outline btn-default" title="新增"
-                                v-on:click="containerMain.add">
+                                @click="containerMain.add">
                             <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                         </button>
                         <button type="button" class="btn btn-outline btn-default" title="删除"
-                                v-on:click="containerMain.del">
+                                @click="containerMain.del">
                             <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group hidden-xs" role="group">
+                        <button type="button" class="btn btn-outline btn-default"
+                                @click="tabDemo">
+                            主页tab操作
+                        </button>
+                        <button type="button" class="btn btn-outline btn-default"
+                                @click="createFileAndDownload">
+                            后台生成文件并前端下载
+                        </button>
+                        <button type="button" class="btn btn-outline btn-default"
+                                @click="containerMain.export">
+                            导出
+                        </button>
+                        <button type="button" class="btn btn-outline btn-default"
+                                @click="containerMain.query2">
+                            分页查询2
                         </button>
                     </div>
                     <!--右侧搜索栏-->
                     <form class="form-inline pull-right">
-                        <div class="form-group">
-                            <!--查询条件自动绑定到容器的toolbarQueryParam对象的具体属性，查询时会自动传到后台
-                            如果vue的绑定不能满足，可以把查询条件在容器的getCustomQueryParam方法写入-->
-                            <input type="text" class="form-control" placeholder="公司名称"
-                                   v-model="containerMain.toolbarQueryParam.name">
-                        </div>
-                        <!--查询点击事件-->
-                        <button type="button" class="btn btn-default btn-outline" title="查询"
-                                v-on:click="containerMain.search">
-                            <i class="glyphicon glyphicon-search"></i>
+                        <!--查询条件弹出框，查询条件都放里面-->
+                        <el-popover placement="left" width="400" trigger="click">
+                            <form>
+                                <!--查询条件：公司名称-->
+                                <div class="form-group">
+                                    <label>公司名称</label>
+                                    <!--注意查询条件的值绑定到containerXXX的toolbarQueryParam对象的一个属性，toolbarQueryParam是自带的用于保存查询条件的对象，查询时会自动传到后台
+                                        如果vue的绑定不能满足，可以把查询条件在容器的getCustomQueryParam方法写入-->
+                                    <input type="text" class="form-control"
+                                           v-model="containerMain.toolbarQueryParam.name">
+                                </div>
+                                <!--查询条件：企业类型-->
+                                <div class="form-group">
+                                    <label>企业类型</label>
+                                    <select class="form-control" v-model='containerMain.toolbarQueryParam.type'>
+                                        <option value="">全部企业类型</option>
+                                        <option value="country">国企</option>
+                                        <option value="private">私企</option>
+                                    </select>
+                                </div>
+                            </form>
+                            <form class="form-inline pull-right">
+                                <!--查询按钮-->
+                                <button type="button" class="btn btn-default btn-outline"
+                                        @click="containerMain.search">
+                                    查询
+                                </button>
+                                <!--清空查询条件-->
+                                <button type="button" class="btn btn-default btn-outline"
+                                        @click="containerMain.initToolbarQueryParam">
+                                    清空
+                                </button>
+                            </form>
+                            <!--打开查询弹窗的按钮-->
+                            <button type="button" class="btn btn-default btn-outline" title="查询" slot="reference">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </el-popover>
+                        <!--刷新功能按钮-->
+                        <button type="button" class="btn btn-default btn-outline" title="刷新"
+                                @click="containerMain.search">
+                            <i class="glyphicon glyphicon-refresh"></i>
                         </button>
                     </form>
                     <!--表格控件，控件定义在js-->
@@ -58,7 +108,7 @@
                         <!--标题-->
                         <h4 class="modal-title"></h4>
                         <!--顶部按钮-->
-                        <button type="button" class="btn btn-primary" v-on:click='containerMain.submit'>保存</button>
+                        <button type="button" class="btn btn-primary" @click='containerMain.submit'>保存</button>
                     </div>
                     <div class="modal-body">
                         <!--内容部分-->
@@ -121,7 +171,7 @@
                                          field属性配置字段名，此控件不用vue绑定
                                          class里datetimepicker是必须的，代表日期控件-->
                                         <!--自定义日期控件格式，需要添加class作为标识-->
-                                        <input class="form-control datetimepicker1 dtp-format1" type="text"
+                                        <input class="form-control datetimepicker dtp-format1" type="text"
                                                field="createDate">
                                     </div>
                                 </div>
@@ -229,6 +279,8 @@
         <layuiOpenFormDemo ref="layuiOpenFormDemo1"></layuiOpenFormDemo>
         <!--格子表单demo-->
         <gridFormDemo ref="gridFormDemo1"></gridFormDemo>
+        <!--tabDemo-->
+        <tabDemo ref="tabDemo1"></tabDemo>
 
         <!--列表（员工）-->
         <div class="col-md-6 col-sm-6 col-xs-12 bigPanel" v-show="containerEmployee.showList">
@@ -245,33 +297,55 @@
                     <div class="btn-group hidden-xs" role="group">
                         <!--子表返回主表的返回按钮-->
                         <button type="button" class="btn btn-outline btn-default" title="返回"
-                                v-on:click="showCompanyList">
+                                @click="showCompanyList">
                             <i class="glyphicon glyphicon-menu-left" aria-hidden="true"></i>
                         </button>
                     </div>
                     <div class="btn-group hidden-xs" role="group">
                         <!--vue的单击事件绑定 v-on:click="xxx"-->
                         <button type="button" class="btn btn-outline btn-default" title="新增"
-                                v-on:click="containerEmployee.add">
+                                @click="containerEmployee.add">
                             <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                         </button>
                         <button type="button" class="btn btn-outline btn-default" title="删除"
-                                v-on:click="containerEmployee.del">
+                                @click="containerEmployee.del">
                             <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                         </button>
                     </div>
                     <!--右侧搜索栏-->
                     <form class="form-inline pull-right">
-                        <div class="form-group">
-                            <!--查询条件自动绑定到容器的toolbarQueryParam对象的具体属性，查询时会自动传到后台
-                            如果vue的绑定不能满足，可以把查询条件在容器的getCustomQueryParam方法写入-->
-                            <input type="text" class="form-control" placeholder="姓名"
-                                   v-model="containerEmployee.toolbarQueryParam.name">
-                        </div>
-                        <!--查询点击事件-->
-                        <button type="button" class="btn btn-default btn-outline" title="查询"
-                                v-on:click="containerEmployee.search">
-                            <i class="glyphicon glyphicon-search"></i>
+                        <!--查询条件弹出框，查询条件都放里面-->
+                        <el-popover placement="left" width="400" trigger="click">
+                            <form>
+                                <!--查询条件：姓名-->
+                                <div class="form-group">
+                                    <label>姓名</label>
+                                    <!--注意查询条件的值绑定到containerXXX的toolbarQueryParam对象的一个属性，toolbarQueryParam是自带的用于保存查询条件的对象-->
+                                    <input type="text" class="form-control"
+                                           v-model="containerEmployee.toolbarQueryParam.name">
+                                </div>
+                            </form>
+                            <form class="form-inline pull-right">
+                                <!--查询按钮-->
+                                <button type="button" class="btn btn-default btn-outline"
+                                        @click="containerEmployee.search">
+                                    查询
+                                </button>
+                                <!--清空查询条件-->
+                                <button type="button" class="btn btn-default btn-outline"
+                                        @click="containerEmployee.initToolbarQueryParam">
+                                    清空
+                                </button>
+                            </form>
+                            <!--打开查询弹窗的按钮-->
+                            <button type="button" class="btn btn-default btn-outline" title="查询" slot="reference">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </el-popover>
+                        <!--刷新功能按钮-->
+                        <button type="button" class="btn btn-default btn-outline" title="刷新"
+                                @click="containerEmployee.search">
+                            <i class="glyphicon glyphicon-refresh"></i>
                         </button>
                     </form>
                     <!--表格控件，控件定义在js-->
@@ -295,7 +369,7 @@
                         <!--标题-->
                         <h4 class="modal-title"></h4>
                         <!--顶部按钮-->
-                        <button type="button" class="btn btn-primary" v-on:click='containerEmployee.submit'>保存</button>
+                        <button type="button" class="btn btn-primary" @click='containerEmployee.submit'>保存</button>
                     </div>
                     <div class="modal-body">
                         <!--内容部分-->

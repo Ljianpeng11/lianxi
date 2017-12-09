@@ -1,0 +1,45 @@
+<div class="mainContent" style="height: 100%;">
+    <!--最上级div通过vue的属性绑定id，作为标识此功能的唯一id，用于jquery查找时避免查找到功能以外的元素-->
+    <div :id="mainContentDivId" class="row clearfix cesc-tab-content" style="height: 100%;">
+        <div class="col-md-12" style="height: 100%;">
+            <div class="x_panel animated fadeIn" style="height: 100%;">
+                <div class="x_title">
+                    <!--标题-->
+                    <h2>
+                        用户调用服务统计
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content" style="height: calc(100% - 120px);">
+                    <div class="container-fluid" style="height: 100%;">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <el-date-picker v-model="queryOperDate" type="daterange"
+                                                placeholder="时间段" style="width: 100%;">
+                                </el-date-picker>
+                            </div>
+                            <div class="col-md-5">
+                                <el-select v-model="queryUser" multiple placeholder="用户" style="width: 100%;">
+                                    <el-option
+                                            v-for="item in users"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                            <div class="col-md-2">
+                                <el-button type="primary" @click="submit" style="width: 100%;">统计</el-button>
+                            </div>
+                        </div>
+                        <div class="row" style="height: 100%;">
+                            <div class="col-md-12" style="height: 100%;">
+                                <div id="chart1" style="width: 100%;height: 100%;margin-top: 20px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,13 +2,15 @@ var template = require('./menu.html');
 var eventHelper = require('../../utils/eventHelper');
 var appMenuController = require('controllers/appMenuController');
 var menuData = require('services/mockMenu');
+//用于获取token，url头部等
+var serviceHelper = require('services/serviceHelper.js');
 
 // 定义组件
 var comm = Vue.extend({
     template: template,
     data: function () {
         return {
-            menuList: menuData,
+            menuList: [],
             isMenuToggleOff: false,
             isLoginSuccess: false,
             showToggle: false,
@@ -48,20 +50,55 @@ var comm = Vue.extend({
     methods: {
         changeMenu: function (child) {
             eventHelper.emit('change-menu', child);
+
+            var formData = serviceHelper.getDefaultAjaxParam();
+            formData.type = "3";//执行功能
+            formData.funName = child.title;
+
+            var url = serviceHelper.getBasicPath() + "/systemLog/saveSystemLog";
+
+            function successCallback(result) {
+
+            }
+            serviceHelper.postJson(url,formData,successCallback);
         },
         toggleOffMenu: function () {
             this.isMenuToggleOff = !this.isMenuToggleOff;
             eventHelper.emit('toggle-menu', this.isMenuToggleOff);
         },
+        startPlan: function () {
+            eventHelper.emit('startPlan');
+            eventHelper.emit('change-menu-success', {funUrl: 'arcgis-plugin'});
+            var h = this.$createElement;
+            this.$notify({
+                title: '实时接收预警',
+                message: h('div', [h('span', {style: 'color: #f7ba2a'}, '【暴雨黄色预警信号】'), h('span', {}, '深圳市气象台2017年8月17日14时30分发布龙岗区暴雨黄色预警信号，请注意防范强降水后可能额引发的次生灾害。')]),
+                type: 'warning',
+                offset: 300,
+                duration: 50000
+            });
+        },
+        stopPlan: function () {
+            eventHelper.emit('stopPlan');
+            eventHelper.emit('change-menu-success', {funUrl: 'arcgis-plugin'});
+            this.$notify({
+                title: '预警结束',
+                message: '暴雨黄色预警信号已解除',
+                type: 'success'
+            });
+        },
         openTertiaryMenu: function (event, menu) {
-            if (!!menu.customid && !!menu.menuurl) {
-                eventHelper.emit('change-menu-success', menu);
+            if (menu.customid == 'plan-start') {
+                this.startPlan();
+            } else if (menu.customid == 'plan-end') {
+                this.stopPlan();
             } else {
                 this.showTertiaryMenu = true;
                 this.currentMenu = menu;
-                this.tertiaryMenus = this.currentMenu.nodes;
+                this.tertiaryMenus = this.currentMenu.children;
                 $('.tertiaryMenu').css('top', event.clientY - 110);
             }
+
         },
         initMenu: function () {
             (function ($, sr) {
@@ -181,13 +218,11 @@ var comm = Vue.extend({
             this.isLoginSuccess = true;
             this.$nextTick(function () {
                 appMenuController.getAppMenuByUser(token, function (menus) {
-                    if (!menus || menus.length < 1) {
-                        this.$message.error('无法获取菜单');
-                    }
-                    console.log(menus);
+                    //console.log(menus);
                     menus.forEach(function (menu) {
                         menu.openSecondary = false;
                     });
+                    this.menuList.splice(0);
                     this.menuList = this.menuList.concat(menus);
                     this.$nextTick(function () {
                         this.initMenu();

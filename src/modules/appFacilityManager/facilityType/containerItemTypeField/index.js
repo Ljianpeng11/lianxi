@@ -67,6 +67,9 @@ var comm = container.extend({
             }, {
                 field: 'sort',
                 title: '序号'
+            }, {
+                field: 'display',
+                title: '是否显示'
             }]);
         }
     }

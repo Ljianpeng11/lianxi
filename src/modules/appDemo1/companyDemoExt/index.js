@@ -4,6 +4,8 @@
 var template = require('./companyDemoExt.html');
 //用于获取token，url头部等
 var serviceHelper = require('services/serviceHelper.js');
+//事件
+var eventHelper = require('utils/eventHelper');
 //增删改列表基类
 var crudBase = require('modules/common/crud/crudBase');
 //增删改列表容器（代表一个表格的列表）
@@ -17,6 +19,10 @@ var layuiOpenFormDemo = require('modules/appDemo1/companyDemoExt/layuiOpenFormDe
 var gridFormDemo = require('modules/appDemo1/companyDemoExt/gridFormDemo');
 //ECMAScript6 demo
 var es6 = require('modules/appDemo1/companyDemoExt/es6/index.js');
+//tabDemo
+var tabDemo = require('modules/appDemo1/companyDemoExt/tabDemo');
+//moment.js Demo
+var momentDemo = require('modules/appDemo1/companyDemoExt/momentDemo');
 
 //从基类crudBase继承，crudBase是增删改功能的基类
 var comm = crudBase.extend({
@@ -36,7 +42,9 @@ var comm = crudBase.extend({
         //layui弹窗demo
         'layuiOpenFormDemo': layuiOpenFormDemo,
         //格子表单demo
-        'gridFormDemo': gridFormDemo
+        'gridFormDemo': gridFormDemo,
+        //tab demo
+        'tabDemo': tabDemo
     },
     //vue对象created事件，vue对象实例化时触发，此时DOM（页面）还没加载完成
     created: function () {
@@ -64,29 +72,13 @@ var comm = crudBase.extend({
             methods: {
                 //初始化表单
                 initForm: function () {
-                    var formData = {};
-                    formData.token = serviceHelper.getToken();
-                    formData.r = Math.random();
+                    var formData = serviceHelper.getDefaultAjaxParam();
 
-                    $.ajax({
-                        type: "get",
-                        dataType: "json",
-                        url: serviceHelper.getBasicPath() + this.controllerUrl + "/getInitFormValue",
-                        data: formData,
-                        success: function (ajaxResult) {
-                            if (ajaxResult) {
-                                if (ajaxResult.success == true) {
-                                    var result = ajaxResult.data;
-                                    //动态select项demo
-                                    //[{value: "", text: ""}].concat()意思是在数组前面插入一个值为空的项，让用户可以选空值
-                                    this.dynamicSelectItems = [{value: "", text: ""}].concat(result.dynamicSelectItems);
-                                } else {
-                                    //后台操作失败的代码
-                                    alert(ajaxResult.msg);
-                                }
-                            }
-                        }.bind(this)
-                    });
+                    serviceHelper.getJson(serviceHelper.getBasicPath() + this.controllerUrl + "/getInitFormValue", formData, function (result) {
+                        //动态select项demo
+                        //[{value: "", text: ""}].concat()意思是在数组前面插入一个值为空的项，让用户可以选空值
+                        this.dynamicSelectItems = [{value: "", text: ""}].concat(result.dynamicSelectItems);
+                    }.bind(this));
                 },
                 //获取自定义查询条件
                 getCustomQueryParam: function () {
@@ -130,7 +122,82 @@ var comm = crudBase.extend({
                     //     maxFileCount: 100
                     // });
                     //更多bootstrap fileinput的参数可以网上搜索或者看http://plugins.krajee.com/file-input
+                    //refreshFileUpload方法最简例子
                     this.refreshFileUpload("inputUploadPic", "companyDemoExt");
+
+                    //refreshFileUpload方法全参数例子
+                    // this.refreshFileUpload("inputUploadPic", "companyDemoExt", null,
+                    //     function (event, files) {
+                    //         //选择文件后回调
+                    //     }, function (event, data) {
+                    //         //上传成功后回调，如果一次上传多个文件，那实际上是（并行）发起多次请求，每个请求一个文件，因此此回调函数也会触发多次
+                    //
+                    //         //data的内容很丰富，请自行运行查看，其中有关键属性：
+                    //         //data.response：后台返回的值
+                    //         debugger;
+                    //     });
+
+                    //自定义初始化上传控件
+                    // this.customUploadFile("inputUploadPic");
+                },
+                //表单保存前触发，可用于表单验证
+                //需要有返回值，返回true就是继续保存，false就是不保存
+                beforeSaveForm: function () {
+                    //这里可以写保存前的验证代码，返回false就是终止保存
+
+                    return true;
+                },
+                //自定义初始化上传控件
+                //当自带的上传附件功能不能满足个性化需求，可以直接拷下面的代码初始化控件，下面的代码比较接近原版纯净版的bootstrap fileinput初始化代码
+                //id：绑定到的iuput的id
+                customUploadFile: function (id) {
+                    var options = {
+                        //语言
+                        language: 'zh',
+                        //上传的地址（下面还有上传的参数（uploadExtraData））
+                        //地址可以随便改
+                        uploadUrl: serviceHelper.getBasicPath() + "/companyDemoExt/customUploadFile",
+                        //是否显示预览窗
+                        // showPreview: false,
+                        //默认是否显示拖拽文件的窗
+                        dropZoneEnabled: false,
+                        // previewFileType: "image",
+                        //可以预览的文件类型
+                        // allowedPreviewTypes: ['image'],
+                        //接收的文件后缀,array类型，例如：['jpg', 'png','gif']
+                        // allowedFileExtensions: ['jpg', 'png', 'gif', 'bmp'],
+                        //最大上传文件数
+                        maxFileCount: 100,
+                        //上传时发起请求，额外加入请求的值
+                        uploadExtraData: function (previewId, index) {
+                            //这里可以定义上传时传到后台的参数
+                            var formData = serviceHelper.getDefaultAjaxParam();
+                            formData.param1 = "ddd";
+                            // formData.bizId = this.currentEntity.id;
+
+                            return formData;
+                        }.bind(this),
+                    };
+
+                    //真正的初始化代码，on方法写定义的是事件
+                    $('#' + id, $("#" + this.vm.mainContentDivId)).fileinput(options).on("filebatchselected", function (event, files) {
+                        //选择文件事件。选择文件后触发，例如要选择文件就马上上传可以在这里加代码
+
+                        //选择文件后马上上传
+                        // $(this).fileinput("upload");
+                    }).on("fileuploaded", function (event, data) {
+                        //上传文件成功事件。上传文件后执行的代码可以写在这
+
+                        //上传成功后回调
+                        if (data.response.success == true) {
+                            var result = data.response.data;
+
+                            //接收到后台发来的参数
+                            var xxx = result.xxx;
+                        } else {
+                            alert(data.response.msg);
+                        }
+                    });
                 },
                 //删除后的回调
                 afterDeleteHandler: function () {
@@ -153,7 +220,7 @@ var comm = crudBase.extend({
                     // layer.confirm('询问框，是否确定？', {
                     //     //定义按钮，可以多个
                     //     btn: ['确定', '取消', '按钮3']
-                    //     //接下来是每个按钮的回调函数，一般有一个按钮就有几个回调
+                    //     //接下来是每个按钮的回调函数，一般有几个按钮就有几个回调
                     //     //参数1是弹窗的index，可以用此标识弹窗
                     // }, function (index) {
                     //     //关闭弹窗（代码关闭弹窗的方法，但有时不用这句都会自己关闭，原因不明）
@@ -169,11 +236,7 @@ var comm = crudBase.extend({
                 //ajax请求
                 ajaxTest: function () {
                     //formData存放传入参数
-                    var formData = {};
-                    //在此系统，所有后台请求都要传入token进行认证
-                    formData.token = serviceHelper.getToken();
-                    //加随机数防止浏览器缓存
-                    formData.r = Math.random();
+                    var formData = serviceHelper.getDefaultAjaxParam();
                     //传入自定义参数
                     formData.type = "private";
 
@@ -188,30 +251,18 @@ var comm = crudBase.extend({
                     obj.age = "55";
                     formData.strobject = JSON.stringify(obj);
 
-                    //loading效果
+                    //开启loading效果
+                    //例如假设下方的ajax因为计算量较大需要几秒才能返回，界面需要loading（加载中）效果
+                    //在发起ajax请求前先打开loading的“膜”，然后请求返回再关闭
                     var index = layer.load(0, {shade: [0.3, '#000']});
 
-                    $.ajax({
-                        type: "get",
-                        dataType: "json",
-                        url: serviceHelper.getBasicPath() + this.controllerUrl + "/ajaxTest",
-                        data: formData,
-                        success: function (ajaxResult) {
-                            //关闭loading效果
-                            layer.close(index);
+                    serviceHelper.getJson(serviceHelper.getBasicPath() + this.controllerUrl + "/ajaxTest", formData, function (result) {
+                        //关闭loading效果
+                        layer.close(index);
 
-                            if (ajaxResult) {
-                                if (ajaxResult.success == true) {
-                                    //ajaxResult.data是返回的数据
-                                    var result = ajaxResult.data;
-                                    debugger;
-                                } else {
-                                    //后台操作失败的代码
-                                    alert(ajaxResult.msg);
-                                }
-                            }
-                        }.bind(this)
-                    });
+                        //result是返回的数据
+                        debugger;
+                    }.bind(this));
                 },
                 showCustomForm: function (e, value, row, index) {
                     //js代码访问vue组件的方式$refs.componentDemo1，componentDemo1是在html内组件的ref属性，作为vue组件的标识，类似jquery的id和name
@@ -220,6 +271,9 @@ var comm = crudBase.extend({
                     this.vm.$refs.componentDemo1.init();
                     //点击确定后的回调，可以这样获取到从组件传过来的值
                     this.vm.$refs.componentDemo1.okHandler = function (companyName) {
+                        //这样也可以获取组件里面的参数（理论上可以获取组件的所有对象），而且方便些
+                        //var ee = this.vm.$refs.componentDemo1.companyName;
+
                         layer.msg(companyName);
                         debugger;
                     }.bind(this);
@@ -243,6 +297,36 @@ var comm = crudBase.extend({
                 showGridForm: function () {
                     this.vm.$refs.gridFormDemo1.showForm();
                 },
+                //导出
+                export: function () {
+                    //获取刷新列表的查询参数
+                    var formData = this.getRefreshListParam();
+                    //export = 1代表导出，在后台用于标识是导出功能（而不是一般的获取数据）
+                    formData.export = 1;
+
+                    //传入查询参数，在后台导出excel并先保存到临时文件
+                    //注意controller方法是export，export方法写在基类
+                    serviceHelper.getJson(serviceHelper.getBasicPath() + this.controllerUrl + "/export", formData, function (result) {
+                        //真正的下载excel文件
+                        ///tempFile/downloadFile是框架临时文件功能的下载文件
+                        window.location.href = serviceHelper.getBasicPath() + "/tempFile/downloadFile?token=" + serviceHelper.getToken() + "&fileName=" + result;
+                    }.bind(this));
+                },
+                //不使用框架自带功能，实现带分页的查询功能
+                query2: function () {
+                    //把获取数据的url切换到本例使用的
+                    //PS：实际情况中肯定不是在这里切换，这里是因为在此功能有多个demo才临时切换listUrl
+                    this.listUrl = this.controllerUrl + "/query2";
+                    this.refreshList();
+                },
+                //初始化工具条的查询条件，如果查询条件在toolbarQueryParam之外甚至不用vue绑定，可以重写此方法
+                initToolbarQueryParam: function () {
+                    //列表查询条件的初始化
+                    //虽然基类也有初始化，但部分控件的部分使用情况需要单独地初始化
+                    this.toolbarQueryParam = {};
+                    //select控件，用vue绑定，绑定的属性要存在，否则就无法设初始值
+                    this.toolbarQueryParam.type = "";
+                },
             }
         });
 
@@ -256,7 +340,7 @@ var comm = crudBase.extend({
                     //表单（弹窗）id，同一页面如果有多个实体列表需要修改
                     formId: "formEmployee",
                     //当前公司id（主表id）
-                    currentCompanyId: 0,
+                    companyDemoExtId: 0,
                     //控制列表是否显示（此属性在容器基类），子表默认不显示
                     showList: false,
                 }
@@ -265,14 +349,14 @@ var comm = crudBase.extend({
                 getCustomQueryParam: function () {
                     var formData = {};
                     //查询前把当前主表id传到后台，列表查询用到
-                    formData.companyDemoExtId = this.currentCompanyId;
+                    formData.companyDemoExtId = this.companyDemoExtId;
 
                     return formData;
                 },
                 getCustomSaveValue: function () {
                     var formData = {};
                     //保存前把当前主表id传到后台，保存时用到
-                    formData.companyDemoExtId = this.currentCompanyId;
+                    formData.companyDemoExtId = this.companyDemoExtId;
 
                     return formData;
                 }
@@ -328,6 +412,9 @@ var comm = crudBase.extend({
 
                     //es6 demo，需要运行测试可以解开注释
                     // es6.arrayDemo();
+
+                    //moment.js demo，需要运行测试可以解开注释
+                    // momentDemo.main();
 
                     //提示框例子
                     this.layuiAlert();
@@ -462,6 +549,18 @@ var comm = crudBase.extend({
             }).on('changeDate', function (ev) {
 
             });
+        },
+        tabDemo: function () {
+            this.$refs.tabDemo1.showForm();
+        },
+        //后台生成文件并在前端下载
+        createFileAndDownload: function () {
+
+            //就一行代码
+            //一般window.location.href是用于跳转页面的（值就是要跳转到的url），可是这里就可以用来实现下载文件，同时页面也不会跳转
+            //之所以这样，是因为这个请求的内容是文件的内容（后台实现），那浏览器就会自动识别成下载文件，而不是跳转
+            //这个地址只是个普通的controller，参数可以在url问号后面传参，token是验证必须的
+            window.location.href = serviceHelper.getBasicPath() + "/companyDemoExt/createFileAndDownload?token=" + serviceHelper.getToken();
         }
     }
 });

@@ -61,6 +61,12 @@ var comm = container.extend({
             }, {
                 field: 'fieldType',
                 title: '字段类型'
+            }, {
+                field: 'sort',
+                title: '序号'
+            }, {
+                field: 'display',
+                title: '是否显示'
             }]);
         }
     }

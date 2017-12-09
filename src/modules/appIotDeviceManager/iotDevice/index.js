@@ -312,7 +312,10 @@ var comm = crudBase.extend({
         },/* {
             field: 'ifOnline',
             title: '是否在线'
-        }, */{
+        }, {
+            field : 'communicationMethodText',
+            title:'通讯模式'
+        },*/{
             field: 'operate',
             title: '操作',
             align: 'center',
@@ -352,6 +355,19 @@ var comm = crudBase.extend({
             },
             //操作类的内容
             formatter: function (value, row, index) {
+            if(row.communicationMethodText=="socket"){
+                return [
+                    '<a class="registerSendDataCommand" href="javascript:;" title="">',
+                    '注册发送数据命令',
+                    '</a>  ',
+                    '<a class="edit" href="javascript:;" title="编辑">',
+                    '<i class="glyphicon glyphicon-edit"></i>',
+                    '</a>  ',
+                    '<a class="delete" href="javascript:;" title="删除">',
+                    '<i class="glyphicon glyphicon-remove"></i>',
+                    '</a>'
+                ].join('');
+            }else{
                 return [
                     //格式：一个功能是一个a，class必填因为跟点击事件有关
                     '<a class="registerDevice" href="javascript:;" title="">',
@@ -382,6 +398,7 @@ var comm = crudBase.extend({
                     '<i class="glyphicon glyphicon-remove"></i>',
                     '</a>'
                 ].join('');
+            }
             }
         }]);
         //刷新列表

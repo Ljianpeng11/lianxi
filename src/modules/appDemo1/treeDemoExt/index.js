@@ -4,8 +4,10 @@
 
 var template = require('./treeDemoExt.html');
 var serviceHelper = require('services/serviceHelper.js');
+//默认（最简）功能基类
+var defaultBase = require('modules/common/defaultBase');
 
-module.exports = Vue.extend({
+module.exports = defaultBase.extend({
     template: template,
     data: function () {
         return {
@@ -155,7 +157,6 @@ module.exports = Vue.extend({
                                     //根据节点类型绑定到对应的实体对象
                                     if (currentData.type == "company") {
                                         this.currentEntityCompany = result;
-                                        console.log(result);
                                     }
                                     else if (currentData.type == "employee") {
                                         this.currentEntityEmployee = result;

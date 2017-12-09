@@ -11,11 +11,11 @@
     <div id="sidebar-menu" class="main_menu_side width hidden-print main_menu">
         <div class="menu_section">
             <ul class="nav side-menu">
-                <li v-for="menu in menuList"><a @click="showTertiaryMenu = false"><i class="fa fa-home"
-                                                                                     :class="menu.icon"></i>
-                    {{menu.title}} <span class="fa fa-chevron-down"></span></a>
+                <li v-for="menu in menuList">
+                    <a @click="showTertiaryMenu = false"><i class="fa fa-home" :class="menu.icon1"></i>
+                        {{menu.title}} <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                        <li v-for="node in menu.nodes">
+                        <li v-for="node in menu.children">
                             <a href="javascript:void(0);" @click="openTertiaryMenu($event,node)">{{node.title}}</a>
                     </ul>
                 </li>

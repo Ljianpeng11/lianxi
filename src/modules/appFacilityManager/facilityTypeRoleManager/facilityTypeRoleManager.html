@@ -1,0 +1,161 @@
+<div class="mainContent">
+    <div v-bind:id="mainContentDivId" class="row clearfix cesc-tab-content">
+        <!--列表-->
+        <div class="col-md-6 col-sm-6 col-xs-12 bigPanel" v-show="containerMain.showList">
+            <div class="x_panel animated fadeIn">
+                <div class="x_title">
+                    <!--标题-->
+                    <h2>
+                        测站权限配置
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <!--左侧工具栏-->
+                    <div class="btn-group hidden-xs" role="group">
+                        <!--vue的单击事件绑定 v-on:click="xxx"-->
+                        <button type="button" class="btn btn-outline btn-default" title="新增"
+                                v-on:click="containerMain.add">
+                            <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline btn-default" title="删除"
+                                v-on:click="containerMain.del">
+                            <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group hidden-xs" role="group">
+                        <button type="button" class="btn btn-outline btn-default"
+                                v-on:click="refreshRlt">
+                            刷新关联关系
+                        </button>
+                    </div>
+                    <!--右侧搜索栏-->
+                    <form class="form-inline pull-right">
+                        <!--查询条件弹出框，查询条件都放里面-->
+                        <el-popover placement="left" width="400" trigger="click">
+                            <form>
+                                <div class="form-group">
+                                    <label>数据角色名</label><br>
+                                    <el-select v-model="containerMain.dataRoleIds" placeholder="请选择">
+                                        <el-option
+                                                v-for="item in containerMain.dataRoles"
+                                                :key="item.id"
+                                                :label="item.name"
+                                                :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>测站类型名称</label><br>
+                                    <el-select v-model="containerMain.facilityTypeIds" placeholder="请选择">
+                                        <el-option
+                                                v-for="item in containerMain.facilityTypes"
+                                                :key="item.id"
+                                                :label="item.nameCn"
+                                                :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                            </form>
+                            <form class="form-inline pull-right">
+                                <!--查询按钮-->
+                                <button type="button" class="btn btn-default btn-outline"
+                                        @click="containerMain.search">
+                                    查询
+                                </button>
+                                <!--清空查询条件-->
+                                <button type="button" class="btn btn-default btn-outline"
+                                        @click="containerMain.initToolbarQueryParam">
+                                    清空
+                                </button>
+                            </form>
+                            <!--打开查询弹窗的按钮-->
+                            <button type="button" class="btn btn-default btn-outline" title="查询" slot="reference">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </el-popover>
+                        <!--刷新功能按钮-->
+                        <button type="button" class="btn btn-default btn-outline" title="刷新"
+                                @click="containerMain.search">
+                            <i class="glyphicon glyphicon-refresh"></i>
+                        </button>
+                    </form>
+                    <!--表格控件，控件定义在js-->
+                    <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
+                    <table id="tableMain">
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!--表单（弹窗）（公司）-->
+        <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
+        <div id="formMain" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!--标题部分-->
+                        <!--关闭按钮-->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <!--标题-->
+                        <h4 class="modal-title"></h4>
+                        <!--顶部按钮-->
+                        <button type="button" class="btn btn-primary" v-on:click='containerMain.submit'>保存</button>
+                    </div>
+                    <div class="modal-body">
+                        <!--内容部分-->
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">数据角色：</label>
+                                    <div class="col-sm-9">
+                                        <el-select v-model="containerMain.dataRoleId"  placeholder="请选择">
+                                            <el-option
+                                                    v-for="item in containerMain.dataRoles"
+                                                    :key="item.id"
+                                                    :label="item.name"
+                                                    :value="item.id">
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">测站类型：</label>
+                                    <div class="col-sm-9">
+                                        <el-select v-model="containerMain.facilityTypeId"  placeholder="请选择">
+                                            <el-option
+                                                    v-for="item in containerMain.facilityTypes"
+                                                    :key="item.id"
+                                                    :label="item.nameCn"
+                                                    :value="item.id">
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">行政区：</label>
+                                    <div class="col-sm-9">
+                                        <el-select v-model="containerMain.admin"  placeholder="请选择">
+                                            <el-option
+                                                    v-for="item in containerMain.district"
+                                                    :key="item.value"
+                                                    :label="item.text"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--这里还可以加底部（footer），详见bootstrap官网-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

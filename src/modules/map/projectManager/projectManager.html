@@ -1,0 +1,235 @@
+<div class="mainContent">
+    <div v-bind:id="mainContentDivId" class="row clearfix cesc-tab-content">
+        <div class="col-md-6 col-sm-6 col-xs-12 bigPanel" v-show="containerMain.showList">
+            <div class="x_panel animated fadeIn">
+                <div class="x_title">
+                    <!--标题-->
+                    <h2>
+                        专题
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <!--左侧工具栏-->
+                    <div class="btn-group hidden-xs" role="group">
+                        <!--vue的单击事件绑定 v-on:click="xxx"-->
+                        <button type="button" class="btn btn-outline btn-default" title="新增"
+                                v-on:click="containerMain.add">
+                            <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline btn-default" title="删除"
+                                v-on:click="containerMain.del">
+                            <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <!--右侧搜索栏-->
+                    <form class="form-inline pull-right">
+                        <!--刷新功能按钮-->
+                        <button type="button" class="btn btn-default btn-outline" title="刷新"
+                                @click="containerMain.search">
+                            <i class="glyphicon glyphicon-refresh"></i>
+                        </button>
+                    </form>
+                    <!--表格控件，控件定义在js-->
+                    <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
+                    <table id="tableMain">
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!--表单（弹窗）-->
+        <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
+        <div id="formMain" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!--标题部分-->
+                        <!--关闭按钮-->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <!--标题-->
+                        <h4 class="modal-title"></h4>
+                        <!--顶部按钮-->
+                        <button type="button" class="btn btn-primary" v-on:click='containerMain.submit'>保存</button>
+                    </div>
+                    <div class="modal-body">
+                        <!--内容部分-->
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">名称：</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control"
+                                               v-model="containerMain.currentEntity.name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">中心点x：</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control"
+                                               v-model="containerMain.currentEntity.centerX">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">中心点y：</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control"
+                                               v-model="containerMain.currentEntity.centerY">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">初始缩放等级：</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control"
+                                               v-model="containerMain.currentEntity.zoom">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"></label>
+                                    <div class="col-sm-8">
+                                        <el-checkbox v-model="containerMain.entityEnabled">是否启用</el-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">序号：</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control"
+                                               v-model="containerMain.currentEntity.sort">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <!--这里还可以加底部（footer），详见bootstrap官网-->
+                </div>
+            </div>
+        </div>
+
+        <!--列表（专题图层列表）-->
+        <div class="col-md-6 col-sm-6 col-xs-12 bigPanel" v-show="containerLayer.showList">
+            <div class=" col-md-4">
+                <div class="x_panel animated fadeIn">
+                    <div class="x_title">
+                        <!--标题-->
+                        <h2>
+                            图层列表
+                        </h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <!--左侧工具栏-->
+                        <div class="btn-group hidden-xs" role="group">
+                            <!--vue的单击事件绑定 v-on:click="xxx"-->
+                            <button type="button" class="btn btn-outline btn-default" title="返回" @click="backLayerList">
+                                返回
+                            </button>
+                        </div>
+                        <div class="btn-group hidden-xs" role="group">
+                            <!--vue的单击事件绑定 v-on:click="xxx"-->
+                            <button type="button" class="btn btn-outline btn-default" title="新增组图层"
+                                    @click="containerLayer.addGroupLayer">
+                                新增组图层
+                            </button>
+                            <button type="button" class="btn btn-outline btn-default" title="加载图层"
+                                    @click="containerLayer.addLayer">
+                                加载图层
+                            </button>
+                        </div>
+                        <div class="btn-group hidden-xs" role="group">
+                            <button type="button" class="btn btn-outline btn-danger" title="删除"
+                                    @click="containerLayer.del">
+                                删除
+                            </button>
+                        </div>
+                        <ul :id="containerLayer.treeId" class="ztree"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class=" col-md-8">
+                <div class="x_panel animated fadeIn">
+                    <div class="x_title">
+                        <!--标题-->
+                        <h2>
+                            图层信息
+                        </h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <!--左侧工具栏-->
+                        <div class="btn-group hidden-xs" role="group">
+                            <!--vue的单击事件绑定 v-on:click="xxx"-->
+                            <button type="button" class="btn btn-outline btn-default" title="保存"
+                                    @click="containerLayer.save">
+                                保存
+                            </button>
+                        </div>
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">名称：</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="name"
+                                               v-model="containerLayer.currentEntity.name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"></label>
+                                    <div class="col-sm-8">
+                                        <el-checkbox v-model="containerLayer.entityDisplay">默认显示</el-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"></label>
+                                    <div class="col-sm-8">
+                                        <el-checkbox v-model="containerLayer.entityEnabled">是否启用</el-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--弹窗（选择导入图层）-->
+        <div id="editFormLayer" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!--标题部分-->
+                        <!--关闭按钮-->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <!--标题-->
+                        <h4 class="modal-title"></h4>
+                        <!--顶部按钮-->
+                        <button type="button" class="btn btn-primary" v-on:click='containerLayer.saveLoadLayer'>保存
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--内容部分-->
+                        <ul :id="containerSelectLayer.treeId" class="ztree"></ul>
+                    </div>
+                    <!--这里还可以加底部（footer），详见bootstrap官网-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

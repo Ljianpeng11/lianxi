@@ -1,0 +1,48 @@
+/*组菜单图标*/
+.ztree li span.button.group_ico_open {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/groupOpen.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+.ztree li span.button.group_ico_close {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/group.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+/*功能菜单图标*/
+.ztree li span.button.funMenu_ico_open {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/funMenu.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+.ztree li span.button.funMenu_ico_close {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/funMenu.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+/*功能图标*/
+.ztree li span.button.fun_ico_docu {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/fun.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+/*本框架引用了其他css，对.button的有污染，以下样式是清除样式污染*/
+.ztree .button {
+    box-shadow: none;
+    border-radius: 0;
+}

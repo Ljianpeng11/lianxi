@@ -1,0 +1,122 @@
+<div class="mainContent">
+    <div v-bind:id="mainContentDivId" class="row clearfix cesc-tab-content">
+        <div class="col-md-6 col-sm-6 col-xs-12 bigPanel">
+            <div class="x_panel animated fadeIn">
+                <div class="x_title">
+                    <!--标题-->
+                    <h2>
+                        共享服务
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <!--左侧工具栏-->
+                    <div class="btn-group hidden-xs" role="group">
+                        <!--vue的单击事件绑定 v-on:click="xxx"-->
+                        <button type="button" class="btn btn-outline btn-default" title="新增"
+                                v-on:click="containerMain.add">
+                            <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline btn-default" title="删除"
+                                v-on:click="containerMain.del">
+                            <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group hidden-xs" role="group">
+                        <button type="button" class="btn btn-outline btn-default" title=""
+                                v-on:click="containerMain.refreshSetokenManager">
+                            刷新setoken缓存
+                        </button>
+                    </div>
+                    <!--右侧搜索栏-->
+                    <form class="form-inline pull-right">
+                        <!--查询条件弹出框，查询条件都放里面-->
+                        <el-popover placement="left" width="400" trigger="click">
+                            <form>
+                                <div class="form-group">
+                                    <label>名称</label>
+                                    <input type="text" class="form-control"
+                                           v-model="containerMain.toolbarQueryParam.name">
+                                </div>
+                                <div class="form-group">
+                                    <label>url</label>
+                                    <input type="text" class="form-control"
+                                           v-model="containerMain.toolbarQueryParam.url">
+                                </div>
+                            </form>
+                            <form class="form-inline pull-right">
+                                <!--查询按钮-->
+                                <button type="button" class="btn btn-default btn-outline"
+                                        @click="containerMain.search">
+                                    查询
+                                </button>
+                                <!--清空查询条件-->
+                                <button type="button" class="btn btn-default btn-outline"
+                                        @click="containerMain.initToolbarQueryParam">
+                                    清空
+                                </button>
+                            </form>
+                            <!--打开查询弹窗的按钮-->
+                            <button type="button" class="btn btn-default btn-outline" title="查询" slot="reference">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </el-popover>
+                        <!--刷新功能按钮-->
+                        <button type="button" class="btn btn-default btn-outline" title="刷新"
+                                @click="containerMain.search">
+                            <i class="glyphicon glyphicon-refresh"></i>
+                        </button>
+                    </form>
+                    <!--表格控件，控件定义在js-->
+                    <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
+                    <table id="tableMain">
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!--表单（弹窗）-->
+        <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
+        <div id="formMain" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!--标题部分-->
+                        <!--关闭按钮-->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <!--标题-->
+                        <h4 class="modal-title"></h4>
+                        <!--顶部按钮-->
+                        <button type="button" class="btn btn-primary" v-on:click='containerMain.submit'>保存</button>
+                    </div>
+                    <div class="modal-body">
+                        <!--内容部分-->
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">名称：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control"
+                                               v-model="containerMain.currentEntity.name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">url：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control"
+                                               v-model="containerMain.currentEntity.url">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <!--这里还可以加底部（footer），详见bootstrap官网-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

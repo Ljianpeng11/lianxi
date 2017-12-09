@@ -1,0 +1,92 @@
+
+
+form{
+	padding-top: 20px;
+}
+
+.col-md-5{
+	background-color: #0000002e;
+	padding: 0;
+}
+
+.container{
+	width:100%;
+}
+
+.header{
+	display: inline-block;
+	background-color: #0090c2;
+	background-image: url(bg.jpg);  
+    text-align: center;
+    width: 100%;
+    color:white;
+    height: 330px;
+    border-radius:9px 9px 0 0;
+}
+
+.money{
+	font-size: 70px;
+	margin-top: 15px;
+	margin-bottom: 0;
+}
+
+.all{
+	font-size: 30px;
+	margin-top: -5px;
+}
+
+.use{
+	margin-top: 30px;
+	font-size: 50px;
+}
+
+.place{
+   font-size: 30px;
+}
+
+.mind{
+	border-bottom: 5px solid #0000002e;
+	background-color: white;
+}
+
+.foot{
+	border-radius:0 0 9px 9px;
+	padding-top: 20px;
+	background-color: white;
+}
+
+.mind form label{
+	width:265px;
+	text-align: left;
+	color:#0090c2;
+	margin-left: 45px;
+	font-size: 35px;
+}
+
+.mind form p{
+	display: inline;
+	text-align: center;
+	font-size: 42px;
+}
+
+.foot div{
+	display:inline-block;
+}
+.lab{
+	float:left;
+    width: 145px;
+    margin-left:45px;
+    font-size: 28px;
+}
+
+.introduce{
+	 width: 560px;
+	 font-size: 28px;
+}
+
+.btn-info{
+	width: 100%;
+	
+	font-size: 45px;
+}
+

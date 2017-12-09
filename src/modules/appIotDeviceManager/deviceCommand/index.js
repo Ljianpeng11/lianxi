@@ -159,37 +159,6 @@ var comm = crudBase.extend({
             this.showNextList(row, this.containerMain, this.deviceCommandItem, "currentDeviceCommandId");
         },
     },
-    //初始化日期控件
-    initDatetimepicker: function () {
-        //需要自定义日期控件格式，可以重写基类的initDatetimepicker方法
-        //同一表单内多个日期控件，当控件需要不同的日期显示格式，可以分开初始化
-        //用于查找控件的class要新建，且每种格式的class都不同，也要保留原来的class：datetimepicker
-
-        //日期控件叫bootstrap-datetimepicker，更多使用方法请看官网：http://www.bootcss.com/p/bootstrap-datetimepicker/，https://github.com/smalot/bootstrap-datetimepicker，
-
-        $('.datetimepicker', $("#" + this.mainContentDivId)).datetimepicker({
-            language: 'zh-CN',
-            format: 'yyyy-mm-dd hh:ii:ss',
-            autoclose: true,
-            startView: 2,
-            minView: 2
-        }).on('changeDate', function (ev) {
-            alert("help!");
-        });
-
-        //格式1，注意class
-        $('.dtp-format1', $("#" + this.mainContentDivId)).datetimepicker({
-            language: 'zh-CN',
-            format: 'yyyy-mm-dd hh:ii:ss',
-            autoclose: true,
-            startView: 2,
-            minView: 2,
-            todayBtn: true
-        }).on('changeDate', function (ev) {
-            alert("help!");
-        });
-
-    },
 })
 
 module.exports = comm;

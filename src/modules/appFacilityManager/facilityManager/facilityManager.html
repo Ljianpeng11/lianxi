@@ -24,16 +24,47 @@
                     </div>
                     <!--右侧搜索栏-->
                     <form class="form-inline pull-right">
-                        <div class="form-group">
-                            <!--查询条件自动绑定到容器的toolbarQueryParam对象的具体属性，查询时会自动传到后台
-                            如果vue的绑定不能满足，可以把查询条件在容器的getCustomQueryParam方法写入-->
-                            <input type="text" class="form-control" placeholder="测站名称"
-                                   v-model="containerMain.toolbarQueryParam.name">
-                        </div>
-                        <!--查询点击事件-->
-                        <button type="button" class="btn btn-default btn-outline" title="查询"
-                                v-on:click="containerMain.search">
-                            <i class="glyphicon glyphicon-search"></i>
+                        <!--查询条件弹出框，查询条件都放里面-->
+                        <el-popover placement="left" width="400" trigger="click">
+                            <form>
+                                <div class="form-group">
+                                    <label>测站名称</label>
+                                    <input type="text" class="form-control"
+                                           v-model="containerMain.toolbarQueryParam.name">
+                                </div>
+                                <div class="form-group">
+                                    <label>测站类型</label>
+                                    <el-select v-model="containerMain.lstFacilityTypeId" multiple style="width: 100%;">
+                                        <el-option
+                                                v-for="item in containerMain.facilityTypeIds"
+                                                :key="item.id"
+                                                :label="item.nameCn"
+                                                :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                            </form>
+                            <form class="form-inline pull-right">
+                                <!--查询按钮-->
+                                <button type="button" class="btn btn-default btn-outline"
+                                        @click="containerMain.search">
+                                    查询
+                                </button>
+                                <!--清空查询条件-->
+                                <button type="button" class="btn btn-default btn-outline"
+                                        @click="containerMain.initToolbarQueryParam">
+                                    清空
+                                </button>
+                            </form>
+                            <!--打开查询弹窗的按钮-->
+                            <button type="button" class="btn btn-default btn-outline" title="查询" slot="reference">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </el-popover>
+                        <!--刷新功能按钮-->
+                        <button type="button" class="btn btn-default btn-outline" title="刷新"
+                                @click="containerMain.search">
+                            <i class="glyphicon glyphicon-refresh"></i>
                         </button>
                     </form>
                     <!--表格控件，控件定义在js-->

@@ -1,6 +1,6 @@
 define(['./serviceHelper'], function (serviceHelper) {
     return {
-        login: function (userName, password, cb, errorCb) {
+        login: function (userName, password, cb,errorCb) {
             var parameter = {
                 id: 'login',
                 parameter: {
@@ -11,31 +11,21 @@ define(['./serviceHelper'], function (serviceHelper) {
             $.get(serviceHelper.getPath(parameter), function (result) {
                 if (!!result) {
                     if (!!result.success) {
-                        serviceHelper.setToken(result.data);
+                        serviceHelper.setToken(result.data.token);
                         cb(result.data);
-                        window.sessionStorage.setItem('cescToken', result.data);
-                        setInterval(function () {
-                            //refreshToken
-                            $.get(serviceHelper.getPath('refreshToken'), function (result) {
-                                if (!!result) {
-                                    if (!!result.success) {
-                                        console.log('Refresh Token');
-                                    }
-                                }
-                                else {
-                                    console.log('Failed to refresh token');
-                                }
-                            });
-                        }, 30000);
-                    } else {
-                        errorCb();
+                        window.sessionStorage.setItem('cescToken', result.data.token);
 
+                        //开始定时刷新token
+                        this.startRefreshTokenInterval();
+                    }
+                    else {
+                        errorCb(result.msg);
                     }
                 }
                 else {
                     errorCb();
                 }
-            });
+            }.bind(this));
         },
         getUserRole: function (token, cb, errorCb) {
             $.get(serviceHelper.getPath('userRole'), function (result) {
@@ -49,6 +39,24 @@ define(['./serviceHelper'], function (serviceHelper) {
                     errorCb();
                 }
             });
+        },
+        //开始定时刷新token
+        //原则上每次进入页面要且只能执行一次此方法
+        startRefreshTokenInterval: function () {
+            setInterval(function () {
+                //refreshToken
+                //间隔一段时间（目前暂时5分钟更新一次）往后台更新一下token，保证token在后台不过期
+                $.get(serviceHelper.getPath('refreshToken'), function (result) {
+                    if (!!result) {
+                        if (!!result.success) {
+                            console.log('刷新Token成功');
+                        }
+                    }
+                    else {
+                        console.log('刷新Token失败');
+                    }
+                });
+            }, 300000);
         }
     }
 });
