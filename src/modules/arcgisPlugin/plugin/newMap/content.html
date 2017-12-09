@@ -1,6 +1,6 @@
 <div id="mapType-wrapper" :class="{'expand':isExpand}">
    <div id="mapType" @mouseover="toggleClass(true)" @mouseout="toggleClass(false)">
-      <div class="mapTypeCard normal active">
+      <div class="mapTypeCard normal active" @click="switchVectorLayer()">
          <span>地图</span>
       </div>
       <div class="mapTypeCard earth">

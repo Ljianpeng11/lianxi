@@ -5,6 +5,7 @@ var eventHelper = require('../../utils/eventHelper');
 var toolBar = require('./plugin/toolBar/toolBar');
 var mapType = require('./plugin/mapType/mapType');
 var newMap = require('./plugin/newMap');
+var mapLegend = require('./plugin/mapLegend/mapLegend');
 var layerList = require('./plugin/layerList');
 var global = require('./plugin/global');
 var facilityController = require('controllers/facilityController');
@@ -75,7 +76,7 @@ var comm = Vue.extend({
                     currentMap = map;
                     currentView = view;
                     //apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
-                    apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer', 'lineLayer');
+                    //apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer', 'lineLayer');
                     mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
                         var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
                         mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
@@ -243,6 +244,7 @@ var comm = Vue.extend({
         'layer-list':layerList,
         'info-window': infoWindow,
         'right-panel':rightPanel,
+        'map-legend':mapLegend,
         'retrospect-detail':retrospectDetail,
         'info-board':infoBoard,
         'new-map':newMap

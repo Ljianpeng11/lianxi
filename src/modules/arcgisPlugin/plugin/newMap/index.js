@@ -12,7 +12,11 @@ var comm = Vue.extend({
     methods: {
         toggleClass:function(status){
             this.isExpand = status;
+        },
+        switchVectorLayer:function(){
+
         }
+
     },
     mounted: function () {
     },
