@@ -4,6 +4,7 @@ var loginCtrl = require('../../controllers/loginController');
 var eventHelper = require('../../utils/eventHelper');
 var toolBar = require('./plugin/toolBar/toolBar');
 var mapType = require('./plugin/mapType/mapType');
+var newMap = require('./plugin/newMap');
 var layerList = require('./plugin/layerList');
 var global = require('./plugin/global');
 var facilityController = require('controllers/facilityController');
@@ -235,6 +236,7 @@ var comm = Vue.extend({
         'right-panel':rightPanel,
         'retrospect-detail':retrospectDetail,
         'info-board':infoBoard,
+        'new-map':newMap
     }
 });
 module.exports = comm;

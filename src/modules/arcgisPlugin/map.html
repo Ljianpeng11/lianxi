@@ -13,7 +13,8 @@
         <span class=esri-icon-polygon></span>
     </div>-->
     <div id="toolBar" v-show="showtools"></div>
-    <div id="mapType"></div>
+    <div id="mapType" v-show="showtools"></div>
+    <new-map ref="newMap"></new-map>
     <layer-list ref="mapLegend"></layer-list>
     <!-- 地图展示应急抢险信息公告栏-->
     <info-board></info-board>
