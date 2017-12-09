@@ -26,13 +26,14 @@
             }, 10);
         };
     </script>
-    <link rel="stylesheet" href="http://139.159.246.230:9000/3rd/element-ui/lib/theme-default/index.css">
+    <link rel="stylesheet" href="../vendors/element-ui/lib/theme-default/index.css">
     <link rel="stylesheet" href="../vendors/loaders.css">
 
     <!-- Bootstrap -->
-    <link href="http://139.159.246.230:9000/3rd/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
 
     <!-- Animate.css -->
     <link href="../vendors/animate.css/animate.min.css" rel="stylesheet">
@@ -49,8 +50,8 @@
             <p class="title-l">用户登录</p>
             <ul>
                 <li class="srk">
-                    <input class="user" id='userName' value="eadmin" type="text" placeholder="用户名">
-                    <input class="password" id='password' value="123456" type="password" placeholder="密码">
+                    <input class="user" id='userName' type="text" placeholder="用户名">
+                    <input class="password" id='password' type="password" placeholder="密码">
                 </li>
                 <li class="jj-t">
                     <input class="mui-switch mui-switch-anim" type="checkbox">
@@ -89,9 +90,9 @@
                 <!-- sidebar menu -->
                 <app-menu></app-menu>
 
-                <!-- /menu footer buttons
+                <!-- /menu footer buttons -->
                 <app-footer></app-footer>
-                 /menu footer buttons -->
+                <!-- /menu footer buttons -->
             </div>
         </div>
         <div class="rightContainer" :class="{maxContainer:isMenuToggleOff}">
@@ -124,19 +125,39 @@
 <script src="../vendors/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap -->
 <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="http://139.159.246.230:9000/3rd/vue/dist/vue.min.js"></script>
+<script src="../vendors/vue/dist/vue.min.js"></script>
 <script src="../lib/arcgis/4.4/init.js"></script>
-
+npm
 <script type="text/javascript">
     window.cesc = {
         require: require,
         define: define,
         dojo: dojo
     }
+    /*    require([
+     "esri/Basemap",
+     "esri/layers/TileLayer",
+     "esri/Map",
+     "esri/views/MapView",
+     "dojo/domReady!"
+     ], function (Basemap, TileLayer, Map, MapView) {
+     console.log(Basemap);
+     console.log(TileLayer);
+     console.log(Map);
+     console.log(MapView);
+
+     });*/
 </script>
 
 
 <script src="../vendors/gridly/javascripts/jquery.gridly.js" async="async"></script>
+
+<!-- <script type="text/javascript">
+     window.cesc={
+         require:require,
+         dojo:dojo
+     }
+ </script>->
 
 <!--webpack dll文件-->
 <script src="../build/dist/vendor.dll.js"></script>
