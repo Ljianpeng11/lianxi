@@ -1,9 +1,7 @@
 var template = require('./dispatcheCenter.html');
-var eventHelper = require('../../utils/eventHelper');
+var eventHelper = require('utils/eventHelper');
 var echarts = require('echarts');
 var moment = require('moment');
-var swmmTimeData = require('../../services/mock/swmmTimeData');
-var dataJXSS = require('../../services/mock/dataJXSS');
 
 // 定义组件
 var comm = Vue.extend({
@@ -138,11 +136,6 @@ var comm = Vue.extend({
                 icons.set(iconItem.iconId,"snow");
             }
             icons.play();
-            // list  = [
-            //     "clear-day", "clear-night", "partly-cloudy-day",
-            //     "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-            //     "fog"
-            // ]
 
         }
     },
@@ -169,161 +162,6 @@ var comm = Vue.extend({
                 alert('无法获取天气数据');
             }
         });
-        //设置table高度
-        this.logTableHeight = $(".erItemContent").eq(3).height();
-        this.tableHeight = $(".erItemContent").eq(4).height();
-        //雨量数据图表
-        var xData = [],yData1 = [],yData2 = [];
-        swmmTimeData.forEach(function(val,index){
-           var data = val.dataMillisecond.toString();
-           var time = moment.unix(data.substr(0,data.length-3));
-           var year = time.year();
-           var month = time.month();
-           var date = time.date();
-           var hour = time.hour();
-           var minute = time.minute();
-           var second = time.second();
-           var newTime = year+'-'+month+'-'+date+'\n'+hour+':'+minute+':'+second;
-            xData.push(newTime);
-            yData1.push(val.value);
-        });
-        dataJXSS.forEach(function(val,index){
-            yData2.push(val.value);
-        });
-        this.$nextTick(function(){
-            var myChart = echarts.init($('.weatherRainChart')[0]);
-            var option = {
-                backgroundColor:'#fff',
-                useUTC:true,
-                title:{
-                    text:'气象站雨量监测',
-                    textStyle:{
-                        color:'red'
-                    },
-                    x:'center'
-                },
-                tooltip: {
-                    trigger: 'axis'
-                },
-                grid:{
-                    left:'5%',
-                    right:'8%',
-                    bottom:'20%',
-                    top:'15%'
-                },
-                xAxis: [
-                    {
-                        type: 'category',
-                        boundaryGap: false,
-                        axisLine:{
-                            onZeroAxisIndex:1
-                        },
-                        data: xData
-                    }
-                ],
-                yAxis: [
-                    {
-                        name: '(降雨量mm)',
-                        type: 'value',
-                        max: 200,
-                        inverse:true,
-                        nameLocation:'start',
-                        splitNumber:2,
-                        axisLine:{
-                            show:false
-                        }
-                    },
-                    {
-                        name: '(井下水位m)',
-                        type: 'value',
-                        max: 10,
-                        splitNumber:2,
-                        axisLine:{
-                            show:false
-                        }
-                    }
-                ],
-                series: [
-                    {
-                        name: '(降雨量mm)',
-                        type: 'line',
-                        symbolSize:4,
-                        tooltip: {
-                            trigger: 'axis'
-                        },
-                        smooth: true,
-                        itemStyle: {
-                            normal: {
-                                color: 'rgba(124,181,236, 1)',
-                                lineStyle: {
-                                    color: 'rgba(124,181,236, 0.8)'
-                                },
-                                areaStyle: {
-                                    color: 'rgba(124,181,236, 0.8)'
-                                }
-                            }
-                        },
-                        data: yData1
-                    },
-                    {
-                        name: '(井下水位m)',
-                        type: 'line',
-                        symbol:'diamond',
-                        symbolSize:4,
-                        tooltip: {
-                            trigger: 'axis'
-                        },
-                        yAxisIndex: 1,
-                        smooth: true,
-                        itemStyle: {
-                            normal: {
-                                color: 'rgba(67,67,72, 1)',
-                                lineStyle: {
-                                    color: 'rgba(67,67,72, 0.8)'
-                                },
-                                areaStyle: {
-                                    color: 'rgba(67,67,72, 0.8)'
-                                }
-                            }
-                        },
-                        markLine:{
-                            lineStyle:{
-                                normal:{
-                                    color:'red',
-                                    width:2,
-                                    type:'solid'
-                                }
-                            },
-                            symbolSize:0,
-                            data: [{
-                                yAxis: 2.3,
-                                label:{
-                                    normal:{
-                                        show:true,
-                                        formatter: '超越管顶'
-                                    }
-                                }
-                            }, {
-                                yAxis: 7,
-                                label:{
-                                    normal:{
-                                        show:true,
-                                        formatter: '超越井盖'
-                                    }
-                                }
-                            }],
-                            label:{
-                                normal:{
-                                    formatter:'{b}:{d}'
-                                }
-                            }
-                        },
-                        data: yData2
-                    }
-                ]
-            };
-            myChart.setOption(option);
-        }.bind(this));
     },
     components: {}
 });
