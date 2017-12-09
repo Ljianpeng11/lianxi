@@ -1,5 +1,4 @@
 define(function () {
-    debugger;
     var CONFIG = require('config'),
         Map = cesc.require("cache/esri/Map"),
         TDTLayer = require('./TDTLayer'),

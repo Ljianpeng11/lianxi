@@ -8,7 +8,7 @@ require('bootstrap-table/dist/bootstrap-table.css');
 require('bootstrap-table/dist/bootstrap-table.js');
 require('bootstrap-table/dist/locale/bootstrap-table-zh-CN.js');
 //bootstrap-datetimepicker日期选择控件
-//require('lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css');
+require('lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css');
 require('lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js');
 require('lib/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js');
 //layui.layer弹窗组件
@@ -66,7 +66,7 @@ var container = Vue.extend({
             }
 
             //日期选择控件处理
-            $('.datetimepicker1', $("#" + this.vm.mainContentDivId)).each(function (i, n) {
+            $('.datetimepicker', $("#" + this.vm.mainContentDivId)).each(function (i, n) {
                 //获取属性名
                 var fieldName = $(this).attr('field');
                 //把实体的属性的值写到控件，如果没有该属性的值就是新建，那就给界面值设空值
@@ -88,14 +88,36 @@ var container = Vue.extend({
          * @param gridConfig grid配置
          */
         init: function (vm, controllerUrl, fields) {
+            //全局vue对象传到此容器，供容器内部访问外部的其他vue对象
             this.vm = vm;
+
+            //以下各初始化方法顺序不能乱
+            //以下初始化方法可以按需屏蔽或修改，但请在熟悉此基类情况时才进行修改
+
+            //初始化常用url，包括获取列表数据，保存，删除的url
+            this.initCommonUrl(controllerUrl);
+            //初始化工具条的查询条件，如果查询条件在toolbarQueryParam之外甚至不用vue绑定，可以重写此方法
+            this.initToolbarQueryParam();
+            //初始化列表也就是table控件的列配置
+            this.initTableField(fields);
+            //初始化列表也就是table控件
+            this.initLoadTableData(fields);
+        },
+        //初始化常用url，包括获取列表数据，保存，删除的url
+        initCommonUrl: function (controllerUrl) {
             this.controllerUrl = controllerUrl;
             //增删改常用controller的url自动拼写
             this.saveUrl = controllerUrl + "/save";
             this.listUrl = controllerUrl + "/list";
             this.getUrl = controllerUrl + "/get";
             this.deleteUrl = controllerUrl + "/delete";
-
+        },
+        //初始化工具条的查询条件，如果查询条件在toolbarQueryParam之外甚至不用vue绑定，可以重写此方法
+        initToolbarQueryParam: function () {
+            this.toolbarQueryParam = {};
+        },
+        //初始化列表也就是table控件的列配置
+        initTableField: function (fields) {
             //添加默认操作列
             if (this.addDefaultOperateColumn) {
                 //往传入的列配置添加
@@ -129,7 +151,9 @@ var container = Vue.extend({
                     }
                 });
             }
-
+        },
+        //初始化列表也就是table控件
+        initLoadTableData: function (fields) {
             //初始化列表
             //注意，此处jquery查找会在$("#" + this.vm.mainContentDivId)这个元素内进行查找，这是由于不同页面的元素id可能有重复，因此要限制在此功能的元素内
             $('#' + this.tableId, $("#" + this.vm.mainContentDivId)).bootstrapTable({
@@ -151,7 +175,7 @@ var container = Vue.extend({
                 onDblClickRow: function (row, $element, field) {
                     if (this.canEdit) {
                         //双击开启编辑行
-                        this.edit(row.id);
+                        this.edit(row.id, row);
                     }
                 }.bind(this)
             });
@@ -175,6 +199,11 @@ var container = Vue.extend({
         //刷新录入表单后的回调
         afterRefreshFormHandler: function () {
 
+        },
+        //表单保存前触发，可用于表单验证
+        //需要有返回值，返回true就是继续保存，false就是不保存
+        beforeSaveForm: function () {
+            return true;
         },
         //删除后的回调
         afterDeleteHandler: function () {
@@ -208,36 +237,19 @@ var container = Vue.extend({
         openWin: function (id) {
             //新增时没id，编辑时有
             if (id) {
-                var formData = {};
-                formData.token = serviceHelper.getToken();
-                formData.r = Math.random();
+                var formData = serviceHelper.getDefaultAjaxParam();
                 formData.id = id;
 
-                $.ajax({
-                    type: "get",
-                    dataType: "json",
-                    url: serviceHelper.getBasicPath() + this.getUrl,
-                    data: formData,
-                    success: function (ajaxResult) {
-                        if (ajaxResult) {
-                            if (ajaxResult.success == true) {
-                                var result = ajaxResult.data;
+                serviceHelper.getJson(serviceHelper.getBasicPath() + this.getUrl, formData, function (result) {
+                    this.currentEntity = result;
 
-                                this.currentEntity = result;
+                    if (this.afterRefreshFormHandler)
+                    //刷新录入表单后的回调
+                        this.afterRefreshFormHandler(result);
 
-                                if (this.afterRefreshFormHandler)
-                                //刷新录入表单后的回调
-                                    this.afterRefreshFormHandler(result);
-
-                                //弹出编辑窗口
-                                this.showForm();
-                            } else {
-                                //后台操作失败的代码
-                                alert(ajaxResult.msg);
-                            }
-                        }
-                    }.bind(this)
-                });
+                    //弹出编辑窗口
+                    this.showForm();
+                }.bind(this));
             }
             else {
                 //新增时要清空当前实体
@@ -253,18 +265,40 @@ var container = Vue.extend({
         },
         //刷新列表
         refreshList: function (pageNumber, pageSize) {
+            //获取刷新列表的查询参数
+            var formData = this.getRefreshListParam(pageNumber, pageSize);
+
+            serviceHelper.getJson(serviceHelper.getBasicPath() + this.listUrl, formData, function (result) {
+                //填充数据到grid
+
+                //按bootstrap table要求的格式组织数据，并加载数据到table
+                var tableData = {};
+                tableData.total = result.totalRecord;
+                tableData.rows = result.records;
+
+                $("#" + this.tableId, $("#" + this.vm.mainContentDivId)).bootstrapTable("load", tableData);
+
+                //分页部分，选择每页行数下拉菜单不能弹出的修复
+                //此下拉菜单使用bootstrap的Dropdowns控件，可能由于已经过了bootstrap初始化的时机，导致此控件没有正常初始化，因此在此手动初始化
+                $("#" + this.tableId, $("#" + this.vm.mainContentDivId)).parent().parent().find('.dropdown-toggle').dropdown();
+
+                //触发刷新列表后的回调
+                if (this.afterRefreshListHandler)
+                    this.afterRefreshListHandler();
+            }.bind(this));
+        },
+        //获取刷新列表的查询参数
+        getRefreshListParam: function (pageNumber, pageSize) {
             //获取分页信息（分为外部传入和使用当前分页信息）
             //获取分页信息（分为外部传入和使用当前分页信息）
             pageNumber = pageNumber || $("#" + this.tableId, $("#" + this.vm.mainContentDivId)).bootstrapTable("getOptions").pageNumber;
             pageSize = pageSize || $("#" + this.tableId, $("#" + this.vm.mainContentDivId)).bootstrapTable("getOptions").pageSize;
 
             //查询条件
-            var formData = {};
-            formData.token = serviceHelper.getToken();
+            var formData = serviceHelper.getDefaultAjaxParam();
             //分页
             formData.pageNumber = pageNumber;
             formData.pageSize = pageSize;
-            formData.r = Math.random();
 
             //加上工具条（界面）查询条件
             if (this.toolbarQueryParam)
@@ -275,48 +309,20 @@ var container = Vue.extend({
             if (queryParam)
                 $.extend(formData, queryParam);
 
-            //往后台查询数据
-            $.ajax({
-                type: "get",
-                dataType: "json",
-                url: serviceHelper.getBasicPath() + this.listUrl,
-                data: formData,
-                success: function (ajaxResult) {
-                    if (ajaxResult) {
-                        if (ajaxResult.success == true) {
-                            var result = ajaxResult.data;
-                            //填充数据到grid
-
-                            //按bootstrap table要求的格式组织数据，并加载数据到table
-                            var tableData = {};
-                            tableData.total = result.totalRecord;
-                            tableData.rows = result.records;
-
-                            $("#" + this.tableId, $("#" + this.vm.mainContentDivId)).bootstrapTable("load", tableData);
-
-                            //触发刷新列表后的回调
-                            if (this.afterRefreshListHandler)
-                                this.afterRefreshListHandler();
-                        } else {
-                            //后台操作失败的代码
-                            alert(ajaxResult.msg);
-                        }
-                    }
-                }.bind(this)
-            });
+            return formData;
         },
         //显示
         showForm: function () {
-            $("#" + this.formId).modal("show");
+            $("#" + this.formId, $("#" + this.vm.mainContentDivId)).modal("show");
         },
         //隐藏
         hideForm: function () {
-            $("#" + this.formId).modal("hide");
+            $("#" + this.formId, $("#" + this.vm.mainContentDivId)).modal("hide");
         },
         //编辑表单提交按钮事件
         submit: function () {
             //处理日期控件的值，从控件把值取出来并赋值到实体
-            $('.datetimepicker', $("#" + this.formId)).each(function (i, n) {
+            $('.datetimepicker', $("#" + this.formId, $("#" + this.vm.mainContentDivId))).each(function (i, n) {
                 //从控件取出字段名
                 var fieldName = $(n).attr('field');
 
@@ -327,49 +333,32 @@ var container = Vue.extend({
             }.bind(this));
 
             //复制当前实体（因为保存的表单对象不一定等于当前实体，防止污染当前实体，因此把复制一份作为保存对象）
-            var formData = $.extend({}, this.currentEntity);
-
-            formData.token = serviceHelper.getToken();
-            formData.r = Math.random();
+            var formData = $.extend(serviceHelper.getDefaultAjaxParam(), this.currentEntity);
 
             //加上自定义保存的值
             var customSaveValue = this.getCustomSaveValue();
             if (customSaveValue)
                 $.extend(formData, customSaveValue);
 
-            //提交到后台保存
-            $.ajax({
-                type: "post",
-                dataType: "json",
-                url: serviceHelper.getBasicPath() + this.saveUrl,
-                data: formData,
-                success: function (ajaxResult) {
-                    if (ajaxResult) {
-                        if (ajaxResult.success == true) {
-                            // messageBox.show({title: "", content: "提交成功"});
-                            // alert("保存成功");
+            //表单保存前触发，可用于表单验证
+            //需要有返回值，返回true就是继续保存，false就是不保存
+            if (!this.beforeSaveForm()) {
+                return;
+            }
 
-                            //关闭弹窗
-                            this.hideForm();
+            serviceHelper.postJson(serviceHelper.getBasicPath() + this.saveUrl, formData, function (result) {
+                //关闭弹窗
+                this.hideForm();
 
-                            //修改数据后刷新列表
-                            this.refreshList();
-
-                        } else {
-                            //后台操作失败的代码
-                            alert(ajaxResult.msg);
-                        }
-                    }
-                }.bind(this)
-            });
+                //修改数据后刷新列表
+                this.refreshList();
+            }.bind(this));
         },
         //删除选择的多条记录
         del: function () {
             var rows = $("#" + this.tableId, $("#" + this.vm.mainContentDivId)).bootstrapTable("getSelections");
             if (rows.length == 0) {
-                //Sweet Alert组件，用来代替alert
-                alert("请选择记录");
-                //swal({title: "", text: "请选择记录"});
+                layer.msg('请选择记录');
                 return;
             }
 
@@ -405,26 +394,13 @@ var container = Vue.extend({
                 if (customDeleteValue)
                     $.extend(formData, customDeleteValue);
 
-                $.ajax({
-                    type: "get",
-                    dataType: "json",
-                    url: serviceHelper.getBasicPath() + this.deleteUrl,
-                    data: formData,
-                    success: function (ajaxResult) {
-                        if (ajaxResult) {
-                            if (ajaxResult.success == true) {
-                                this.refreshList();
+                serviceHelper.getJson(serviceHelper.getBasicPath() + this.deleteUrl, formData, function (result) {
+                    this.refreshList();
 
-                                //删除后的回调
-                                if (this.afterDeleteHandler)
-                                    this.afterDeleteHandler();
-                            } else {
-                                //后台操作失败的代码
-                                alert(ajaxResult.msg);
-                            }
-                        }
-                    }.bind(this)
-                });
+                    //删除后的回调
+                    if (this.afterDeleteHandler)
+                        this.afterDeleteHandler();
+                }.bind(this));
             }.bind(this), function () {
 
             });
@@ -434,20 +410,19 @@ var container = Vue.extend({
          * @param id input的id
          * @param bizType 功能类型
          * @param options 上传控件的配置项，具体属性说明请看方法内的注释
+         * @param fileSelectHandler 选择文件后回调
+         * @param fileUploadedHandler 上传文件成功回调
          */
-        refreshFileUpload: function (id, bizType, options) {
+        refreshFileUpload: function (id, bizType, options, fileSelectHandler, fileUploadedHandler) {
             //由于文件上传控件没提供清除initialPreviewConfig数据的方法，因此每次刷新数据只能destroy
             $('#' + id, $("#" + this.vm.mainContentDivId)).fileinput('destroy');
 
             //获取当前行的上传文件
-            var formData = {};
-            formData.token = serviceHelper.getToken();
-            formData.r = Math.random();
+            var formData = serviceHelper.getDefaultAjaxParam();
             formData.bizType = bizType;
             if (this.currentEntity && this.currentEntity.id) {
                 formData.bizId = this.currentEntity.id;
-            }
-            else {
+            } else {
                 formData.bizId = 0;
             }
 
@@ -527,18 +502,22 @@ var container = Vue.extend({
                                 '</a>',
                                 //上传时发起请求，额外加入请求的值
                                 uploadExtraData: function (previewId, index) {
-                                    var formData = {};
+                                    var formData = serviceHelper.getDefaultAjaxParam();
                                     formData.bizType = bizType;
                                     formData.bizId = this.currentEntity.id;
-                                    formData.token = serviceHelper.getToken();
 
                                     return formData;
                                 }.bind(this),
                             }, options);
 
                             $('#' + id, $("#" + this.vm.mainContentDivId)).fileinput(options).on("filebatchselected", function (event, files) {
-                            }).on("fileuploaded", function (event, data) {
-                            });
+                                if (fileSelectHandler) {
+                                    fileSelectHandler(event, files);
+                                }
+                            }.bind(this)).on("fileuploaded", function (event, data) {
+                                if (fileUploadedHandler)
+                                    fileUploadedHandler(event, data);
+                            }.bind(this));
                         } else {
                             //后台操作失败的代码
                             alert(ajaxResult.msg);

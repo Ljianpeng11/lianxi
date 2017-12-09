@@ -1,14 +1,18 @@
 var template = require('./tab.html');
 var eventHelper = require('utils/eventHelper');
-var tabModel = require('controllers/model/appTabModel');
 var Sortable = require('sortablejs');
 
 // 定义组件
 var comm = Vue.extend({
     template: template,
     data: function () {
-        var defaultTab = tabModel.getDefaultTab();
-        tabModel.setCurrentTab(defaultTab);
+        var defaultTab = {
+            id: 'arcgis-plugin',
+            name: '主页',
+            showClose: false,
+            active: true
+        };
+        window.cesc.currentTab = defaultTab;
         return {
             isLoginSuccess: false,
             isMenuToggleOff: false,
@@ -22,10 +26,9 @@ var comm = Vue.extend({
             if (!!this.preTab) {
                 this.preTab.active = false;
             }
-            if (!!tab) {
+            if(!!tab){
                 tab.active = true;
                 eventHelper.emit('active-tab', tab.id);
-                tabModel.setCurrentTab(tab);
                 this.preTab = tab;
             }
         },
@@ -40,7 +43,7 @@ var comm = Vue.extend({
                             this.activateTab(this.tabs[1]);
                         }
                     }
-                    if (this.tabs.length > 1) {//最后必须留下一个tab
+                    if(this.tabs.length >1){//最后必须留下一个tab
                         this.tabs.splice(i, 1);
                     }
                 }
@@ -48,7 +51,6 @@ var comm = Vue.extend({
         }
     },
     mounted: function () {
-        tabModel.setTabs(this.tabs);
         eventHelper.on('loginSuccess', function () {
             this.isLoginSuccess = true;
         }.bind(this));
@@ -60,7 +62,7 @@ var comm = Vue.extend({
         }.bind(this));
         eventHelper.on('change-menu-success', function (menu) {
             var newTab = {
-                id: menu.menuurl,
+                id: menu.funUrl,
                 name: menu.title,
                 showClose: false,
                 active: true
@@ -84,7 +86,7 @@ var comm = Vue.extend({
                 tabs: this.tabs.slice(0)
             })
         }.bind(this));
-        eventHelper.on('toggle-menu', function (flag) {
+        eventHelper.on('toggle-menu',function (flag) {
             this.isMenuToggleOff = flag;
         }.bind(this));
     },

@@ -44,6 +44,14 @@ var comm = Vue.extend({
             speed:100, //数值越大，速度越慢
             rowHeight:20 //li的高度
         });
+        myScrollUtil.myScroll(".infoBoard #qxItem",{
+            speed:100, //数值越大，速度越慢
+            rowHeight:20 //li的高度
+        });
+        myScrollUtil.myScroll(".infoBoard #dbItem",{
+            speed:100, //数值越大，速度越慢
+            rowHeight:20 //li的高度
+        });
     },
     components: {}
 });

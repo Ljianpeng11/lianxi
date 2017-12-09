@@ -1,0 +1,9 @@
+<transition name="right-panel">
+    <!--width控制面板的宽度-->
+    <div :id="mainContentDivId" v-show='showPanel' class='right-panel' style="width: 300px;">
+        <p>内容</p>
+
+        <!--panel左侧关闭按钮-->
+        <div class="goBack"><a href='javascript:;' class="el-icon-d-arrow-right" @click="closePanel"></a></div>
+    </div>
+</transition>

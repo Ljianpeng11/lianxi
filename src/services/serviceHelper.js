@@ -4,44 +4,19 @@ define(['config'], function (config) {
     var serviceEndpoint = {
         basicPath: basicUrl,
         login: basicUrl + '/login/loginValid',
-        userRole: basicUrl + '/user/getRole',
-        userMenu: basicUrl + '/user/getMenu',
-        getAllFacilityType: basicUrl + '/facility/getAllFacilitysType',
-        deviceDetail: basicUrl + '/device/getDeviceInfosByFacilityId',
+        userMenu: basicUrl + '/sysUser/getUserMenu',
         makeOrder: basicUrl + '/orders/save',
         queryMenu: basicUrl + '/orders/menu',
         queryEmployee: basicUrl + '/employee',
         refreshToken: basicUrl + '/login/updateToken',
-        monitorRealTimeValue:basicUrl+'/dataReal/getDataRealByItemIds',
-        getHistoricalDate:basicUrl+'/dataHistory/getDataHistoryByItemId',
-        getFacilityByType:basicUrl+'/facility/getOneTypeFacilitys',
-        getAllFeatures: basicUrl + '/feature/getFeatureByCurrentUser',
-        getFeatureDetail: basicUrl + '/feature/getFeatureById',
-        addFeature: basicUrl + '/feature/addEditFeature',
-        deleteFeature: basicUrl +  '/feature/deleteFeatureById',
-        updateBuilding: basicUrl +  '/drainageFamily/addEditDrainageFamily',
-        addSetUpPipe: basicUrl +  '/pipePoint/addSetUpPipe',
-        addPipePoint: basicUrl +  '/pipePoint/addPipePoint',
-        addPreFacilities: basicUrl +  '/pipePoint/addPreFacilities',
-        formatLocation: basicUrl +  '/coordTrans/wgs84ToGz',
-        uploadFile: basicUrl +  '/uploadFile/uploadFileByBase64',
-        addPipeLine:basicUrl+'/pipeLine/addPipeLine',
-        getUploadFile:basicUrl+'/uploadFile/getUploadFilesByBizId',
-        downloadFile:basicUrl+'/uploadFile/downloadFileById',
-        getUserRoleList:basicUrl+'/role/list',
-        getUserByRoleId:basicUrl+'/user/getUserByRoleId',
-        listUserByRole:basicUrl+'/app/listUserByRole',
-        removeAuthUser:basicUrl+'/user/removeAuthUser',
-        authUser:basicUrl+'/user/authUser',
-        getMonitorDetail:basicUrl+'/psJkDataHis/getItemDimHistoryData',
-        getMonitorPoint:basicUrl+'/agsupport_nn/rest/pscomb/getStationByCoordinate',
-        queryFacilityByArea:basicUrl+'/pipeAnalyze/boxSelectStatistics',
         queryOrder: basicUrl + '/orders/query',
         getAllFacilityType: basicUrl + '/facility/getAllFacilitysType',
         getCarList:basicUrl+'/truck/getTruckList',
         getFacilityByType:basicUrl+'/facility/getOneTypeFacilitys',
         getFacilityDetail:basicUrl+'/facility/getOneFacilityInfo',
+        getHistoricalDate:basicUrl+'/dataHistory/getDataHistoryByItemId',
         deviceDetail:basicUrl+'/device/getDeviceInfosByFacilityId',
+        monitorRealTimeValue:basicUrl+'/dataReal/getDataRealByItemIds',
         getCarHistoryCount:basicUrl+'/truck/getTruckHistoryTrackCount',
         getDeviceList:basicUrl+'/iotDevice/list',
         getDeviceObject:basicUrl+'/iotDevice/get',
@@ -74,6 +49,54 @@ define(['config'], function (config) {
             formData.r = Math.random();
 
             return formData;
+        },
+        //get请求，获取json格式
+        //请求结果格式要求按ewater标准
+        getJson: function (url, formData, successHandler) {
+            //对jquery的ajax进行封装，主要为了精简代码，业务功能有需要可以用jquery原版的
+            $.ajax({
+                type: "get",
+                dataType: "json",
+                url: url,
+                data: formData,
+                success: function (ajaxResult) {
+                    //请求结果格式要求按ewater标准
+                    if (ajaxResult) {
+                        if (ajaxResult.success === true) {
+                            var result = ajaxResult.data;
+
+                            successHandler(result);
+                        } else {
+                            //后台操作失败的代码
+                            alert(ajaxResult.msg);
+                        }
+                    }
+                }.bind(this)
+            });
+        },
+        //post请求，获取json格式
+        //请求结果格式要求按ewater标准
+        postJson: function (url, formData, successHandler) {
+            //对jquery的ajax进行封装，主要为了精简代码，业务功能有需要可以用jquery原版的
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: url,
+                data: formData,
+                success: function (ajaxResult) {
+                    //请求结果格式要求按ewater标准
+                    if (ajaxResult) {
+                        if (ajaxResult.success === true) {
+                            var result = ajaxResult.data;
+
+                            successHandler(result);
+                        } else {
+                            //后台操作失败的代码
+                            alert(ajaxResult.msg);
+                        }
+                    }
+                }.bind(this)
+            });
         },
         getPath: function (connectionObj) {
             var url;

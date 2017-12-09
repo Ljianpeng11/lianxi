@@ -1,4 +1,5 @@
 require('./css/main.css');
+require('css/ewater/ewaterPlus.css');
 var Vue = require('vue');
 var VueRouter = require('vue-router');
 var appMenu = require('modules/appMenu');
@@ -15,6 +16,7 @@ var ElementUI = require('element-ui');
 var appSearch = require('modules/appSearch');
 var arcgisAPI = require('utils/arcgisAPI');
 var mapHelper = require('utils/mapHelper');
+var compateUtil = require('utils/compateUtil');
 Vue.use(ElementUI);
 Vue.use(VueRouter);
 
@@ -44,12 +46,14 @@ Vue.use(VueRouter);
 // 4. 创建和挂载根实例。
 // 记得要通过 router 配置参数注入路由，
 // 从而让整个应用都有路由功能
+compateUtil.init();
 var app = new Vue({
     mounted: function () {
+        console.log('vue-load');
+        window.eventHelper = eventHelper;
         $('#loadingMask').hide();
         eventHelper.on('loginSuccess', function () {
             this.isLoginSuccess = true;
-          //  $('#app').show();
         }.bind(this));
         eventHelper.on('loading-start', function () {
             $('#loadingMask').show();

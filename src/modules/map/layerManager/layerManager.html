@@ -1,0 +1,362 @@
+<div class="mainContent">
+    <div v-bind:id="mainContentDivId" class="row clearfix cesc-tab-content">
+        <div class=" col-md-4">
+            <div class="x_panel animated fadeIn">
+                <div class="x_title">
+                    <!--标题-->
+                    <h2>
+                        图层列表
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <!--左侧工具栏-->
+                    <div class="btn-group hidden-xs" role="group">
+                        <!--vue的单击事件绑定 v-on:click="xxx"-->
+                        <button type="button" class="btn btn-outline btn-default" title="新增组图层" @click="addGroupLayer">
+                            新增组图层
+                        </button>
+                        <button type="button" class="btn btn-outline btn-default" title="新增图层" @click="addLayer">
+                            新增图层
+                        </button>
+                    </div>
+                    <div class="btn-group hidden-xs" role="group">
+                        <button type="button" class="btn btn-outline btn-danger" title="删除" @click="del">
+                            删除
+                        </button>
+                    </div>
+                    <ul :id="treeId" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class=" col-md-8">
+            <div class="x_panel animated fadeIn">
+                <div class="x_title">
+                    <!--标题-->
+                    <h2>
+                        图层信息
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <!--左侧工具栏-->
+                    <div class="btn-group hidden-xs" role="group">
+                        <!--vue的单击事件绑定 v-on:click="xxx"-->
+                        <button type="button" class="btn btn-outline btn-default" title="保存" @click="save">
+                            保存
+                        </button>
+                    </div>
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">名称：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="name"
+                                           v-model="currentEntity.name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                    <el-checkbox v-model="entityDisplay">默认显示</el-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                    <el-checkbox v-model="entityEnabled">是否启用</el-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">标识：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="funId"
+                                           v-model="currentEntity.funId">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">业务类型：</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" v-model='currentEntity.bizType' id="bizType">
+                                        <option value="map">底图图层</option>
+                                        <option value="biz">业务图层</option>
+                                        <option value="device">设施图层</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">类型：</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" v-model='entityType' id="type" @change="typeChange">
+                                        <option value="ArcGISRest">ArcGIS Rest</option>
+                                        <option value="ArcGISFeatureLayer">ArcGIS FeatureLayer</option>
+                                        <option value="TomcatTile">Tomcat切片</option>
+                                        <option value="TDT">天地图互联网版</option>
+                                        <option value="WMS">WMS</option>
+                                        <option value="WMTS">WMTS</option>
+                                        <option value="HTTP">http请求</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">图标1：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="icon1"
+                                           v-model="currentEntity.icon1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">图标2：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="icon2"
+                                           v-model="currentEntity.icon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">图标3：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="icon3"
+                                           v-model="currentEntity.icon3">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">透明度：</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" id="transparency"
+                                           v-model="currentEntity.transparency">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">扩展字段1：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="ext1"
+                                           v-model="currentEntity.ext1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">扩展字段2：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="ext2"
+                                           v-model="currentEntity.ext2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">扩展字段3：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="ext3"
+                                           v-model="currentEntity.ext3">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">url：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="url"
+                                           v-model="currentEntity.url">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">从文件读取配置：</label>
+                                <div class="col-sm-8">
+                                    <button type="button" class="btn btn-outline btn-default" id="btnLoadConfxml"
+                                            @click="loadConfXml">
+                                        conf.xml
+                                    </button>
+                                    <button type="button" class="btn btn-outline btn-default" @click="loadConfCdi">
+                                        conf.cdi
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">切片大小rows：</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" id="tileSizeRows"
+                                           v-model="currentEntity.tileSizeRows">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">切片大小cols：</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" id="tileSizeCols"
+                                           v-model="currentEntity.tileSizeCols">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">wkid：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="wkid"
+                                           v-model="currentEntity.wkid">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">地图原点x：</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" id="tileZeroX"
+                                           v-model="currentEntity.tileZeroX">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">地图原点y：</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" id="tileZeroY"
+                                           v-model="currentEntity.tileZeroY">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">切片文件格式：</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" v-model='currentEntity.tileFormat' id="tileFormat">
+                                        <option value="png">png</option>
+                                        <option value="jpg">jpg</option>
+                                        <option value="bmp">bmp</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">切片级别：</label>
+                                <div class="col-sm-8">
+                                   <textarea class="form-control" rows="3" id="tileLevel"
+                                             v-model="currentEntity.tileLevel"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">切片分辨率：</label>
+                                <div class="col-sm-8">
+                                   <textarea class="form-control" rows="3" id="tileResolution"
+                                             v-model="currentEntity.tileResolution"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">切片比例尺：</label>
+                                <div class="col-sm-8">
+                                   <textarea class="form-control" rows="3" id="tileScale"
+                                             v-model="currentEntity.tileScale"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">切片范围：</label>
+                                <div class="col-sm-8">
+                                   <textarea class="form-control" rows="3" id="tileExtent"
+                                             v-model="currentEntity.tileExtent"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">压缩质量：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="compressionQuality"
+                                           v-model="currentEntity.compressionQuality">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">天地图图层类型：</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" v-model='currentEntity.tdtType' id="tdtType">
+                                        <option value="vec">矢量</option>
+                                        <option value="cva">矢量注记</option>
+                                        <option value="img">影像</option>
+                                        <option value="cia">影像注记</option>
+                                        <option value="ter">地形</option>
+                                        <option value="cta">地形注记</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!--导入tomcat切片配置（弹窗）-->
+        <div id="formLoadConf" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!--标题部分-->
+                        <!--关闭按钮-->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <!--标题-->
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <!--内容部分-->
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"></label>
+                                    <div class="col-sm-9">
+                                        选择导入文件后将自动导入菜单
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">文件：</label>
+                                    <div class="col-sm-9">
+                                        <!--multiple属性是运行一次上传多个文件-->
+                                        <input id="inputLoadConf" type="file" multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--这里还可以加底部（footer），详见bootstrap官网-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

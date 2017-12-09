@@ -1,7 +1,7 @@
 <div class="mainContent">
-    <div class="row clearfix">
+    <div :id="mainContentDivId" class="row clearfix cesc-tab-content">
         <div class="col-md-4">
-            <div class="x_panel">
+            <div class="x_panel animated fadeIn">
                 <div class="x_title">
                     <!--标题-->
                     <h2>
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="col-md-8">
-            <div class="panel panel-default">
+            <div class="panel panel-default animated fadeIn">
                 <div class="x_panel">
                     <div class="x_title">
                         <!--标题-->
@@ -51,13 +51,6 @@
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" placeholder=""
                                                    v-model='currentEntityCompany.ardress'>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">类型</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" placeholder=""
-                                                   v-model='currentEntityCompany.type'>
                                         </div>
                                     </div>
                                     <div class="form-group">

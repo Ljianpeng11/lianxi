@@ -31,16 +31,13 @@
                             <input type="text" class="form-control" placeholder="设备名称"
                                    v-model="containerMain.toolbarQueryParam.iotDeviceName">
                             <select class="form-control" v-model="containerMain.toolbarQueryParam._state">
+                                <option value="">所有状态</option>
                                 <option value="0">未发送</option>
                                 <option value="1">发送成功</option>
                                 <option value="2">发送失败</option>
                             </select>
                             <input type="text" class="form-control" placeholder="imei码"
                                    v-model="containerMain.toolbarQueryParam.imei">
-                            <input type="text" class="form-control datetimepicker " placeholder="创建时间-起始"
-                                   v-model="containerMain.toolbarQueryParam.createDate_start" readonly>
-                            <input type="text" class="form-control dtp-format1" placeholder="创建时间-终止"
-                                   v-model="containerMain.toolbarQueryParam.createDate_end" readonly>
                         </div>
                         <!--查询点击事件-->
                         <button type="button" class="btn btn-default btn-outline" title="查询" v-on:click="containerMain.search">

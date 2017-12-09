@@ -49,10 +49,10 @@ define(function () {
                 var actionName = $(this).data("name");
                 switch (actionName) {
                     case "normalMap":
-                        alert(actionName);
+                        eventHelper.emit("changeMap");
                         break;
                     case "earth":
-                        alert(actionName);
+                        eventHelper.emit("changeMap1");
                         break;
                 }
                 $(this).addClass("active").siblings().removeClass("active");

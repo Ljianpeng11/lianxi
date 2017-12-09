@@ -35,6 +35,8 @@ var comm = crudBase.extend({
                 return {
                     //测站类型下拉框所有值
                     facilityTypeIds: [],
+                    //选择的测站类型
+                    lstFacilityTypeId: null,
                     //是否添加默认的操作列（当需要自定义操作列的功能时可以设为false）
                     addDefaultOperateColumn: false,
                 }
@@ -227,9 +229,19 @@ var comm = crudBase.extend({
                     var formData = {};
                     //可以通过如下方式添加任意值
                     formData.name = this.containerMain.toolbarQueryParam.name;
+                    //可以通过如下方式添加任意值
+                    formData.lstFacilityTypeId = this.containerMain.lstFacilityTypeId.toString();
 
                     return formData;
                 }.bind(this),
+                //初始化工具条的查询条件，如果查询条件在toolbarQueryParam之外甚至不用vue绑定，可以重写此方法
+                initToolbarQueryParam: function () {
+                    //列表查询条件的初始化
+                    //虽然基类也有初始化，但部分控件的部分使用情况需要单独地初始化
+                    this.toolbarQueryParam = {};
+                    //select控件，用vue绑定，绑定的属性要存在，否则就无法设初始值
+                    this.lstFacilityTypeId = [];
+                },
             }
         });
     },

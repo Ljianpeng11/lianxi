@@ -4,6 +4,8 @@ var eventHelper = require('../../utils/eventHelper');
 var moduleController = require('controllers/moduleController');
 var serviceHelper = require('../../services/serviceHelper');
 var appNoticeBox = require('modules/appNoticeBox');
+var arcgisDraw = require('modules/arcgisPlugin/plugin/arcgisExpand/arcgis-load-map');
+var mapHelper = require('utils/mapHelper');
 var components = {
     'app-notice-box': appNoticeBox
 };
@@ -29,11 +31,11 @@ var comm = Vue.extend({
         changeView: function (view) {
             clearTimeout(this.changeViewTimer);
             this.changeViewTimer = setTimeout(function () {
-                if (!!components[view.menuurl.toLowerCase()]) {
-                    this.currentView = view.menuurl.toLowerCase();
+                if (!!components[view.funUrl.toLowerCase()]) {
+                    this.currentView = view.funUrl.toLowerCase();
                     eventHelper.emit('change-menu-success', view);
                 } else {
-                    eventHelper.emit(view.menuurl);
+                    eventHelper.emit(view.funUrl);
                     console.log('出错了！！找不到这个地址[' + view + ']');
                 }
             }.bind(this), 10);
@@ -55,7 +57,7 @@ var comm = Vue.extend({
             this.changeView(model);
         }.bind(this));
         eventHelper.on('active-tab', function (tabID) {
-            this.changeView({menuurl: tabID});
+            this.changeView({funUrl: tabID});
         }.bind(this));
     },
     components: components

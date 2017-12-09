@@ -1,7 +1,7 @@
 <div class="mainContent">
-    <div class="row clearfix">
+    <div :id="mainContentDivId" class="row clearfix cesc-tab-content">
         <div class="col-md-4">
-            <div class="x_panel">
+            <div class="x_panel animated fadeIn">
                 <div class="x_title">
                     <!--标题-->
                     <h2>
@@ -13,11 +13,11 @@
                     <div class="row">
                         <div class="col-md-12">
                             <form class="form-inline">
-                                <button type="button" class="btn btn-default" v-on:click="btn1Click">获取当前选择节点
+                                <button type="button" class="btn btn-default" @click="btn1Click">获取当前选择节点
                                 </button>
-                                <button type="button" class="btn btn-default" v-on:click="btn2Click">删除当前选择节点
+                                <button type="button" class="btn btn-default" @click="btn2Click">删除当前选择节点
                                 </button>
-                                <button type="button" class="btn btn-default" v-on:click="btn3Click">
+                                <button type="button" class="btn btn-default" @click="btn3Click">
                                     往当前节点的子级添加新节点
                                 </button>
                             </form>
@@ -42,7 +42,7 @@
         </div>
         <div class="col-md-8">
             <div class="panel panel-default">
-                <div class="x_panel">
+                <div class="x_panel animated fadeIn">
                     <div class="x_title">
                         <!--标题-->
                         <h2>
@@ -66,7 +66,9 @@
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
-                                                <button type="button" class="btn btn-primary" v-on:click="btnSaveClick">保存</button>
+                                                <button type="button" class="btn btn-primary" @click="btnSaveClick">
+                                                    保存
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

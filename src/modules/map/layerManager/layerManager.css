@@ -1,0 +1,48 @@
+/*组图层图标*/
+.ztree li span.button.layerGroup_ico_open {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/layerGroup.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+.ztree li span.button.layerGroup_ico_close {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/layerGroup.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+/*专题图标*/
+.ztree li span.button.layerProject_ico_open {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/layerProject.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+.ztree li span.button.layerProject_ico_close {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/layerProject.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+/*图层图标*/
+.ztree li span.button.layerLayer_ico_docu {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/layerLayer.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+/*本框架引用了其他css，对.button的有污染，以下样式是清除样式污染*/
+.ztree .button {
+    box-shadow: none;
+    border-radius: 0;
+}

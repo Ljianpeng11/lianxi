@@ -136,22 +136,23 @@ define(function () {
         });
         var spatialReference = new instance.SpatialReference({wkid: 4326});
         var fullExtent = new instance.Extent(-180.0, -90.0, 180.0, 90.0, spatialReference);
-        var tiledSLLayer = new instance.WebTileLayer({
+        var tiledVectorLayer = new instance.WebTileLayer({
             urlTemplate: "http://223.99.169.187:20215/iserver/services/map-agscache-shiliang/wmts-china/shiliang/default/ChinaPublicServices_shiliang/{level}/{row}/{col}.png",
             copyright: "",
             spatialReference: spatialReference,
             fullExtent: fullExtent,
             tileInfo: tileInfo,
         });
-        var tiledYXLayer = new instance.WebTileLayer({
+        var tiledImgLayer = new instance.WebTileLayer({
             urlTemplate: "http://223.99.169.187:20215/iserver/services/map-agscache-yingxiang/wmts-china/yingxiang/default/ChinaPublicServices_yingxiang/{level}/{row}/{col}.png",
             copyright: "",
             spatialReference: spatialReference,
             fullExtent: fullExtent,
             tileInfo: tileInfo,
         });
+        tiledImgLayer.visible=false;
         var map = new instance.Map({
-            layers: [tiledSLLayer,tiledYXLayer]
+            layers: [tiledVectorLayer,tiledImgLayer]
         });
         var view = new instance.MapView({
             container: container,
@@ -160,7 +161,7 @@ define(function () {
             zoom: zoom
         });
 
-        tiledSLLayer.load().then(function () {
+        tiledVectorLayer.load().then(function () {
             success(map, view);
         });
         view.then(function () {
