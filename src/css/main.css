@@ -28,6 +28,7 @@
 @import "./modules/cescInfoWindow.css";
 @import "./modules/layerList.css";
 @import "./modules/emergencyRescue.css";
+@import "./modules/emergenRescue/infoBoard/infoBoard.css";
 :root {
     --base-color:#105ba3;
 
