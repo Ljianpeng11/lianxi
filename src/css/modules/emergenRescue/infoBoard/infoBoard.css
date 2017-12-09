@@ -1,0 +1,40 @@
+.infoBoard{
+    position: absolute;
+    left:0px;
+    top: 0px;
+    width: 300px;
+    filter:alpha(Opacity=85);
+    -moz-opacity:0.85;
+    opacity: 0.85;
+}
+.infoBoard .el-tabs__item {
+    height: 25px;
+    line-height: 25px;
+    font-size: 16px;
+    padding: 0 10px;
+}
+.infoBoard .el-tabs__content {
+    padding: 0px 0px;
+    height: 100px;
+}
+.infoBoard .el-tabs .el-tab-pane{
+    height: 100px;
+}
+.infoBoard .el-tabs .testLi {
+    list-style: disc;
+}
+.infoBoard .el-tabs .lieven{
+    background-color:#BFBFBF;
+}
+.infoBoard .el-tabs .itemName {
+    float: left;
+    width:calc( 100% - 140px );
+    padding-left:5px;
+    color:black;
+}
+.infoBoard .el-tabs .itemTime {
+    float: right;
+    width:140px;
+    padding-right:5px;
+    color:black;
+}
