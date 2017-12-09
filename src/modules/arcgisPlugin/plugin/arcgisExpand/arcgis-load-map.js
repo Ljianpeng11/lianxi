@@ -1,6 +1,6 @@
 define(function () {
     var CONFIG = require('config'),
-        Map = cesc.require("cache/esri/Map"),
+        Map = cesc.require("esri/map"),
         TDTLayer = require('./TDTLayer'),
         eventHelper = require('utils/eventHelper'),
         TDTAnnoLayer = require('./TDTAnnoLayer'),
@@ -50,7 +50,7 @@ define(function () {
             var labels = new ArcGISDynamicMapServiceLayer(layerURL, {opacity: 0.6});
             //   map.addLayer(labels); 海绵体
             map.on('click', function (event) {
-                console.log(event);
+                // console.log(event);
             });
             //  deviceModel.createTextSymbol(map); 海绵体
             return map;
@@ -73,10 +73,6 @@ define(function () {
                             content: item.name,
                             type:'name'
                         },
-                        {
-                            title: '通信状态',
-                            content: '正常'
-                        }
                     ]
                 })
             });

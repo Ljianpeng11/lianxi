@@ -1,0 +1,60 @@
+define(['./serviceHelper'],function(serviceHelper){
+	return {
+		getMonitorsByFacility:function(facilityID,cb,errorCb){
+		var parameter = {
+				id:'monitorList',
+				parameter:{
+					facilityId:facilityID
+				}
+			};
+		$.get(serviceHelper.getPath(parameter),function(result,errorCb){
+				if(!!result){
+				if(!!result.success){
+					cb(result.data);
+				}
+				}
+				else{
+					errorCb(result);
+				}
+			});
+		},
+		getMonitorItemCurrentValue:function(items,cb,errorCb){
+			var parameter = {
+				id:'monitorRealTimeValue',
+				parameter:{
+					itemIds:JSON.stringify(items)
+				}
+			};
+			$.get(serviceHelper.getPath(parameter),function(result,errorCb){
+			if(!!result){
+			if(!!result.success){
+				cb(result.data);
+			}
+			}
+			else{
+				errorCb();
+			}
+		});
+		},
+		getHistoricalDataByMonitor:function(monitorID,startDate,endDate,cb){
+				var parameter = {
+				id:'getHistoricalDate',
+				parameter:{
+					itemId:monitorID,
+					dateStart:startDate,
+					dateEnd:endDate
+				}
+			};
+			$.get(serviceHelper.getPath(parameter),function(result,errorCb){
+			if(!!result){
+			if(!!result.success){
+				cb(result.data);
+			}
+			}
+			else{
+				errorCb();
+			}
+		});
+		}
+	}
+});

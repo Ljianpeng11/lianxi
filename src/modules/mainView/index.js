@@ -4,7 +4,6 @@ var eventHelper = require('../../utils/eventHelper');
 var moduleController = require('controllers/moduleController');
 var serviceHelper = require('../../services/serviceHelper');
 var appNoticeBox = require('modules/appNoticeBox');
-var arcgisDraw = require('modules/arcgisPlugin/plugin/arcgisExpand/arcgis-load-map');
 var mapHelper = require('utils/mapHelper');
 var components = {
     'app-notice-box': appNoticeBox
