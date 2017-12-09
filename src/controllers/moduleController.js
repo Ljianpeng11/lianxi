@@ -112,7 +112,6 @@ define([
              eiotMaintenance,
              emergencyRescue,
              infoBoard,
-             emergencyRescue,
              syslog,
              monitorUser,
              userManager,
@@ -177,8 +176,7 @@ define([
         'deviceCommand': deviceCommand,
         'eiotMaintenance': eiotMaintenance,
         'emergency-rescue':emergencyRescue,
-        'info-board':infoBoard
-        'emergency-rescue':emergencyRescue,
+        'info-board':infoBoard,
         'syslog': syslog,
         'monitorUser': monitorUser,
         'userManager': userManager,
