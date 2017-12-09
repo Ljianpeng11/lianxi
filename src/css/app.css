@@ -56,7 +56,6 @@ li {
     overflow: hidden;;
     position: absolute;
     top: 7em;
-    overflow-y: auto;
     height: calc(100% - 7em);
     width: calc(100% - 200px);
 }
