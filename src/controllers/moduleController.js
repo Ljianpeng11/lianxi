@@ -47,7 +47,6 @@ define([
     'modules/appIotDeviceManager/deviceCommand',
     'modules/appIotDeviceManager/eiotMaintenance',
     'modules/emergencyRescue',
-    'modules/emergencyRescue/infoBoard',
     'modules/appSys/syslog',
     'modules/appIotDeviceManager/monitorUser',
     'modules/auth/userManager',
@@ -63,6 +62,7 @@ define([
     'modules/se/serviceInvokeCountStats',
     'modules/se/serviceUserInvokeCountStats',
     'modules/se/userServiceInvokeCountStats',
+    'modules/emergencyRescue/emergenCommand/dispatcheCenter/dispatcheCenter'
 ], function (appContent,
              appDemoForm,
              elementForm,
@@ -111,7 +111,6 @@ define([
              deviceCommand,
              eiotMaintenance,
              emergencyRescue,
-             infoBoard,
              syslog,
              monitorUser,
              userManager,
@@ -126,7 +125,8 @@ define([
              serviceLogManager,
              serviceInvokeCountStats,
              serviceUserInvokeCountStats,
-             userServiceInvokeCountStats,){
+             userServiceInvokeCountStats,
+             dispatcheCenter){
     return {
         'app-content': appContent,
         'app-demo-form': appDemoForm,
@@ -176,7 +176,6 @@ define([
         'deviceCommand': deviceCommand,
         'eiotMaintenance': eiotMaintenance,
         'emergency-rescue':emergencyRescue,
-        'info-board':infoBoard,
         'syslog': syslog,
         'monitorUser': monitorUser,
         'userManager': userManager,
@@ -192,5 +191,7 @@ define([
         'serviceInvokeCountStats': serviceInvokeCountStats,
         'serviceUserInvokeCountStats': serviceUserInvokeCountStats,
         'userServiceInvokeCountStats': userServiceInvokeCountStats,
+        'dispatche-center': dispatcheCenter,
+
     }
 });
