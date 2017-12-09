@@ -28,7 +28,7 @@ var comm = Vue.extend({
                     userName: this.userName,
                     password: this.password
                 };
-                window.localStorage.setItem('cescToken',token);
+                window.sessionStorage.setItem('cescToken',token);
                 window.localStorage.setItem('cescUser', JSON.stringify(user));
                 //eventHelper.emit('loading-end');
                 eventHelper.emit('loading-end');

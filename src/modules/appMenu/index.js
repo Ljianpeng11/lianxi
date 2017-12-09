@@ -217,6 +217,7 @@ var comm = Vue.extend({
         eventHelper.on('loginSuccess', function (token) {
             this.isLoginSuccess = true;
             this.$nextTick(function () {
+                debugger;
                 appMenuController.getAppMenuByUser(token, function (menus) {
                     //console.log(menus);
                     menus.forEach(function (menu) {
