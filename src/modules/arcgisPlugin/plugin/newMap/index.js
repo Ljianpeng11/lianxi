@@ -7,7 +7,7 @@ var comm = Vue.extend({
     data: function () {
         return {
             isExpand:false,
-            indexId:-1,
+            indexId:1,
             mapTypeList:[
                 {
                     name:'影像图',
@@ -25,9 +25,6 @@ var comm = Vue.extend({
         },
         highLight:function (index) {
             this.indexId = index;
-        },
-        switchVectorLayer:function(){
-
         }
     },
     mounted: function () {
