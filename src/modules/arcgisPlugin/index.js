@@ -5,6 +5,7 @@ var eventHelper = require('../../utils/eventHelper');
 var toolBar = require('./plugin/toolBar/toolBar');
 var mapType = require('./plugin/mapType/mapType');
 var newMap = require('./plugin/newMap');
+var mapLegend = require('./plugin/mapLegend/mapLegend');
 var layerList = require('./plugin/layerList');
 var global = require('./plugin/global');
 var facilityController = require('controllers/facilityController');

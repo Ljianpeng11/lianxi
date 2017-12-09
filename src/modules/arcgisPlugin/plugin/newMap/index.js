@@ -25,6 +25,9 @@ var comm = Vue.extend({
         },
         highLight:function (index) {
             this.indexId = index;
+        },
+        switchVectorLayer:function(){
+
         }
     },
     mounted: function () {
