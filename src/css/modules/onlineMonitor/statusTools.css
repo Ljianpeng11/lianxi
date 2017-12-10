@@ -1,0 +1,52 @@
+.statusToolsBox{
+    background: #fff;
+    border-radius:10px;
+    box-shadow:0 0 10px 0 rgba(0,0,0,.2);
+    position: absolute;
+    right:3em;
+    top:20px;
+    padding:10px;
+}
+.tools-top{
+    padding-bottom:10px;
+    border-bottom:1px solid #dadada;
+}
+.tools-bottom{
+    padding-top:10px;
+}
+.tools-top > span,.tools-bottom > span{
+    margin-right:1em;
+}
+.tools-top > strong{
+    vertical-align: middle;
+}
+.tools-top b{
+    display: inline-block;
+    width:16px;
+    height:8px;
+    margin-right:0.2em;
+    vertical-align: middle;
+}
+.normalLabel > b{
+    background: #139019;
+}
+.warningLabel > b{
+    background: #f2b817;
+}
+.dangerLabel > b{
+    background: #fe5240;
+}
+.offlineLabel > b{
+    background: #c0c0c0;
+}
+.auto_refresh{
+    padding:0.3em 0.5em;
+    border:1px solid #009ace;
+    color: #009ace;
+}
+.hand_refresh{
+    padding:0.3em 1.2em;
+    border-radius:2em;
+    background: #009ace;
+    color: #fff;
+}
