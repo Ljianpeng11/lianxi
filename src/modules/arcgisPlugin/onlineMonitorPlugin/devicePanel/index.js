@@ -1,9 +1,6 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
-//左侧设备详情面板
-var deviceList = require('./deviceList');
-var statusTools = require('./statusTools');
-var devicePanel = require('./devicePanel');
+var echarts = require('echarts');
 
 // 定义组件
 var comm = Vue.extend({
@@ -15,11 +12,12 @@ var comm = Vue.extend({
     },
     methods: {},
     mounted: function () {
+        var myChart = echarts.init($("#deviceWaterChart")[0]);
+        var option = {
+
+        };
+        myChart.setOption(option);
     },
-    components: {
-        'device-list':deviceList,
-        'status-tools':statusTools,
-        'device-panel':devicePanel
-    }
+    components: {}
 });
 module.exports = comm;

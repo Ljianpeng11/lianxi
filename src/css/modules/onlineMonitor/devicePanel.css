@@ -1,0 +1,36 @@
+.deviceInfo{
+    width: calc(81.5% - 25px);
+    height: 24em;
+    position: absolute;
+    right: 10px;
+    bottom:10px;
+}
+.devicePanel-top{
+    height: 3em;
+    padding: 0 1em;
+    line-height: 2em;
+    color: #9d9d9d;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.devicePanel-top .top-label{
+    font-size:14px;
+    margin-right:1em;
+}
+.deviceMiddle{
+    color: #555;
+    flex: 3;
+    text-align: center;
+    font-size: 12px;
+}
+.deviceMiddle > span{
+    margin-right: 1em;
+}
+.deviceMiddle > span:last-child{
+    margin:0;
+}
+.devicePanel-bottom{
+    height: calc(100% - 3em);
+    background: #fff;
+}

@@ -8,6 +8,6 @@ define(function () {
         //1918服务端
         // basicURL: 'http://192.168.0.240:32504'
         // basicURL: 'http://120.77.246.153:32504'
-        basicURL: 'http://127.0.0.1:32904'
+        basicURL: 'http://192.168.10.104:32904'
     }
 });
