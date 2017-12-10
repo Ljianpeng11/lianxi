@@ -79,6 +79,7 @@ var comm = Vue.extend({
                             width: 4
                         })
                     });*/
+                    mapHelper.registerMapTool(view, 'statusToolsBox', 'top-right');
                     //注册地图地名地址查询插件
                     mapHelper.registerMapTool(view, 'addressService', 'top-right');
                     self.graLayer.on('layerview-create',function(evt){

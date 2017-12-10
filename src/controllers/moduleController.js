@@ -62,8 +62,7 @@ define([
     'modules/se/serviceInvokeCountStats',
     'modules/se/serviceUserInvokeCountStats',
     'modules/se/userServiceInvokeCountStats',
-    'modules/emergencyRescue/emergenCommand/dispatcheCenter',
-    'modules/test'
+    'modules/emergencyRescue/emergenCommand/dispatcheCenter'
 ], function (appContent,
              appDemoForm,
              elementForm,
@@ -127,8 +126,7 @@ define([
              serviceInvokeCountStats,
              serviceUserInvokeCountStats,
              userServiceInvokeCountStats,
-             dispatcheCenter,
-             test){
+             dispatcheCenter){
     return {
         'app-content': appContent,
         'app-demo-form': appDemoForm,
@@ -193,7 +191,6 @@ define([
         'serviceInvokeCountStats': serviceInvokeCountStats,
         'serviceUserInvokeCountStats': serviceUserInvokeCountStats,
         'userServiceInvokeCountStats': userServiceInvokeCountStats,
-        'dispatche-center': dispatcheCenter,
-        'test':test
+        'dispatche-center': dispatcheCenter
     }
 });
