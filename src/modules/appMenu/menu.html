@@ -11,6 +11,9 @@
     <div id="sidebar-menu" class="main_menu_side width hidden-print main_menu">
         <div class="menu_section">
             <ul class="nav side-menu">
+                <li class="navFirst">
+                    <i class="icon iconfont icon-shousuo"></i>
+                </li>
                 <li v-for="menu in menuList">
                     <a @click="showTertiaryMenu = false"><i class="fa fa-home" :class="menu.icon1"></i>
                         {{menu.title}} <span class="fa fa-chevron-down"></span></a>

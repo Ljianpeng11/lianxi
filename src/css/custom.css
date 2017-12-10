@@ -246,6 +246,7 @@
     display: flex;
     z-index: 99;
     height: 100%;
+    background:#046ab9;
 }
 
 .nav-md .container.body .col-md-3.left_col.menu_fixed {
@@ -629,7 +630,7 @@ a:hover, a:focus {
 }
 
 .nav.side-menu > li > a {
-    border-bottom:1px solid #095393;
+    border-bottom:1px solid #0461a9;
 }
 
 .nav.side-menu > li > a:hover {

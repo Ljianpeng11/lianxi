@@ -1,0 +1,59 @@
+<div class="deviceListBox">
+   <div class="listBoxTop">
+      <div class="listBoxTitle">
+         <span>
+            设备列表&nbsp;&nbsp;
+            <b class="listBadge">21</b>
+         </span>
+         <i class="el-icon-d-arrow-right"></i>
+      </div>
+      <input class="deviceSearch" type="text" placeholder="设备编号\监测点或拼音"/>
+   </div>
+   <ul class="listBoxContent">
+      <li v-for="item in deviceList"
+          :class="{'warningItem':item.status === 1,'dangerItem':item.status === 2}">
+         <div class="listItemTop">
+            <span>{{item.title}}</span>
+            <i class="icon iconfont"
+               :class="{'icon-dianliang_low normalStatus':item.voltage === 'low',
+                        'icon-dianliang_middl warningStatus':item.voltage === 'middle',
+                        'icon-dianliang_high dangerStatus':item.voltage === 'high',
+                        }">
+            </i>
+            <i class="icon iconfont"
+               :class="{'icon-lianjie normalStatus':item.signal === 'on',
+                        'icon-disconnect warningStatus':item.signal === 'off',
+                        }">
+            </i>
+            <i class="icon iconfont icon-pingjia"
+               :class="{'normalStatus':item.status === 0,
+                        'warningStatus':item.status === 1,
+                        'dangerStatus':item.status === 2
+                        }">
+            </i>
+         </div>
+         <div class="listContent" v-if="item.type === 'yuliang'">
+            <div class="listLabel-left">
+               <p>雨量计：</p>
+               <p>降雨量：</p>
+            </div>
+            <div class="listLabel-right">
+               <p>{{item.deviceCode}}</p>
+               <p>{{item.deviceNum}}(mm)</p>
+            </div>
+         </div>
+         <div class="listContent" v-if="item.type === 'yewei'">
+            <div class="listLabel-left">
+               <p>液位仪：</p>
+               <p>液位：</p>
+               <p>最近通讯：</p>
+            </div>
+            <div class="listLabel-right">
+               <p>{{item.deviceCode}}</p>
+               <p class="numStatus">{{item.deviceNum}}(m)</p>
+               <p>{{item.onlineTime}}分钟前</p>
+            </div>
+         </div>
+      </li>
+   </ul>
+</div>

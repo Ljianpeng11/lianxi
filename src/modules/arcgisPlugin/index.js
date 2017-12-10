@@ -15,6 +15,7 @@ var mapHelper = require('utils/mapHelper');
 var infoBoard = require('modules/emergencyRescue/mapTool/infoBoard');
 var tabModel = require('controllers/model/appTabModel');
 var retrospectDetail = require('modules/retrospectDetail');
+var onlineMonitorPlugin = require('./onlineMonitorPlugin');
 
 // 定义组件
 var comm = Vue.extend({
@@ -244,7 +245,8 @@ var comm = Vue.extend({
         'right-panel':rightPanel,
         'retrospect-detail':retrospectDetail,
         'info-board':infoBoard,
-        'new-map':newMap
+        'new-map':newMap,
+        'online-monitor':onlineMonitorPlugin
     }
 });
 module.exports = comm;

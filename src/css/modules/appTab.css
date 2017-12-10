@@ -25,12 +25,15 @@
 .cescTab {
     border-bottom: none;
     float: left;
-    border-top-right-radius: 10px;
     line-height:3em;
+}
+.cescTab > a{
+    background: #018ffc;
+    color:#fff;
+    border-top-right-radius: 10px;
 }
 
 .cescTab:hover {
-    background-color: #b8caa3;
     height: 100%;
     margin-top: 0;
 }
@@ -44,13 +47,13 @@
 
 
 .tabGroups .tabActive {
-    background-color: #f1f1f1;
     height: 100%;
     margin-top: 0;
 }
 
 .tabGroups .tabActive > a {
     color: #666;
+    background: #f1f1f1;
 }
 
 .cescTab .tabClose {

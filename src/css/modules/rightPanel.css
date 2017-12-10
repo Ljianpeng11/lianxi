@@ -993,17 +993,28 @@
 }
 
 .normalStatus {
-    color: green;
+    color: #139019;
 }
 
 .dangerStatus {
-    color: red;
+    color: #fe5240;
 }
 
 .warningStatus {
-    color: rgb(255, 193, 80);
+    color: #f2b817;
 }
-
+.warningItem{
+    border-left:4px solid #f2b817;
+}
+.warningItem .numStatus{
+    color:#f2b817;
+}
+.dangerItem{
+    border-left:4px solid #fe5240;
+}
+.dangerItem .numStatus{
+    color:#fe5240;
+}
 .device-content {
 
     overflow-y: auto;

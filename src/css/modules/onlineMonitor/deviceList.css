@@ -1,0 +1,77 @@
+.deviceListBox{
+    width:18.5%;
+    height:calc(100% - 20px);
+    position: absolute;
+    top:10px;
+    left:10px;
+    background: #f1f1f1;
+    color: #9d9d9d;
+    box-shadow: 1px 1px 15px 0 rgba(0,0,0,.1);
+}
+.listBoxTop{
+    height: 8em;
+    padding:1em;
+}
+.listBoxTitle{
+    height:2em;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.listBadge{
+    padding: 0.2em 0.8em;
+    background: #f2b817;
+    border-radius: 2em;
+    color: #fff;
+}
+.listBoxTitle > i{
+    transform:rotate(-90deg);
+}
+.deviceSearch{
+    display: block;
+    width: 100%;
+    text-align: center;
+    border-radius: 2em;
+    margin: 1em 0;
+    line-height: 3em;
+    outline: none;
+    border: none;
+    color: #c9c9c9;
+    background: url("../../images/searchBtn.png")no-repeat 2em;
+    background-color: #fff;
+}
+.listBoxContent{
+    height: calc(100% - 8em);
+    overflow: auto;
+}
+.listBoxContent > li{
+    background: #fff;
+    border-bottom:1px solid #eee;
+}
+.listItemTop{
+    padding:1em 1em 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size:16px;
+}
+.listItemTop > span{
+    color:#555;
+    flex:1;
+}
+.listContent{
+    display: flex;
+    align-items: center;
+    padding: 1em 0;
+}
+.listLabel-left,.listLabel-right{
+    flex-basis:50%;
+}
+.listLabel-left{
+    text-align: right;
+    padding-right:0.5em;
+}
+.listLabel-right{
+    text-align: left;
+    padding-left:0.5em;
+}
