@@ -15,6 +15,7 @@ var mapHelper = require('utils/mapHelper');
 var infoBoard = require('modules/emergencyRescue/mapTool/infoBoard');
 var tabModel = require('controllers/model/appTabModel');
 var retrospectDetail = require('modules/retrospectDetail');
+var onlineMonitorPlugin = require('./onlineMonitorPlugin');
 
 // 定义组件
 var comm = Vue.extend({
@@ -69,7 +70,7 @@ var comm = Vue.extend({
                     currentMap = map;
                     currentView = view;
                     //apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
-                    //apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer', 'lineLayer');
+                    // apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer', 'lineLayer');
                     mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
                         var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
                         mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
@@ -244,7 +245,8 @@ var comm = Vue.extend({
         'right-panel':rightPanel,
         'retrospect-detail':retrospectDetail,
         'info-board':infoBoard,
-        'new-map':newMap
+        'new-map':newMap,
+        'online-monitor':onlineMonitorPlugin
     }
 });
 module.exports = comm;

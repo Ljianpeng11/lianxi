@@ -55,14 +55,13 @@ li {
 .pageContent {
     overflow: hidden;;
     position: absolute;
-    top: 7em;
-    height: calc(100% - 7em);
+    top: 8em;
+    height: calc(100% - 8em);
     width: calc(100% - 200px);
 }
 
 .navFix {
-    border-bottom: 1px solid #d8d8d8;
-    height: 4em;
+    height: 5em;
     float: right;
     width: 100%;
 }
@@ -152,4 +151,8 @@ li {
     z-index: 999;
     background-color: white;
     width: 17em;
+}
+.mainContentBox{
+    height: calc(100% - 5em - 2px);
+    margin-top: 5em;
 }

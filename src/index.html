@@ -1,4 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,7 +11,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
-    <title>智慧水务在线监测系统</title>
+    <title>高青智慧排水在线监测系统</title>
     <link rel="stylesheet" href="./css/login.css">
     <script type="text/javascript">
         function login() {
@@ -25,11 +26,11 @@
             }, 10);
         };
     </script>
-    <link rel="stylesheet" href="http://139.159.246.230:9000/3rd/element-ui/lib/theme-default/index.css">
+    <link rel="stylesheet" href="../3rd/element-ui/lib/theme-default/index.css">
     <link rel="stylesheet" href="../vendors/loaders.css">
 
     <!-- Bootstrap -->
-    <link href="http://139.159.246.230:9000/3rd/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../3rd/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
@@ -38,7 +39,7 @@
     <link href="../vendors/animate.css/animate.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link rel="stylesheet" href="http://139.159.246.230:9000/arcgis/lib/44/esri/css/main.css">
+    <link rel="stylesheet" href="../lib/arcgis/4.4/esri/css/main.css">
 </head>
 
 <body class="nav-md">
@@ -76,35 +77,35 @@
         </div>
     </div>
     <div class="container body" v-show="isLoginSuccess">
-        <div class="col-md-3 left_col" :class="{minMenu:isMenuToggleOff}">
-            <div class="scroll-view">
-                <div class="navbar nav_title titleBackground">
+        <!-- top navigation -->
+        <app-navigator></app-navigator>
+        <!-- /top navigation -->
+        <div class="mainContentBox">
+            <div class="col-md-3 left_col" :class="{minMenu:isMenuToggleOff}">
+                <div class="scroll-view">
+                    <!--<div class="navbar nav_title titleBackground"></div>-->
+                    <!--<div class="clearfix"></div>-->
+                    <!-- menu profile quick info
+                    <app-profile></app-profile>
+                    /menu profile quick info -->
+
+                    <!-- sidebar menu -->
+                    <app-menu></app-menu>
+
+                    <!-- /menu footer buttons -->
+                    <!--<app-footer></app-footer>-->
+                    <!-- /menu footer buttons -->
                 </div>
-
-                <div class="clearfix"></div>
-                <!-- menu profile quick info
-                <app-profile></app-profile>
-                /menu profile quick info -->
-
-                <!-- sidebar menu -->
-                <app-menu></app-menu>
-
-                <!-- /menu footer buttons -->
-                <app-footer></app-footer>
-                <!-- /menu footer buttons -->
             </div>
-        </div>
-        <div class="rightContainer" :class="{maxContainer:isMenuToggleOff}">
-            <!-- top navigation -->
-            <app-navigator></app-navigator>
-            <!-- /top navigation -->
-            <app-tab></app-tab>
-            <!-- page content -->
-            <div class="right_col pageContent" role="main" :class="{maxContainer:isMenuToggleOff}">
-                <!--  <router-view></router-view>-->
-                <main-view></main-view>
-                <!-- /sidebar menu -->
-                <!--<app-search></app-search>-->
+            <div class="rightContainer" :class="{maxContainer:isMenuToggleOff}">
+                <app-tab></app-tab>
+                <!-- page content -->
+                <div class="right_col pageContent" role="main" :class="{maxContainer:isMenuToggleOff}">
+                    <!--  <router-view></router-view>-->
+                    <main-view></main-view>
+                    <!-- /sidebar menu -->
+                    <!--<app-search></app-search>-->
+                </div>
             </div>
         </div>
         <!-- /page content -->
@@ -120,12 +121,12 @@
     </div>
     <app-login></app-login>
 </div>
-    <!-- jQuery -->
-    <script src="../vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="http://139.159.246.230:9000/3rd/vue/dist/vue.min.js"></script>
-    <script src="http://139.159.246.230:9000/arcgis/lib/44/init.js"></script>
+<!-- jQuery -->
+<script src="../vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../3rd/vue/dist/vue.min.js"></script>
+<script src="../lib/arcgis/4.4/init.js"></script>
 
     <script type="text/javascript">
         window.cesc = {

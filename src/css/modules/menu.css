@@ -105,3 +105,13 @@
     -webkit-transform: rotate(180deg); /* Safari 和 Chrome */
     -o-transform: rotate(180deg);
 }
+.navFirst{
+    height:3em;
+    line-height:3em;
+    background: #007edf;
+    color: #fff;
+    padding-left:10px;
+}
+.navFirst > i{
+    font-size:1.5em;
+}

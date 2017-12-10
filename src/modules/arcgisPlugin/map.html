@@ -1,19 +1,18 @@
 <div class='mapContainer'>
     <div id="mapDiv"></div>
-    <div id="toolBar" v-show="showtools"></div>
-    <div id="mapType" v-show="showtools"></div>
     <new-map ref="newMap"></new-map>
     <flex-map-legend ref="mapLegend"></flex-map-legend>
-    <div class="control-search">
-        <!--<el-button @click="toggleSearch" icon="search"></el-button>-->
-    </div>
+
+    <!--在线监测面板-->
+    <online-monitor></online-monitor>
+
     <!-- 右边菜单-->
     <!--right panel start-->
     <right-panel ref='rightPanel'></right-panel>
     <!--dialog start-->
     <info-window></info-window>
     <!-- 地图展示应急抢险信息公告栏-->
-    <info-board></info-board>
+    <!--<info-board></info-board>-->
     <el-dialog
             title="预案启动提示"
             :visible.sync="dialogVisible"
@@ -26,10 +25,11 @@
         </span>
     </el-dialog>
 
-    <div v-show="showWeatherReportPanel" class="weatherReportPanel">
-        <img :src="weatherImg" style="width: 10em;height: 10em;">
-    </div>
-    <div v-show="showWeatherReportPanel" class="radarReportPanel">
-        <img :src="radarImg" style="width: 20em;height: 20em;">
-    </div>
+    <!-- 气象预警 -->
+    <!--<div v-show="showWeatherReportPanel" class="weatherReportPanel">-->
+        <!--<img :src="weatherImg" style="width: 10em;height: 10em;">-->
+    <!--</div>-->
+    <!--<div v-show="showWeatherReportPanel" class="radarReportPanel">-->
+        <!--<img :src="radarImg" style="width: 20em;height: 20em;">-->
+    <!--</div>-->
 </div>

@@ -2,10 +2,9 @@
     width: calc(100% - 200px);
     height: 3em;
     position: absolute;
-    top: 4em;
-    background-color: #F0F0F0;
+    top: 5em;
+    background-color: #007edf;
     float: left;
-    border-bottom:1px solid #ccc;
 }
 
 .tabGroupsMax {
@@ -24,37 +23,37 @@
 }
 
 .cescTab {
-    border: 1px solid #ccc;
-    border-bottom:none;
+    border-bottom: none;
     float: left;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    background-color: lightgray;
+    line-height:3em;
+}
+.cescTab > a{
+    background: #018ffc;
+    color:#fff;
+    border-top-right-radius: 10px;
 }
 
 .cescTab:hover {
-    background-color: #b8caa3;
     height: 100%;
     margin-top: 0;
 }
 
 .cescTab .tabName {
     text-align: center;
-    font-weight: bold;
     float: left;
-    line-height:3em;
-    padding:0 3em;
+    padding: 0 2.4em;
+    font-size: 1.2em;
 }
 
 
 .tabGroups .tabActive {
-    background-color: white;
     height: 100%;
     margin-top: 0;
 }
 
 .tabGroups .tabActive > a {
     color: #666;
+    background: #f1f1f1;
 }
 
 .cescTab .tabClose {
