@@ -5,11 +5,11 @@
             设备列表&nbsp;&nbsp;
             <b class="listBadge">21</b>
          </span>
-         <i class="el-icon-d-arrow-right rotate-top"></i>
+         <i class="el-icon-d-arrow-right" :class="[isOpenList?'rotate-up':'rotate-down']" @click="toggleList"></i>
       </div>
       <input class="deviceSearch" type="text" placeholder="设备编号\监测点或拼音"/>
    </div>
-   <ul class="listBoxContent">
+   <ul class="listBoxContent" v-show="isOpenList">
       <li v-for="item in deviceList"
           :class="{'warningItem':item.status === 1,'dangerItem':item.status === 2}">
          <div class="listItemTop">

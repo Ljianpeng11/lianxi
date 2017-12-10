@@ -54,7 +54,6 @@ var option = {
             type: 'value',
             max: 200,
             inverse: true,
-            nameLocation: 'start',
             splitNumber: 2,
             axisLine: {
                 show: false
@@ -64,6 +63,7 @@ var option = {
             name: '井下水位(m)',
             type: 'value',
             max: 10,
+            nameLocation: 'start',
             splitNumber: 2,
             axisLine: {
                 show: false
@@ -156,11 +156,9 @@ var comm = Vue.extend({
     data: function () {
         return {
             myChart:null,
-            timeIndex:null
+            timeIndex:null,
+            isOpen:false
         }
-    },
-    created:function(){
-
     },
     methods: {
         loadYLChart:function(dom){
@@ -186,6 +184,9 @@ var comm = Vue.extend({
                     // })
                 }.bind(this),2000);
             }.bind(this));
+        },
+        closePanel:function(){
+            this.isOpen = false;
         }
     },
     mounted: function () {
