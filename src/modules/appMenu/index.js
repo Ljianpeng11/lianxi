@@ -93,10 +93,14 @@ var comm = Vue.extend({
             } else if (menu.customid == 'plan-end') {
                 this.stopPlan();
             } else {
-                this.showTertiaryMenu = true;
-                this.currentMenu = menu;
-                this.tertiaryMenus = this.currentMenu.children;
-                $('.tertiaryMenu').css('top', event.clientY - 110);
+                if(menu.children.length != 0){
+                    this.showTertiaryMenu = true;
+                    this.currentMenu = menu;
+                    this.tertiaryMenus = this.currentMenu.children;
+                    $('.tertiaryMenu').css('top', event.clientY - 110);
+                }else{
+                    eventHelper.emit('change-menu',menu);
+                }
             }
 
         },
