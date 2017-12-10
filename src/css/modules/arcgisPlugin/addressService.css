@@ -1,0 +1,21 @@
+#addressService{
+    width:300px;
+}
+#addressService .el-autocomplete {
+    width:100%;
+}
+#addressService .el-autocomplete .el-input__inner{
+    display: block;
+    width: 100%;
+    text-align: center;
+    border-radius: 2em;
+    margin: 1em 0;
+    line-height: 3em;
+    outline: none;
+    border: none;
+    background: url("../../images/searchBtn.png")no-repeat;
+    background-color: #fff;
+    padding: 0px 15px 0px 35px;
+    background-position-x: 8px;
+    background-position-y: center;
+}

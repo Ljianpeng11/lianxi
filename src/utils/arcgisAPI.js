@@ -203,9 +203,11 @@ define(function () {
     };
     instance.registerMapTool = function (view, buttonId, position, cb) {
         view.ui.add(buttonId, position);
-        $("#" + buttonId)[0].addEventListener('click', function () {
-            cb();
-        });
+        if(cb){
+            $("#" + buttonId)[0].addEventListener('click', function () {
+                cb();
+            });
+        }
     };
     instance.initDrawPen = function (view, drawComplete) {
         var searchArea;
@@ -371,6 +373,13 @@ define(function () {
         });
         success(map, view);
     };
+    instance.createPoint = function(x,y){
+        var point = new instance.Point({
+            longitude: x,
+            latitude: y
+        });
+        return point;
+    }
     instance.createPolyline = function (layer, paths, styleObj) {
         var line = new instance.Polyline({
             paths: paths

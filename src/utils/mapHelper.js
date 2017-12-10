@@ -125,7 +125,10 @@ define(function () {
         // },
         //设置地图中心点和地图显示层
         setCenter: function (view, x, y, zoom) {
-            this.apiInstance.setCenter(view, x, y, zoom)
+            this.apiInstance.setCenter(view, x, y, zoom);
+        },
+        createPoint: function ( x, y) {
+            return this.apiInstance.createPoint( x, y);
         }
     }
 });

@@ -13,6 +13,7 @@ var infoWindow = require('./plugin/infoWindow');
 var rightPanel = require('modules/rightPanel');
 var mapHelper = require('utils/mapHelper');
 var infoBoard = require('modules/emergencyRescue/mapTool/infoBoard');
+var addressServiceInput = require('./plugin/addressServiceInput')
 var tabModel = require('controllers/model/appTabModel');
 var retrospectDetail = require('modules/retrospectDetail');
 var onlineMonitorPlugin = require('./onlineMonitorPlugin');
@@ -42,6 +43,7 @@ var comm = Vue.extend({
             drawLineGraphics: [],
             polygonId: 1,
             baseMap:{},
+            baseView:{},
             graLayer:{},
             graphics:[],
             dialogVisible:false,
@@ -65,19 +67,20 @@ var comm = Vue.extend({
 
             var map = mapHelper.initSuperMap("mapDiv", centerX, centerY, zoom, function (map, view) {
                     self.baseMap = map;
+                    self.baseView = view;
                     var apiInstance = mapHelper.getInstance();
                     self.graLayer = apiInstance.createGraphicsLayer(self.baseMap,'graphicLayer');
                     currentMap = map;
                     currentView = view;
-                    //apiInstance.createMapImageLayer(currentMap, layerURL, 'haimianlayer');
-                    // apiInstance.createMapImageLayer(currentMap, 'http://192.168.0.213:6080/arcgis/rest/services/gz1918pipe/gz1918Pip/MapServer', 'lineLayer');
-                    mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
+                    /*mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
                         var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
                         mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
                             color: [226, 119, 40],
                             width: 4
                         })
-                    });
+                    });*/
+                    //注册地图地名地址查询插件
+                    mapHelper.registerMapTool(view, 'addressService', 'top-right');
                     self.graLayer.on('layerview-create',function(evt){
                         var graView = evt.view;
                         var graLayerView = evt.layerView;
@@ -246,7 +249,8 @@ var comm = Vue.extend({
         'retrospect-detail':retrospectDetail,
         'info-board':infoBoard,
         'new-map':newMap,
-        'online-monitor':onlineMonitorPlugin
+        'online-monitor':onlineMonitorPlugin,
+        'address-service-input':addressServiceInput
     }
 });
 module.exports = comm;
