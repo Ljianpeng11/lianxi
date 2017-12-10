@@ -30,6 +30,7 @@
 @import "./modules/emergencyRescue.css";
 @import "modules/emergenRescue/mapTool/infoBoard/infoBoard.css";
 @import "modules/onlineMonitor/deviceList.css";
+@import "modules/arcgisPlugin/addressService.css";
 :root {
     --base-color:#105ba3;
 
