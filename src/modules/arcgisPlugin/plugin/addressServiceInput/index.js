@@ -1,7 +1,4 @@
-var template = require('./dispatcheCenter.html');
-var eventHelper = require('utils/eventHelper');
-var arcgisMap = require('./arcgisMap');
-
+var template = require('./var template = require(\'./map.html\');\n');
 // 定义组件
 var comm = Vue.extend({
     template: template,
@@ -11,12 +8,13 @@ var comm = Vue.extend({
         }
     },
     methods: {
+
     },
     mounted: function () {
 
     },
     components: {
-        'arcgis-map':arcgisMap
+
     }
 });
 module.exports = comm;
