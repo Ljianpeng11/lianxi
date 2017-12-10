@@ -5,7 +5,6 @@ var eventHelper = require('../../utils/eventHelper');
 var toolBar = require('./plugin/toolBar/toolBar');
 var mapType = require('./plugin/mapType/mapType');
 var newMap = require('./plugin/newMap');
-var mapLegend = require('./plugin/mapLegend/mapLegend');
 var layerList = require('./plugin/layerList');
 var global = require('./plugin/global');
 var facilityController = require('controllers/facilityController');
@@ -154,16 +153,16 @@ var comm = Vue.extend({
 
         },
         initPlugin: function (facilityArr, self) {
-            global.init();
+            //global.init();
             facilityController.getAllFacilityType(function (list) {
-                self.$refs.mapLegend.init(list);
+                self.$refs.layerList.init(list);
             });
         }
     },
     mounted: function () {
         //加载设备
         this.facilityArr = {};
-        //this.initPlugin(this.facilityArr, this);
+        this.initPlugin(this.facilityArr, this);
         var self = this;
         //初始化地图
         this.initBaseMap();
