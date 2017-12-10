@@ -3,6 +3,7 @@ var eventHelper = require('utils/eventHelper');
 //左侧设备详情面板
 var deviceList = require('./deviceList');
 var statusTools = require('./statusTools');
+var devicePanel = require('./devicePanel');
 
 // 定义组件
 var comm = Vue.extend({
@@ -17,7 +18,8 @@ var comm = Vue.extend({
     },
     components: {
         'device-list':deviceList,
-        'status-tools':statusTools
+        'status-tools':statusTools,
+        'device-panel':devicePanel
     }
 });
 module.exports = comm;

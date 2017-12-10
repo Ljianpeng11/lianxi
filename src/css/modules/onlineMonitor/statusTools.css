@@ -50,3 +50,7 @@
     background: #009ace;
     color: #fff;
 }
+.selectItem > b,.selectItem > i{
+    color: #589fd5;
+    vertical-align: middle;
+}

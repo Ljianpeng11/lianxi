@@ -31,6 +31,7 @@
 @import "modules/emergenRescue/mapTool/infoBoard/infoBoard.css";
 @import "modules/onlineMonitor/deviceList.css";
 @import "modules/onlineMonitor/statusTools.css";
+@import "modules/onlineMonitor/devicePanel.css";
 :root {
     --base-color:#105ba3;
 

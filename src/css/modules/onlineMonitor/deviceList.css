@@ -1,12 +1,14 @@
+.devicePanel{
+    background: #f1f1f1;
+    color: #9d9d9d;
+    box-shadow: 1px 1px 15px 0 rgba(0,0,0,.1);
+}
 .deviceListBox{
     width:18.5%;
     height:calc(100% - 20px);
     position: absolute;
     top:10px;
     left:10px;
-    background: #f1f1f1;
-    color: #9d9d9d;
-    box-shadow: 1px 1px 15px 0 rgba(0,0,0,.1);
 }
 .listBoxTop{
     height: 8em;
@@ -24,7 +26,7 @@
     border-radius: 2em;
     color: #fff;
 }
-.listBoxTitle > i{
+.rotate-top{
     transform:rotate(-90deg);
 }
 .deviceSearch{
