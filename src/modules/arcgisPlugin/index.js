@@ -54,9 +54,9 @@ var comm = Vue.extend({
         initBaseMap: function () {
             var layerURL = 'http://112.74.51.12:6080/arcgis/rest/services/hwShow201705/MapServer';
 
-            var centerX = 117.80633295234286;
-            var centerY = 37.18682244869559;
-            var zoom = 10;
+            var centerX = 117.82261612882854;
+            var centerY = 37.16445993323195;
+            var zoom = 13;
             var currentMap = {};
             var currentView = {};
             var self = this;
