@@ -4,6 +4,7 @@
     position: absolute;
     right: 10px;
     bottom:10px;
+    z-index:8;
 }
 .devicePanel-top{
     height: 3em;

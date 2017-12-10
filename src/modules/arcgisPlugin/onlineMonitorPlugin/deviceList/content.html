@@ -15,9 +15,9 @@
          <div class="listItemTop">
             <span>{{item.title}}</span>
             <i class="icon iconfont"
-               :class="{'icon-dianliang_low normalStatus':item.voltage === 'low',
+               :class="{'icon-dianliang_low dangerStatus':item.voltage === 'low',
                         'icon-dianliang_middl warningStatus':item.voltage === 'middle',
-                        'icon-dianliang_high dangerStatus':item.voltage === 'high',
+                        'icon-dianliang_high normalStatus':item.voltage === 'high',
                         }">
             </i>
             <i class="icon iconfont"
@@ -26,10 +26,7 @@
                         }">
             </i>
             <i class="icon iconfont icon-pingjia"
-               :class="{'normalStatus':item.status === 0,
-                        'warningStatus':item.status === 1,
-                        'dangerStatus':item.status === 2
-                        }">
+               :class="{'warningStatus':item.collect === 1}">
             </i>
          </div>
          <div class="listContent" v-if="item.type === 'yuliang'">
