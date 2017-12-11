@@ -7,7 +7,6 @@
 .facilityInfoTable .facilityQueryBar {
     width: 100%;
     height: 50px;
-    border: 1px solid red;
 }
 .facilityInfoTable .facilityQueryBar .deviceSearch {
     margin: 0;
@@ -21,8 +20,17 @@
     padding-right: 20px;
 }
 
+.facilityInfoTable .facilityQueryBar .tools-top {
+    float: right;
+    padding-top: 11px;
+    padding-bottom: 0px;
+    border-bottom: none;
+}
+.facilityInfoTable .facilityQueryBar .tools-bottom {
+    padding-top: 11px;
+    float:right;
+}
 .facilityInfoTable .facilityInfoContent {
     width: 100%;
     height: calc( 100% - 50px );
-    border: 1px solid blue;
 }

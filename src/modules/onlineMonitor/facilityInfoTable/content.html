@@ -15,8 +15,98 @@
                 <li></li>
              </ul>
         </span>
+
+        <div class="tools-bottom">
+            <span class="auto_refresh">自动刷新</span>
+            <span class="selectItem" style="float:none;">间隔 <b>3</b><i class="icon iconfont icon-xiajiantou"></i>分钟
+                <ul class="selectBox" style="display:none">
+                    <li></li>
+                </ul>
+            </span>
+            <span>下次刷新：<b>120</b>秒</span>
+            <span class="hand_refresh">刷新</span>
+            <span class="hand_refresh">导出</span>
+        </div>
+        <div class="tools-top">
+            <span class="normalLabel"><b></b><strong>正常</strong></span>
+            <span class="warningLabel"><b></b><strong>预警</strong></span>
+            <span class="dangerLabel"><b></b><strong>报警</strong></span>
+            <span class="overLineLabel"><b></b><strong>溢流</strong></span>
+        </div>
     </div>
     <div class="facilityInfoContent">
-
+        <el-table
+                :data="tableData"
+                style="width: 100%">
+            <el-table-column
+                    prop="facilityId"
+                    label="设备"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="安装监测点位"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="newDataTime"
+                    label="最新数据时间">
+            </el-table-column>
+            <el-table-column
+                    prop="newCommTime"
+                    label="最新通讯时间">
+            </el-table-column>
+            <el-table-column
+                    prop="batteryRemain"
+                    label="中继剩余电量(%)">
+            </el-table-column>
+            <el-table-column
+                    prop="workDays"
+                    label="主机工作时间(天)">
+            </el-table-column>
+            <el-table-column
+                    prop="waterLevel"
+                    :formatter="waterLevelFormat"
+                    label="液位(m)">
+            </el-table-column>
+            <el-table-column
+                    prop="overflowRisk"
+                    label="溢流风险">
+            </el-table-column>
+            <el-table-column
+                    prop="flowVol"
+                    label="流量(L/s)"
+                    :formatter="flowVolFormat">
+            </el-table-column>
+            <el-table-column
+                prop="flowSpeed"
+                label="流速(m/s)"
+                :formatter="flowSpeedFormat">
+            </el-table-column>
+            <el-table-column
+                    prop="suspendMatter"
+                    label="悬浮物(mg/L)"
+                    :formatter="suspendMatterFormat">
+            </el-table-column>
+            <el-table-column
+                    prop="do"
+                    label="DO(mg/L)"
+                    :formatter="doFormat">
+            </el-table-column>
+            <el-table-column
+                    prop="temperature"
+                    label="温度(℃)"
+                    :formatter="temperatureFormat">
+            </el-table-column>
+            <el-table-column
+                    prop="humidity"
+                    label="湿度(%)"
+                    :formatter="humidityFormat">
+            </el-table-column>
+            <el-table-column
+                    prop="status"
+                    label="状态">
+            </el-table-column>
+        </el-table>
     </div>
 </div>

@@ -37,6 +37,9 @@
 .offlineLabel > b{
     background: #c0c0c0;
 }
+.overLineLabel > b{
+    background: #FF00FF;
+}
 .auto_refresh{
     padding:0.3em 0.5em;
     border:1px solid #009ace;
