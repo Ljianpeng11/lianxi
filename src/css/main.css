@@ -34,6 +34,8 @@
 @import "modules/onlineMonitor/devicePanel.css";
 @import "modules/onlineMonitor/statisticsPanel.css";
 @import "modules/arcgisPlugin/addressService.css";
+@import "modules/onlineMonitor/facilityInfoTable.css";
+.css
 :root {
     --base-color:#105ba3;
 }
