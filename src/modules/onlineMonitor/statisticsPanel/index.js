@@ -4,7 +4,7 @@ var echarts = require('echarts');
 var moment = require('moment');
 
 //加载组件
-var deviceList = require('modules/deviceList');
+var deviceList = require('modules/onlineMonitor/mapPlugin/deviceList');
 
 //雨量数据
 var xData = [],yData1 = [],yData2 = [];
