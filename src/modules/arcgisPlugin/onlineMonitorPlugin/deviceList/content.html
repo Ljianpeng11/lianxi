@@ -30,7 +30,7 @@
                :class="{'warningStatus':item.collect === 1}">
             </i>
          </div>
-         <div class="listContent" v-if="item.type === 'yuliang'">
+         <div class="listContent" v-if="item.type === 'RF'">
             <div class="listLabel-left">
                <p>雨量计：</p>
                <p>降雨量：</p>
@@ -40,7 +40,7 @@
                <p>{{item.deviceNum}}(mm)</p>
             </div>
          </div>
-         <div class="listContent" v-if="item.type === 'yewei'">
+         <div class="listContent" v-if="item.type === 'WD'">
             <div class="listLabel-left">
                <p>液位仪：</p>
                <p>液位：</p>
