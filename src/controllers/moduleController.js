@@ -62,8 +62,8 @@ define([
     'modules/se/serviceInvokeCountStats',
     'modules/se/serviceUserInvokeCountStats',
     'modules/se/userServiceInvokeCountStats',
-    'modules/appFacilityManager/facilityTypeRoleManager',
-    'modules/emergencyRescue/emergenCommand/dispatcheCenter'
+    'modules/emergencyRescue/emergenCommand/dispatcheCenter',
+    'modules/appFacilityManager/facilityTypeRoleManager'
 ], function (appContent,
              appDemoForm,
              elementForm,
@@ -127,8 +127,8 @@ define([
              serviceInvokeCountStats,
              serviceUserInvokeCountStats,
              userServiceInvokeCountStats,
-             facilityTypeRoleManager,
-             dispatcheCenter){
+             dispatcheCenter,
+             facilityTypeRoleManager,){
     return {
         'app-content': appContent,
         'app-demo-form': appDemoForm,
@@ -193,7 +193,7 @@ define([
         'serviceInvokeCountStats': serviceInvokeCountStats,
         'serviceUserInvokeCountStats': serviceUserInvokeCountStats,
         'userServiceInvokeCountStats': userServiceInvokeCountStats,
+        'dispatche-center': dispatcheCenter,
         'facilityTypeRoleManager':facilityTypeRoleManager,
-        'dispatche-center': dispatcheCenter
     }
 });
