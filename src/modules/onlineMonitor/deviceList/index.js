@@ -101,15 +101,14 @@ var comm = Vue.extend({
                 $(".deviceListBox").animate({'height':'8em'},1000);
             }
         },
-        openMapWindow:function(facilityItem){
-            /*var content = item.fieldNames[10]+":"+item.fieldValues[10]+"<br/>"+item.fieldNames[11]+":"+item.fieldValues[11]+"<br/>"+item.fieldNames[10]+":"+item.fieldValues[11];
+        openMapWindow:function(index){
+            var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);
+            mapHelper.setCenter(this.baseView,this.deviceList[index].x,this.deviceList[index].y,16);
             this.baseView.popup.open({
                 location: mapPoint,
-                title: item.value,
-                content: content
-            });*/
-            debugger;
-            mapHelper.setCenter(this.baseView,facilityItem.x,facilityItem.y,16);
+                title: this.deviceList[index].title,
+                content: $(this.$el.children[1].children[index]).find(".listContent").clone()[0]
+            });
         }
     },
     mounted: function () {
