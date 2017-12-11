@@ -1,0 +1,26 @@
+<transition name="right-panel">
+    <!--width控制面板的宽度-->
+    <div :id="mainContentDivId" v-show='showPanel' class='right-panel' style="width: 300px;">
+        <div class="container" style="padding: 5px;">
+            <div class="row" style="padding-bottom: 5px;">
+                <div class="col-md-12">
+                    <el-button type="primary" style="width: 100%;" @click="mapWindowDemo">
+                      在地图添加自定义弹窗
+                    </el-button>
+                </div>
+            </div>
+          <!--  <div class="row" style="padding-bottom: 5px;">
+                <div class="col-md-12">
+                    <el-button type="primary" style="width: 100%;" @click="zoomIn">
+                        <i class="glyphicon glyphicon glyphicon-globe" style="padding-right: 5px;"></i>
+                        放大
+                    </el-button>
+                </div>
+            </div>-->
+
+        </div>
+
+        <!--panel左侧关闭按钮-->
+        <div class="goBack"><a href='javascript:;' class="el-icon-d-arrow-right" @click="closePanel"></a></div>
+    </div>
+</transition>
