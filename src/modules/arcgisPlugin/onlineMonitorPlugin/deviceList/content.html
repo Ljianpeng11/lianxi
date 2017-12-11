@@ -9,7 +9,7 @@
       </div>
       <input class="deviceSearch" type="text" placeholder="设备编号\监测点或拼音"/>
    </div>
-   <ul class="listBoxContent" v-show="isOpenList">
+   <ul class="listBoxContent">
       <li v-for="item in deviceList"
           :class="{'warningItem':item.status === 1,'dangerItem':item.status === 2}">
          <div class="listItemTop">

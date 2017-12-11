@@ -5,7 +5,7 @@
 }
 .deviceListBox{
     width:18.5%;
-    height:auto;
+    height:8em;
     position: absolute;
     top:10px;
     left:10px;
@@ -41,7 +41,7 @@
     line-height: 3em;
     outline: none;
     border: none;
-    color: #c9c9c9;
+    color: #333;
     background: url("../../images/searchBtn.png")no-repeat 2em;
     background-color: #fff;
 }
