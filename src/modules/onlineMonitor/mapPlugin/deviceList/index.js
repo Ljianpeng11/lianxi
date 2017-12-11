@@ -102,10 +102,12 @@ var comm = Vue.extend({
                 $(".deviceListBox").animate({'height':'8em'},1000);
             }
         },
-        openMapWindow:function(index){
-            this.highLightIndex = index;
+        openMapWindow:function(index,item){
             if(this.baseView === 'detailView'){
-
+                this.isOpenList = false;
+                this.toggleList();
+                this.highLightIndex = 0;
+                eventHelper.emit('openDeviceInfoPanel',item);
             }else{
                 var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);
                 mapHelper.setCenter(this.baseView,this.deviceList[index].x,this.deviceList[index].y,16);
@@ -115,6 +117,7 @@ var comm = Vue.extend({
                     content: $(this.$el.children[1].children[index]).find(".listContent").clone()[0]
                 });
             }
+            this.highLightIndex = index;
         }
     },
     mounted: function () {
