@@ -163,6 +163,7 @@ var comm = Vue.extend({
         return {
             myChart:null,
             timeIndex:null,
+            detailView:'detailView',
             value1: '设备地图',
             options1: [{
                 value: '选项1',
@@ -198,6 +199,8 @@ var comm = Vue.extend({
     mounted: function () {
         //初始化图表
         this.loadYLChart('#waterChart');
+        this.$refs.deciceList.isOpenList = false;
+        this.$refs.deciceList.toggleList();
     },
     components: {
         'device-list':deviceList

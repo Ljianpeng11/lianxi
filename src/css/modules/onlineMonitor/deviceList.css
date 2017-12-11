@@ -53,6 +53,10 @@
     background: #fff;
     border-bottom:1px solid #eee;
 }
+.listBoxContent > li:hover,.listBoxContent .active{
+    background: #f8f8f8;
+    cursor: default;
+}
 .listItemTop{
     padding:1em 1em 0;
     display: flex;

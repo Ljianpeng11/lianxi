@@ -14,7 +14,9 @@ var infoBoard = require('modules/emergencyRescue/mapTool/infoBoard');
 var addressServiceInput = require('./plugin/addressServiceInput')
 var tabModel = require('controllers/model/appTabModel');
 var retrospectDetail = require('modules/retrospectDetail');
-// var onlineMonitorPlugin = require('./onlineMonitorPlugin');
+var statusTools = require('modules/onlineMonitor/mapPlugin/statusTools');
+var deviceList = require('modules/onlineMonitor/mapPlugin/deviceList');
+var devicePanel = require('modules/onlineMonitor/mapPlugin/devicePanel');
 
 // 定义组件
 var comm = Vue.extend({
@@ -250,8 +252,10 @@ var comm = Vue.extend({
         'retrospect-detail':retrospectDetail,
         'info-board':infoBoard,
         'map-type':mapType,
-        // 'online-monitor':onlineMonitorPlugin,
-        'address-service-input':addressServiceInput
+        'status-tools':statusTools,
+        'device-list':deviceList,
+        'address-service-input':addressServiceInput,
+        'device-panel':devicePanel
     }
 });
 module.exports = comm;

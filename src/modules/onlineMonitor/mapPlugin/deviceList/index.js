@@ -9,6 +9,7 @@ var comm = Vue.extend({
     data: function () {
         return {
             isOpenList:false,
+            highLightIndex:-1,
             deviceList:[
                 {
                     title:'五华区公众雨量监测点',
@@ -95,20 +96,25 @@ var comm = Vue.extend({
         toggleList:function(){
             this.isOpenList = !this.isOpenList;
             if(!!this.isOpenList){
-                var parentHeight = $('.mapContainer').height();
+                var parentHeight = $(".deviceListBox").parent().height();
                 $(".deviceListBox").animate({'height':(parentHeight - 20) +'px'},1000);
             }else{
                 $(".deviceListBox").animate({'height':'8em'},1000);
             }
         },
         openMapWindow:function(index){
-            var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);
-            mapHelper.setCenter(this.baseView,this.deviceList[index].x,this.deviceList[index].y,16);
-            this.baseView.popup.open({
-                location: mapPoint,
-                title: this.deviceList[index].title,
-                content: $(this.$el.children[1].children[index]).find(".listContent").clone()[0]
-            });
+            this.highLightIndex = index;
+            if(this.baseView === 'detailView'){
+
+            }else{
+                var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);
+                mapHelper.setCenter(this.baseView,this.deviceList[index].x,this.deviceList[index].y,16);
+                this.baseView.popup.open({
+                    location: mapPoint,
+                    title: this.deviceList[index].title,
+                    content: $(this.$el.children[1].children[index]).find(".listContent").clone()[0]
+                });
+            }
         }
     },
     mounted: function () {
