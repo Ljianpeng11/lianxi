@@ -6,6 +6,7 @@ var comm = Vue.extend({
     template: template,
     data: function () {
         return {
+            isOpenList:false,
             deviceList:[
                 {
                     title:'五华区公众雨量监测点',
@@ -76,7 +77,17 @@ var comm = Vue.extend({
             ]
         }
     },
-    methods: {},
+    methods: {
+        toggleList:function(){
+            this.isOpenList = !this.isOpenList;
+            if(!!this.isOpenList){
+                var parentHeight = $('.mapContainer').height();
+                $(".deviceListBox").animate({'height':(parentHeight - 20) +'px'},1000);
+            }else{
+                $(".deviceListBox").animate({'height':'8em'},1000);
+            }
+        }
+    },
     mounted: function () {
     },
     components: {}

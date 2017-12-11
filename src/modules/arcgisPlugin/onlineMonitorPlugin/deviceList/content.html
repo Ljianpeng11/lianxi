@@ -5,7 +5,7 @@
             设备列表&nbsp;&nbsp;
             <b class="listBadge">21</b>
          </span>
-         <i class="el-icon-d-arrow-right rotate-top"></i>
+         <i class="el-icon-d-arrow-right" :class="[isOpenList?'rotate-up':'rotate-down']" @click="toggleList"></i>
       </div>
       <input class="deviceSearch" type="text" placeholder="设备编号\监测点或拼音"/>
    </div>

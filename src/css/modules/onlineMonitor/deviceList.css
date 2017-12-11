@@ -5,7 +5,7 @@
 }
 .deviceListBox{
     width:18.5%;
-    height:calc(100% - 20px);
+    height:8em;
     position: absolute;
     top:10px;
     left:10px;
@@ -26,8 +26,11 @@
     border-radius: 2em;
     color: #fff;
 }
-.rotate-top{
+.rotate-up{
     transform:rotate(-90deg);
+}
+.rotate-down{
+    transform:rotate(90deg);
 }
 .deviceSearch{
     display: block;
@@ -38,7 +41,7 @@
     line-height: 3em;
     outline: none;
     border: none;
-    color: #c9c9c9;
+    color: #333;
     background: url("../../images/searchBtn.png")no-repeat 2em;
     background-color: #fff;
 }

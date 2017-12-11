@@ -128,7 +128,7 @@ define([
              serviceUserInvokeCountStats,
              userServiceInvokeCountStats,
              dispatcheCenter,
-             facilityTypeRoleManager){
+             facilityTypeRoleManager,){
     return {
         'app-content': appContent,
         'app-demo-form': appDemoForm,
@@ -195,6 +195,5 @@ define([
         'userServiceInvokeCountStats': userServiceInvokeCountStats,
         'dispatche-center': dispatcheCenter,
         'facilityTypeRoleManager':facilityTypeRoleManager,
-        'dispatche-center': dispatcheCenter
     }
 });
