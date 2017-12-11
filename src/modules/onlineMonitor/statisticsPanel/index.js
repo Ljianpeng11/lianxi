@@ -3,6 +3,8 @@ var eventHelper = require('utils/eventHelper');
 var echarts = require('echarts');
 var moment = require('moment');
 
+//加载组件
+var deviceList = require('modules/deviceList');
 
 //雨量数据
 var xData = [],yData1 = [],yData2 = [];
@@ -197,6 +199,8 @@ var comm = Vue.extend({
         //初始化图表
         this.loadYLChart('#waterChart');
     },
-    components: {}
+    components: {
+        'device-list':deviceList
+    }
 });
 module.exports = comm;

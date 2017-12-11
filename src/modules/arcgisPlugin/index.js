@@ -3,8 +3,7 @@ var template = require('./map.html');
 var loginCtrl = require('../../controllers/loginController');
 var eventHelper = require('../../utils/eventHelper');
 var toolBar = require('./plugin/toolBar/toolBar');
-var mapType = require('./plugin/mapType/mapType');
-var newMap = require('./plugin/newMap');
+var mapType = require('./plugin/mapType');
 var layerList = require('./plugin/layerList');
 var global = require('./plugin/global');
 var facilityController = require('controllers/facilityController');
@@ -15,7 +14,7 @@ var infoBoard = require('modules/emergencyRescue/mapTool/infoBoard');
 var addressServiceInput = require('./plugin/addressServiceInput')
 var tabModel = require('controllers/model/appTabModel');
 var retrospectDetail = require('modules/retrospectDetail');
-var onlineMonitorPlugin = require('./onlineMonitorPlugin');
+// var onlineMonitorPlugin = require('./onlineMonitorPlugin');
 
 // 定义组件
 var comm = Vue.extend({
@@ -250,8 +249,8 @@ var comm = Vue.extend({
         'right-panel':rightPanel,
         'retrospect-detail':retrospectDetail,
         'info-board':infoBoard,
-        'new-map':newMap,
-        'online-monitor':onlineMonitorPlugin,
+        'map-type':mapType,
+        // 'online-monitor':onlineMonitorPlugin,
         'address-service-input':addressServiceInput
     }
 });
