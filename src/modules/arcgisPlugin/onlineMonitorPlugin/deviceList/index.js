@@ -102,6 +102,13 @@ var comm = Vue.extend({
             }
         },
         openMapWindow:function(facilityItem){
+            /*var content = item.fieldNames[10]+":"+item.fieldValues[10]+"<br/>"+item.fieldNames[11]+":"+item.fieldValues[11]+"<br/>"+item.fieldNames[10]+":"+item.fieldValues[11];
+            this.baseView.popup.open({
+                location: mapPoint,
+                title: item.value,
+                content: content
+            });*/
+            debugger;
             mapHelper.setCenter(this.baseView,facilityItem.x,facilityItem.y,16);
         }
     },
