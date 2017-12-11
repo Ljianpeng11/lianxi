@@ -65,7 +65,8 @@ define([
     'modules/emergencyRescue/emergenCommand/dispatcheCenter',
     'modules/appFacilityManager/facilityTypeRoleManager',
     'modules/appFacilityManager/dataRoleFacilityManager',
-    'modules/onlineMonitor/statisticsPanel'
+    'modules/onlineMonitor/statisticsPanel',
+    'modules/onlineMonitor/facilityInfoTable'
 ], function (appContent,
              appDemoForm,
              elementForm,
@@ -132,7 +133,8 @@ define([
              dispatcheCenter,
              facilityTypeRoleManager,
              dataRoleFacilityManager,
-             statisticsPanel) {
+             statisticsPanel,
+             facilityInfoTable) {
     return {
         'app-content': appContent,
         'app-demo-form': appDemoForm,
@@ -200,6 +202,7 @@ define([
         'dispatche-center': dispatcheCenter,
         'facilityTypeRoleManager': facilityTypeRoleManager,
         'dataRoleFacilityManager': dataRoleFacilityManager,
-        'statisticsPanel':statisticsPanel
+        'statisticsPanel':statisticsPanel,
+        'facility-info-table':facilityInfoTable
     }
 });
