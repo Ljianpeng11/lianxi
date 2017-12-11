@@ -86,6 +86,9 @@ var comm = Vue.extend({
             }else{
                 $(".deviceListBox").animate({'height':'8em'},1000);
             }
+        },
+        openMapWindow:function(facilityItem){
+            console.log(facilityItem);
         }
     },
     mounted: function () {

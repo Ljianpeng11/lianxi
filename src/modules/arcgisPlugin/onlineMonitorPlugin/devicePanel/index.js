@@ -5,22 +5,21 @@ var moment = require('moment');
 
 
 //雨量数据
-var xData = [],timeData = [],yData1 = [],yData2 = [];
+var xData = [],yData1 = [],yData2 = [];
 var second = 1000;
 var data1 = [Math.random() *130];
-var data2 = [Math.random() *3];
+var data2 = [Math.random() *5];
 var time,flag = true;
 function addData(){
         xData.shift();
         yData1.shift();
         yData2.shift();
-        xData.push(moment(timeData.pop()).add(1,'s').format('YYYY-MM-DD hh:ss'));
-        yData1.push((Math.random() - 0.4) * 10 + data1[data1.length - 1]);
-        yData2.push((Math.random() - 0.4) + data2[data2.length - 1]);
+        xData.push(moment(xData[xData.length - 1]).add(1,'m').format('YYYY-MM-DD hh:ss'));
+        yData1.push((Math.random() - 0.4) + data2[data2.length - 1]);
+        yData2.push((Math.random() - 0.4) * 10 + data1[data1.length - 1]);
 }
 for(var i = 0;i<12;i++){
-    time = moment().subtract(i,'h');
-    timeData[(11 - i)] = time;
+    time = moment(new Date()).subtract(i,'m');
     xData[(11 - i)] = time.format('YYYY-MM-DD hh:ss');
     yData1.push((Math.random() - 0.4) + data2[data2.length - 1]);
     yData2.push((Math.random() - 0.4) * 10 + data1[data1.length - 1]);
@@ -93,7 +92,7 @@ var option = {
             markLine: {
                 lineStyle: {
                     normal: {
-                        color: 'red',
+                        color: '#fe5240',
                         width: 1,
                         type: 'solid'
                     }
@@ -104,7 +103,13 @@ var option = {
                     label: {
                         normal: {
                             show: true,
-                            formatter: '预警'
+                            formatter: '预警',
+                            position:'start'
+                        }
+                    },
+                    lineStyle:{
+                        normal:{
+                            color:'#f2b817'
                         }
                     }
                 }, {
@@ -112,7 +117,8 @@ var option = {
                     label: {
                         normal: {
                             show: true,
-                            formatter: '报警'
+                            formatter: '报警',
+                            position:'start'
                         }
                     }
                 }],
@@ -163,12 +169,12 @@ var comm = Vue.extend({
             this.$nextTick(function () {
                 this.myChart = echarts.init($(dom)[0]);
                 this.myChart.setOption(option);
-                // setInterval(function(){
-                //     addData();
-                //     option.series[0].data = yData1;
-                //     option.series[1].data = yData2;
-                //     this.myChart.setOption(option,true);
-                // }.bind(this),2000);
+                setInterval(function(){
+                    addData();
+                    option.series[0].data = yData1;
+                    option.series[1].data = yData2;
+                    this.myChart.setOption(option,true);
+                }.bind(this),2000);
             }.bind(this));
         },
         closePanel:function(){
