@@ -8,6 +8,7 @@ var devicePanel = require('./devicePanel');
 // 定义组件
 var comm = Vue.extend({
     template: template,
+    props:["baseView"],
     data: function () {
         return {
 

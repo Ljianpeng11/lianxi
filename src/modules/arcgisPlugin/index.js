@@ -111,31 +111,33 @@ var comm = Vue.extend({
         },
         createPoint:function(legend,subFacilities){
             subFacilities.forEach(function (item) {
-                var icon = !!legend.icon ? legend.icon : legend.facilityTypeName;
-                var newIcon = './img/toolbar/huawei-' + icon + '.png';
-                item.fid = 'f' + legend.id;
-                var imgObj = {
-                    url: newIcon,
-                    width: "30px",
-                    height: "36px"
-                };
-                var textObj = {
-                    color:'red',
-                    text:item.name,
-                    yoffset:-18,
-                    verticalAlignment:'top',
-                    font:{
-                        size:12
-                    }
-                };
-                var attributes = {
-                    'item':item,
-                    'facilityTypeName':legend.facilityTypeName,
-                    'id':item.fid
-                };
-                var graphic = mapHelper.createPictureMarkSymbol(this.graLayer, item.x, item.y, imgObj,attributes);
-                this.graphics.push(graphic);
-                this.graphics.push(mapHelper.createTextSymbol(this.graLayer,item.x,item.y,textObj));
+                if(this.isNumber(item.x)&&this.isNumber(item.y)){
+                    var icon = !!legend.icon ? legend.icon : legend.facilityTypeName;
+                    var newIcon = './img/toolbar/huawei-' + icon + '.png';
+                    item.fid = 'f' + legend.id;
+                    var imgObj = {
+                        url: newIcon,
+                        width: "30px",
+                        height: "36px"
+                    };
+                    var textObj = {
+                        color:'red',
+                        text:item.name,
+                        yoffset:-18,
+                        verticalAlignment:'top',
+                        font:{
+                            size:12
+                        }
+                    };
+                    var attributes = {
+                        'item':item,
+                        'facilityTypeName':legend.facilityTypeName,
+                        'id':item.fid
+                    };
+                    var graphic = mapHelper.createPictureMarkSymbol(this.graLayer, item.x, item.y, imgObj,attributes);
+                    this.graphics.push(graphic);
+                    this.graphics.push(mapHelper.createTextSymbol(this.graLayer,item.x,item.y,textObj));
+                }
             }.bind(this));
             this.facilityArr[legend.facilityTypeName] = {
                 graphics:this.graphics,
@@ -157,6 +159,14 @@ var comm = Vue.extend({
             facilityController.getAllFacilityType(function (list) {
                 self.$refs.layerList.init(list);
             });
+        },
+        isNumber:function (value) {
+            var patrn = /^(-)?\d+(\.\d+)?$/;
+            if (patrn.exec(value) == null || value == "") {
+                return false;
+            } else {
+                return true;
+            }
         }
     },
     mounted: function () {
@@ -232,14 +242,6 @@ var comm = Vue.extend({
         eventHelper.on('carDetail-clicked', function (point) {
             console.log(point);
             this.$refs.carDetail.open(point.item);
-        }.bind(this));
-        eventHelper.on('changeMap', function () {
-            this.baseMap.layers.items[0].visible=false;
-            this.baseMap.layers.items[1].visible=true;
-        }.bind(this));
-        eventHelper.on('changeMap1', function () {
-            this.baseMap.layers.items[1].visible=false;
-            this.baseMap.layers.items[0].visible=true;
         }.bind(this));
     },
     components: {
