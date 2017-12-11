@@ -195,7 +195,7 @@ var comm = Vue.extend({
     },
     mounted: function () {
         //初始化图表
-        this.loadYLChart('#deviceWaterChart');
+        this.loadYLChart('#waterChart');
     },
     components: {}
 });

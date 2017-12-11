@@ -64,7 +64,8 @@ define([
     'modules/se/userServiceInvokeCountStats',
     'modules/emergencyRescue/emergenCommand/dispatcheCenter',
     'modules/appFacilityManager/facilityTypeRoleManager',
-    'modules/appFacilityManager/dataRoleFacilityManager'
+    'modules/appFacilityManager/dataRoleFacilityManager',
+    'modules/deviceManager'
 ], function (appContent,
              appDemoForm,
              elementForm,
@@ -130,7 +131,8 @@ define([
              userServiceInvokeCountStats,
              dispatcheCenter,
              facilityTypeRoleManager,
-             dataRoleFacilityManager) {
+             dataRoleFacilityManager,
+             deviceManager) {
     return {
         'app-content': appContent,
         'app-demo-form': appDemoForm,
@@ -198,5 +200,6 @@ define([
         'dispatche-center': dispatcheCenter,
         'facilityTypeRoleManager': facilityTypeRoleManager,
         'dataRoleFacilityManager': dataRoleFacilityManager,
+        'deviceManager':deviceManager
     }
 });

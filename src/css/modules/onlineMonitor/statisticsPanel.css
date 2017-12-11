@@ -4,17 +4,20 @@
     position:absolute;
     right:10px;
     top:10px;
+    background: #e1e1e1;
 }
 .statisticsPanel-top{
     height: 10em;
 }
 .statisticsPanel-bottom{
-    height:calc(100% - 10em);
+    margin-top:5px;
+    height:calc(100% - 10em - 5px);
 }
 .dataLayout{
     display: flex;
     justify-content: space-around;
     align-items: center;
+    background: #f1f1f1;
 }
 .dataLayoutItem{
     text-align: center;
@@ -27,6 +30,7 @@
 }
 .dataTabBox{
     display: block;
+    padding:0 5px;
 }
 .dataTabBox > li{
     float: left;
@@ -35,7 +39,47 @@
     display: block;
     height:3em;
     line-height:3em;
-    background: #fff;
     padding:0 1.5em;
-    border-top-right-radius:2em;
+}
+.dataTabBox .active{
+    border-top-right-radius:10px;
+    background: #fff;
+}
+.selectTools{
+    border:1px solid #eee;
+    height:2.4em;
+    line-height:2.4em;
+    padding:0 10px;
+}
+.selectTools .selectItem{
+    font-size:12px;
+}
+.mainData-content{
+    height:calc(100% - 2.4em);
+}
+.mainData-content .toggleGroup{
+    text-align: center;
+    padding:3em 0;
+    min-height:11em;
+}
+.toggleGroup .smallInfo{
+    text-align: center;
+    color: #555;
+    margin-top:10px;
+    font-size: 12px;
+}
+.chartGroup{
+    text-align: center;
+    min-height:4em;
+}
+.deviceChart-title{
+    font-size:18px;
+    color: #589fd5;
+    margin-bottom:10px;
+}
+.chartPanel{
+    padding: 10px;
+}
+.detailChartBox{
+    height:calc(100% - 15em);
 }
