@@ -6,6 +6,7 @@ var comm = Vue.extend({
     template: template,
     data: function () {
         return {
+            isOpenList:false,
             deviceList:[
                 {
                     title:'五华区公众雨量监测点',
@@ -15,7 +16,8 @@ var comm = Vue.extend({
                     type:'yuliang',
                     deviceCode:'17120011',
                     deviceNum:0,
-                    onlineTime:'2'
+                    onlineTime:'2',
+                    collect:0
                 },
                 {
                     title:'市体育馆',
@@ -25,7 +27,8 @@ var comm = Vue.extend({
                     type:'yewei',
                     deviceCode:'16310128',
                     deviceNum:'2.506',
-                    onlineTime:'2'
+                    onlineTime:'2',
+                    collect:0
                 },
                 {
                     title:'普吉路与小路沟交叉口',
@@ -35,7 +38,8 @@ var comm = Vue.extend({
                     type:'yewei',
                     deviceCode:'17120011',
                     deviceNum:'4.582',
-                    onlineTime:'2'
+                    onlineTime:'2',
+                    collect:1
                 },
                 {
                     title:'滇缅大道戛纳小镇旁',
@@ -45,7 +49,8 @@ var comm = Vue.extend({
                     type:'yewei',
                     deviceCode:'16310128',
                     deviceNum:'1.964',
-                    onlineTime:'2'
+                    onlineTime:'2',
+                    collect:1
                 },
                 {
                     title:'海源学院正门口',
@@ -55,7 +60,8 @@ var comm = Vue.extend({
                     type:'yewei',
                     deviceCode:'16310128',
                     deviceNum:'1.964',
-                    onlineTime:'2'
+                    onlineTime:'2',
+                    collect:0
                 },
                 {
                     title:'西二环春苑小区对面',
@@ -65,12 +71,23 @@ var comm = Vue.extend({
                     type:'yewei',
                     deviceCode:'16310128',
                     deviceNum:'1.964',
-                    onlineTime:'2'
+                    onlineTime:'2',
+                    collect:0
                 }
             ]
         }
     },
-    methods: {},
+    methods: {
+        toggleList:function(){
+            this.isOpenList = !this.isOpenList;
+            if(!!this.isOpenList){
+                var parentHeight = $('.mapContainer').height();
+                $(".deviceListBox").animate({'height':(parentHeight - 20) +'px'},5000);
+            }else{
+                $(".deviceListBox").animate({'height':'auto'},5000);
+            }
+        }
+    },
     mounted: function () {
     },
     components: {}
