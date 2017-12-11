@@ -1,10 +1,10 @@
 <div class='mapContainer'>
     <div id="mapDiv"></div>
-    <new-map ref="newMap"></new-map>
+    <new-map ref="newMap" :baseView="baseView"></new-map>
     <layer-list ref="layerList"></layer-list>
 
     <!--在线监测面板-->
-    <online-monitor></online-monitor>
+    <online-monitor :baseView="baseView"></online-monitor>
     <!--地名地址查询工具栏-->
     <address-service-input :baseView="baseView"></address-service-input>
     <!-- 右边菜单-->

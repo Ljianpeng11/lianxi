@@ -35,7 +35,9 @@ var comm = defaultBase.extend({
             //加载conf文件的文件类型
             loadConfFileType: "",
             //ztree的id
-            treeId: ""
+            treeId: "",
+            //当前导入到的节点
+            nodeImport: null,
         }
     },
     created: function () {
@@ -43,10 +45,12 @@ var comm = defaultBase.extend({
         this.treeId = "tree" + Math.random().toString(36).substr(2);
     },
     mounted: function () {
-        //刷新菜单树
+        //刷新图层树
         this.refreshTree();
         //初始化导入的文件控件
         this.initFileLoadConf();
+        //初始化导入的文件控件（导入图层）
+        this.initFileImport();
     },
     watch: {
         currentEntity: function (val) {
@@ -63,7 +67,7 @@ var comm = defaultBase.extend({
         getZTreeObject: function () {
             return $.fn.zTree.getZTreeObj(this.treeId);
         },
-        //初始化和刷新菜单树
+        //初始化和刷新图层树
         refreshTree: function () {
             var formData = serviceHelper.getDefaultAjaxParam();
 
@@ -570,6 +574,90 @@ var comm = defaultBase.extend({
                         //上传成功后把文件列表清掉
                         //由于clear后控件会自动被禁用，因此还要再enable
                         $('#inputLoadConf', $("#" + this.mainContentDivId)).fileinput('clear').fileinput('enable');
+
+                        layer.msg('导入成功');
+                    } else {
+                        //后台操作失败的代码
+                        alert(ajaxResult.msg);
+                    }
+                }
+            }.bind(this));
+        },
+        //导出图层
+        exportLayer: function () {
+            //获取当前选择节点
+            var lstNodeSelect = this.getZTreeObject().getSelectedNodes();
+            if (lstNodeSelect.length === 0) {
+                layer.msg('请选择节点');
+                return;
+            }
+
+            var nodeSelect = lstNodeSelect[0];
+            if (nodeSelect.type !== "Group") {
+                layer.msg('请选择组图层');
+                return;
+            }
+
+            //以下载文件方式下载导出图层的文件
+            window.location.href = serviceHelper.getBasicPath() + "/layer/exportLayer?token=" + serviceHelper.getToken() + "&layerId=" + nodeSelect.id;
+        },
+        //导入图层
+        importLayer: function () {
+            //获取当前选择节点
+            var lstNodeSelect = this.getZTreeObject().getSelectedNodes();
+            if (lstNodeSelect.length === 0) {
+                layer.msg('请选择节点');
+                return;
+            }
+
+            var nodeSelect = lstNodeSelect[0];
+
+            if (nodeSelect.isSave === false) {
+                layer.msg('不能导入到未保存节点');
+                return null;
+            }
+
+            if (nodeSelect.type !== "Group") {
+                layer.msg('请选择组图层');
+                return;
+            }
+
+            this.nodeImport = nodeSelect;
+
+            this.showForm("formImport");
+        },
+        //初始化导入的文件控件
+        initFileImport: function () {
+            $('#inputUploadImport', $("#" + this.mainContentDivId)).fileinput({
+                language: 'zh', //设置语言
+                uploadUrl: serviceHelper.getBasicPath() + "/layer/importLayer", //上传的地址
+                allowedFileExtensions: ['conf'],//接收的文件后缀,array类型，例如：['jpg', 'png','gif']
+                // showUpload: true, //是否显示上传按钮
+                // showCaption: false,//是否显示标题
+                dropZoneEnabled: false,//默认不显示拖拽文件的窗
+                maxFileCount: 1,//最大上传文件数
+                //上传时发起请求，额外加入请求的值
+                uploadExtraData: function (previewId, index) {
+                    var formData = serviceHelper.getDefaultAjaxParam();
+                    formData.importLayerId = this.nodeImport.id;
+
+                    return formData;
+                }.bind(this),
+            }).on("filebatchselected", function (event, files) {
+                //选择文件后马上上传
+                $(this).fileinput("upload");
+            }).on("fileuploaded", function (event, data) {
+                //上传成功后回调
+                var ajaxResult = data.response;
+                //请求结果格式要求按ewater标准
+                if (ajaxResult) {
+                    if (ajaxResult.success === true) {
+                        var result = ajaxResult.data;
+
+                        //关闭弹窗
+                        this.hideForm("formImport");
+                        //刷新图层树
+                        this.refreshTree();
 
                         layer.msg('导入成功');
                     } else {

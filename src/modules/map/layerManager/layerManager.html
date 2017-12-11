@@ -25,6 +25,14 @@
                             删除
                         </button>
                     </div>
+                    <div class="btn-group hidden-xs" role="group">
+                        <button type="button" class="btn btn-outline btn-default" title="导出" @click="exportLayer">
+                            导出
+                        </button>
+                        <button type="button" class="btn btn-outline btn-default" title="导入" @click="importLayer">
+                            导入
+                        </button>
+                    </div>
                     <ul :id="treeId" class="ztree"></ul>
                 </div>
             </div>
@@ -349,6 +357,45 @@
                                     <div class="col-sm-9">
                                         <!--multiple属性是运行一次上传多个文件-->
                                         <input id="inputLoadConf" type="file" multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--这里还可以加底部（footer），详见bootstrap官网-->
+                </div>
+            </div>
+        </div>
+
+        <!--导入菜单（弹窗）-->
+        <div id="formImport" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!--标题部分-->
+                        <!--关闭按钮-->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <!--标题-->
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <!--内容部分-->
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"></label>
+                                    <div class="col-sm-9">
+                                        选择导入文件后将自动导入图层
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">文件：</label>
+                                    <div class="col-sm-9">
+                                        <!--multiple属性是运行一次上传多个文件-->
+                                        <input id="inputUploadImport" type="file" multiple>
                                     </div>
                                 </div>
                             </div>
