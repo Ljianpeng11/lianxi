@@ -82,10 +82,13 @@ var comm = Vue.extend({
             this.isOpenList = !this.isOpenList;
             if(!!this.isOpenList){
                 var parentHeight = $('.mapContainer').height();
-                $(".deviceListBox").animate({'height':(parentHeight - 20) +'px'},5000);
+                $(".deviceListBox").animate({'height':(parentHeight - 20) +'px'},1000);
             }else{
-                $(".deviceListBox").animate({'height':'auto'},5000);
+                $(".deviceListBox").animate({'height':'8em'},1000);
             }
+        },
+        openMapWindow:function(facilityItem){
+            console.log(facilityItem);
         }
     },
     mounted: function () {
