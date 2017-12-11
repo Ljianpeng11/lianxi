@@ -63,7 +63,8 @@ define([
     'modules/se/serviceUserInvokeCountStats',
     'modules/se/userServiceInvokeCountStats',
     'modules/emergencyRescue/emergenCommand/dispatcheCenter',
-    'modules/appFacilityManager/facilityTypeRoleManager'
+    'modules/appFacilityManager/facilityTypeRoleManager',
+    'modules/appFacilityManager/dataRoleFacilityManager'
 ], function (appContent,
              appDemoForm,
              elementForm,
@@ -128,7 +129,8 @@ define([
              serviceUserInvokeCountStats,
              userServiceInvokeCountStats,
              dispatcheCenter,
-             facilityTypeRoleManager,){
+             facilityTypeRoleManager,
+             dataRoleFacilityManager) {
     return {
         'app-content': appContent,
         'app-demo-form': appDemoForm,
@@ -170,14 +172,14 @@ define([
         'treeDemo': treeDemo,
         'treeDemoExt': treeDemoExt,
         'alarmType': alarmType,
-        'alarm':alarm,
+        'alarm': alarm,
         'iotDevice': iotDevice,
         'iotDeviceType': iotDeviceType,
         'iotPlatformDevice': iotPlatformDevice,
         'facility-manage-graph': facilityManageGraph,
         'deviceCommand': deviceCommand,
         'eiotMaintenance': eiotMaintenance,
-        'emergency-rescue':emergencyRescue,
+        'emergency-rescue': emergencyRescue,
         'syslog': syslog,
         'monitorUser': monitorUser,
         'userManager': userManager,
@@ -194,6 +196,7 @@ define([
         'serviceUserInvokeCountStats': serviceUserInvokeCountStats,
         'userServiceInvokeCountStats': userServiceInvokeCountStats,
         'dispatche-center': dispatcheCenter,
-        'facilityTypeRoleManager':facilityTypeRoleManager,
+        'facilityTypeRoleManager': facilityTypeRoleManager,
+        'dataRoleFacilityManager': dataRoleFacilityManager,
     }
 });

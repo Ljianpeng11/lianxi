@@ -1,11 +1,11 @@
 <div class="mainContent">
-    <div v-bind:id="mainContentDivId" class="row clearfix cesc-tab-content">
+    <div :id="mainContentDivId" class="row clearfix cesc-tab-content">
         <div class="col-md-12 col-sm-12 col-xs-12 bigPanel" v-show="containerMain.showList">
             <div class="x_panel animated fadeIn">
                 <div class="x_title">
                     <!--标题-->
                     <h2>
-                        角色
+                        测站权限配置
                     </h2>
                     <div class="clearfix"></div>
                 </div>
@@ -14,11 +14,11 @@
                     <div class="btn-group hidden-xs" role="group">
                         <!--vue的单击事件绑定 v-on:click="xxx"-->
                         <button type="button" class="btn btn-outline btn-default" title="新增"
-                                v-on:click="containerMain.add">
+                                @click="containerMain.add">
                             <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                         </button>
                         <button type="button" class="btn btn-outline btn-default" title="删除"
-                                v-on:click="containerMain.del">
+                                @click="containerMain.del">
                             <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -27,11 +27,34 @@
                         <!--查询条件弹出框，查询条件都放里面-->
                         <el-popover placement="left" width="400" trigger="click">
                             <form>
-                                <!--查询条件：公司名称-->
                                 <div class="form-group">
-                                    <label>名称</label>
+                                    <label>数据角色</label><br>
+                                    <el-select v-model="containerMain.dataRole" filterable
+                                               placeholder="" style="width: 100%;">
+                                        <el-option
+                                                v-for="item in containerMain.dataRoles"
+                                                :key="item.id"
+                                                :label="item.name"
+                                                :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>测站名称</label>
                                     <input type="text" class="form-control"
-                                           v-model="containerMain.toolbarQueryParam.name">
+                                           v-model="containerMain.toolbarQueryParam.facilityName">
+                                </div>
+                                <div class="form-group">
+                                    <label>测站类型</label><br>
+                                    <el-select v-model="containerMain.facilityType" filterable
+                                               placeholder="" style="width: 100%;">
+                                        <el-option
+                                                v-for="item in containerMain.facilityTypes"
+                                                :key="item.id"
+                                                :label="item.nameCn"
+                                                :value="item.id">
+                                        </el-option>
+                                    </el-select>
                                 </div>
                             </form>
                             <form class="form-inline pull-right">
@@ -65,126 +88,50 @@
             </div>
         </div>
 
-        <div class="col-md-12 col-sm-12 col-xs-12 bigPanel" v-show="containerMain.showEditForm">
+        <div class="col-md-12 col-sm-12 col-xs-12 bigPanel" v-show="containerFacility.showList">
             <div class="x_panel animated fadeIn">
                 <div class="x_title">
                     <!--标题-->
                     <h2>
-                        角色
+                        测站
                     </h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                    <!--左侧工具栏-->
                     <div class="btn-group hidden-xs" role="group">
                         <!--子表返回主表的返回按钮-->
                         <button type="button" class="btn btn-outline btn-default" title="返回"
-                                v-on:click="containerMain.hideForm">
+                                v-on:click="backFacilityList">
                             <i class="glyphicon glyphicon-menu-left" aria-hidden="true"></i>
                         </button>
                     </div>
                     <div class="btn-group hidden-xs" role="group">
                         <!--子表返回主表的返回按钮-->
                         <button type="button" class="btn btn-outline btn-default" title="保存"
-                                v-on:click="containerMain.submit">
+                                v-on:click="containerFacility.selectFacility">
                             保存
                         </button>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <form class="form-horizontal" id="formMain">
-                                <div class="row">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">名称：</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="name"
-                                                   v-model="containerMain.currentEntity.name">
-                                        </div>
+                    <div class="btn-group hidden-xs" role="group">
+                        <form class="form-inline pull-left1">
+                         <!--   <div class="row">-->
+                                <div class="form-group" style="width:400px;">
+                                    <label class="col-sm-3 control-label">数据角色：</label>
+                                    <div class="col-sm-9">
+                                        <el-select v-model="containerFacility.dataRole" filterable
+                                                   placeholder="">
+                                            <el-option
+                                                    v-for="item in containerMain.dataRoles"
+                                                    :key="item.id"
+                                                    :label="item.name"
+                                                    :value="item.id">
+                                            </el-option>
+                                        </el-select>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="col-md-6">
-                            <h2>
-                                菜单权限
-                            </h2>
-                            <ul :id="containerMain.treeId" class="ztree"></ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--列表（角色用户）-->
-        <div class="col-md-12 col-sm-12 col-xs-12 bigPanel" v-show="containerUserRoleRlt.showList">
-            <div class="x_panel animated fadeIn">
-                <div class="x_title">
-                    <!--标题-->
-                    <h2>
-                        角色用户
-                    </h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="btn-group hidden-xs" role="group">
-                        <!--子表返回主表的返回按钮-->
-                        <button type="button" class="btn btn-outline btn-default" title="返回"
-                                v-on:click="backUserRoleRltList">
-                            <i class="glyphicon glyphicon-menu-left" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                    <!--左侧工具栏-->
-                    <div class="btn-group hidden-xs" role="group">
-                        <!--vue的单击事件绑定 v-on:click="xxx"-->
-                        <button type="button" class="btn btn-outline btn-default" title="新增"
-                                v-on:click="containerUserRoleRlt.selectUser">
-                            <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
-                        </button>
-                        <button type="button" class="btn btn-outline btn-default" title="删除"
-                                v-on:click="containerUserRoleRlt.del">
-                            <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                    <!--右侧搜索栏-->
-                    <form class="form-inline pull-right">
-                        <!--刷新功能按钮-->
-                        <button type="button" class="btn btn-default btn-outline" title="刷新"
-                                @click="containerUserRoleRlt.search">
-                            <i class="glyphicon glyphicon-refresh"></i>
-                        </button>
-                    </form>
-                    <!--表格控件，控件定义在js-->
-                    <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
-                    <table id="tableUserRoleRlt">
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!--列表（用户）-->
-        <div class="col-md-12 col-sm-12 col-xs-12 bigPanel" v-show="containerUser.showList">
-            <div class="x_panel animated fadeIn">
-                <div class="x_title">
-                    <!--标题-->
-                    <h2>
-                        用户
-                    </h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <!--左侧工具栏-->
-                    <div class="btn-group hidden-xs" role="group">
-                        <!--子表返回主表的返回按钮-->
-                        <button type="button" class="btn btn-outline btn-default" title="返回"
-                                v-on:click="backUserList">
-                            <i class="glyphicon glyphicon-menu-left" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                    <div class="btn-group hidden-xs" role="group">
-                        <!--vue的单击事件绑定 v-on:click="xxx"-->
-                        <button type="button" class="btn btn-outline btn-default" title="确定"
-                                v-on:click="containerUser.select">
-                            确定
-                        </button>
+                       <!--     </div>-->
+                        </form>
                     </div>
                     <!--右侧搜索栏-->
                     <form class="form-inline pull-right">
@@ -192,25 +139,42 @@
                         <el-popover placement="left" width="400" trigger="click">
                             <form>
                                 <div class="form-group">
-                                    <label>登录名</label>
+                                    <label>测站名称</label>
                                     <input type="text" class="form-control"
-                                           v-model="containerUser.toolbarQueryParam.loginName">
+                                           v-model="containerFacility.toolbarQueryParam.name">
                                 </div>
                                 <div class="form-group">
-                                    <label>姓名</label>
-                                    <input type="text" class="form-control"
-                                           v-model="containerUser.toolbarQueryParam.name">
+                                    <label>测站类型</label>
+                                    <el-select v-model="containerFacility.lstFacilityTypeId" multiple
+                                               style="width: 100%;">
+                                        <el-option
+                                                v-for="item in containerFacility.facilityTypeIds"
+                                                :key="item.id"
+                                                :label="item.nameCn"
+                                                :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>所属区</label>
+                                    <input type="text" class="form-control" placeholder=""
+                                           v-model="containerFacility.toolbarQueryParam.district">
+                                </div>
+                                <div class="form-group">
+                                    <label>所属单位</label>
+                                    <input type="text" class="form-control" placeholder=""
+                                           v-model="containerFacility.toolbarQueryParam.departmentName">
                                 </div>
                             </form>
                             <form class="form-inline pull-right">
                                 <!--查询按钮-->
                                 <button type="button" class="btn btn-default btn-outline"
-                                        @click="containerUser.search">
+                                        @click="containerFacility.search">
                                     查询
                                 </button>
                                 <!--清空查询条件-->
                                 <button type="button" class="btn btn-default btn-outline"
-                                        @click="containerUser.initToolbarQueryParam">
+                                        @click="containerFacility.initToolbarQueryParam">
                                     清空
                                 </button>
                             </form>
@@ -221,13 +185,13 @@
                         </el-popover>
                         <!--刷新功能按钮-->
                         <button type="button" class="btn btn-default btn-outline" title="刷新"
-                                @click="containerUser.search">
+                                @click="containerFacility.search">
                             <i class="glyphicon glyphicon-refresh"></i>
                         </button>
                     </form>
                     <!--表格控件，控件定义在js-->
                     <!--一个页面如果有多个这样的table，这里的id要改，容器对应的id也要改-->
-                    <table id="tableUser">
+                    <table id="tableFacility">
                     </table>
                 </div>
             </div>
