@@ -1,0 +1,105 @@
+<div class="devicePanel statisticsPanel">
+    <div class="statisticsPanel-top">
+        <div class="devicePanel-top">
+            <span>普吉岛与小路沟交叉口</span>
+            <el-select v-model="value1" placeholder="请选择">
+                <el-option
+                        v-for="item in options1"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
+            <span class="selectItem">设备地图<i class="icon iconfont icon-xiajiantou"></i>
+                 <ul class="selectBox" style="display:none">
+                    <li></li>
+                 </ul>
+            </span>
+        </div>
+        <div class="devicePanel-bottom dataLayout">
+            <div class="dataLayoutItem">
+                <p>最新数据时间</p>
+                <p>2017-12-07 14:59:00</p>
+            </div>
+            <div class="dataLayoutItem">
+                <p>最近通信</p>
+                <p>18分钟前</p>
+            </div>
+            <div class="dataLayoutItem">
+                <p>液位(m)</p>
+                <p>0</p>
+            </div>
+            <div class="dataLayoutItem">
+                <p>黄海液位(m)</p>
+                <p>0.000</p>
+            </div>
+            <div class="dataLayoutItem">
+                <p>中继电器(39%)</p>
+                <p>39</p>
+            </div>
+            <div class="dataLayoutItem">
+                <p>最新数据当天累计降雨量(mm)</p>
+                <p>0.00</p>
+            </div>
+        </div>
+    </div>
+    <div class="statisticsPanel-bottom">
+        <ul class="devicePanel-top dataTabBox">
+            <li><a href="#">数据</a></li>
+            <li><a href="#">统计</a></li>
+            <li><a href="#">警报</a></li>
+            <li><a href="#">日志</a></li>
+            <li><a href="#">详情</a></li>
+            <li><a href="#">设置</a></li>
+            <li><a href="#">诊断</a></li>
+            <li><a href="#">电量</a></li>
+        </ul>
+        <div class="devicePanel-bottom">
+            <div class="selectTools">
+                <span class="selectItem">导航：
+                 <b>工期范围</b><i class="icon iconfont icon-xiajiantou"></i>
+                 <ul class="selectBox" style="display:none">
+                    <li></li>
+                 </ul>
+            </span>
+                <span class="selectItem">
+                <b>2017-12-07~2017-12-08</b><i class="icon iconfont icon-xiajiantou"></i>
+                <ul class="selectBox" style="display:none">
+                    <li></li>
+                </ul>
+            </span>
+                <span class="selectItem">参考线：
+                 <b>参考线</b><i class="icon iconfont icon-xiajiantou"></i>
+                 <ul class="selectBox" style="display:none">
+                    <li></li>
+                 </ul>
+            </span>
+                <span class="selectItem">数据显示：
+                 <b>测量液位(m)</b><i class="icon iconfont icon-xiajiantou"></i>
+                 <ul class="selectBox" style="display:none">
+                    <li></li>
+                 </ul>
+            </span>
+                <span class="selectItem">参考雨量计：
+                 <b>五华区公众雨量监测点</b><i class="icon iconfont icon-xiajiantou"></i>
+                 <ul class="selectBox" style="display:none">
+                    <li></li>
+                 </ul>
+            </span>
+            </div>
+            <div class="mainData-content">
+                <div>
+                    <el-radio-group>
+                        <el-radio-button label="曲线"></el-radio-button>
+                        <el-radio-button label="表格"></el-radio-button>
+                    </el-radio-group>
+                </div>
+                <p>共935条记录，液位最大值：0.000m,最小值：0.000m,均值：0.000m,累计降雨量：0.0mm</p>
+                <div>
+                    <p>普吉路与小路沟交叉口测量液位</p>
+                    <small>起止时间：2017-12-07~2017-12-07</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

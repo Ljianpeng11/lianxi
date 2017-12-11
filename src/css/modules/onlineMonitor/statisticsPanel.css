@@ -1,0 +1,41 @@
+.statisticsPanel{
+    width:calc(81.5% - 25px);
+    height:calc(100% - 20px);
+    position:absolute;
+    right:10px;
+    top:10px;
+}
+.statisticsPanel-top{
+    height: 10em;
+}
+.statisticsPanel-bottom{
+    height:calc(100% - 10em);
+}
+.dataLayout{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.dataLayoutItem{
+    text-align: center;
+}
+.dataLayoutItem >p:first-child{
+    margin-bottom:1em;
+}
+.dataLayoutItem >p:nth-child(2){
+    color: #555;
+}
+.dataTabBox{
+    display: block;
+}
+.dataTabBox > li{
+    float: left;
+}
+.dataTabBox > li > a{
+    display: block;
+    height:3em;
+    line-height:3em;
+    background: #fff;
+    padding:0 1.5em;
+    border-top-right-radius:2em;
+}

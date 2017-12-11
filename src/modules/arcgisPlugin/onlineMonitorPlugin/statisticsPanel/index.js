@@ -161,7 +161,14 @@ var comm = Vue.extend({
         return {
             myChart:null,
             timeIndex:null,
-            isOpen:false
+            value1: '设备地图',
+            options1: [{
+                value: '选项1',
+                label: '设备地图'
+            }, {
+                value: '选项2',
+                label: '数据详情'
+            }]
         }
     },
     methods: {
