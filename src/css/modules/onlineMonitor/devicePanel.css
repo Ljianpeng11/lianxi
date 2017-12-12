@@ -1,6 +1,6 @@
 .deviceInfo{
     width: calc(81.5% - 25px);
-    height: 24em;
+    height: 18em;
     position: absolute;
     right: 10px;
     bottom:10px;
@@ -34,4 +34,44 @@
 .devicePanel-bottom{
     height: calc(100% - 3em);
     background: #fff;
+}
+.multiTabs{
+    height: 100%;
+}
+.multiTabs .el-tabs__header{
+    height:3em;
+}
+.multiTabs .el-tabs__content{
+    height:calc(100% - 3em);
+}
+.multiTabs .el-tab-pane{
+    height: 100%;
+    overflow:auto;
+}
+.multiDeviceBox{
+    position: absolute;
+    top:160px;
+    bottom:calc(18em + 20px);
+    right: 10px;
+    width:400px;
+}
+.tabInfoBox{
+    height:8em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.tabInfoImg{
+    flex-basis:40%;
+}
+.tabInfoItem{
+    
+}
+.mediaBox{
+    height: calc(100% - 8em);
+    overflow: auto;
+}
+.tabContent{
+    flex-basis: 60%;
+    padding:0;
 }

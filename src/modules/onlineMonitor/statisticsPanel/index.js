@@ -9,27 +9,25 @@ var deviceList = require('modules/onlineMonitor/mapPlugin/deviceList');
 //雨量数据
 var xData = [],yData1 = [],yData2 = [],tableData = [];
 var data1 = [Math.random() *60];
-var data2 = [Math.random() *1.2];
-var newData1 = ((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2);
-var newData2 = ((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2);
+var data2 = [Math.random() *2];
 var time;
 function addData(){
         xData.shift();
         yData1.shift();
         yData2.shift();
         xData.push(moment(xData[xData.length - 1]).add(1,'h').format('YYYY-MM-DD hh:ss'));
-        yData1.push(newData1);
-        yData2.push(newData2);
+        yData1.push(((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2));
+        yData2.push(((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2));
 }
 for(var i = 0;i<12;i++){
     time = moment().subtract(i,'h').format('YYYY-MM-DD hh:ss');
     xData[(11 - i)] = time;
-    yData1.push(newData1);
-    yData2.push(newData2);
+    yData1.push(((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2));
+    yData2.push(((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2));
     var item = {
         date:time,
-        waterData:newData1,
-        rainData:newData2
+        waterData:((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2),
+        rainData:((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2)
     }
     tableData.push(item);
 }
@@ -60,7 +58,7 @@ var option = {
             name: '测量液位(m)',
             type: 'value',
             max: 4,
-            splitNumber: 2,
+            splitNumber: 4,
             axisLine: {
                 show: false
             }
@@ -70,7 +68,7 @@ var option = {
             max: 120,
             inverse: true,
             nameLocation: 'start',
-            splitNumber: 2,
+            splitNumber: 4,
             axisLine: {
                 show: false
             }
@@ -139,13 +137,14 @@ var option = {
             data: yData1
         },{
             name: '降雨量(mm)',
-            type: 'line',
-            symbolSize: 4,
+            type: 'bar',
+            barWidth:'10%',
+            // symbolSize: 4,
             tooltip: {
                 trigger: 'axis'
             },
             yAxisIndex: 1,
-            smooth: true,
+            // smooth: true,
             itemStyle: {
                 normal: {
                     color: 'rgba(124,181,236, 1)',
