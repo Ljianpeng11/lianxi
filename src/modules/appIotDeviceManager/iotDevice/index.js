@@ -49,11 +49,9 @@ var comm = crudBase.extend({
                         this.facilityDict = result.facilitys;
                     }.bind(this));
                 },
-
                 //刷新录入表单后的回调
-                afterRefreshFormHandler: function () {
-                    //初始化
-                    this.facilityId = this.facilityId || null;
+                afterRefreshFormHandler: function (row) {
+                    this.facilityId = row.facilityId || null;
                 },
                 //获取自定义保存的值（如果默认的从界面获取保存的值不满足需求，可以重写此方法，自定义获取值）
                 getCustomSaveValue: function () {
