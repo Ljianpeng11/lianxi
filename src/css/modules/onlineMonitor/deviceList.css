@@ -87,3 +87,20 @@
     padding-left:0.5em;
     color:#666;
 }
+.devicePanel .unVisibleDiv {
+    display: none;
+}
+.devicePanel .unVisibleDiv .mapInfo {
+    width:100%;
+}
+
+.mapInfo .mapInfoDetail{
+    text-align: center;
+    padding-bottom: 10px;
+}
+.mapInfo .mapInfoDetail .el-button{
+    width: 150px;
+    border-radius: 20px;
+    height: 30px;
+    font-size: 10px;
+}

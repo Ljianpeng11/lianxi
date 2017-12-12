@@ -137,7 +137,7 @@ var comm = Vue.extend({
                     };
                     var graphic = mapHelper.createPictureMarkSymbol(this.graLayer, item.x, item.y, imgObj,attributes);
                     this.graphics.push(graphic);
-                    this.graphics.push(mapHelper.createTextSymbol(this.graLayer,item.x,item.y,textObj));
+                    //this.graphics.push(mapHelper.createTextSymbol(this.graLayer,item.x,item.y,textObj));
                 }
             }.bind(this));
             this.facilityArr[legend.facilityTypeName] = {
@@ -179,51 +179,12 @@ var comm = Vue.extend({
         this.initBaseMap();
         eventHelper.on('openMapLegend', function (legend) {
             eventHelper.emit('loading-start');
-            console.log(legend);
             if (!!legend.showIcon) {
                 var cacheFacilities = self.facilityArr[legend.facilityTypeName];
                 if (!!cacheFacilities && cacheFacilities.length > 0) {
-                    // arcgisHelper.createPoints(cacheFacilities, legend, true);
                     eventHelper.emit('loading-end');
                 } else {
                     facilityController.getFacilityByType(legend.id, function (subFacilities) {
-                        // if (legend.facilityTypeName == 'CP') {
-                        //     this.reportPointInterval = setInterval(function () {
-                        //         var cacheFacilities = self.facilityArr[legend.facilityTypeName];
-                        //         facilityController.getFacilityByType(legend.id, function (subFacilities) {
-                        //             debugger;
-                        //             if (cacheFacilities.data.length == subFacilities.length) {
-                        //
-                        //             } else {
-                        //                 self.$notify({
-                        //                     title: '提示信息',
-                        //                     message: '新增巡查上报点',
-                        //                     type: 'warning'
-                        //                 });
-                        //                 var items = [{
-                        //                     title: '上报时间',
-                        //                     content: moment().format('MM-DD HH:mm:ss', new Date())
-                        //                 }, {
-                        //                     title: '案件类型',
-                        //                     content: subFacilities[subFacilities.length - 1].name
-                        //                 }]
-                        //                 eventHelper.emit('alert-point', [{
-                        //                     items: items,
-                        //                     x: subFacilities[subFacilities.length - 1].x,
-                        //                     y: subFacilities[subFacilities.length - 1].y
-                        //                 }]);
-                        //                 mapHelper.removeGraphics(self.facilityArr[legend.facilityTypeName].layer,self.facilityArr[legend.facilityTypeName].graphics);
-                        //                 self.createPoint(legend,subFacilities);
-                        //                 cacheFacilities = self.facilityArr[legend.facilityTypeName];
-                        //             }
-                        //         }.bind(this));
-                        //     }, 1000);
-                        // } else {
-                        //     if (!!self.reportPointInterval) {
-                        //         clearInterval(self.reportPointInterval);
-                        //         eventHelper.emit('alert-point-close');
-                        //     }
-                        // }
                         self.createPoint(legend,subFacilities);
                         eventHelper.emit('loading-end');
                     });
