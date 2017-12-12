@@ -1,22 +1,22 @@
 <div class="mainContent">
-    <device-list ref="deciceList" :baseView="detailView"></device-list>
+    <device-list ref="deviceList" :baseView="detailView"></device-list>
     <div class="devicePanel statisticsPanel">
         <div class="statisticsPanel-top">
             <div class="devicePanel-top">
-                <span>普吉岛与小路沟交叉口</span>
-                <el-select v-model="value1" placeholder="请选择">
+                <span>{{deviceInfo.title}}&nbsp;&nbsp;(液位仪：{{deviceInfo.deviceCode}})</span>
+                <el-select class="selectBox" v-model="viewTypeOption.value" placeholder="请选择">
                     <el-option
-                            v-for="item in options1"
+                            v-for="item in viewTypeOption.options"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
                     </el-option>
                 </el-select>
-                <span class="selectItem">设备地图<i class="icon iconfont icon-xiajiantou"></i>
-                 <ul class="selectBox" style="display:none">
-                    <li></li>
-                 </ul>
-            </span>
+                <!--<span class="selectItem">设备地图<i class="icon iconfont icon-xiajiantou"></i>-->
+                 <!--<ul class="selectBox" style="display:none">-->
+                    <!--<li></li>-->
+                 <!--</ul>-->
+            <!--</span>-->
             </div>
             <div class="devicePanel-bottom dataLayout">
                 <div class="dataLayoutItem">
@@ -91,18 +91,40 @@
                 </div>
                 <div class="mainData-content">
                     <div class="toggleGroup">
-                        <el-radio-group>
+                        <el-radio-group v-model="radioValue" @change="toggleDataView">
                             <el-radio-button label="曲线"></el-radio-button>
                             <el-radio-button label="表格"></el-radio-button>
                         </el-radio-group>
                         <p class="smallInfo">共935条记录，液位最大值：0.000m,最小值：0.000m,均值：0.000m,累计降雨量：0.0mm</p>
                     </div>
-                    <div class="chartGroup">
-                        <p class="deviceChart-title">普吉路与小路沟交叉口测量液位</p>
-                        <small>起止时间：2017-12-07~2017-12-07</small>
+                    <div class="dataView" v-show="isShowChart">
+                        <div class="chartGroup">
+                            <p class="deviceChart-title">{{deviceInfo.title}}</p>
+                            <small>起止时间：2017-12-07~2017-12-07</small>
+                        </div>
+                        <div class="detailChartBox">
+                            <div id="waterChart" style="width:100%;height:100%"></div>
+                        </div>
                     </div>
-                    <div class="detailChartBox">
-                        <div id="waterChart" style="width:100%;height:100%"></div>
+                    <div class="dataView" v-show="!isShowChart">
+                        <el-table
+                                :data="tableData"
+                                style="width: 100%">
+                            <el-table-column
+                                    prop="date"
+                                    label="数据时间"
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="waterData"
+                                    label="测量液位(m)"
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="rainData"
+                                    label="降雨量(mm)">
+                            </el-table-column>
+                        </el-table>
                     </div>
                 </div>
             </div>

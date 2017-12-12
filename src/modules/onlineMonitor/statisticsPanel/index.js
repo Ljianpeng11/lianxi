@@ -7,7 +7,7 @@ var moment = require('moment');
 var deviceList = require('modules/onlineMonitor/mapPlugin/deviceList');
 
 //雨量数据
-var xData = [],yData1 = [],yData2 = [];
+var xData = [],yData1 = [],yData2 = [],tableData = [];
 var data1 = [Math.random() *60];
 var data2 = [Math.random() *1.2];
 var newData1 = ((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2);
@@ -22,10 +22,16 @@ function addData(){
         yData2.push(newData2);
 }
 for(var i = 0;i<12;i++){
-    time = moment().subtract(i,'h');
-    xData[(11 - i)] = time.format('YYYY-MM-DD hh:ss');
+    time = moment().subtract(i,'h').format('YYYY-MM-DD hh:ss');
+    xData[(11 - i)] = time;
     yData1.push(newData1);
     yData2.push(newData2);
+    var item = {
+        date:time,
+        waterData:newData1,
+        rainData:newData2
+    }
+    tableData.push(item);
 }
 
 var option = {
@@ -161,18 +167,32 @@ var comm = Vue.extend({
     template: template,
     data: function () {
         return {
-            myChart:null,
-            timeIndex:null,
-            detailView:'detailView',
-            value1: '设备地图',
-            options1: [{
-                value: '选项1',
-                label: '设备地图'
-            }, {
-                value: '选项2',
-                label: '数据详情'
-            }]
+            myChart: null,
+            timeIndex: null,
+            detailView: 'detailView',
+            isShowChart: true,
+            deviceInfo: {},
+            radioValue: '曲线',
+            viewTypeOption: {
+                value: '设备地图',
+                options: [{
+                    value: 'deviceMap',
+                    label: '设备地图'
+                }, {
+                    value: 'detailInfo',
+                    label: '数据详情'
+                }]
+            },
+            tableData: tableData
         }
+    },
+    created:function(){
+        eventHelper.on('openDeviceInfoPanel',function(item){
+            this.deviceInfo ={
+                title:item.title,
+                deviceCode:item.deviceCode
+            };
+        }.bind(this));
     },
     methods: {
         loadYLChart:function(dom){
@@ -192,6 +212,9 @@ var comm = Vue.extend({
                 }.bind(this),2000);
             }.bind(this));
         },
+        toggleDataView:function(){
+            this.isShowChart = !this.isShowChart;
+        },
         closePanel:function(){
             this.isOpen = false;
         }
@@ -199,8 +222,7 @@ var comm = Vue.extend({
     mounted: function () {
         //初始化图表
         this.loadYLChart('#waterChart');
-        this.$refs.deciceList.isOpenList = false;
-        this.$refs.deciceList.toggleList();
+        this.$refs.deviceList.openMapWindow(0,this.$refs.deviceList.deviceList[0]);
     },
     components: {
         'device-list':deviceList

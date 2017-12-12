@@ -3,7 +3,7 @@
       <div class="listBoxTitle">
          <span>
             设备列表&nbsp;&nbsp;
-            <b class="listBadge">21</b>
+            <b class="listBadge">{{deviceList.length}}</b>
          </span>
          <i class="el-icon-d-arrow-right" :class="[isOpenList?'rotate-up':'rotate-down']" @click="toggleList"></i>
       </div>
@@ -11,7 +11,7 @@
    </div>
    <ul class="listBoxContent">
       <li v-for="(item,index) in deviceList"
-          @click="openMapWindow(index)"
+          @click="openMapWindow(index,item)"
           :class="{'active':highLightIndex === index,'warningItem':item.status === 1,'dangerItem':item.status === 2}">
          <div class="listItemTop">
             <span>{{item.title}}</span>

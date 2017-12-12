@@ -101,7 +101,10 @@ var comm = Vue.extend({
             this.selectIitem = this.deviceList[index];
             this.highLightIndex = index;
             if(this.baseView === 'detailView'){
-
+                this.isOpenList = false;
+                this.toggleList();
+                this.highLightIndex = 0;
+                eventHelper.emit('openDeviceInfoPanel',item);
             }else{
                 this.$nextTick(function () {
                     var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);

@@ -16,9 +16,10 @@ var containerDeviceCommands = require('./containerDeviceCommands');
 var comm = crudBase.extend({
     //设置模板
     template: template,
-    // data: function () {
-    //     return {}
-    // },
+     // data: function () {
+     //     return {
+     //     }
+     // },
     components: {
         //引用vue组件
         'modifyDeviceInfo': modifyDeviceInfo,
@@ -32,7 +33,8 @@ var comm = crudBase.extend({
         this.containerMain = new container({
             data: function () {
                 return {
-
+                    facilityId:null,
+                    facilityDict:null,
                     iotDeviceTypeIds: {},
                     //是否添加默认的操作列（当需要自定义操作列的功能时可以设为false）
                     addDefaultOperateColumn: false,
@@ -40,10 +42,23 @@ var comm = crudBase.extend({
             },
 
             methods: {
-                // //刷新列表后的回调
-                // afterRefreshListHandler: function () {
-                //     // layer.msg('afterRefreshListHandler');
-                // },
+                //初始化表单
+                initForm: function () {
+                    var formData = serviceHelper.getDefaultAjaxParam();
+                    serviceHelper.getJson(serviceHelper.getBasicPath()+'/iotDevice/getInitFormValue',formData,function (result) {
+                        this.facilityDict = result.facilitys;
+                    }.bind(this));
+                },
+                //刷新录入表单后的回调
+                afterRefreshFormHandler: function (row) {
+                    this.facilityId = row.facilityId || null;
+                },
+                //获取自定义保存的值（如果默认的从界面获取保存的值不满足需求，可以重写此方法，自定义获取值）
+                getCustomSaveValue: function () {
+                    var formData = {};
+                    formData.facilityId = this.facilityId;
+                    return formData;
+                },
                 //获取设备状态
                 getDeviceStatus: function () {
                     var formData = {};
@@ -309,13 +324,10 @@ var comm = crudBase.extend({
         }, {
             field: 'iotDeviceId',
             title: 'Iot设备Id'
-        },/* {
-            field: 'ifOnline',
-            title: '是否在线'
-        }, {
-            field : 'communicationMethodText',
-            title:'通讯模式'
-        },*/{
+        },{
+            field: 'facilityName',
+            title: '测站名称'
+        },{
             field: 'operate',
             title: '操作',
             align: 'center',
@@ -401,6 +413,8 @@ var comm = crudBase.extend({
             }
             }
         }]);
+        //初始化表单
+        this.containerMain.initForm();
         //刷新列表
         this.containerMain.refreshList();
 
