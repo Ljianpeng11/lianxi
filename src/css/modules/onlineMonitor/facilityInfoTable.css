@@ -34,3 +34,13 @@
     width: 100%;
     height: calc( 100% - 50px );
 }
+
+.facilityInfoTable .facilityInfoContent .greenFont{
+     color:#4CA54F;
+ }
+.facilityInfoTable .facilityInfoContent .yellowFont{
+    color:#EBB734;
+}
+.facilityInfoTable .facilityInfoContent .redFont{
+    color:#FF1EFF;
+}
