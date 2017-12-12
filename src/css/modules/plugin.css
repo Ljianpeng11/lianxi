@@ -236,7 +236,9 @@
     transition-duration: .4s;
     cursor: pointer;
 }
-
+#mapType .active{
+    z-index: 3 !important;
+}
 #mapType .mapTypeCard {
     height: 60px;
     width: 86px;

@@ -17,6 +17,8 @@ define(['config'], function (config) {
         getHistoricalDate:basicUrl+'/dataHistory/getDataHistoryByItemId',
         deviceDetail:basicUrl+'/device/getDeviceInfosByFacilityId',
         monitorRealTimeValue:basicUrl+'/dataReal/getDataRealByItemIds',
+        getProjects: basicUrl + '/project/getUserProjects',
+        getProjectById: basicUrl + '/project/getUserProjectLayers',
         getCarHistoryCount:basicUrl+'/truck/getTruckHistoryTrackCount',
         getDeviceList:basicUrl+'/iotDevice/list',
         getDeviceObject:basicUrl+'/iotDevice/get',
