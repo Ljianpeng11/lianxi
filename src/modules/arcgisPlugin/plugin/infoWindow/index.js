@@ -4,30 +4,30 @@ var mapHelper = require('utils/mapHelper');
 // 定义组件
 var comm = Vue.extend({
     template: template,
-    props:["baseView"],
+    props: ["baseView"],
     data: function () {
         return {
             infoBoxes: [],
             fcEvents: [],
             showInput: false,
-            registerEvents:[]
+            registerEvents: []
         }
     },
     methods: {
         relocate: function (item) {
             for (var i = 0; i < item.length; i++) {
-                var boxID = '#infoBox-' + item[i].facilityId;
-                if(this.isNumber(item[i].x)&&this.isNumber(item[i].y)){
-                    var screenPoint =this.baseView.toScreen(item[i]);
+                var boxID = '#infoBox-' + item[i].id;
+                if (this.isNumber(item[i].x) && this.isNumber(item[i].y)) {
+                    var screenPoint = this.baseView.toScreen(item[i]);
                     var x = screenPoint.x - 150;
                     var y = screenPoint.y - 205;
                     $(boxID).css('top', y);
                     $(boxID).css('left', x);
-                    if(x > 0 && y >0){
-                        item.show=true;
+                    if (x > 0 && y > 0) {
+                        item.show = true;
                     }
                 } else {
-                    item.show=false;
+                    item.show = false;
                 }
             }
         },
@@ -37,12 +37,12 @@ var comm = Vue.extend({
         normalize: function (infoID) {
             $('#' + infoID).css('z-index', 1);
         },
-        registerToView:function(){
-            if(this.registerEvents.length==0){
+        registerToView: function () {
+            if (this.registerEvents.length == 0) {
                 var instance = mapHelper.getInstance();
                 this.registerEvents.push(
                     instance.dojoOn(
-                        this.baseView, "resize", instance.dojoHitct(this,function(){
+                        this.baseView, "resize", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
                         })
                     )
@@ -50,14 +50,14 @@ var comm = Vue.extend({
 
                 this.registerEvents.push(
                     instance.dojoOn(
-                        this.baseView, "mouse-wheel", instance.dojoHitct(this, function(){
+                        this.baseView, "mouse-wheel", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
                         })
                     )
                 );
                 this.registerEvents.push(
                     instance.dojoOn(
-                        this.baseView, "pan-end", instance.dojoHitct(this, function(){
+                        this.baseView, "pan-end", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
                         })
                     )
@@ -65,21 +65,21 @@ var comm = Vue.extend({
 
                 this.registerEvents.push(
                     instance.dojoOn(
-                        this.baseView.root, "mousemove", instance.dojoHitct(this, function(){
+                        this.baseView.root, "mousemove", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
                         })
                     )
                 );
                 this.registerEvents.push(
                     instance.dojoOn(
-                        this.baseView.root, "mouseup", instance.dojoHitct(this, function(){
+                        this.baseView.root, "mouseup", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
                         })
                     )
                 );
             }
         },
-        isNumber:function (value) {
+        isNumber: function (value) {
             var patrn = /^(-)?\d+(\.\d+)?$/;
             if (patrn.exec(value) == null || value == "") {
                 return false;
@@ -87,10 +87,10 @@ var comm = Vue.extend({
                 return true;
             }
         },
-        closePopup:function(index){
-            this.infoBoxes[index].show=false;
+        closePopup: function (index) {
+            this.infoBoxes[index].show = false;
         },
-        detailView:function(index){
+        detailView: function (index) {
             alert(index);
         }
     },
@@ -101,24 +101,26 @@ var comm = Vue.extend({
             } else {
                 this.infoBoxes.push(...points.slice(0));
             }
-            if(this.baseView&&this.baseView.ready) {
-                this.$nextTick(function(){
+            if (this.baseView && this.baseView.ready) {
+                this.$nextTick(function () {
                     this.relocate(points);
                     this.registerToView();
                 }.bind(this));
             }
         }.bind(this));
-        eventHelper.on('alert-point-close', function (point, isAll) {
+        eventHelper.on('alert-point-close', function (points, isAll) {
             if (!!isAll) {
                 this.infoBoxes = [];
             }
             else {
-                for (var i = 0; i < this.infoBoxes.length; i++) {
-                    var item = this.infoBoxes[i];
-                    if (item.x == point.x && item.y == point.y) {
-                        this.infoBoxes.splice(i, 1);
+                points.forEach(function (point) {
+                    for (var i = 0; i < this.infoBoxes.length; i++) {
+                        var item = this.infoBoxes[i];
+                        if (item.x == point.x && item.y == point.y) {
+                            this.infoBoxes.splice(i, 1);
+                        }
                     }
-                }
+                }.bind(this));
             }
         }.bind(this));
     },

@@ -1,5 +1,5 @@
 <div class="gaoqingPopup">
-    <div v-show="infoBox.show"  v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+infoBox.facilityId" @mouseover="highLight('infoBox-'+infoBox.facilityId)" @mouseleave="normalize('infoBox-'+infoBox.facilityId)" class="esri-popup__position-container esri-popup--shadow esri-popup--title-visible esri-popup--content-visible esri-popup--top-aligned" >
+    <div v-show="infoBox.show"  v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+infoBox.id" @mouseover="highLight('infoBox-'+infoBox.facilityId)" @mouseleave="normalize('infoBox-'+infoBox.facilityId)" class="esri-popup__position-container esri-popup--shadow esri-popup--title-visible esri-popup--content-visible esri-popup--top-aligned" >
         <div class="esri-popup__main-container">
             <!-- Popup Header -->
             <header class="esri-popup__header">
