@@ -1,7 +1,5 @@
 .gaoqingPopup .esri-popup__main-container {
-    width: 300px;
-}
-.gaoqingPopup .esri-popup__main-container{
+    width: 200px;
     border-radius: 10px;
 }
 .gaoqingPopup .esri-popup__footer {
@@ -14,6 +12,13 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
+.gaoqingPopup .esri-popup__header .esri-popup__header-title{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 13em;
+    word-break: keep-all;
+}
+
 .gaoqingPopup .esri-popup__content .listContent{
     padding-bottom: 0px;
 }

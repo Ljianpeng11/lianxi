@@ -72,16 +72,12 @@ var comm = Vue.extend({
                     self.graLayer = apiInstance.createGraphicsLayer(self.baseMap,'graphicLayer');
                     currentMap = map;
                     currentView = view;
-                    /*mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
-                        var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
-                        mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
-                            color: [226, 119, 40],
-                            width: 4
-                        })
-                    });*/
                     mapHelper.registerMapTool(view, 'statusToolsBox', 'top-right');
                     //注册地图地名地址查询插件
                     mapHelper.registerMapTool(view, 'addressService', 'top-right');
+                    facilityController.getCurrentUserFacilitysMonitor(function (list) {
+                        this.createPointNew(list);
+                    }.bind(this));
                     self.graLayer.on('layerview-create',function(evt){
                         var graView = evt.view;
                         var graLayerView = evt.layerView;
@@ -90,7 +86,7 @@ var comm = Vue.extend({
                         getMap.map = map;
                         getMap.view = view;
                         eventHelper.emit('get-map', getMap);
-                        graView.on('click',function(event){
+                        /*graView.on('click',function(event){
                             graView.hitTest(event).then(function(response){
                                 var graphic = response.results[0].graphic;
                                 var attributes = graphic.attributes;
@@ -104,9 +100,9 @@ var comm = Vue.extend({
                                     return;
                                 }
                             });
-                        });
+                        });*/
                     });
-                }
+                }.bind(this)
             );
             return map;
         },
@@ -116,6 +112,7 @@ var comm = Vue.extend({
                     var icon = !!legend.icon ? legend.icon : legend.facilityTypeName;
                     var newIcon = './img/toolbar/huawei-' + icon + '.png';
                     item.fid = 'f' + legend.id;
+                    item.show = true;
                     var imgObj = {
                         url: newIcon,
                         width: "30px",
@@ -136,8 +133,8 @@ var comm = Vue.extend({
                         'id':item.fid
                     };
                     var graphic = mapHelper.createPictureMarkSymbol(this.graLayer, item.x, item.y, imgObj,attributes);
-                    this.graphics.push(graphic);
-                    //this.graphics.push(mapHelper.createTextSymbol(this.graLayer,item.x,item.y,textObj));
+                    this.graphics.push(graphic)
+                    //this.graphics.push(mapHel;per.createTextSymbol(this.graLayer,item.x,item.y,textObj));
                 }
             }.bind(this));
             this.facilityArr[legend.facilityTypeName] = {
@@ -145,6 +142,31 @@ var comm = Vue.extend({
                 data:subFacilities,
                 layer:this.graLayer
             };
+            eventHelper.emit('alert-point', subFacilities, false);
+        },
+        createPointNew:function(facilities){
+            for(var i=0,len=facilities.length;i<len;i++){
+                if(this.isNumber(facilities[i].x)&&this.isNumber(facilities[i].y)){
+                    var apiInstance = mapHelper.getInstance();
+                    var facilityGraphicLayer = apiInstance.getGraphicsLayer(facilities[i].facilityTypeName+"GraphicLayer",1,this.baseMap);
+                    var newIcon = './img/mapLegend/gaoqing/' + facilities[i].facilityTypeName + '-01.png';
+                    //facilities[i].fid = 'f' + legend.id;
+                    facilities[i].show = true;
+                    var imgObj = {
+                        url: newIcon,
+                        width: "24px",
+                        height: "24px"
+                    };
+                    var attributes = {
+                        'item':facilities[i],
+                        'facilityTypeName':facilities[i].facilityTypeName,
+                        'id':facilities[i].fid
+                    };
+                    var graphic = mapHelper.createPictureMarkSymbol(facilityGraphicLayer, facilities[i].x, facilities[i].y, imgObj,attributes);
+                    facilityGraphicLayer.add(graphic)
+                }
+            }
+            eventHelper.emit('alert-point', facilities, false);
         },
         startPlan: function () {
             this.dialogVisible = false;

@@ -11,6 +11,7 @@ define(['config'], function (config) {
         refreshToken: basicUrl + '/login/updateToken',
         queryOrder: basicUrl + '/orders/query',
         getAllFacilityType: basicUrl + '/facility/getAllFacilitysType',
+        getCurrentUserFacilitysMonitor: basicUrl + '/facility/getCurrentUserFacilitysMonitor',
         getCarList:basicUrl+'/truck/getTruckList',
         getFacilityByType:basicUrl+'/facility/getOneTypeFacilitys',
         getFacilityDetail:basicUrl+'/facility/getOneFacilityInfo',

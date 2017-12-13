@@ -553,6 +553,7 @@ define(function () {
              }*/);
         graphic.symbol = markerSymbol;
     };
+
     instance.createGraphicsLayer = function (map, id) {
         var layer = new instance.GraphicsLayer({
             id: id
@@ -742,19 +743,15 @@ define(function () {
         }
     };
     instance.getGraphicsLayer = function (LayerId, index, map) {
-        var currentMap;
-        if (!!map) {
-            currentMap = map.map;
-        }
         var graphicsLayer = null;
-        if (currentMap.findLayerById(LayerId)) {
-            graphicsLayer = currentMap.findLayerById(LayerId);
+        if (map.findLayerById(LayerId)) {
+            graphicsLayer = map.findLayerById(LayerId);
         } else {
             graphicsLayer = new instance.GraphicsLayer({id: LayerId});
             if (index)
-                currentMap.addMany([graphicsLayer], index);
+                map.addMany([graphicsLayer], index);
             else
-                currentMap.addMany([graphicsLayer]);
+                map.addMany([graphicsLayer]);
         }
         return graphicsLayer;
     };
@@ -831,6 +828,12 @@ define(function () {
             graphicsLayer = getMapGraphicsLayer(currentMap, "traceAbilityAnalysis");
         graphicsLayer.removeAll();
     };
+    instance.dojoOn = function (dom,eventName,hitchFun) {
+        return new instance.On(dom,eventName,hitchFun);
+    };
+    instance.dojoHitct = function (context,func) {
+        return new instance.Lang.hitch(context,func);
+    };
     var screenLengthToMapLength = function (map, screenPixel) {
         var screenWidth = map.width;
 
@@ -889,6 +892,8 @@ define(function () {
                 "esri/geometry/geometryEngine",
                 "esri/layers/MapImageLayer",
                 "esri/geometry/ScreenPoint",
+                "dojo/on",
+                "dojo/_base/lang"
             ], function (arcgisMap,
                          arcgisPoint,
                          arcgisExtent,
@@ -913,7 +918,9 @@ define(function () {
                          TileInfo,
                          geometryEngine,
                          MapImageLayer,
-                         ScreenPoint) {
+                         ScreenPoint,
+                         On,
+                         Lang) {
                 instance.Map = arcgisMap;
                 instance.Point = arcgisPoint;
                 instance.Extent = arcgisExtent;
@@ -939,6 +946,8 @@ define(function () {
                 instance.MapImageLayer = MapImageLayer;
                 instance.ScreenPoint = ScreenPoint;
                 instance.geometryEngine = geometryEngine;
+                instance.On = On;
+                instance.Lang = Lang;
                 instance.drawConfig = {
                     drawingSymbol: new arcgisSimpleFillSymbol({
                         color: [102, 0, 255, 0.15],
