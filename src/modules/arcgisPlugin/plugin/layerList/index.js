@@ -25,8 +25,8 @@ var comm = Vue.extend({
             list.forEach(function (type, index) {
                 var facility = {
                     id: type.id,
-                    title: type.nameCn,
-                    facilityTypeName: type.name,
+                    title: type.name,
+                    facilityTypeName: type.facilityTypeName,
                     icon: type.icon,
                     showIcon: true,
                     showSub: false

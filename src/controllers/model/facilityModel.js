@@ -1,12 +1,21 @@
 define(function () {
-    var facilityType = {
-        27: '排水管道水情站',
-        28: '易涝水情站'
-    }
+    var facilityTypeObjs = {}
+
 
     return {
-        getFacilityType: function (typeID) {
-            return facilityType[typeID];
+        getFacilityByTypeName: function (facilityByTypeName) {
+            return facilityTypeObjs[facilityByTypeName];
+        },
+        getAllFacilityTypes: function () {
+            var keys = [];
+            for (var key in facilityTypeObjs) {
+                keys.push(key);
+            }
+            return keys;
+        },
+        addFacility: function (facilityConfig, subFacilities) {
+            facilityTypeObjs[facilityConfig.facilityTypeName] = facilityConfig;
+            facilityTypeObjs[facilityConfig.facilityTypeName].facilities = subFacilities;
         }
     }
 });
