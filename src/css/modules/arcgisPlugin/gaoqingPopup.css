@@ -3,6 +3,9 @@
     border-radius: 10px;
     padding-bottom: 0px;
 }
+.gaoqingPopup .esri-popup__position-container {
+    border-radius: 10px;
+}
 .gaoqingPopup .esri-popup__footer {
     border-radius: 10px;
     display: none;

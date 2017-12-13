@@ -23,7 +23,6 @@ var comm = Vue.extend({
         init: function (list) {
             var legendItem = [];
             list.forEach(function (type, index) {
-                debugger;
                 var facility = {
                     id: type.id,
                     title: type.nameCn,

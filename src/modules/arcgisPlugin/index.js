@@ -60,8 +60,6 @@ var comm = Vue.extend({
             var centerX = 117.82261612882854;
             var centerY = 37.16445993323195;
             var zoom = 13;
-            var currentMap = {};
-            var currentView = {};
             var self = this;
             var apiInstance = mapHelper.getInstance();
 
@@ -70,8 +68,6 @@ var comm = Vue.extend({
                     self.baseView = view;
                     var apiInstance = mapHelper.getInstance();
                     self.graLayer = apiInstance.createGraphicsLayer(self.baseMap,'graphicLayer');
-                    currentMap = map;
-                    currentView = view;
                     mapHelper.registerMapTool(view, 'statusToolsBox', 'top-right');
                     //注册地图地名地址查询插件
                     mapHelper.registerMapTool(view, 'addressService', 'top-right');
