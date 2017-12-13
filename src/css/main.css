@@ -36,6 +36,7 @@
 @import "modules/arcgisPlugin/addressService.css";
 @import "modules/arcgisPlugin/gaoqingPopup.css";
 @import "modules/onlineMonitor/facilityInfoTable.css";
+@import "modules/onlineMonitor/dataScreen.css";
 .css
 :root {
     --base-color:#105ba3;

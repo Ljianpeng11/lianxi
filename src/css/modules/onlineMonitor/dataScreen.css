@@ -1,0 +1,49 @@
+.dataScreenBox .deviceLeft{
+    align-self: flex-start;
+}
+.dataPanel-top{
+    line-height:3em;
+}
+.deviceLeft > span{
+    margin-right:10px;
+}
+.cesc-box{
+    box-shadow:0 0 10px 0 rgba(0,0,0,0.2);
+    height: 100%;
+}
+.weatherData-top{
+    height:5.5em;
+    line-height:5.5em;
+}
+.weatherData-top .deviceLeft{
+    padding-left:1em;
+    display: flex;
+    align-items: center;
+}
+.weatherData-top > span{
+    padding-right:2em;
+}
+.weatherData-top .weather-icon{
+    font-size:4em;
+}
+.weatherData-bottom{
+    height: calc(100% - 5.5em);
+}
+.weather-num{
+    color: #2f91e4;
+    font-size:3em;
+    position:relative;
+    margin-left:10px;
+}
+.weather-num:before{
+    content:'℃';
+    position: absolute;
+    top: -0.8em;
+    right: -1em;
+    color: #333;
+    display: block;
+    font-size: 16px;
+}
+.scrollTable .el-table__body-wrapper{
+    height:calc(100% - 3em);
+}

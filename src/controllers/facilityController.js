@@ -16,8 +16,8 @@ define([
             });
 
         },
-        getFacilityByType: function (facilityType, cb) {
-            facilityService.getFacilityByType(facilityType, function (data) {
+        getFacilityByTypeName: function (facilityTypeName,url, cb) {
+            facilityService.getFacilityByTypeName(facilityTypeName, url,function (data) {
                 cb(data);
             });
         }, getDevicesByFacility: function (facilityId, cb) {

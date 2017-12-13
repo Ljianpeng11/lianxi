@@ -21,6 +21,7 @@ html, body {
 
 .logo {
     text-align: center;
+    margin-bottom:3em;
 }
 
 .srk-login {
@@ -186,4 +187,10 @@ html, body {
 .container {
     height: 100%;
     width: 100%;
+}
+.sysTitle{
+    font-size: 36px;
+    vertical-align: middle;
+    margin-left: 10px;
+    color: #fff;
 }

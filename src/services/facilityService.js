@@ -135,11 +135,11 @@ define(['./serviceHelper'], function (serviceHelper) {
                 }
             })
         },
-        getFacilityByType: function (facilityType, cb) {
+        getFacilityByTypeName: function (facilityType, url, cb) {
             var parameter = {
                 id: 'getFacilityByType',
                 parameter: {
-                    facilityType: facilityType
+                    facilityTypeName: facilityType
                 }
             }
             $.get(serviceHelper.getPath(parameter), function (result) {

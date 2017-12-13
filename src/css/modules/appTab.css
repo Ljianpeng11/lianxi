@@ -55,10 +55,12 @@
     color: #666;
     background: #f1f1f1;
 }
-
+.tabActive .tabClose{
+    color:#333;
+}
 .cescTab .tabClose {
     float: left;
-    color: #333;
+    color: #fff;
     line-height: 3em;
     margin-left:-2em;
 }

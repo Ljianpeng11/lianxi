@@ -104,7 +104,7 @@ var comm = Vue.extend({
                 this.isOpenList = false;
                 this.toggleList();
                 this.highLightIndex = 0;
-                eventHelper.emit('openDeviceInfoPanel',item);
+                eventHelper.emit('openDeviceInfoPanel',this.selectIitem);
             }else{
                 this.$nextTick(function () {
                     var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);
@@ -123,7 +123,7 @@ var comm = Vue.extend({
             }
         },
         detailView:function(selectItem){
-            debugger;
+            eventHelper.emit('openDevicePanel',selectItem);
         }
     },
     mounted: function () {

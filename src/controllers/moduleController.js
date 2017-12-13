@@ -66,7 +66,8 @@ define([
     'modules/appFacilityManager/facilityTypeRoleManager',
     'modules/appFacilityManager/dataRoleFacilityManager',
     'modules/onlineMonitor/statisticsPanel',
-    'modules/onlineMonitor/facilityInfoTable'
+    'modules/onlineMonitor/facilityInfoTable',
+    'modules/onlineMonitor/dataScreen'
 ], function (appContent,
              appDemoForm,
              elementForm,
@@ -134,7 +135,8 @@ define([
              facilityTypeRoleManager,
              dataRoleFacilityManager,
              statisticsPanel,
-             facilityInfoTable) {
+             facilityInfoTable,
+             dataScreen) {
     return {
         'app-content': appContent,
         'app-demo-form': appDemoForm,
@@ -203,6 +205,7 @@ define([
         'facilityTypeRoleManager': facilityTypeRoleManager,
         'dataRoleFacilityManager': dataRoleFacilityManager,
         'statisticsPanel':statisticsPanel,
-        'facility-info-table':facilityInfoTable
+        'facility-info-table':facilityInfoTable,
+        'dataScreen':dataScreen
     }
 });

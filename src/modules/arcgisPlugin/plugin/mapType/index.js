@@ -4,40 +4,54 @@ var eventHelper = require('utils/eventHelper');
 // 定义组件
 var comm = Vue.extend({
     template: template,
-    props:["baseView"],
     data: function () {
         return {
-            isExpand:false,
-            indexId:1,
-            mapTypeList:[
+            isExpand: false,
+            indexId: 1,
+            hoverMargin: 5,
+            mapTypeList: [
                 {
-                    name:'影像图',
-                    class:'earth',
-                    layerId:"imgSuperMapLayer"
-                },{
-                    name:'地图',
-                    class:'normal',
-                    layerId:"vectorSuperMapLayer"
+                    layer: {icon1:'TDT'}
                 }
             ]
         }
     },
     methods: {
-        toggleClass:function(status){
+        toggleClass: function (status) {
             this.isExpand = status;
         },
-        highLight:function (index) {
-            for(var i in this.mapTypeList){
-                if(i==index){
-                    this.baseView.map.findLayerById(this.mapTypeList[i].layerId).visible=true;
-                } else {
-                    this.baseView.map.findLayerById(this.mapTypeList[i].layerId).visible=false;
-                }
-            }
-            this.indexId = index;
+        highLight: function (item, index) {
+            eventHelper.emit('change-map-type', item.id);
+            this.indexId = item.id;
         }
     },
     mounted: function () {
+        var currentAction = '';
+        eventHelper.on('init-map-type', function (data) {
+            this.mapTypeList = data;
+            this.$nextTick(function () {
+                $("#mapType-wrapper").hover(
+                    function () {
+                        $("#mapType-wrapper").addClass("expand");
+                    },
+                    function () {
+                        $("#mapType-wrapper").removeClass("expand");
+                    }
+                );
+                $("[data-name]").on("click", function () {
+                    var actionName = $(this).data("name");
+                    currentAction = actionName;
+                    eventHelper.emit('change-map-type', actionName);
+                    $(this).addClass("active").siblings().removeClass("active");
+                });
+                if (data.length == 1) {
+                    $('.mapTypeCard').addClass('active')
+                } else {
+                    var displayIndex = '.mapTypeCard:eq(' + 0 + ')';
+                    $(displayIndex).addClass('active');
+                }
+            }.bind(this))
+        }.bind(this));
     },
     components: {}
 });

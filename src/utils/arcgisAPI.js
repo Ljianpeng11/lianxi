@@ -10,7 +10,7 @@ define(function () {
     var currentMapView;
     var hideConfirm = false;
     var locationGraphic;
-    instance.initTDLayer = function (container, x, y, zoom, success, click) {
+    instance.initTDLayer = function (successCb) {
         var tileInfo = new instance.TileInfo({
 
             "rows": 256,
@@ -62,132 +62,230 @@ define(function () {
             fullExtent: fullExtent,
             tileInfo: tileInfo,
         });
-        var map = new instance.Map({
-            layers: [tiledLayer, tiledMarkLayer]
-        });
-        var view = new instance.MapView({
-            container: container,
-            map: map,
-            center: [x, y],
-            zoom: zoom
-        });
-        tiledLayer.load().then(function () {
-            success(map, view);
-        });
-        view.then(function () {
-            var drawButton = $("#draw-button");
-            if (!!drawButton) {
-                drawButton[0].addEventListener("click", function () {
-                    var pen = instance.initDrawPen(view, function (drawResult) {
-                        console.log(drawResult);
-                    });
-                    if (!instance.drawConfig.isDrawActive) {
-                        pen.startDraw();
-                        $("#draw-button")[0].classList.toggle("esri-draw-button-selected");
-                    } else {
-                        pen.endDraw();
-                    }
-                });
-            }
-        });
-        view.on('click', function (evt) {
-            console.log(evt);
-            evt.stopPropagation();
-            if (!!click)
-                click(evt);
-        });
+        /*   var map = new instance.Map({
+         layers: [tiledLayer, tiledMarkLayer]
+         });
+         var view = new instance.MapView({
+         container: container,
+         map: map,
+         center: [x, y],
+         zoom: zoom
+         });
+         view.then(function () {
+         var drawButton = $("#draw-button");
+         if (!!drawButton) {
+         drawButton[0].addEventListener("click", function () {
+         var pen = instance.initDrawPen(view, function (drawResult) {
+         console.log(drawResult);
+         });
+         if (!instance.drawConfig.isDrawActive) {
+         pen.startDraw();
+         $("#draw-button")[0].classList.toggle("esri-draw-button-selected");
+         } else {
+         pen.endDraw();
+         }
+         });
+         }
+         });
+         view.on('click', function (evt) {
+         console.log(evt);
+         evt.stopPropagation();
+         if (!!click)
+         click(evt);
+         });*/
         /*view.ui.add("draw-button", "top-left");*/
+        tiledLayer.load().then(function () {
+            successCb([tiledLayer, tiledMarkLayer]);
+        });
     };
-    instance.initSuperMapLayer = function (container, x, y, zoom, success, click) {
-        var tileInfo = new instance.TileInfo({
-            "dpi": 96,
-            "rows": 256,
-            "cols": 256,
+    instance.createTomcatLayer = function (layer, successCb) {
+        var titleExtent = [];
+        if (!!layer.tileExtent) {
+            layer.tileExtent.split(',').forEach(function (extent) {
+                titleExtent.push(parseFloat(extent))
+            })
+        }
+        var tileInfoConfig = {
+            url: layer.url,  //瓦片大小
+            "rows": parseFloat(layer.tileSizeRows),  //瓦片大小
+            "cols": parseFloat(layer.tileSizeCols),  //瓦片大小
             "compressionQuality": 0,
-            "origin": {
-                "x": -180,
-                "y": 90
-            },
-            "spatialReference": {
-                "wkid": 4326
-            },
-            "lods": [
-                {"level": 0, "resolution": 0.703125, "scale": 295829355.450000},
-                {"level": 1, "resolution": 0.3515625, "scale": 147914677.725000},
-                {"level": 2, "resolution": 0.17578125, "scale": 73957338.862500},
-                {"level": 3, "resolution": 0.087890625, "scale": 36978669.431250},
-                {"level": 4, "resolution": 0.0439453125, "scale": 18489334.715625},
-                {"level": 5, "resolution": 0.02197265625, "scale": 9244667.357812},
-                {"level": 6, "resolution": 0.010986328125, "scale": 4622333.678906},
-                {"level": 7, "resolution": 0.0054931640625, "scale": 2311166.839453},
-                {"level": 8, "resolution": 0.00274658203125, "scale": 1155583.419727},
-                {"level": 9, "resolution": 0.001373291015625, "scale": 577791.709863},
-                {"level": 10, "resolution": 0.0006866455078125, "scale": 288895.854932},
-                {"level": 11, "resolution": 0.00034332275390625, "scale": 144447.927466},
-                {"level": 12, "resolution": 0.000171661376953125, "scale": 72223.963733},
-                {"level": 13, "resolution": 8.58306884765625e-005, "scale": 36111.981866},
-                {"level": 14, "resolution": 4.291534423828125e-005, "scale": 18055.990933},
-                {"level": 15, "resolution": 2.1457672119140625e-005, "scale": 9027.995467},
-                {"level": 16, "resolution": 1.0728836059570313e-005, "scale": 4513.997733},
-                {"level": 17, "resolution": 5.3644180297851563e-006, "scale": 2256.998867},
-                {"level": 18, "resolution": 2.682209014892578e-6, "scale": 1128.499433},
-                {"level": 19, "resolution": 1.341104507446289e-6, "scale": 564.249717}
-            ]
-        });
-        var spatialReference = new instance.SpatialReference({wkid: 4326});
-        var fullExtent = new instance.Extent(-180.0, -90.0, 180.0, 90.0, spatialReference);
-        var tiledVectorLayer = new instance.WebTileLayer({
-            id:"vectorSuperMapLayer",
-            urlTemplate: "http://223.99.169.187:20215/iserver/services/map-agscache-shiliang/wmts-china/shiliang/default/ChinaPublicServices_shiliang/{level}/{row}/{col}.png",
-            copyright: "",
-            spatialReference: spatialReference,
-            fullExtent: fullExtent,
-            tileInfo: tileInfo,
-        });
-        var tiledImgLayer = new instance.WebTileLayer({
-            id:"imgSuperMapLayer",
-            urlTemplate: "http://223.99.169.187:20215/iserver/services/map-agscache-yingxiang/wmts-china/yingxiang/default/ChinaPublicServices_yingxiang/{level}/{row}/{col}.png",
-            copyright: "",
-            spatialReference: spatialReference,
-            fullExtent: fullExtent,
-            tileInfo: tileInfo,
-            visible:false
-        });
-        var map = new instance.Map({
-            layers: [tiledVectorLayer,tiledImgLayer]
-        });
-        var view = new instance.MapView({
-            container: container,
-            map: map,
-            center: [x, y],
-            zoom: zoom
-        });
-        tiledVectorLayer.load().then(function () {
-            success(map, view);
-        });
-        view.then(function () {
-            var drawButton = $("#draw-button");
-            if (!!drawButton) {
-                drawButton[0].addEventListener("click", function () {
-                    var pen = instance.initDrawPen(view, function (drawResult) {
-                        console.log(drawResult);
-                    });
-                    if (!instance.drawConfig.isDrawActive) {
-                        pen.startDraw();
-                        $("#draw-button")[0].classList.toggle("esri-draw-button-selected");
-                    } else {
-                        pen.endDraw();
-                    }
+            "origin": {"x": parseFloat(layer.tileZeroX), "y": parseFloat(layer.tileZeroY)},  //切图原点
+            "spatialReference": {"wkid": parseInt(layer.wkid)},  //瓦片比例尺
+        };
+        var tileResolutions = layer.tileResolution.split(',');
+        var tileLevels = layer.tileLevel.split(',');
+        var tileScales = layer.tileScale.split(',');
+        var lods = [];
+        if (tileResolutions.length !== tileLevels.length || tileScales.length !== tileResolutions.length) {
+            console.error('地图配置有误', layer);
+        }
+        else {
+            //lods：等级、比例尺、分辨率。从ArcGIS切图配置文件conf.xml中获取。设置lods会影响地图比例尺控件的范围。
+            for (var i = 0; i < tileScales.length; i++) {
+                lods.push({
+                    "level": parseInt(tileLevels[i]),
+                    "resolution": parseFloat(tileResolutions[i]),
+                    "scale": parseFloat(tileScales[i])
                 });
             }
-        });
-        view.on('click', function (evt) {
-            console.log(evt);
-            evt.stopPropagation();
-            if (!!click)
-                click(evt);
-        });
+            tileInfoConfig.lods = lods;
+            var tileInfo = new instance.TileInfo(
+                tileInfoConfig
+                /*{
+                 "rows": 256,
+                 "cols": 256,
+                 "compressionQuality": 0,
+                 "origin": {
+                 "x": -180,
+                 "y": 90
+                 },
+                 "spatialReference": {
+                 "wkid": 4326
+                 },
+                 "lods": [
+                 {"level": 2, "resolution": 0.3515625, "scale": 147748796.52937502},
+                 {"level": 3, "resolution": 0.17578125, "scale": 73874398.264687508},
+                 {"level": 4, "resolution": 0.087890625, "scale": 36937199.132343754},
+                 {"level": 5, "resolution": 0.0439453125, "scale": 18468599.566171877},
+                 {"level": 6, "resolution": 0.02197265625, "scale": 9234299.7830859385},
+                 {"level": 7, "resolution": 0.010986328125, "scale": 4617149.8915429693},
+                 {"level": 8, "resolution": 0.0054931640625, "scale": 2308574.9457714846},
+                 {"level": 9, "resolution": 0.00274658203125, "scale": 1154287.4728857423},
+                 {"level": 10, "resolution": 0.001373291015625, "scale": 577143.73644287116},
+                 {"level": 11, "resolution": 0.0006866455078125, "scale": 288571.86822143558},
+                 {"level": 12, "resolution": 0.00034332275390625, "scale": 144285.93411071779},
+                 {"level": 13, "resolution": 0.000171661376953125, "scale": 72142.967055358895},
+                 {"level": 14, "resolution": 8.58306884765625e-005, "scale": 36071.483527679447},
+                 {"level": 15, "resolution": 4.291534423828125e-005, "scale": 18035.741763839724},
+                 {"level": 16, "resolution": 2.1457672119140625e-005, "scale": 9017.8708819198619},
+                 {"level": 17, "resolution": 1.0728836059570313e-005, "scale": 4508.9354409599309},
+                 {"level": 18, "resolution": 5.3644180297851563e-006, "scale": 2254.4677204799655}
+                 ]
+                 }*/);
+            var spatialReference = new instance.SpatialReference({wkid: parseInt(layer.wkid)});
+            var fullExtent = new instance.Extent(titleExtent[0], titleExtent[1], titleExtent[2], titleExtent[3], spatialReference);
+            var tiledLayer = new instance.WebTileLayer({
+                urlTemplate: layer.url,
+                copyright: "",
+                spatialReference: spatialReference,
+                fullExtent: fullExtent,
+                tileInfo: tileInfo,
+            });
+            /*tiledLayer.load().then(function () {
+             successCb([tiledLayer]);
+             });*/
+            return [tiledLayer];
+        }
     };
+    instance.processBaseMapConfig = function (map, baseMaps) {
+        var cacheLayers = {};
+        baseMaps.forEach(function (baseMap) {
+            var layers;
+            if (baseMap.layer.type == 'TomcatTile') {
+                layers = this.createTomcatLayer(baseMap.layer, function (event) {
+                    console.log(event);
+                });
+            } else if (baseMap.layer.type == 'TDT') {
+                layers = this.initTDLayer(map);
+            }
+            cacheLayers[baseMap.id] = layers;
+            layers.forEach(function (layer) {
+                map.add(layer);
+            });
+        }.bind(this));
+        return cacheLayers;
+    },
+        instance.initSuperMapLayer = function (container, x, y, zoom, success, click) {
+            var tileInfo = new instance.TileInfo({
+                "dpi": 96,
+                "rows": 256,
+                "cols": 256,
+                "compressionQuality": 0,
+                "origin": {
+                    "x": -180,
+                    "y": 90
+                },
+                "spatialReference": {
+                    "wkid": 4326
+                },
+                "lods": [
+                    {"level": 0, "resolution": 0.703125, "scale": 295829355.450000},
+                    {"level": 1, "resolution": 0.3515625, "scale": 147914677.725000},
+                    {"level": 2, "resolution": 0.17578125, "scale": 73957338.862500},
+                    {"level": 3, "resolution": 0.087890625, "scale": 36978669.431250},
+                    {"level": 4, "resolution": 0.0439453125, "scale": 18489334.715625},
+                    {"level": 5, "resolution": 0.02197265625, "scale": 9244667.357812},
+                    {"level": 6, "resolution": 0.010986328125, "scale": 4622333.678906},
+                    {"level": 7, "resolution": 0.0054931640625, "scale": 2311166.839453},
+                    {"level": 8, "resolution": 0.00274658203125, "scale": 1155583.419727},
+                    {"level": 9, "resolution": 0.001373291015625, "scale": 577791.709863},
+                    {"level": 10, "resolution": 0.0006866455078125, "scale": 288895.854932},
+                    {"level": 11, "resolution": 0.00034332275390625, "scale": 144447.927466},
+                    {"level": 12, "resolution": 0.000171661376953125, "scale": 72223.963733},
+                    {"level": 13, "resolution": 8.58306884765625e-005, "scale": 36111.981866},
+                    {"level": 14, "resolution": 4.291534423828125e-005, "scale": 18055.990933},
+                    {"level": 15, "resolution": 2.1457672119140625e-005, "scale": 9027.995467},
+                    {"level": 16, "resolution": 1.0728836059570313e-005, "scale": 4513.997733},
+                    {"level": 17, "resolution": 5.3644180297851563e-006, "scale": 2256.998867},
+                    {"level": 18, "resolution": 2.682209014892578e-6, "scale": 1128.499433},
+                    {"level": 19, "resolution": 1.341104507446289e-6, "scale": 564.249717}
+                ]
+            });
+            var spatialReference = new instance.SpatialReference({wkid: 4326});
+            var fullExtent = new instance.Extent(-180.0, -90.0, 180.0, 90.0, spatialReference);
+            var tiledVectorLayer = new instance.WebTileLayer({
+                id: "vectorSuperMapLayer",
+                urlTemplate: "http://223.99.169.187:20215/iserver/services/map-agscache-shiliang/wmts-china/shiliang/default/ChinaPublicServices_shiliang/{level}/{row}/{col}.png",
+                copyright: "",
+                spatialReference: spatialReference,
+                fullExtent: fullExtent,
+                tileInfo: tileInfo,
+            });
+            var tiledImgLayer = new instance.WebTileLayer({
+                id: "imgSuperMapLayer",
+                urlTemplate: "http://223.99.169.187:20215/iserver/services/map-agscache-yingxiang/wmts-china/yingxiang/default/ChinaPublicServices_yingxiang/{level}/{row}/{col}.png",
+                copyright: "",
+                spatialReference: spatialReference,
+                fullExtent: fullExtent,
+                tileInfo: tileInfo,
+                visible: false
+            });
+            var map = new instance.Map({
+                layers: [tiledVectorLayer, tiledImgLayer]
+            });
+            var view = new instance.MapView({
+                container: container,
+                map: map,
+                center: [x, y],
+                zoom: zoom
+            });
+            tiledVectorLayer.load().then(function () {
+                success(map, view);
+            });
+            view.then(function () {
+                var drawButton = $("#draw-button");
+                if (!!drawButton) {
+                    drawButton[0].addEventListener("click", function () {
+                        var pen = instance.initDrawPen(view, function (drawResult) {
+                            console.log(drawResult);
+                        });
+                        if (!instance.drawConfig.isDrawActive) {
+                            pen.startDraw();
+                            $("#draw-button")[0].classList.toggle("esri-draw-button-selected");
+                        } else {
+                            pen.endDraw();
+                        }
+                    });
+                }
+            });
+            view.on('click', function (evt) {
+                console.log(evt);
+                evt.stopPropagation();
+                if (!!click)
+                    click(evt);
+            });
+        };
     instance.removeGraphics = function (layer, graphics) {
         layer.removeMany(graphics);
     };
@@ -203,7 +301,7 @@ define(function () {
     };
     instance.registerMapTool = function (view, buttonId, position, cb) {
         view.ui.add(buttonId, position);
-        if(cb){
+        if (cb) {
             $("#" + buttonId)[0].addEventListener('click', function () {
                 cb();
             });
@@ -373,7 +471,7 @@ define(function () {
         });
         success(map, view);
     };
-    instance.createPoint = function(x,y){
+    instance.createPoint = function (x, y) {
         var point = new instance.Point({
             longitude: x,
             latitude: y
@@ -420,24 +518,24 @@ define(function () {
         return polygonGraphic;
 
     };
-    instance.createTextSymbol = function(layer,x,y,textObj){
+    instance.createTextSymbol = function (layer, x, y, textObj) {
         var point = new instance.Point({
             longitude: x,
             latitude: y
         });
-        if(!textObj){
+        if (!textObj) {
             textObj = {
-                color:'red',
-                text:'you are here',
-                xoffset:0,
-                yoffset:0,
-                font:{
-                    size:12
+                color: 'red',
+                text: 'you are here',
+                xoffset: 0,
+                yoffset: 0,
+                font: {
+                    size: 12
                 }
             }
         }
         var textSymbol = new instance.TextSymbol(
-             textObj
+            textObj
             //{
             //     color:'#333',
             //     text:'you are here',
@@ -480,12 +578,12 @@ define(function () {
         layer.add(markPoint);
         return markPoint;
     };
-    instance.createPictureMarkSymbol = function (layer, x, y, imgObj,attributes) {
+    instance.createPictureMarkSymbol = function (layer, x, y, imgObj, attributes) {
         var point = new instance.Point({
             longitude: x,
             latitude: y
         });
-        if(!imgObj){
+        if (!imgObj) {
             imgObj = {
                 url: "https://webapps-cdn.esri.com/Apps/MegaMenu/img/logo.jpg",
                 width: "8px",
@@ -504,7 +602,7 @@ define(function () {
         var markPoint = new instance.Graphic({
             geometry: point,
             symbol: markerSymbol,
-            attributes:attributes
+            attributes: attributes
         });
         layer.add(markPoint);
         return markPoint;
@@ -735,11 +833,11 @@ define(function () {
             var pointArrow = currentMapView.toMap(new instance.ScreenPoint(pixelX, pixelY));
             var pointArrow1 = currentMapView.toMap(new instance.ScreenPoint(pixelX1, pixelY1));
             var pointArrow2 = currentMapView.toMap(new instance.ScreenPoint(offsetPoint[0], offsetPoint[1]));
-            instance.createPolyline(layer,[[pointArrow.x, pointArrow.y], [centerPoint.x, centerPoint.y], [pointArrow1.x, pointArrow1.y], [pointArrow2.x, pointArrow2.y]],
+            instance.createPolyline(layer, [[pointArrow.x, pointArrow.y], [centerPoint.x, centerPoint.y], [pointArrow1.x, pointArrow1.y], [pointArrow2.x, pointArrow2.y]],
                 {
-                color: [51, 51, 204, 0.9],
-                width: 4
-            })
+                    color: [51, 51, 204, 0.9],
+                    width: 4
+                })
         }
     };
     instance.getGraphicsLayer = function (LayerId, index, map) {

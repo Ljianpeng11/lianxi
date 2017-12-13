@@ -1,6 +1,12 @@
+.dataScreen-top{
+    height:3.8em;
+}
+.dataScreen-bottom{
+    height:calc(100% - 3.8em);
+}
 .deviceInfo{
     width: calc(81.5% - 25px);
-    height: 24em;
+    height: 18em;
     position: absolute;
     right: 10px;
     bottom:10px;
@@ -9,11 +15,12 @@
 .devicePanel-top{
     height: 3em;
     padding: 0 1em;
-    line-height: 2em;
     color: #9d9d9d;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    line-height: 3em;
+    background: #f1f1f1;
 }
 .devicePanel-top .top-label{
     font-size:14px;
@@ -34,4 +41,59 @@
 .devicePanel-bottom{
     height: calc(100% - 3em);
     background: #fff;
+}
+.multiTabs{
+    height: 100%;
+}
+.multiTabs .el-tabs__header{
+    height:3em;
+}
+.multiTabs .el-tabs__content{
+    height:calc(100% - 3em);
+}
+.multiTabs .el-tab-pane{
+    height: 100%;
+    overflow:auto;
+}
+.multiDeviceBox{
+    position: absolute;
+    top:160px;
+    bottom:calc(18em + 20px);
+    right: 10px;
+    width:400px;
+}
+.tabInfoBox{
+    height:8em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.tabInfoImg{
+    flex-basis:40%;
+}
+.tabInfoItem{
+    
+}
+.mediaBox{
+    height: calc(100% - 8em);
+    overflow: auto;
+}
+.tabContent{
+    flex-basis: 60%;
+    padding:0;
+}
+.cesc-badge .arrow-up{
+    display: inline-block;
+    transform: rotate(-180deg) scaleY(0.8);
+    position: absolute;
+    bottom: -5px;
+}
+.cesc-badge .arrow-down{
+    position: relative;
+    top: 5px;
+    display: inline-block;
+    transform:scaleY(0.8);
+}
+.highlight-text{
+    color:#333;
 }

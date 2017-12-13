@@ -1,5 +1,6 @@
 #addressService{
     width:400px;
+    z-index:1;
 }
 #addressService .el-autocomplete {
     width:100%;

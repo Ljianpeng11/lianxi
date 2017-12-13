@@ -4,7 +4,7 @@
         <div :id='tab.id' class="cescTab" v-for="tab in tabs" :class="{tabActive:tab.active}">
             <a class='tabName' href="javascript:void(0);" @mouseover="tab.showClose=true"
                @mouseleave="tab.showClose=false" @click="activateTab(tab)" :title="tab.id">{{tab.name}}</a>
-            <a v-show='tab.showClose' class="el-icon-close tabClose" @mouseover="tab.showClose=true"
+            <a v-show="tab.showClose && tab.id !=='arcgis-plugin'" class="el-icon-close tabClose" @mouseover="tab.showClose=true"
                @mouseleave="tab.showClose=false" href="javascript:void(0);" @click="removeTab(tab)"></a>
         </div>
     </div>

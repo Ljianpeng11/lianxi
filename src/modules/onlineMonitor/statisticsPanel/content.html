@@ -12,11 +12,6 @@
                             :value="item.value">
                     </el-option>
                 </el-select>
-                <!--<span class="selectItem">设备地图<i class="icon iconfont icon-xiajiantou"></i>-->
-                 <!--<ul class="selectBox" style="display:none">-->
-                    <!--<li></li>-->
-                 <!--</ul>-->
-            <!--</span>-->
             </div>
             <div class="devicePanel-bottom dataLayout">
                 <div class="dataLayoutItem">
@@ -103,7 +98,7 @@
                             <small>起止时间：2017-12-07~2017-12-07</small>
                         </div>
                         <div class="detailChartBox">
-                            <div id="waterChart" style="width:100%;height:100%"></div>
+                            <chart-lib :chartId="'waterChart'" :chartOptions="chartOptions"></chart-lib>
                         </div>
                     </div>
                     <div class="dataView" v-show="!isShowChart">

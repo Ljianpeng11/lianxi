@@ -28,7 +28,7 @@ var comm = Vue.extend({
                     userName: this.userName,
                     password: this.password
                 };
-                window.sessionStorage.setItem('cescToken',token);
+                window.sessionStorage.setItem('cescToken', token);
                 window.localStorage.setItem('cescUser', JSON.stringify(user));
                 //eventHelper.emit('loading-end');
                 eventHelper.emit('loading-end');
@@ -37,7 +37,7 @@ var comm = Vue.extend({
                 this.loginComplete = true;
                 $('#loginPage').hide();
             }.bind(this), function (error) {
-                this.$message.error('错误:'+error);
+                this.$message.error('错误:' + error);
                 this.password = '';
                 eventHelper.emit('loading-end');
             }.bind(this));
@@ -51,33 +51,31 @@ var comm = Vue.extend({
                 self.login();
             }
         }
-        var cache = window.sessionStorage.getItem('cescToken');
-        if (!!cache) {
-            //当页面初始化有token时（也就是已登录）会进入这里
-            this.$nextTick(function () {
-                loginCtrl.setToken(cache);
-                eventHelper.emit('loading-end');
-                eventHelper.emit('loginSuccess', cache);
-                console.log('Login Success:', cache);
-                this.loginComplete = true;
+        /*var cache = window.sessionStorage.getItem('cescToken');
+         if (!!cache) {
+         //当页面初始化有token时（也就是已登录）会进入这里
+         this.$nextTick(function () {
+         loginCtrl.setToken(cache);
+         eventHelper.emit('loading-end');
+         eventHelper.emit('loginSuccess', cache);
+         console.log('Login Success:', cache);
+         this.loginComplete = true;
 
-                //开始定时刷新token
-                loginCtrl.startRefreshTokenInterval();
+         //开始定时刷新token
+         loginCtrl.startRefreshTokenInterval();
 
-                $('#loginPage').hide();
-            }.bind(this));
-        }
-        else {
-            var loginFlag = true;
-            eventHelper.on('login-start', function () {
-                this.userName = $('#userName').val();
-                this.password = $('#password').val();
-                if (loginFlag) {
-                    this.login();
-                }
-                loginFlag = false;
-            }.bind(this));
-        }
+         $('#loginPage').hide();
+         }.bind(this));
+         }*/
+        var loginFlag = true;
+        eventHelper.on('login-start', function () {
+            this.userName = $('#userName').val();
+            this.password = $('#password').val();
+            if (loginFlag) {
+                this.login();
+            }
+            loginFlag = false;
+        }.bind(this));
     },
     components: {}
 });
