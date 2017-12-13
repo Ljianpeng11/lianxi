@@ -1,12 +1,45 @@
-<div class="infoWindow">
-    <div class="infoWindowItem" v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+index"
-         @mouseover="highLight('infoBox-'+index)" @mouseleave="normalize('infoBox-'+index)">
-        <span class="bot"></span>
-        <span class="top"></span>
-        <div v-for="item in infoBox.items">
-            <span>{{item.title}}</span>
-            <span class="content" v-if="item.type!='name'">{{item.content}}</span>
-            <span class="content name" v-if="item.type=='name'">{{item.content}}</span>
+<div class="gaoqingPopup">
+    <div v-show="infoBox.show"  v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+infoBox.facilityId" @mouseover="highLight('infoBox-'+infoBox.facilityId)" @mouseleave="normalize('infoBox-'+infoBox.facilityId)" class="esri-popup__position-container esri-popup--shadow esri-popup--title-visible esri-popup--content-visible esri-popup--top-aligned" >
+        <div class="esri-popup__main-container">
+            <!-- Popup Header -->
+            <header class="esri-popup__header">
+                <span class="esri-popup__header-title">{{infoBox.name}}</span>
+                <div class="esri-popup__header-buttons">
+                    <div role="button" class="esri-popup__button" title="关闭" v-on:click="closePopup(index)">
+                        <span aria-hidden="true" class="esri-popup__icon esri-icon-close"></span>
+                        <span class="esri-icon-font-fallback-text">关闭</span>
+                    </div>
+                </div>
+            </header>
+            <!-- /Popup Header -->
+            <!-- Popup Content -->
+            <article class="esri-popup__content">
+                <div class="mapInfo">
+                    <div class="listContent">
+                        <div class="listLabel-left">
+                            <p>雨量计：</p>
+                            <p>降雨量：</p>
+                            <p>最新数据时间：</p>
+                        </div>
+                        <div class="listLabel-right">
+                            <p>17120011</p>
+                            <p>0(mm)</p>
+                            <p>2017-12-6 12:24:00</p>
+                        </div>
+                    </div>
+                    <div class="mapInfoDetail">
+                        <button type="button" class="el-button mapInfoDetailBtn el-button--primary"  v-on:click="detailView(index)" >
+                            <span>详情</span>
+                        </button>
+                    </div>
+                </div>
+            </article>
+            <!-- /Popup Content -->
         </div>
+        <!-- Popup Pointer -->
+        <div class="esri-popup__pointer" role="presentation">
+            <div class="esri-popup__pointer-direction esri-popup--shadow"></div>
+        </div>
+        <!-- /Popup Pointer -->
     </div>
 </div>

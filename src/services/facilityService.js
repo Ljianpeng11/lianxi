@@ -1,5 +1,15 @@
 define(['./serviceHelper'], function (serviceHelper) {
     return {
+        getCurrentUserFacilitysMonitor: function (cb) {
+            $.get(serviceHelper.getPath('getCurrentUserFacilitysMonitor'), function (result) {
+                //console.log(result);
+                if (!!result.success) {
+                    cb(result.data);
+                    return;
+                }
+                console.log('Error:', result);
+            });
+        },
         getAllFacilityType: function (cb) {
             $.get(serviceHelper.getPath('getAllFacilityType'), function (result) {
                 //console.log(result);

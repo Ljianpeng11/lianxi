@@ -4,6 +4,12 @@ define([
     'services/historySearchServices',
     'utils/mapHelper'], function (facilityModel, facilityService, historySearchServices, mapHelper) {
     return {
+        getCurrentUserFacilitysMonitor: function (cb) {
+            facilityService.getCurrentUserFacilitysMonitor(function (data) {
+                cb(data);
+            });
+
+        },
         getAllFacilityType: function (cb) {
             facilityService.getAllFacilityType(function (data) {
                 cb(data);

@@ -23,10 +23,11 @@ var comm = Vue.extend({
         init: function (list) {
             var legendItem = [];
             list.forEach(function (type, index) {
+                debugger;
                 var facility = {
                     id: type.id,
-                    title: type.name,
-                    facilityTypeName: type.facilityTypeName,
+                    title: type.nameCn,
+                    facilityTypeName: type.name,
                     icon: type.icon,
                     showIcon: true,
                     showSub: false
@@ -35,7 +36,7 @@ var comm = Vue.extend({
                     this.checkList.push(facility.id);
                 }
                 legendItem.push(facility);
-                eventHelper.emit('openMapLegend', facility);
+                //eventHelper.emit('openMapLegend', facility);
             }.bind(this));
             this.legendList = [{
                 id: 1,
@@ -57,7 +58,7 @@ var comm = Vue.extend({
             if (!data.icon) {
                 data.icon = 'default';
             }
-            let icon = './img/toolbar/huawei-' + data.icon + '.png';
+            let icon = './img/mapLegend/gaoqing/' + data.icon + '-01.png';
             let showIcon = data.showIcon;
             if (!!data.children) {
                 return (
@@ -71,7 +72,7 @@ var comm = Vue.extend({
                     <span>{node.label}</span>
                 </span>
                 <span style="float: right; margin: 5px">
-                    <img src={icon} width='20px' height='24px'/>
+                    <img src={icon} width='24px' height='24px'/>
                     </span>
                     </span>);
             }
