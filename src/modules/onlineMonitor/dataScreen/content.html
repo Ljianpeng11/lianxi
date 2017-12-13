@@ -177,11 +177,11 @@
                     </span>
                     </div>
                 </div>
-                <div class="devicePanel-bottom">
+                <div class="devicePanel-bottom" style="padding: 10px;">
                     <el-col :span="6" style="height: 100%;" v-for="(item,index) in collectList">
                         <div class="cesc-box">
                             <div class="devicePanel-top">
-                                <span>item.title</span>
+                                <span>{{item.title}}</span>
                                 <div>
                                     <i class="icon iconfont icon-shuaxin1"></i>
                                     <i class="icon iconfont icon-shanchu"></i>
@@ -199,7 +199,7 @@
                                         液位仪：&nbsp;{{item.deviceCode}}
                                     </span>
                                     <span class="selectItem">雨量计：
-                                         <el-select class="selectBox" v-model="typeOption.value" placeholder="请选择">
+                                         <el-select class="selectBox" v-model="item.title" placeholder="请选择">
                                             <el-option
                                                     v-for="item in typeOption.options"
                                                     :key="item.value"
@@ -209,7 +209,7 @@
                                         </el-select>
                                     </span>
                                 </div>
-                                <div class="devicePanel-bottom">
+                                <div class="devicePanel-bottom" style="padding:0 20px">
                                     <chart-lib :chartId="'chart'+index" :chartOptions="chartOptions3"></chart-lib>
                                 </div>
                             </div>

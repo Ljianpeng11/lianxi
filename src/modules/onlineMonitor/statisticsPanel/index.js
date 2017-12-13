@@ -20,7 +20,8 @@ for(var i = 0;i<12;i++){
     var item = {
         date:time,
         waterData:((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2),
-        rainData:((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2)
+        rainData:((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2),
+        status:'正常'
     }
     tableData.push(item);
 }
