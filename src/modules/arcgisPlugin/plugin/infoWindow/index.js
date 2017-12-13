@@ -16,12 +16,11 @@ var comm = Vue.extend({
     methods: {
         relocate: function (item) {
             for (var i = 0; i < item.length; i++) {
-                item.show=true;
-                var boxID = '#infoBox-' + item[i].id;
+                var boxID = '#infoBox-' + item[i].facilityId;
                 if(this.isNumber(item[i].x)&&this.isNumber(item[i].y)){
                     var screenPoint =this.baseView.toScreen(item[i]);
-                    var x = screenPoint.x - 100;
-                    var y = screenPoint.y - 192;
+                    var x = screenPoint.x - 150;
+                    var y = screenPoint.y - 205;
                     $(boxID).css('top', y);
                     $(boxID).css('left', x);
                     if(x > 0 && y >0){

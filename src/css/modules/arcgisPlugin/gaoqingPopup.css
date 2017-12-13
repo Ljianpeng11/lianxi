@@ -1,6 +1,7 @@
 .gaoqingPopup .esri-popup__main-container {
-    width: 200px;
+    width: 300px;
     border-radius: 10px;
+    padding-bottom: 0px;
 }
 .gaoqingPopup .esri-popup__footer {
     border-radius: 10px;

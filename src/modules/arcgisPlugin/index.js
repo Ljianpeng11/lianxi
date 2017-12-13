@@ -76,7 +76,7 @@ var comm = Vue.extend({
                     //注册地图地名地址查询插件
                     mapHelper.registerMapTool(view, 'addressService', 'top-right');
                     facilityController.getCurrentUserFacilitysMonitor(function (list) {
-                        this.createPointNew(list);
+                        this.createPoint(list);
                     }.bind(this));
                     self.graLayer.on('layerview-create',function(evt){
                         var graView = evt.view;
@@ -106,50 +106,13 @@ var comm = Vue.extend({
             );
             return map;
         },
-        createPoint:function(legend,subFacilities){
-            subFacilities.forEach(function (item) {
-                if(this.isNumber(item.x)&&this.isNumber(item.y)){
-                    var icon = !!legend.icon ? legend.icon : legend.facilityTypeName;
-                    var newIcon = './img/toolbar/huawei-' + icon + '.png';
-                    item.fid = 'f' + legend.id;
-                    item.show = true;
-                    var imgObj = {
-                        url: newIcon,
-                        width: "30px",
-                        height: "36px"
-                    };
-                    var textObj = {
-                        color:'red',
-                        text:item.name,
-                        yoffset:-18,
-                        verticalAlignment:'top',
-                        font:{
-                            size:12
-                        }
-                    };
-                    var attributes = {
-                        'item':item,
-                        'facilityTypeName':legend.facilityTypeName,
-                        'id':item.fid
-                    };
-                    var graphic = mapHelper.createPictureMarkSymbol(this.graLayer, item.x, item.y, imgObj,attributes);
-                    this.graphics.push(graphic)
-                    //this.graphics.push(mapHel;per.createTextSymbol(this.graLayer,item.x,item.y,textObj));
-                }
-            }.bind(this));
-            this.facilityArr[legend.facilityTypeName] = {
-                graphics:this.graphics,
-                data:subFacilities,
-                layer:this.graLayer
-            };
-            eventHelper.emit('alert-point', subFacilities, false);
-        },
-        createPointNew:function(facilities){
+        createPoint:function(facilities){
             for(var i=0,len=facilities.length;i<len;i++){
                 if(this.isNumber(facilities[i].x)&&this.isNumber(facilities[i].y)){
                     var apiInstance = mapHelper.getInstance();
                     var facilityGraphicLayer = apiInstance.getGraphicsLayer(facilities[i].facilityTypeName+"GraphicLayer",1,this.baseMap);
-                    var newIcon = './img/mapLegend/gaoqing/' + facilities[i].facilityTypeName + '-01.png';
+                    //facilities[i].facilityTypeName
+                    var newIcon = './img/mapLegend/gaoqing/yj-01.png';
                     //facilities[i].fid = 'f' + legend.id;
                     facilities[i].show = true;
                     var imgObj = {
