@@ -92,14 +92,11 @@ var comm = Vue.extend({
             );
             return map;
         },*/
-        createPoint:function(facilities){
+        createPoints:function(legend,facilities){
+            var graphics=[];
             for(var i=0,len=facilities.length;i<len;i++){
                 if(this.isNumber(facilities[i].x)&&this.isNumber(facilities[i].y)){
-                    var apiInstance = mapHelper.getInstance();
-                    var facilityGraphicLayer = apiInstance.getGraphicsLayer(facilities[i].facilityTypeName+"GraphicLayer",1,this.baseMap);
-                    //facilities[i].facilityTypeName
-                    var newIcon = './img/mapLegend/gaoqing/yj-01.png';
-                    //facilities[i].fid = 'f' + legend.id;
+                    var newIcon = './img/mapLegend/gaoqing/' + legend.icon + '.png';
                     facilities[i].show = true;
                     var imgObj = {
                         url: newIcon,
