@@ -1,6 +1,7 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
 var mapHelper = require('utils/mapHelper');
+var facilityController = require('controllers/facilityController');
 
 // 定义组件
 var comm = Vue.extend({
@@ -106,27 +107,22 @@ var comm = Vue.extend({
                 this.highLightIndex = 0;
                 eventHelper.emit('openDeviceInfoPanel',this.selectIitem);
             }else{
-                this.$nextTick(function () {
-                    var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);
-                    mapHelper.setCenter(this.baseView,this.deviceList[index].x,this.deviceList[index].y,16);
-                    var cloneObj = $(this.$el.children[2].children[0]).clone();
-                    cloneObj.find(".mapInfoDetailBtn").click(function(){
-                        this.detailView(this.selectIitem)
-                    }.bind(this));
-                    this.baseView.popup.open({
-                        location: mapPoint,
-                        title: this.deviceList[index].title,
-                        content :cloneObj[0]
-                    });
-                    this.baseView.popup.class="gaoqingPopup";
-                }.bind(this));
+                //地图定位
+                var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);
+                mapHelper.setCenter(this.baseView,this.deviceList[index].x,this.deviceList[index].y,16);
+                //显示地图popup信息框
+                this.$parent.$refs.infoWindow.detailView(this.deviceList[index]);
             }
         },
         detailView:function(selectItem){
             eventHelper.emit('openDevicePanel',selectItem);
+        },
+        renderList:function(list){
+            this.deviceList=list;
         }
     },
     mounted: function () {
+
     },
     components: {}
 });

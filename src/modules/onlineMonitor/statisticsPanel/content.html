@@ -104,20 +104,23 @@
                     <div class="dataView" v-show="!isShowChart">
                         <el-table
                                 :data="tableData"
-                                style="width: 100%">
+                                class="scrollTable"
+                                style="width: calc(100% - 6px);height:100%">
                             <el-table-column
                                     prop="date"
-                                    label="数据时间"
-                                    width="180">
+                                    label="数据时间">
                             </el-table-column>
                             <el-table-column
                                     prop="waterData"
-                                    label="测量液位(m)"
-                                    width="180">
+                                    label="测量液位(m)">
                             </el-table-column>
                             <el-table-column
                                     prop="rainData"
                                     label="降雨量(mm)">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="status"
+                                    label="状态">
                             </el-table-column>
                         </el-table>
                     </div>

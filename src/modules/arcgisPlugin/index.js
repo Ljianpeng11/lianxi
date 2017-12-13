@@ -58,60 +58,48 @@ var comm = Vue.extend({
         /*    initBaseMap: function () {
          var layerURL = 'http://112.74.51.12:6080/arcgis/rest/services/hwShow201705/MapServer';
 
-         var centerX = 117.82261612882854;
-         var centerY = 37.16445993323195;
-         var zoom = 13;
-         var currentMap = {};
-         var currentView = {};
-         var self = this;
-         var apiInstance = mapHelper.getInstance();
+            var centerX = 117.82261612882854;
+            var centerY = 37.16445993323195;
+            var zoom = 13;
+            var self = this;
+            var apiInstance = mapHelper.getInstance();
 
-         var map = mapHelper.initSuperMap("mapDiv", centerX, centerY, zoom, function (map, view) {
-         self.baseMap = map;
-         self.baseView = view;
-         var apiInstance = mapHelper.getInstance();
-         self.graLayer = apiInstance.createGraphicsLayer(self.baseMap, 'graphicLayer');
-         currentMap = map;
-         currentView = view;
-         mapHelper.registerMapTool(view, 'statusToolsBox', 'top-right');
-         //注册地图地名地址查询插件
-         mapHelper.registerMapTool(view, 'addressService', 'top-right');
-         facilityController.getCurrentUserFacilitysMonitor(function (list) {
-         this.createPoints(list);
-         }.bind(this));
-         self.graLayer.on('layerview-create', function (evt) {
-         var graView = evt.view;
-         var graLayerView = evt.layerView;
-         var layerId = evt.layerView.layer.id;
-         var getMap = {};
-         getMap.map = map;
-         getMap.view = view;
-         eventHelper.emit('get-map', getMap);
-         /!*graView.on('click',function(event){
-         graView.hitTest(event).then(function(response){
-         var graphic = response.results[0].graphic;
-         var attributes = graphic.attributes;
-         if(attributes.facilityType == 'IP'){
-         eventHelper.emit('open-facilityInfo-dialog',attributes);
-         return;
-         }
-         // mapHelper.setCenter(graView, evt.mapPoint.x, evt.mapPoint.y);
-         if(layerId === 'graphicLayer'){
-         self.$refs.rightPanel.open(attributes.item, attributes.facilityTypeName);
-         return;
-         }
-         });
-         });*!/
-         });
-         }.bind(this)
-         );
-         return map;
-         },*/
-        createPoints: function (legend, facilities) {
-            var graphics = [];
-            for (var i = 0, len = facilities.length; i < len; i++) {
-                if (this.isNumber(facilities[i].x) && this.isNumber(facilities[i].y)) {
-                    var newIcon = './img/mapLegend/gaoqing/' + legend.icon + '.png';
+            var map = mapHelper.initSuperMap("mapDiv", centerX, centerY, zoom, function (map, view) {
+                    self.baseMap = map;
+                    self.baseView = view;
+                    var apiInstance = mapHelper.getInstance();
+                    self.graLayer = apiInstance.createGraphicsLayer(self.baseMap,'graphicLayer');
+                    mapHelper.registerMapTool(view, 'statusToolsBox', 'top-right');
+                    //注册地图地名地址查询插件
+                    mapHelper.registerMapTool(view, 'addressService', 'top-right');
+                    //加载测站数据
+                    facilityController.getCurrentUserFacilitysMonitor(function (list) {
+                        //地图加载测站数据
+                        this.createPoint(list);
+                        //设备列表加载测站数据
+                        this.$refs.deviceList.renderList(list);
+                    }.bind(this));
+                    self.graLayer.on('layerview-create',function(evt){
+                        var graView = evt.view;
+                        var graLayerView = evt.layerView;
+                        var layerId = evt.layerView.layer.id;
+                        var getMap={};
+                        getMap.map = map;
+                        getMap.view = view;
+                        eventHelper.emit('get-map', getMap);
+                    });
+                }.bind(this)
+            );
+            return map;
+        },*/
+        createPoint:function(facilities){
+            for(var i=0,len=facilities.length;i<len;i++){
+                if(this.isNumber(facilities[i].x)&&this.isNumber(facilities[i].y)){
+                    var apiInstance = mapHelper.getInstance();
+                    var facilityGraphicLayer = apiInstance.getGraphicsLayer(facilities[i].facilityTypeName+"GraphicLayer",1,this.baseMap);
+                    //facilities[i].facilityTypeName
+                    var newIcon = './img/mapLegend/gaoqing/yj-01.png';
+                    //facilities[i].fid = 'f' + legend.id;
                     facilities[i].show = true;
                     var imgObj = {
                         url: newIcon,

@@ -327,7 +327,40 @@ var comm = crudBase.extend({
         },{
             field: 'facilityName',
             title: '测站名称'
+        },/*{
+            field: 'lastDataReal',
+            title: '最新数据时间'
         },{
+            field: 'betweenTime',
+            title: '最新通讯时间'
+        },{
+            field: 'onlineDays',
+            title: '主机工作时间'
+        },{
+            field: 'dValue',
+            title: '液位'
+        },{
+            field: 'dataRealCurrent',
+            title: '中继剩余电量'
+        },{
+            field: 'overflow',
+            title: '溢流风险'
+        },{
+            field: 'waterSpeed',
+            title: '流速(m/s)'
+        },{
+            field: 'waterTraffic',
+            title: '流量(L/s)'
+        },{
+            field: 'solids',
+            title: '悬浮物(mg/L)'
+        },{
+            field: 'humidity',
+            title: '湿度(%)'
+        },{
+            field: 'temperature',
+            title: '温度(℃)'
+        },*/{
             field: 'operate',
             title: '操作',
             align: 'center',

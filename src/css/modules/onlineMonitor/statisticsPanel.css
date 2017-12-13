@@ -104,4 +104,5 @@
     border:none;
     background:transparent;
     color: inherit;
+    text-overflow:ellipsis;
 }

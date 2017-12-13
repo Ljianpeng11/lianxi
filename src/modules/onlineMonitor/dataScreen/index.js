@@ -43,7 +43,6 @@ var comm = Vue.extend({
                 }]
             },
             typeOption:{
-                value:'测量液位',
                 options: [{
                     value: '五华区雨量公众监测点',
                     label: '五华区雨量公众监测点'
