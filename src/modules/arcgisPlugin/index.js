@@ -17,6 +17,8 @@ var retrospectDetail = require('modules/retrospectDetail');
 var statusTools = require('modules/onlineMonitor/mapPlugin/statusTools');
 var deviceList = require('modules/onlineMonitor/mapPlugin/deviceList');
 var devicePanel = require('modules/onlineMonitor/mapPlugin/devicePanel');
+var mapConfigHelper = require('utils/mapConfigHelper');
+var facilityModel = require('controllers/model/facilityModel');
 
 // 定义组件
 var comm = Vue.extend({
@@ -42,14 +44,13 @@ var comm = Vue.extend({
             drawPointGraphics: [],
             drawLineGraphics: [],
             polygonId: 1,
-            baseMap:{},
-            baseView:{},
-            graLayer:{},
-            graphics:[],
-            dialogVisible:false,
-            showWeatherReportPanel:false,
-            weatherImg:"",
-            radarImg:""
+            baseMap: {},
+            baseView: {},
+            graLayer: {},
+            dialogVisible: false,
+            showWeatherReportPanel: false,
+            weatherImg: "",
+            radarImg: ""
         }
     },
     methods: {
@@ -69,37 +70,29 @@ var comm = Vue.extend({
                     self.baseMap = map;
                     self.baseView = view;
                     var apiInstance = mapHelper.getInstance();
-                    self.graLayer = apiInstance.createGraphicsLayer(self.baseMap,'graphicLayer');
                     currentMap = map;
                     currentView = view;
-                    /*mapHelper.registerMapTool(view, 'draw-line', 'top-right', function () {
-                        var graphiceLayer = apiInstance.createGraphicsLayer(currentMap, 'testLayer');
-                        mapHelper.createPolyline(graphiceLayer, [[113.32397997379353, 23.107584714889605], [113.32745611667683, 23.107584714889605]], {
-                            color: [226, 119, 40],
-                            width: 4
-                        })
-                    });*/
                     mapHelper.registerMapTool(view, 'statusToolsBox', 'top-right');
                     //注册地图地名地址查询插件
                     mapHelper.registerMapTool(view, 'addressService', 'top-right');
-                    self.graLayer.on('layerview-create',function(evt){
+                    self.graLayer.on('layerview-create', function (evt) {
                         var graView = evt.view;
                         var graLayerView = evt.layerView;
                         var layerId = evt.layerView.layer.id;
-                        var getMap={};
+                        var getMap = {};
                         getMap.map = map;
                         getMap.view = view;
                         eventHelper.emit('get-map', getMap);
-                        graView.on('click',function(event){
-                            graView.hitTest(event).then(function(response){
+                        graView.on('click', function (event) {
+                            graView.hitTest(event).then(function (response) {
                                 var graphic = response.results[0].graphic;
                                 var attributes = graphic.attributes;
-                                if(attributes.facilityType == 'IP'){
-                                    eventHelper.emit('open-facilityInfo-dialog',attributes);
+                                if (attributes.facilityType == 'IP') {
+                                    eventHelper.emit('open-facilityInfo-dialog', attributes);
                                     return;
                                 }
                                 // mapHelper.setCenter(graView, evt.mapPoint.x, evt.mapPoint.y);
-                                if(layerId === 'graphicLayer'){
+                                if (layerId === 'graphicLayer') {
                                     self.$refs.rightPanel.open(attributes.item, attributes.facilityTypeName);
                                     return;
                                 }
@@ -110,9 +103,10 @@ var comm = Vue.extend({
             );
             return map;
         },
-        createPoint:function(legend,subFacilities){
+        createPoints: function (legend, subFacilities) {
+            var graphics = [];
             subFacilities.forEach(function (item) {
-                if(this.isNumber(item.x)&&this.isNumber(item.y)){
+                if (this.isNumber(item.x) && this.isNumber(item.y)) {
                     var icon = !!legend.icon ? legend.icon : legend.facilityTypeName;
                     var newIcon = './img/toolbar/huawei-' + icon + '.png';
                     item.fid = 'f' + legend.id;
@@ -122,29 +116,26 @@ var comm = Vue.extend({
                         height: "36px"
                     };
                     var textObj = {
-                        color:'red',
-                        text:item.name,
-                        yoffset:-18,
-                        verticalAlignment:'top',
-                        font:{
-                            size:12
+                        color: 'red',
+                        text: item.name,
+                        yoffset: -18,
+                        verticalAlignment: 'top',
+                        font: {
+                            size: 12
                         }
                     };
                     var attributes = {
-                        'item':item,
-                        'facilityTypeName':legend.facilityTypeName,
-                        'id':item.fid
+                        'item': item,
+                        'facilityTypeName': legend.facilityTypeName,
+                        'id': item.fid
                     };
-                    var graphic = mapHelper.createPictureMarkSymbol(this.graLayer, item.x, item.y, imgObj,attributes);
-                    this.graphics.push(graphic);
-                    //this.graphics.push(mapHelper.createTextSymbol(this.graLayer,item.x,item.y,textObj));
+                    var graphic = mapHelper.createPictureMarkSymbol(this.graLayer, item.x, item.y, imgObj, attributes);
+                    graphics.push(graphic);
+                  //graphics.push(mapHelper.createTextSymbol(this.graLayer, item.x, item.y, textObj));
                 }
             }.bind(this));
-            this.facilityArr[legend.facilityTypeName] = {
-                graphics:this.graphics,
-                data:subFacilities,
-                layer:this.graLayer
-            };
+            var facility = facilityModel.getFacilityByTypeName(legend.facilityTypeName);
+            facility.graphics = graphics;
         },
         startPlan: function () {
             this.dialogVisible = false;
@@ -155,50 +146,116 @@ var comm = Vue.extend({
             });
 
         },
-        initPlugin: function (facilityArr, self) {
-            //global.init();
-            facilityController.getAllFacilityType(function (list) {
-                self.$refs.layerList.init(list);
-            });
+        initPlugin: function (list) {
+            this.$refs.layerList.init(list);
         },
-        isNumber:function (value) {
+        isNumber: function (value) {
             var patrn = /^(-)?\d+(\.\d+)?$/;
             if (patrn.exec(value) == null || value == "") {
                 return false;
             } else {
                 return true;
             }
-        }
+        },
+        initMapConfig: function () {
+            var self = this;
+            this.cacheLayers = {};
+            mapConfigHelper.init(function (config) {
+                var baseMaps = mapConfigHelper.getBaseMapConfig();
+                var facilities = mapConfigHelper.getFacilityConfig();
+
+                var centerX = 117.82261612882854;
+                var centerY = 37.16445993323195;
+                var zoom = 13;
+                self.currentMap = {};
+                self.currentView = {};
+                var apiInstance = mapHelper.getInstance();
+                mapHelper.initMap("mapDiv", centerX, centerY, zoom, function (map, view) {
+                    self.currentMap = map;
+                    self.currentView = view;
+                    self.cacheLayers.baseMaps = apiInstance.processBaseMapConfig(map, baseMaps);
+                    eventHelper.emit('init-map-type', mapConfigHelper.getBaseMapConfig());
+                    eventHelper.on('change-map-type', function (layerID) {
+                        for (var key in this.cacheLayers.baseMaps) {
+                            if (key !== layerID + '') {
+                                this.cacheLayers.baseMaps[key].forEach(function (layer) {
+                                    layer.visible = false;
+                                })
+                            }
+                            else {
+                                this.cacheLayers.baseMaps[key].forEach(function (layer) {
+                                    layer.visible = true;
+                                });
+                            }
+                        }
+
+                    }.bind(this));
+                    eventHelper.emit('change-map-type', baseMaps[0].id);//默认选取第一张作为地图
+                    if (mapConfigHelper.getFacilityConfig().length > 0) {
+                        var counter = facilities.length;
+                        self.graLayer = apiInstance.createGraphicsLayer(self.currentMap, 'graphicLayer');
+                        self.graLayer.on('layerview-create', function (evt) {
+                            var graView = evt.view;
+                            var graLayerView = evt.layerView;
+                            var layerId = evt.layerView.layer.id;
+                            var getMap = {};
+                            getMap.map = map;
+                            getMap.view = view;
+                            eventHelper.emit('get-map', getMap);
+                            graView.on('click', function (event) {
+                                graView.hitTest(event).then(function (response) {
+                                    var graphic = response.results[0].graphic;
+                                    var attributes = graphic.attributes;
+                                    if (attributes.facilityType == 'IP') {
+                                        eventHelper.emit('open-facilityInfo-dialog', attributes);
+                                        return;
+                                    }
+                                    // mapHelper.setCenter(graView, evt.mapPoint.x, evt.mapPoint.y);
+                                    if (layerId === 'graphicLayer') {
+                                        self.$refs.rightPanel.open(attributes.item, attributes.facilityTypeName);
+                                        return;
+                                    }
+                                });
+                            });
+                        });
+                        facilities.forEach(function (facilityConfig) {
+                            var url = facilityConfig.layer.url;
+                            var facilityTypeName = facilityConfig.layer.funId;
+                            facilityConfig.icon = facilityConfig.layer.icon1;
+                            facilityConfig.facilityTypeName = facilityTypeName;
+                            facilityController.getFacilityByTypeName(facilityTypeName, url, function (subFacilities) {
+                                counter--;
+                                facilityModel.addFacility(facilityConfig, subFacilities);
+                                if (counter == 0) {
+                                    //get all data;
+                                    self.initPlugin(facilities);
+                                }
+                            })
+                        });
+                    }
+                }.bind(this));
+            }.bind(this));
+        },
     },
     mounted: function () {
-        //加载设备
-        this.facilityArr = {};
-        this.initPlugin(this.facilityArr, this);
         var self = this;
         //初始化地图
-        this.initBaseMap();
+        this.initMapConfig();
         eventHelper.on('openMapLegend', function (legend) {
-            eventHelper.emit('loading-start');
-            if (!!legend.showIcon) {
-                var cacheFacilities = self.facilityArr[legend.facilityTypeName];
-                if (!!cacheFacilities && cacheFacilities.length > 0) {
+            var cacheFacilities = facilityModel.getFacilityByTypeName(legend.facilityTypeName);
+            if (!!cacheFacilities) {
+                if (!!legend.showIcon) {
                     eventHelper.emit('loading-end');
+                    self.createPoints(legend, cacheFacilities.facilities);
+
                 } else {
-                    facilityController.getFacilityByType(legend.id, function (subFacilities) {
-                        self.createPoint(legend,subFacilities);
-                        eventHelper.emit('loading-end');
-                    });
+                    var graphics = cacheFacilities.graphics;
+                    mapHelper.removeGraphics(this.graLayer, graphics);
                 }
-            } else {
-                var layer = self.facilityArr[legend.facilityTypeName].layer;
-                var graphics = self.facilityArr[legend.facilityTypeName].graphics;
-                mapHelper.removeGraphics(layer,graphics);
-                eventHelper.emit('loading-end');
             }
         }.bind(this));
         eventHelper.on('subFacility-clicked', function (point) {
-            console.log(point);
-            map.centerAt([parseFloat(point.center[0]) + 0.005, point.center[1]]);
+            //self.currentView.centerAt([parseFloat(point.center[0]) + 0.005, point.center[1]]);
             this.$refs.rightPanel.open(point.item, point.facilityTypeName);
         }.bind(this));
         eventHelper.on('carDetail-clicked', function (point) {
@@ -207,16 +264,16 @@ var comm = Vue.extend({
         }.bind(this));
     },
     components: {
-        'layer-list':layerList,
+        'layer-list': layerList,
         'info-window': infoWindow,
-        'right-panel':rightPanel,
-        'retrospect-detail':retrospectDetail,
-        'info-board':infoBoard,
-        'map-type':mapType,
-        'status-tools':statusTools,
-        'device-list':deviceList,
-        'address-service-input':addressServiceInput,
-        'device-panel':devicePanel
+        'right-panel': rightPanel,
+        'retrospect-detail': retrospectDetail,
+        'info-board': infoBoard,
+        'map-type': mapType,
+        'status-tools': statusTools,
+        'device-list': deviceList,
+        'address-service-input': addressServiceInput,
+        'device-panel': devicePanel
     }
 });
 module.exports = comm;
