@@ -131,7 +131,7 @@ var comm = Vue.extend({
                     };
                     var graphic = mapHelper.createPictureMarkSymbol(this.graLayer, item.x, item.y, imgObj, attributes);
                     graphics.push(graphic);
-                    graphics.push(mapHelper.createTextSymbol(this.graLayer, item.x, item.y, textObj));
+                  //graphics.push(mapHelper.createTextSymbol(this.graLayer, item.x, item.y, textObj));
                 }
             }.bind(this));
             var facility = facilityModel.getFacilityByTypeName(legend.facilityTypeName);
