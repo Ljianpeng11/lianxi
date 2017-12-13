@@ -1,65 +1,33 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
 
+var iotController = require('controllers/iocController.js');
 // 定义组件
 var comm = Vue.extend({
     template: template,
     data: function () {
         return {
-            tableData:[{
-                facilityId:17020117,
-                name:"普吉路与小路沟交叉口",
-                newDataTime:"2017-12-07 13:49",
-                newCommTime:"刚刚",
-                isAlarm:false,
-                isOffLine:false,
-                batteryRemain:99,
-                workDays:175,
-                waterLevel:0,
-                overflowRisk:"0%"
-            },{
-                facilityId:17020133,
-                name:"小路沟溢流堰",
-                newDataTime:"2017-12-07 13:49",
-                newCommTime:"刚刚",
-                isAlarm:false,
-                isOffLine:true,
-                batteryRemain:99,
-                workDays:177,
-                waterLevel:0.092,
-                overflowRisk:"3%"
-            },{
-                facilityId:17020133,
-                name:"小路沟溢流堰",
-                newDataTime:"2017-12-07 13:49",
-                newCommTime:"刚刚",
-                isAlarm:true,
-                isOffLine:true,
-                batteryRemain:99,
-                workDays:177,
-                waterLevel:0.092,
-                overflowRisk:"3%"
-            }]
+            tableData:[]
         }
     },
     methods: {
-        flowVolFormat:function(row, column, cellValue){
-            if(row.flowVol){
-                return row.flowVol;
+        waterTrafficFormat:function(row, column, cellValue){
+            if(row.waterTraffic){
+                return row.waterTraffic;
             } else {
                 return "-";
             }
         },
-        flowSpeedFormat:function(row, column, cellValue){
-            if(row.flowSpeed){
-                return row.flowSpeed;
+        waterSpeedFormat:function(row, column, cellValue){
+            if(row.waterSpeed){
+                return row.waterSpeed;
             } else {
                 return "-";
             }
         },
-        suspendMatterFormat:function(row, column, cellValue){
-            if(row.suspendMatter){
-                return row.suspendMatter;
+        solidsFormat:function(row, column, cellValue){
+            if(row.solids){
+                return row.solids;
             } else {
                 return "-";
             }
@@ -85,11 +53,11 @@ var comm = Vue.extend({
                 return "-";
             }
         },
-        waterLevelFormat:function(row, column, cellValue){
-            var className = this.checkOutWaterLevelCss(row);
-            return this.$createElement('div', {class:className},row.waterLevel);
+        dValueFormat:function(row, column, cellValue){
+            var className = this.checkOutdValueCss(row);
+            return this.$createElement('div', {class:className},row.dValue);
         },
-        checkOutWaterLevelCss:function(row){
+        checkOutdValueCss:function(row){
             if(row.isAlarm&&row.isOffLine)
                 return "redFont";
             else if (row.isAlarm==true||row.isOffLine==true)
@@ -113,6 +81,9 @@ var comm = Vue.extend({
         },
     },
     mounted: function () {
+        iotController.geIotFacilityInfo(function (data) {
+            this.tableData = data.records;
+        }.bind(this));
     },
     components: {
 

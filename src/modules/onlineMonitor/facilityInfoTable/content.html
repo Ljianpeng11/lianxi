@@ -39,54 +39,54 @@
                 :data="tableData"
                 style="width: 100%">
             <el-table-column
-                    prop="facilityId"
+                    prop="imei"
                     label="设备"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="name"
+                    prop="facilityName"
                     label="安装监测点位"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="newDataTime"
+                    prop="lastDataReal"
                     label="最新数据时间">
             </el-table-column>
             <el-table-column
-                    prop="newCommTime"
+                    prop="betweenTime"
                     label="最新通讯时间">
             </el-table-column>
             <el-table-column
-                    prop="batteryRemain"
+                    prop="dataRealCurrent"
                     label="中继剩余电量(%)">
             </el-table-column>
             <el-table-column
-                    prop="workDays"
+                    prop="onlineDays"
                     label="主机工作时间(天)">
             </el-table-column>
             <el-table-column
-                    prop="waterLevel"
-                    :formatter="waterLevelFormat"
+                    prop="dValue"
+                    :formatter="dValueFormat"
                     label="液位(m)">
             </el-table-column>
             <el-table-column
-                    prop="overflowRisk"
+                    prop="overflow"
                     label="溢流风险">
             </el-table-column>
             <el-table-column
-                    prop="flowVol"
+                    prop="waterTraffic"
                     label="流量(L/s)"
-                    :formatter="flowVolFormat">
+                    :formatter="waterTrafficFormat">
             </el-table-column>
             <el-table-column
-                prop="flowSpeed"
+                prop="waterSpeed"
                 label="流速(m/s)"
-                :formatter="flowSpeedFormat">
+                :formatter="waterSpeedFormat">
             </el-table-column>
             <el-table-column
-                    prop="suspendMatter"
+                    prop="solids"
                     label="悬浮物(mg/L)"
-                    :formatter="suspendMatterFormat">
+                    :formatter="solidsFormat">
             </el-table-column>
             <el-table-column
                     prop="do"
