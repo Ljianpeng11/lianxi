@@ -211,6 +211,9 @@ var comm = Vue.extend({
                         });
                     }
                     eventHelper.emit('change-map-type', baseMaps[0].id);//默认选取第一张作为地图
+                    mapHelper.registerMapTool(view, 'statusToolsBox', 'top-right');
+                    //注册地图地名地址查询插件
+                    mapHelper.registerMapTool(view, 'addressService', 'top-right');
                 }.bind(this));
             }.bind(this));
         },
