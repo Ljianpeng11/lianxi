@@ -119,10 +119,17 @@ var comm = Vue.extend({
         },
         renderList:function(list){
             this.deviceList=list;
+        },
+        loadData(){
+            facilityController.getCurrentUserFacilitysMonitor(function (list) {;
+                //设备列表加载测站数据
+                this.renderList(list);
+            }.bind(this));
         }
+
     },
     mounted: function () {
-
+        this.loadData();
     },
     components: {}
 });
