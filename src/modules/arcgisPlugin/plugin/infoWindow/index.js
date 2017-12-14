@@ -21,7 +21,7 @@ var comm = Vue.extend({
                 if (this.isNumber(items[i].x) && this.isNumber(items[i].y)) {
                     var screenPoint = this.baseView.toScreen(items[i]);
                     var x = screenPoint.x - 150;
-                    var y = screenPoint.y - 205;
+                    var y = screenPoint.y - 30 -$(boxID).height();
                     $(boxID).css('top', y);
                     $(boxID).css('left', x);
                     if (x > 0 && y > 0) {
