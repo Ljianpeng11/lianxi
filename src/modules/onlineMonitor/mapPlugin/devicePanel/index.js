@@ -40,20 +40,23 @@ var comm = Vue.extend({
         }
     },
     created(){
-        eventHelper.on('openDevicePanel',function(selectItem){
-            this.isOpenPanel = true;
-            this.deviceInfo = {
-                title:selectItem.title
-            }
-            if(!!this.timer){
-                clearInterval(this.timer);
-            }
+        this.$nextTick(function(){
+            eventHelper.on('openDevicePanel',function(selectItem){
+                this.isOpenPanel = true;
+                this.deviceInfo = {
+                    title:selectItem.name
+                }
+                if(!!this.timer){
+                    clearInterval(this.timer);
+                }
+            }.bind(this));
         }.bind(this));
     },
     methods: {
         openDeviceDetail:function(){
             eventHelper.emit('change-menu',{title:'监测设备管理',funUrl:'statisticsPanel'});
-            eventHelper.emit('loadStatisticData',this.deviceInfo);
+            eventHelper.emit('openDeviceInfoPanel',this.deviceInfo);
+            // eventHelper.emit('loadStatisticData',this.deviceInfo);
         },
         closePanel:function(){
             if(!!this.timer){
@@ -66,7 +69,15 @@ var comm = Vue.extend({
         }
     },
     mounted: function () {
-
+        eventHelper.on('openDevicePanel',function(selectItem){
+            this.isOpenPanel = true;
+            this.deviceInfo = {
+                title:selectItem.name
+            }
+            if(!!this.timer){
+                clearInterval(this.timer);
+            }
+        }.bind(this));
     },
     components: {
         'chart-lib':chartLib

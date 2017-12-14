@@ -79,15 +79,43 @@
                             <el-table-column
                                     prop="name"
                                     label="报警点">
+                                <template scope="scope">
+                                    <span :class="{'dangerStatus':scope.row.status === 2,
+                                                    'warningStatus':scope.row.status === 1'
+                                                    }">
+                                        <i class="icon iconfont icon-changfangxing"></i>
+                                        {{scope.row.name}}
+                                    </span>
+                                </template>
                             </el-table-column>
                         </el-table>
                     </el-col>
                 </div>
             </el-col>
             <el-col :span="8" style="height: 100%;">
-                <div class="cesc-box">
+                <el-col :span="16" style="height: 100%;">
                     <chart-lib :chartId="'pieChart2'" :chartOptions="chartOptions2"></chart-lib>
-                </div>
+                </el-col>
+                <el-col :span="8" style="height: 100%;padding:0;">
+                    <el-table
+                            :data="alarmTableData"
+                            border
+                            style="width: 100%;height: 100%;"
+                            class="scrollTable">
+                        <el-table-column
+                                prop="name"
+                                label="报警点">
+                            <template scope="scope">
+                                    <span :class="{'dangerStatus':scope.row.status === 2,
+                                                    'warningStatus':scope.row.status === 1'
+                                                    }">
+                                        <i class="icon iconfont icon-changfangxing"></i>
+                                        {{scope.row.name}}
+                                    </span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-col>
             </el-col>
             <el-col :span="8" style="height: 100%;">
                 <div class="cesc-box">

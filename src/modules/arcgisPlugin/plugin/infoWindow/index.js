@@ -91,7 +91,10 @@ var comm = Vue.extend({
             this.infoBoxes[index].show = false;
         },
         detailView: function (index) {
-            alert(index);
+            this.infoBoxes[index].show = true;
+        },
+        showDevicePanel:function(selectItem){
+            eventHelper.emit('openDevicePanel',selectItem);
         }
     },
     mounted: function () {

@@ -11,7 +11,9 @@ var comm = Vue.extend({
         return {
             isOpenList:false,
             highLightIndex:-1,
-            deviceList:[{
+            showDiv:false,
+            deviceList:[
+                {
                     title:'五华区公众雨量监测点',
                     status:0,
                     voltage:'low',
@@ -98,14 +100,15 @@ var comm = Vue.extend({
                 $(".deviceListBox").animate({'height':'8em'},1000);
             }
         },
-        openMapWindow:function(index){
-            this.selectIitem = this.deviceList[index];
+        openMapWindow:function(index,item){
+            this.loadData();
+            this.selectIitem = item;
             this.highLightIndex = index;
             if(this.baseView === 'detailView'){
-                this.isOpenList = false;
+                this.isOpenList = true;
                 this.toggleList();
                 this.highLightIndex = 0;
-                eventHelper.emit('openDeviceInfoPanel',this.selectIitem);
+                eventHelper.emit('openDevicePanel',this.selectIitem);
             }else{
                 //地图定位
                 var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);
@@ -118,9 +121,36 @@ var comm = Vue.extend({
             eventHelper.emit('openDevicePanel',selectItem);
         },
         renderList:function(list){
-            this.deviceList=list;
+            list.forEach(function(item){
+                var sysUpdateTime;
+                item.status = 0;
+                item.signal = 'on';
+                item.facilityDevice.devices.forEach(function(val){
+                   val.items.forEach(function(monitorData){
+                       switch(monitorData.name){
+                           case '电压':
+                               monitorData.dValue = monitorData.dValue + 'V';
+                               if(monitorData.dValue < monitorData.lowAlarm){item.voltage = 'low'}
+                               else if(monitorData > monitorData.highAlarm){item.voltage = 'high'}
+                               else{item.voltage = 'middle'}
+                                   break;
+                           case '电压比':
+                               monitorData.dValue = monitorData.dValue*100 + '%';
+                               break;
+                           case '水位':
+                               monitorData.dValue = monitorData.dValue.toFixed(2) + '(m)';
+                               break;
+                           default:break;
+                       }
+                       sysUpdateTime = monitorData.sysUpdateTime;
+                   });
+               });
+                item.sysUpdateTime = sysUpdateTime;
+            });
+            this.deviceList = list;
+            console.log(this.deviceList);
         },
-        loadData(){
+        loadData:function(){
             facilityController.getCurrentUserFacilitysMonitor(function (list) {;
                 //设备列表加载测站数据
                 this.renderList(list);

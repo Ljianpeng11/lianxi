@@ -56,9 +56,9 @@ var comm = Vue.extend({
                 color:['#4f9b0c','#f5c761','#fe5240'],
                 subtext:'设备运行情况',
                 data: [
-                    {value:65, name:'良好'},
-                    {value:15, name:'一般'},
-                    {value:20, name:'异常'}
+                    {value:65, name:'正常'},
+                    {value:15, name:'预警'},
+                    {value:20, name:'报警'}
                 ]
             },
             chartOptions2:{
@@ -87,17 +87,23 @@ var comm = Vue.extend({
             ],
             alarmTableData:[
                 {
-                    name:'五华区雨量公众监测点'
+                    name:'五华区雨量公众监测点',
+                    status:0
                 },{
-                    name:'市体育馆'
+                    name:'市体育馆',
+                    status:1
                 },{
-                    name:'普吉路与小路沟交叉口'
+                    name:'普吉路与小路沟交叉口',
+                    status:2
                 },{
-                    name:'滇缅大道戛纳小镇旁'
+                    name:'滇缅大道戛纳小镇旁',
+                    status:0
                 },{
-                    name:'海源学院正门口'
+                    name:'海源学院正门口',
+                    status:0
                 },{
-                    name:'西二环春苑小区对面'
+                    name:'西二环春苑小区对面',
+                    status:0
                 }
             ],
             collectList:[

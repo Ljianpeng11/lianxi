@@ -21,7 +21,7 @@ for(var i = 0;i<12;i++){
         date:time,
         waterData:((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2),
         rainData:((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2),
-        status:'正常'
+        status:0
     }
     tableData.push(item);
 }
@@ -59,7 +59,7 @@ var comm = Vue.extend({
     created:function(){
         eventHelper.on('openDeviceInfoPanel',function(item){
             this.deviceInfo ={
-                title:item.title,
+                title:item.name,
                 deviceCode:item.deviceCode
             };
         }.bind(this));

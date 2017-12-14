@@ -14,7 +14,7 @@
           @click="openMapWindow(index,item)"
           :class="{'active':highLightIndex === index,'warningItem':item.status === 1,'dangerItem':item.status === 2}">
          <div class="listItemTop">
-            <span>{{item.title}}</span>
+            <span>{{item.name}}</span>
             <i class="icon iconfont"
                :class="{'icon-dianliang_low dangerStatus':item.voltage === 'low',
                         'icon-dianliang_middl warningStatus':item.voltage === 'middle',
@@ -30,57 +30,18 @@
                :class="{'warningStatus':item.collect === 1}">
             </i>
          </div>
-         <div class="listContent" v-if="item.type === 'RF'">
-            <div class="listLabel-left">
-               <p>雨量计：</p>
-               <p>降雨量：</p>
-            </div>
-            <div class="listLabel-right">
-               <p>{{item.deviceCode}}</p>
-               <p>{{item.deviceNum}}(mm)</p>
-            </div>
-         </div>
-         <div class="listContent" v-if="item.type === 'WD'">
-            <div class="listLabel-left">
-               <p>液位仪：</p>
-               <p>液位：</p>
-               <p>最近通讯：</p>
-            </div>
-            <div class="listLabel-right">
-               <p>{{item.deviceCode}}</p>
-               <p class="numStatus">{{item.deviceNum}}(m)</p>
-               <p>{{item.onlineTime}}分钟前</p>
-            </div>
+         <div class="listContent" v-for="devicesItem in item.facilityDevice.devices">
+               <div class="listLabel-left">
+                  <p>设备名：</p>
+                  <p v-for="item in devicesItem.items">{{item.name}}：</p>
+                  <p>最近通讯：</p>
+               </div>
+               <div class="listLabel-right">
+                  <p>{{devicesItem.name}}</p>
+                  <p v-for="item in devicesItem.items">{{item.dValue}}</p>
+                  <p>{{item.sysUpdateTime}}</p>
+               </div>
          </div>
       </li>
    </ul>
-   <div class="unVisibleDiv">
-      <div class="mapInfo">
-         <div class="listContent" v-if="selectIitem.type === 'RF'">
-            <div class="listLabel-left">
-               <p>雨量计：</p>
-               <p>降雨量：</p>
-            </div>
-            <div class="listLabel-right">
-               <p>{{selectIitem.deviceCode}}</p>
-               <p>{{selectIitem.deviceNum}}(mm)</p>
-            </div>
-         </div>
-         <div class="listContent" v-if="selectIitem.type === 'WD'">
-            <div class="listLabel-left">
-               <p>液位仪：</p>
-               <p>液位：</p>
-               <p>最近通讯：</p>
-            </div>
-            <div class="listLabel-right">
-               <p>{{selectIitem.deviceCode}}</p>
-               <p class="numStatus">{{selectIitem.deviceNum}}(m)</p>
-               <p>{{selectIitem.onlineTime}}分钟前</p>
-            </div>
-         </div>
-         <div class="mapInfoDetail">
-            <el-button class="mapInfoDetailBtn" type="primary">详情</el-button>
-         </div>
-      </div>
-   </div>
 </div>
