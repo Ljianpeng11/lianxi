@@ -47,6 +47,16 @@ define(function () {
                 console.log('地图加载完毕！');
             }, clickCb);
         },
+        /**
+         * 超图WMTS
+         **/
+        initFacilitySuperMap: function (view) {
+            if (this.apiVersion !== 'C') {
+                console.error('天地图只支持arcgis 方式加载');
+                return;
+            }
+            this.apiInstance.initSuperFacilityMapLayer(view);
+        },
         nnTraceAnalysisByRecursive:function (event, traceAnalysisType, vue, cb) {
             this.apiInstance.nnTraceAnalysisByRecursive(event, traceAnalysisType, vue, cb);
         },
