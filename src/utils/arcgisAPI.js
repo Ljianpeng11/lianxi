@@ -196,7 +196,7 @@ define(function () {
         }.bind(this));
         return cacheLayers;
     },
-        instance.initSuperMapLayer = function (container, x, y, zoom, success, click) {
+    instance.initSuperMapLayer = function (container, x, y, zoom, success, click) {
             var tileInfo = new instance.TileInfo({
                 "dpi": 96,
                 "rows": 256,
