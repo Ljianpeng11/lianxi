@@ -1,6 +1,7 @@
 var template = require('./infoWindow.html');
 var eventHelper = require('utils/eventHelper');
 var mapHelper = require('utils/mapHelper');
+var facilityController = require('controllers/facilityController');
 // 定义组件
 var comm = Vue.extend({
     template: template,
@@ -14,20 +15,20 @@ var comm = Vue.extend({
         }
     },
     methods: {
-        relocate: function (item) {
-            for (var i = 0; i < item.length; i++) {
-                var boxID = '#infoBox-' + item[i].id;
-                if (this.isNumber(item[i].x) && this.isNumber(item[i].y)) {
-                    var screenPoint = this.baseView.toScreen(item[i]);
+        relocate: function (items) {
+            for (var i = 0; i < items.length; i++) {
+                var boxID = '#infoBox-' + items[i].facilityId;
+                if (this.isNumber(items[i].x) && this.isNumber(items[i].y)) {
+                    var screenPoint = this.baseView.toScreen(items[i]);
                     var x = screenPoint.x - 150;
                     var y = screenPoint.y - 205;
                     $(boxID).css('top', y);
                     $(boxID).css('left', x);
                     if (x > 0 && y > 0) {
-                        item.show = true;
+                        items[i].show = true;
                     }
                 } else {
-                    item.show = false;
+                    items[i].show = false;
                 }
             }
         },
@@ -95,6 +96,58 @@ var comm = Vue.extend({
         },
         showDevicePanel:function(selectItem){
             eventHelper.emit('openDevicePanel',selectItem);
+        },
+        renderList:function(list){
+            for(var i=0,len=list.length;i<len;i++){
+                var item = list[i];
+                item.status = 0;
+                item.signal = 'on';
+                item.show = true;
+                if(item.facilityDevice.devices){
+                    for(var j=0,devicelen=item.facilityDevice.devices.length;j<devicelen;j++){
+                        var deviceItem = item.facilityDevice.devices[j];
+                        if(deviceItem.items) {
+                            for (var k = 0, jianceItemLen = deviceItem.items.length; k < jianceItemLen; k++) {
+                                var monitorData = deviceItem.items[k];
+                                switch (monitorData.name) {
+                                    case '电压':
+                                        monitorData.dValue = monitorData.dValue ?  monitorData.dValue + 'V' :"-";
+                                        if (monitorData.dValue < monitorData.lowAlarm) {
+                                            item.voltage = 'low'
+                                        }
+                                        else if (monitorData > monitorData.highAlarm) {
+                                            item.voltage = 'high'
+                                        }
+                                        else {
+                                            item.voltage = 'middle'
+                                        }
+                                        deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
+                                        break;
+                                    case '电压比':
+                                        monitorData.dValue = monitorData.dValue ? monitorData.dValue * 100 + '%':"-";
+                                        deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
+                                        break;
+                                    case '水位':
+                                        monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) + '(m)' : '-';
+                                        deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            this.infoBoxes = list;
+            this.relocate(this.infoBoxes);
+            this.registerToView();
+        },
+        loadData:function(){
+            facilityController.getCurrentUserFacilitysMonitor(function (list) {
+                //设备列表加载测站数据
+                this.renderList(list);
+            }.bind(this));
         }
     },
     mounted: function () {
@@ -103,12 +156,6 @@ var comm = Vue.extend({
                 this.infoBoxes = points;
             } else {
                 this.infoBoxes.push(...points.slice(0));
-            }
-            if (this.baseView && this.baseView.ready) {
-                this.$nextTick(function () {
-                    this.relocate(points);
-                    this.registerToView();
-                }.bind(this));
             }
         }.bind(this));
         eventHelper.on('alert-point-close', function (points, isAll) {

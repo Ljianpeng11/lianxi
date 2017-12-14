@@ -66,18 +66,9 @@ var comm = Vue.extend({
                 return "greenFont";
             return "";
         },
-        statusFormat:function(row, column, cellValue){
+        deviceStateStrFormat:function(row, column, cellValue){
             //var className = this.checkOutWaterLevelCss(row);
-            var contentText = this.checkOutStatusText(row);
-            return this.$createElement('div', {class:"yellowFont"},contentText);
-        },
-        checkOutStatusText:function(row){
-            var statusArry = [];
-            if (row.isAlarm==true)
-                statusArry.push("液位预警");
-            if (row.isOffLine==true)
-                statusArry.push("通讯中断");
-            return statusArry.join("-");
+            return this.$createElement('div', {class:"yellowFont"},row.deviceStateStr);
         },
     },
     mounted: function () {

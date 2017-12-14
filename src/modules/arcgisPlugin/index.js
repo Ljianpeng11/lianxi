@@ -114,7 +114,7 @@ var comm = Vue.extend({
             }
             var facility = facilityModel.getFacilityByTypeName(legend.facilityTypeName);
             facility.graphics = graphics;
-            eventHelper.emit('alert-point', facilities, false);
+            //eventHelper.emit('alert-point', facilities, false);
         },
         startPlan: function () {
             this.dialogVisible = false;
@@ -152,6 +152,7 @@ var comm = Vue.extend({
                     self.currentMap = map;
                     self.baseView = view;
                     self.cacheLayers.baseMaps = apiInstance.processBaseMapConfig(map, baseMaps);
+                    mapHelper.initFacilitySuperMap(view);
                     eventHelper.emit('init-map-type', mapConfigHelper.getBaseMapConfig());
                     eventHelper.on('change-map-type', function (layerID) {
                         for (var key in this.cacheLayers.baseMaps) {
@@ -214,7 +215,7 @@ var comm = Vue.extend({
                     mapHelper.registerMapTool(view, 'statusToolsBox', 'top-right');
                     //注册地图地名地址查询插件
                     mapHelper.registerMapTool(view, 'addressService', 'top-right');
-                    mapHelper.initFacilitySuperMap(view);
+                    this.$refs.infoWindow.loadData();
                 }.bind(this));
             }.bind(this));
         },
