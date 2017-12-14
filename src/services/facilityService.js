@@ -137,19 +137,13 @@ define(['./serviceHelper'], function (serviceHelper) {
         },
         getFacilityByTypeName: function (facilityType, url, cb) {
             var parameter = {
-                id: 'getFacilityByType',
-                parameter: {
-                    facilityTypeName: facilityType
-                }
-            }
-            $.get(serviceHelper.getPath(parameter), function (result) {
-                //console.log(result);
-                if (!!result.success) {
-                    cb(result.data);
-                    //console.log('get data getFacilityByType');
-                    return;
-                }
-                console.log('Error:', result);
+                facilityTypeName: facilityType,
+                token: serviceHelper.getToken()
+            };
+            var requireURL = serviceHelper.getBasicPath() + url;
+            serviceHelper.getJson(requireURL, parameter, function (result) {
+                cb(result);
+                return;
             });
         },
         getFacilityDetail: function (facilityId, cb) {
