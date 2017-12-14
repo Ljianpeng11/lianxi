@@ -221,7 +221,7 @@ var comm = Vue.extend({
         this.initMapConfig();
         eventHelper.on('openMapLegend', function (legend) {
             var cacheFacilities = facilityModel.getFacilityByTypeName(legend.facilityTypeName);
-            if (!!cacheFacilities && cacheFacilities.facilities.length > 0) {
+            if (!!cacheFacilities && !!cacheFacilities.facilities && cacheFacilities.facilities.length > 0) {
                 if (!!legend.showIcon) {
                     self.createPoints(legend, cacheFacilities.facilities);
                 } else {
