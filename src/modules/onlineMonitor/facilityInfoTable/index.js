@@ -1,7 +1,7 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
 
-var iotController = require('controllers/iocController.js');
+var iotController = require('controllers/iotController.js');
 // 定义组件
 var comm = Vue.extend({
     template: template,
