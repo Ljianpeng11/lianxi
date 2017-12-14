@@ -78,15 +78,16 @@
                                 class="scrollTable">
                             <el-table-column
                                     prop="name"
-                                    label="报警点">
-                                <template scope="scope">
-                                    <span :class="{'dangerStatus':scope.row.status === 2,
-                                                    'warningStatus':scope.row.status === 1'
-                                                    }">
-                                        <i class="icon iconfont icon-changfangxing"></i>
-                                        {{scope.row.name}}
-                                    </span>
-                                </template>
+                                    label="报警点"
+                                    :row-style="{color:red}"
+                            >
+                                <!--<template scope="scope">-->
+                                    <!--<span :class="{'dangerStatus':scope.row.status === 2,-->
+                                                    <!--'warningStatus':scope.row.status === 1-->
+                                                    <!--}">-->
+                                        <!--{{scope.row.name}}-->
+                                    <!--</span>-->
+                                <!--</template>-->
                             </el-table-column>
                         </el-table>
                     </el-col>
@@ -107,7 +108,7 @@
                                 label="报警点">
                             <template scope="scope">
                                     <span :class="{'dangerStatus':scope.row.status === 2,
-                                                    'warningStatus':scope.row.status === 1'
+                                                    'warningStatus':scope.row.status === 1
                                                     }">
                                         <i class="icon iconfont icon-changfangxing"></i>
                                         {{scope.row.name}}
@@ -151,17 +152,6 @@
                             <el-table-column
                                     prop="date"
                                     label="报警时间">
-                            </el-table-column>
-                            <el-table-column
-                                    label="详情">
-                                <template scope="scope">
-                                    <el-button
-                                            @click.native.prevent="openDetail(scope.$index, tableData4)"
-                                            type="primary"
-                                            size="small">
-                                        详情
-                                    </el-button>
-                                </template>
                             </el-table-column>
                         </el-table>
                     </div>

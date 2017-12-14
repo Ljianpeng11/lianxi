@@ -139,6 +139,13 @@ var comm = Vue.extend({
 
     },
     methods: {
+        bindRowClass:function(row,index){
+            if(row.status === 1){
+                return 'warningStatus';
+            }else if(row.status === 2){
+                return 'alarmStatus';
+            }
+        },
         openDetail:function(index,item){
 
         },
