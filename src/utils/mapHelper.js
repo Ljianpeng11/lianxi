@@ -16,8 +16,8 @@ define(function () {
             return this.apiInstance;
         },
         initMap: function (container, centerX, centerY, zoom, cb) {
-            this.apiInstance.initMap(container, centerX, centerY, zoom, function (map) {
-                cb(map);
+            this.apiInstance.initMap(container, centerX, centerY, zoom, function (map,view) {
+                cb(map,view);
                 console.log('地图加载完毕！');
             });
         },
