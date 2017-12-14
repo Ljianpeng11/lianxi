@@ -214,6 +214,7 @@ var comm = Vue.extend({
                     mapHelper.registerMapTool(view, 'statusToolsBox', 'top-right');
                     //注册地图地名地址查询插件
                     mapHelper.registerMapTool(view, 'addressService', 'top-right');
+                    mapHelper.initFacilitySuperMap(view);
                 }.bind(this));
             }.bind(this));
         },

@@ -118,6 +118,37 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">绑定值类型：</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" v-model='currentEntity.bindValueType'>
+                                        <option value="dict">字典</option>
+                                        <option value="custom">自定义</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">绑定值：</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control"
+                                           v-model="currentEntity.bindValue">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">在列表显示：</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" v-model='currentEntity.showInList'>
+                                        <option value="1">是</option>
+                                        <option value="0">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <!--这里还可以加底部（footer），详见bootstrap官网-->
