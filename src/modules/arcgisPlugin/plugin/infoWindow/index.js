@@ -89,6 +89,7 @@ var comm = Vue.extend({
             this.infoBoxes[index].style.display = "none";
         },
         detailView: function (index) {
+            this.relocate(this.infoBoxes);
             this.infoBoxes[index].style.display  = "block";
         },
         showDevicePanel:function(selectItem){

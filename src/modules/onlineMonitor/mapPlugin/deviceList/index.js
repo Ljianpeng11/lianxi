@@ -112,9 +112,10 @@ var comm = Vue.extend({
             }else{
                 //地图定位
                 var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);
-                mapHelper.setCenter(this.baseView,this.deviceList[index].x,this.deviceList[index].y,16);
-                //显示地图popup信息框
-                this.$parent.$refs.infoWindow.detailView(this.deviceList[index]);
+                mapHelper.setCenter(this.baseView,this.deviceList[index].x,this.deviceList[index].y,16,function(){
+                    //显示地图popup信息框
+                    this.$parent.$refs.infoWindow.detailView(index);
+                }.bind(this));
             }
         },
         detailView:function(selectItem){
@@ -126,25 +127,25 @@ var comm = Vue.extend({
                 item.status = 0;
                 item.signal = 'on';
                 item.facilityDevice.devices.forEach(function(val){
-                   val.items.forEach(function(monitorData){
-                       switch(monitorData.name){
-                           case '电压':
-                               monitorData.dValue = monitorData.dValue + 'V';
-                               if(monitorData.dValue < monitorData.lowAlarm){item.voltage = 'low'}
-                               else if(monitorData > monitorData.highAlarm){item.voltage = 'high'}
-                               else{item.voltage = 'middle'}
-                                   break;
-                           case '电压比':
-                               monitorData.dValue = monitorData.dValue*100 + '%';
-                               break;
-                           case '水位':
-                               monitorData.dValue = monitorData.dValue.toFixed(2) + '(m)';
-                               break;
-                           default:break;
-                       }
-                       sysUpdateTime = monitorData.sysUpdateTime;
-                   });
-               });
+                    val.items.forEach(function(monitorData){
+                        switch(monitorData.name){
+                            case '电压':
+                                monitorData.dValue = monitorData.dValue + 'V';
+                                if(monitorData.dValue < monitorData.lowAlarm){item.voltage = 'low'}
+                                else if(monitorData > monitorData.highAlarm){item.voltage = 'high'}
+                                else{item.voltage = 'middle'}
+                                break;
+                            case '电压比':
+                                monitorData.dValue = monitorData.dValue*100 + '%';
+                                break;
+                            case '水位':
+                                monitorData.dValue = monitorData.dValue.toFixed(2) + '(m)';
+                                break;
+                            default:break;
+                        }
+                        sysUpdateTime = monitorData.sysUpdateTime;
+                    });
+                });
                 item.sysUpdateTime = sysUpdateTime;
             });
             this.deviceList = list;
