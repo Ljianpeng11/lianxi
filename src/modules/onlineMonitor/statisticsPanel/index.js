@@ -21,7 +21,7 @@ for(var i = 0;i<12;i++){
         date:time,
         waterData:((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2),
         rainData:((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2),
-        status:0
+        status:Math.floor(Math.random()*3)
     }
     tableData.push(item);
 }

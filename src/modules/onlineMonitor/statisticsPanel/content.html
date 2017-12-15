@@ -113,17 +113,17 @@
                             <el-table-column
                                     prop="rainData"
                                     label="降雨量(mm)">
-                                <template scope="scope">
-                                    <span :class="{'dangerStatus':scope.row.status === 2,
-                                                    'warningStatus':scope.row.status === 1
-                                                    }">
-                                        {{scope.row.rainData}}
-                                    </span>
-                                </template>
                             </el-table-column>
                             <el-table-column
                                     prop="waterData"
                                     label="测量液位(m)">
+                                <template scope="scope">
+                                    <span :class="{'dangerStatus':scope.row.status === 2,
+                                                    'warningStatus':scope.row.status === 1
+                                                    }">
+                                        {{scope.row.waterData}}
+                                    </span>
+                                </template>
                             </el-table-column>
                             <el-table-column
                                     prop="status"
@@ -131,7 +131,7 @@
                                 <template scope="scope">
                                     <span v-if="scope.row.status === 0">正常</span>
                                     <span v-if="scope.row.status === 1" class="warningStatus">预警</span>
-                                    <span v-if="scope.row.status === 2" class="alarmStatus">报警</span>
+                                    <span v-if="scope.row.status === 2" class="dangerStatus">报警</span>
                                 </template>
                             </el-table-column>
                         </el-table>

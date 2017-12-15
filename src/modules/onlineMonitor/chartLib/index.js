@@ -170,7 +170,7 @@ var comm = Vue.extend({
                     },
                     legend: {
                         orient: 'vertical',
-                        left: '10%',
+                        left: '2%',
                         y:'20%',
                         data: (function(){
                             var arr=[];
@@ -184,8 +184,8 @@ var comm = Vue.extend({
                         {
                             name: '访问来源',
                             type: 'pie',
-                            radius : '55%',
-                            center: ['60%', '60%'],
+                            radius : '45%',
+                            center: ['60%', '70%'],
                             data:self.chartOptions.data,
                             itemStyle: {
                                 emphasis: {

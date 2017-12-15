@@ -106,6 +106,27 @@ var comm = Vue.extend({
                     status:0
                 }
             ],
+            offlineTableData:[
+                {
+                    name:'五华区雨量公众监测点',
+                    status:0
+                },{
+                    name:'市体育馆',
+                    status:1
+                },{
+                    name:'普吉路与小路沟交叉口',
+                    status:2
+                },{
+                    name:'滇缅大道戛纳小镇旁',
+                    status:0
+                },{
+                    name:'海源学院正门口',
+                    status:0
+                },{
+                    name:'西二环春苑小区对面',
+                    status:0
+                }
+            ],
             collectList:[
                 {
                     title:'五华区公众雨量监测点',
