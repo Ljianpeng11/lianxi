@@ -65,9 +65,10 @@ var comm = Vue.extend({
             }else{
                 //地图定位
                 var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);
-                mapHelper.setCenter(this.baseView,this.deviceList[index].x,this.deviceList[index].y,16);
-                //显示地图popup信息框
-                this.$parent.$refs.infoWindow.detailView(this.deviceList[index]);
+                mapHelper.setCenter(this.baseView,this.deviceList[index].x,this.deviceList[index].y,16,function(){
+                    //显示地图popup信息框
+                    this.$parent.$refs.infoWindow.detailView(index);
+                }.bind(this));
             }
         },
         detailView:function(selectItem){

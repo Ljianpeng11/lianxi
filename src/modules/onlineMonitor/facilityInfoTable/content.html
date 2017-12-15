@@ -46,67 +46,80 @@
             <el-table-column
                     prop="facilityName"
                     label="安装监测点位"
-                    width="180">
+                    width="200">
             </el-table-column>
             <el-table-column
                     prop="lastDataReal"
-                    label="最新数据时间">
+                    label="最新数据时间"
+                    width="180">
             </el-table-column>
             <el-table-column
                     prop="betweenTime"
-                    label="最新通讯时间">
+                    label="最新通讯时间"
+                    width="120">
             </el-table-column>
             <el-table-column
                     prop="dataRealCurrent"
-                    label="中继剩余电量(%)">
+                    label="中继剩余电量(%)"
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="onlineDays"
-                    label="主机工作时间(天)">
+                    label="主机工作时间(天)"
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="dValue"
                     :formatter="dValueFormat"
-                    label="液位(m)">
+                    label="液位(m)"
+                    width="90">
             </el-table-column>
             <el-table-column
                     prop="overflow"
-                    label="溢流风险">
+                    label="溢流风险"
+                    width="100">
             </el-table-column>
             <el-table-column
                     prop="waterTraffic"
                     label="流量(L/s)"
-                    :formatter="waterTrafficFormat">
+                    :formatter="waterTrafficFormat"
+                    width="100">
             </el-table-column>
             <el-table-column
                 prop="waterSpeed"
                 label="流速(m/s)"
-                :formatter="waterSpeedFormat">
+                :formatter="waterSpeedFormat"
+                width="100">
             </el-table-column>
             <el-table-column
                     prop="solids"
                     label="悬浮物(mg/L)"
-                    :formatter="solidsFormat">
+                    :formatter="solidsFormat"
+                    width="140">
             </el-table-column>
             <el-table-column
                     prop="do"
                     label="DO(mg/L)"
-                    :formatter="doFormat">
+                    :formatter="doFormat"
+                    width="100">
             </el-table-column>
             <el-table-column
                     prop="temperature"
                     label="温度(℃)"
-                    :formatter="temperatureFormat">
+                    :formatter="temperatureFormat"
+                    width="90">
             </el-table-column>
             <el-table-column
                     prop="humidity"
                     label="湿度(%)"
-                    :formatter="humidityFormat">
+                    :formatter="humidityFormat"
+                    width="90">
             </el-table-column>
             <el-table-column
                     prop="deviceStateStr"
                     label="状态"
-                    :formatter="deviceStateStrFormat">
+                    :formatter="deviceStateStrFormat"
+                    width="180">
             </el-table-column>
         </el-table>
     </div>

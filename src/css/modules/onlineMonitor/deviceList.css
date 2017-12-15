@@ -88,8 +88,11 @@
     flex-wrap: wrap;
     padding: 1em 0;
 }
-.listLabel-left,.listLabel-right{
-    flex-basis:50%;
+.listLabel-left{
+    flex-basis:40%;
+}
+.listLabel-right{
+    flex-basis:60%;
 }
 .listLabel-left{
     text-align: right;

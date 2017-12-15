@@ -58,12 +58,14 @@ var comm = Vue.extend({
             return this.$createElement('div', {class:className},row.dValue);
         },
         checkOutdValueCss:function(row){
-            if(row.isAlarm&&row.isOffLine)
-                return "redFont";
-            else if (row.isAlarm==true||row.isOffLine==true)
-                return "yellowFont";
-            else if (row.isAlarm==false||row.isOffLine==false)
+            if(row.deviceState==0)
                 return "greenFont";
+            else if (row.deviceState==1)
+                return "yellowFont";
+            else if (row.deviceState==2)
+                return "redFont";
+            else if (row.deviceState==3)
+                return "purpleFont";
             return "";
         },
         deviceStateStrFormat:function(row, column, cellValue){

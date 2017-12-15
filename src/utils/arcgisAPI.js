@@ -337,7 +337,7 @@ define(function () {
     instance.removeGraphics = function (layer, graphics) {
         layer.removeMany(graphics);
     };
-    instance.setCenter = function (view, x, y, zoom) {
+    instance.setCenter = function (view, x, y, zoom,callback,errback) {
         var newView = {}
         if (!!zoom) {
             newView.zoom = zoom;
@@ -345,7 +345,7 @@ define(function () {
         if (!!x && !!y) {
             newView.target = [x, y]
         }
-        view.goTo(newView);
+        view.goTo(newView).then(callback,errback);
     };
     instance.registerMapTool = function (view, buttonId, position, cb) {
         view.ui.add(buttonId, position);

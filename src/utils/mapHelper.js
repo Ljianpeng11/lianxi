@@ -134,8 +134,8 @@ define(function () {
         //     return leftMap
         // },
         //设置地图中心点和地图显示层
-        setCenter: function (view, x, y, zoom) {
-            this.apiInstance.setCenter(view, x, y, zoom);
+        setCenter: function (view, x, y, zoom,callback, errback) {
+            this.apiInstance.setCenter(view, x, y, zoom,callback, errback);
         },
         createPoint: function ( x, y) {
             return this.apiInstance.createPoint( x, y);

@@ -17,26 +17,23 @@ var comm = Vue.extend({
     methods: {
         relocate: function (items) {
             for (var i = 0; i < items.length; i++) {
-                var boxID = '#infoBox-' + items[i].facilityId;
                 if (this.isNumber(items[i].x) && this.isNumber(items[i].y)) {
+                    var boxID = '#infoBox-' + items[i].facilityId;
                     var screenPoint = this.baseView.toScreen(items[i]);
-                    var x = screenPoint.x - 150;
-                    var y = screenPoint.y - 205;
-                    $(boxID).css('top', y);
-                    $(boxID).css('left', x);
-                    if (x > 0 && y > 0) {
-                        items[i].show = true;
-                    }
+                    var x = screenPoint.x - 125;
+                    var y = screenPoint.y - 30 -$(boxID).height();
+                    items[i].style.top = y+"px";
+                    items[i].style.left = x+"px";
                 } else {
-                    items[i].show = false;
+                    items[i].style.display = "none";
                 }
             }
         },
-        highLight: function (infoID) {
-            $('#' + infoID).css('z-index', 9999);
+        highLight: function (item) {
+            item.style.zIndex=20;
         },
-        normalize: function (infoID) {
-            $('#' + infoID).css('z-index', 1);
+        normalize: function (item) {
+            item.style.zIndex=1;
         },
         registerToView: function () {
             if (this.registerEvents.length == 0) {
@@ -89,10 +86,20 @@ var comm = Vue.extend({
             }
         },
         closePopup: function (index) {
-            this.infoBoxes[index].show = false;
+            this.infoBoxes[index].style.display = "none";
         },
         detailView: function (index) {
-            this.infoBoxes[index].show = true;
+            this.relocate(this.infoBoxes);
+            var item = this.infoBoxes[index];
+            if (this.isNumber(item.x) && this.isNumber(item.y)) {
+                var boxID = '#infoBox-' + item.facilityId;
+                var screenPoint = this.baseView.toScreen(item);
+                var x = screenPoint.x - 150;
+                var y = screenPoint.y - 30 -$(boxID).height();
+                item.style.top = y+"px";
+                item.style.left = x+"px";
+                item.style.display  = "block";
+            }
         },
         showDevicePanel:function(selectItem){
             eventHelper.emit('openDevicePanel',selectItem);
@@ -102,26 +109,27 @@ var comm = Vue.extend({
                 var item = list[i];
                 item.status = 0;
                 item.signal = 'on';
-                item.show = true;
+                item.style={
+                    zIndex: 1,
+                    display:"block",
+                    top:"0px",
+                    left:"0px"
+                }
                 if(item.facilityDevice.devices){
                     for(var j=0,devicelen=item.facilityDevice.devices.length;j<devicelen;j++){
                         var deviceItem = item.facilityDevice.devices[j];
                         if(deviceItem.items) {
-                            for (var k = 0, jianceItemLen = deviceItem.items.length; k < jianceItemLen; k++) {
+                            for (var k = 0, jianceItemLen = deviceItem.items.length; k < jianceItemLen; k++,jianceItemLen = deviceItem.items.length) {
                                 var monitorData = deviceItem.items[k];
                                 switch (monitorData.name) {
                                     case '电压':
-                                        monitorData.dValue = monitorData.dValue ?  monitorData.dValue + 'V' :"-";
-                                        if (monitorData.dValue < monitorData.lowAlarm) {
-                                            item.voltage = 'low'
-                                        }
-                                        else if (monitorData > monitorData.highAlarm) {
-                                            item.voltage = 'high'
-                                        }
-                                        else {
-                                            item.voltage = 'middle'
-                                        }
-                                        deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
+                                        deviceItem.items.splice(k, 1);k--;
+                                        break;
+                                    case '电量':
+                                        deviceItem.items.splice(k, 1);k--;
+                                        break;
+                                    case '信号强度':
+                                        deviceItem.items.splice(k, 1);k--;
                                         break;
                                     case '电压比':
                                         monitorData.dValue = monitorData.dValue ? monitorData.dValue * 100 + '%':"-";
