@@ -1,11 +1,11 @@
 <div class="gaoqingPopup">
-    <div v-show="infoBox.show"  v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+infoBox.facilityId" @mouseover="highLight('infoBox-'+infoBox.facilityId)" @mouseleave="normalize('infoBox-'+infoBox.facilityId)" class="esri-popup__position-container esri-popup--shadow esri-popup--title-visible esri-popup--content-visible esri-popup--top-aligned" >
+    <div v-bind:style="infoBox.style" v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+infoBox.facilityId" @mouseenter="highLight(infoBox)" @mouseleave="normalize(infoBox)" class="esri-popup__position-container esri-popup--shadow esri-popup--title-visible esri-popup--content-visible esri-popup--top-aligned" >
         <div class="esri-popup__main-container">
             <!-- Popup Header -->
             <header class="esri-popup__header">
                 <span class="esri-popup__header-title">{{infoBox.name}}</span>
                 <div class="esri-popup__header-buttons">
-                    <div role="button" class="esri-popup__button" title="关闭" v-on:click="closePopup(index)">
+                    <div class="esri-popup__button" title="关闭" v-on:click="closePopup(index)">
                         <span aria-hidden="true" class="esri-popup__icon esri-icon-close"></span>
                         <span class="esri-icon-font-fallback-text">关闭</span>
                     </div>
@@ -37,7 +37,7 @@
             <!-- /Popup Content -->
         </div>
         <!-- Popup Pointer -->
-        <div class="esri-popup__pointer" role="presentation">
+        <div class="esri-popup__pointer">
             <div class="esri-popup__pointer-direction esri-popup--shadow"></div>
         </div>
         <!-- /Popup Pointer -->
