@@ -90,7 +90,16 @@ var comm = Vue.extend({
         },
         detailView: function (index) {
             this.relocate(this.infoBoxes);
-            this.infoBoxes[index].style.display  = "block";
+            var item = this.infoBoxes[index];
+            if (this.isNumber(item.x) && this.isNumber(item.y)) {
+                var boxID = '#infoBox-' + item.facilityId;
+                var screenPoint = this.baseView.toScreen(item);
+                var x = screenPoint.x - 150;
+                var y = screenPoint.y - 30 -$(boxID).height();
+                item.style.top = y+"px";
+                item.style.left = x+"px";
+                item.style.display  = "block";
+            }
         },
         showDevicePanel:function(selectItem){
             eventHelper.emit('openDevicePanel',selectItem);
