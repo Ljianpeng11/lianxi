@@ -20,7 +20,7 @@ var comm = Vue.extend({
                 if (this.isNumber(items[i].x) && this.isNumber(items[i].y)) {
                     var boxID = '#infoBox-' + items[i].facilityId;
                     var screenPoint = this.baseView.toScreen(items[i]);
-                    var x = screenPoint.x - 150;
+                    var x = screenPoint.x - 125;
                     var y = screenPoint.y - 30 -$(boxID).height();
                     items[i].style.top = y+"px";
                     items[i].style.left = x+"px";
@@ -119,21 +119,17 @@ var comm = Vue.extend({
                     for(var j=0,devicelen=item.facilityDevice.devices.length;j<devicelen;j++){
                         var deviceItem = item.facilityDevice.devices[j];
                         if(deviceItem.items) {
-                            for (var k = 0, jianceItemLen = deviceItem.items.length; k < jianceItemLen; k++) {
+                            for (var k = 0, jianceItemLen = deviceItem.items.length; k < jianceItemLen; k++,jianceItemLen = deviceItem.items.length) {
                                 var monitorData = deviceItem.items[k];
                                 switch (monitorData.name) {
                                     case '电压':
-                                        monitorData.dValue = monitorData.dValue ?  monitorData.dValue + 'V' :"-";
-                                        if (monitorData.dValue < monitorData.lowAlarm) {
-                                            item.voltage = 'low'
-                                        }
-                                        else if (monitorData > monitorData.highAlarm) {
-                                            item.voltage = 'high'
-                                        }
-                                        else {
-                                            item.voltage = 'middle'
-                                        }
-                                        deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
+                                        deviceItem.items.splice(k, 1);k--;
+                                        break;
+                                    case '电量':
+                                        deviceItem.items.splice(k, 1);k--;
+                                        break;
+                                    case '信号强度':
+                                        deviceItem.items.splice(k, 1);k--;
                                         break;
                                     case '电压比':
                                         monitorData.dValue = monitorData.dValue ? monitorData.dValue * 100 + '%':"-";
