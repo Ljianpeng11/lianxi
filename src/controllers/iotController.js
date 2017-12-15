@@ -10,5 +10,10 @@ define([ 'services/iotService'], function ( iotService) {
             });
 
         },
+        getIotDeviceRunningState:function(cb){
+            iotService.getIotDeviceRunningState(function(data){
+                cb(data);
+            })
+        }
     }
 });

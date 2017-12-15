@@ -83,25 +83,19 @@
                     <el-col :span="12" style="height:100%;">
                         <div class="cesc-box">
                             <el-col :span="16" style="height: 100%;">
-                                <chart-lib :chartId="'pieChart1'" :chartOptions="chartOptions1"></chart-lib>
+                                <chart-lib ref="pieChart1" :chartId="'pieChart1'" :chartOptions="chartOptions1"></chart-lib>
                             </el-col>
                             <el-col :span="8" style="height: 100%;padding:0;">
                                 <el-table
                                         :data="alarmTableData"
                                         border
                                         style="width: 100%;height: 100%;"
-                                        class="scrollTable">
+                                        class="scrollTable"
+                                        :row-class-name="bindRowClass">
                                     <el-table-column
                                             prop="name"
                                             label="报警点"
                                             show-overflow-tooltip="true">
-                                        <template scope="scope">
-                                            <span :class="{'dangerStatus':scope.row.status === 2,
-                                                            'warningStatus':scope.row.status === 1
-                                                            }">
-                                                {{scope.row.name}}
-                                            </span>
-                                        </template>
                                     </el-table-column>
                                 </el-table>
                             </el-col>
@@ -123,14 +117,8 @@
                                     <el-table-column
                                             prop="name"
                                             show-overflow-tooltip="true"
-                                            label="断线点">
-                                        <template scope="scope">
-                                            <span :class="{'dangerStatus':scope.row.status === 2,
-                                                            'warningStatus':scope.row.status === 1
-                                                            }">
-                                                {{scope.row.name}}
-                                            </span>
-                                        </template>
+                                            label="断线点"
+                                            :row-class-name="bindRowClass">
                                     </el-table-column>
                                 </el-table>
                             </el-col>

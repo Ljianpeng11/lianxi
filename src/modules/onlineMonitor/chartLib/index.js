@@ -201,10 +201,10 @@ var comm = Vue.extend({
             default:break;
         }
         //初始化图表
-        this.loadYLChart('#' + this.chartId);
+        this.loadChart('#' + this.chartId);
     },
     methods: {
-        loadYLChart:function(dom){
+        loadChart:function(dom){
             this.$nextTick(function () {
                 this.myChart = echarts.init($(dom)[0]);
                 this.myChart.setOption(this.options);
@@ -214,7 +214,7 @@ var comm = Vue.extend({
                     }.bind(this), 1000)
                 }.bind(this));
                 if(this.chartOptions.type === 'YLChart'){
-                    this.refreshChart();
+                    this.refreshYLChart();
                 }
             }.bind(this));
         },
@@ -226,7 +226,7 @@ var comm = Vue.extend({
             this.chartOptions.yData1.push(((Math.random() - 0.4) + data1[data1.length - 1]).toFixed(2));
             this.chartOptions.yData2.push(((Math.random() - 0.4) * 10 + data2[data2.length - 1]).toFixed(2));
         },
-        refreshChart:function(){
+        refreshYLChart:function(){
             this.timer = setInterval(function(){
                 this.addData();
                 this.options.series[0].data = this.chartOptions.yData1;
@@ -234,9 +234,14 @@ var comm = Vue.extend({
                 this.myChart.setOption(this.options,true);
             }.bind(this),2000);
         },
+        reloadChart:function(){
+            this.myChart.setOption(this.options,true);
+        }
     },
     mounted: function () {
-
+        this.$on('reloadChart',function(){
+            this.myChart.setOption(this.options,true);
+        }.bind(this));
     },
     components: {}
 });

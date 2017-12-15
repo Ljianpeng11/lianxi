@@ -12,14 +12,18 @@
     left:10px;
 }
 .listBoxTop{
-    height: 8em;
-    padding:1em;
+    height: 11.5em;
+    background: #2f91e4;
 }
 .listBoxTitle{
-    height:2em;
+    height: 3em;
+    line-height: 3em;
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
+    padding: 0 1em;
+    color: #fff;
+    background: #007EDF;
 }
 .listBadge{
     padding: 0.2em 0.8em;
@@ -32,6 +36,15 @@
 }
 .rotate-down{
     transform:rotate(90deg);
+}
+.filterBox{
+    padding: 0 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.filterBox .cesc-tag{
+    padding: 0.3em 0.5em;
 }
 .deviceSearch{
     display: block;
@@ -47,7 +60,7 @@
     background-color: #fff;
 }
 .listBoxContent{
-    height: calc(100% - 8em);
+    height: calc(100% - 11.5em);
     overflow: auto;
 }
 .listBoxContent > li{

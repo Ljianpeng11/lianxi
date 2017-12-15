@@ -8,6 +8,44 @@
          <i class="el-icon-d-arrow-right" :class="[isOpenList?'rotate-up':'rotate-down']" @click="toggleList"></i>
       </div>
       <input class="deviceSearch" type="text" placeholder="设备编号\监测点或拼音"/>
+      <div class="filterBox">
+         <div>
+            <span class="cesc-tag">
+            <el-select class="selectBox" v-model="typeOption1.value" placeholder="请选择" style="width: 4em;">
+                <el-option
+                        v-for="item in typeOption1.options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
+         </span>
+         </div>
+         <div>
+            <span class="cesc-tag">
+            <el-select class="selectBox" v-model="typeOption2.value" placeholder="请选择" style="width: 4em;">
+                <el-option
+                        v-for="item in typeOption2.options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
+         </span>
+         </div>
+         <div>
+            <span class="cesc-tag">
+            <el-select class="selectBox" v-model="typeOption3.value" placeholder="请选择">
+                <el-option
+                        v-for="item in typeOption3.options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
+         </span>
+         </div>
+      </div>
    </div>
    <ul class="listBoxContent">
       <li v-for="(item,index) in deviceList"
@@ -33,7 +71,7 @@
          <div class="listContent" v-for="devicesItem in item.facilityDevice.devices">
                <div class="listLabel-left">
                   <p>设备名：</p>
-                  <p v-for="item in devicesItem.items">{{item.name}}：</p>
+                  <p v-for="item in devicesItem.items">{{item.name}}</p>
                   <p>最近通讯：</p>
                </div>
                <div class="listLabel-right">
