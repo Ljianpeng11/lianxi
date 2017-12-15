@@ -1,1 +1,2 @@
-C:\Users\Administrator\AppData\Roaming\npm\http-server -p 9999 --cors
+title [ewater_gq_UI]
+http-server -p 14041 --cors

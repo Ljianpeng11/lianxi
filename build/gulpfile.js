@@ -15,7 +15,7 @@ var copy= require("gulp-copy");
 var zip = require("gulp-zip");
 var rimraf = require("rimraf");
 var git = require('gulp-git');
-var serverIP = '120.77.246.153:13731';
+var serverIP = '139.159.246.230:14041';
 
 /**
  * 合并lib文件
@@ -96,6 +96,7 @@ gulp.task('webpack-build',['concat-lib'],function () {
     });
 });
 gulp.task('copy-vendors',function(){
+    gulp.src('../3rd/**/**').pipe(gulp.dest('../release/3rd'));
     gulp.src('../vendors/**/**').pipe(gulp.dest('../release/vendors'));
     gulp.src('../lib/**/**').pipe(greplace('localhost:9000', serverIP)).pipe(gulp.dest('../release/lib'));
     gulp.src('../src/img/**/**').pipe(gulp.dest('../release/img'));
