@@ -13,6 +13,17 @@ define(['./serviceHelper'], function (serviceHelper) {
                 }
                 console.log('Error:', result);
             });
+        },
+        getIotDeviceRunningState:function(cb){
+            var parameter = {
+                id:'getIotDeviceRunningState'
+            }
+            $.get(serviceHelper.getPath(parameter),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+            })
         }
     }
 });

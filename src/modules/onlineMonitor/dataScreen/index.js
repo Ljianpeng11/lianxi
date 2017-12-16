@@ -1,7 +1,8 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
 var moment = require('moment');
-
+//请求数据
+var iotController = require('controllers/iotController.js');
 //加载图表组件
 var chartLib = require('modules/onlineMonitor/chartLib');
 
@@ -56,9 +57,9 @@ var comm = Vue.extend({
                 color:['#4f9b0c','#f5c761','#fe5240'],
                 subtext:'设备运行情况',
                 data: [
-                    {value:65, name:'正常'},
-                    {value:15, name:'预警'},
-                    {value:20, name:'报警'}
+                    {value:1, name:'正常'},
+                    {value:2, name:'预警'},
+                    {value:3, name:'报警'}
                 ]
             },
             chartOptions2:{
@@ -86,6 +87,27 @@ var comm = Vue.extend({
                 }
             ],
             alarmTableData:[
+                {
+                    name:'五华区雨量公众监测点',
+                    status:0
+                },{
+                    name:'市体育馆',
+                    status:1
+                },{
+                    name:'普吉路与小路沟交叉口',
+                    status:2
+                },{
+                    name:'滇缅大道戛纳小镇旁',
+                    status:0
+                },{
+                    name:'海源学院正门口',
+                    status:0
+                },{
+                    name:'西二环春苑小区对面',
+                    status:0
+                }
+            ],
+            offlineTableData:[
                 {
                     name:'五华区雨量公众监测点',
                     status:0
@@ -136,14 +158,27 @@ var comm = Vue.extend({
         }
     },
     created:function(){
-
+        iotController.getIotDeviceRunningState(function(data){
+            var warningIotDeviceList = data.warningIotDeviceList;
+            var alarmIotDeviceList = data.alarmIotDeviceList;
+            alarmIotDeviceList.push(...alarmIotDeviceList);
+            this.alarmTableData = alarmIotDeviceList;
+            this.chartOptions1.data = [
+                {value:data.healthCount, name:'正常'},
+                {value:data.warningCount, name:'预警'},
+                {value:data.alarmCount, name:'报警'}
+            ];
+            this.$refs.pieChart1.$emit('reloadChart');
+            debugger;
+            console.log(this.alarmTableData);
+        }.bind(this))
     },
     methods: {
         bindRowClass:function(row,index){
             if(row.status === 1){
-                return 'warningStatus';
+                return 'warningItem';
             }else if(row.status === 2){
-                return 'alarmStatus';
+                return 'dangerItem';
             }
         },
         openDetail:function(index,item){
@@ -154,7 +189,20 @@ var comm = Vue.extend({
         }
     },
     mounted: function () {
-
+        // iotController.getIotDeviceRunningState(function(data){
+        //     var warningIotDeviceList = data.warningIotDeviceList;
+        //     var alarmIotDeviceList = data.alarmIotDeviceList;
+        //     alarmIotDeviceList.push(...alarmIotDeviceList);
+        //     this.alarmTableData = alarmIotDeviceList;
+        //     this.chartOptions1.data = [
+        //         {value:data.healthCount, name:'正常'},
+        //         {value:data.warningCount, name:'预警'},
+        //         {value:data.alarmCount, name:'报警'}
+        //     ];
+        //     this.$refs.pieChart1.$emit('reloadChart');
+        //     debugger;
+        //     console.log(this.alarmTableData);
+        // }.bind(this))
     },
     components: {
         'chart-lib':chartLib

@@ -69,6 +69,28 @@ var comm = Vue.extend({
                             }
                         }
                     ],
+                    visualMap: {
+                        top: 10,
+                        right: 10,
+                        seriesIndex:0,
+                        showLabel:false,
+                        show:false,
+                        pieces: [{
+                            gt: 0,
+                            lte: 0.5,
+                            color: '#2f91e4'
+                        }, {
+                            gt: 0.5,
+                            lte: 0.8,
+                            color: '#f2b817'
+                        }, {
+                            gt: 0.8,
+                            color: '#fe5240'
+                        }],
+                        outOfRange: {
+                            color: '#999'
+                        }
+                    },
                     series: [
                         {
                             name: '测量液位(m)',
@@ -79,17 +101,17 @@ var comm = Vue.extend({
                                 trigger: 'axis'
                             },
                             smooth: true,
-                            itemStyle: {
-                                normal: {
-                                    color: 'rgba(67,67,72, 1)',
-                                    lineStyle: {
-                                        color: 'rgba(67,67,72, 0.8)'
-                                    },
-                                    areaStyle: {
-                                        color: 'rgba(67,67,72, 0.8)'
-                                    }
-                                }
-                            },
+                            // itemStyle: {
+                            //     normal: {
+                            //         color: 'rgba(67,67,72, 1)',
+                            //         lineStyle: {
+                            //             color: 'rgba(67,67,72, 0.8)'
+                            //         },
+                            //         areaStyle: {
+                            //             color: 'rgba(67,67,72, 0.8)'
+                            //         }
+                            //     }
+                            // },
                             markLine: {
                                 lineStyle: {
                                     normal: {
@@ -170,7 +192,7 @@ var comm = Vue.extend({
                     },
                     legend: {
                         orient: 'vertical',
-                        left: '10%',
+                        left: '2%',
                         y:'20%',
                         data: (function(){
                             var arr=[];
@@ -184,8 +206,8 @@ var comm = Vue.extend({
                         {
                             name: '访问来源',
                             type: 'pie',
-                            radius : '55%',
-                            center: ['60%', '60%'],
+                            radius : '45%',
+                            center: ['60%', '70%'],
                             data:self.chartOptions.data,
                             itemStyle: {
                                 emphasis: {
@@ -201,10 +223,10 @@ var comm = Vue.extend({
             default:break;
         }
         //初始化图表
-        this.loadYLChart('#' + this.chartId);
+        this.loadChart('#' + this.chartId);
     },
     methods: {
-        loadYLChart:function(dom){
+        loadChart:function(dom){
             this.$nextTick(function () {
                 this.myChart = echarts.init($(dom)[0]);
                 this.myChart.setOption(this.options);
@@ -214,7 +236,7 @@ var comm = Vue.extend({
                     }.bind(this), 1000)
                 }.bind(this));
                 if(this.chartOptions.type === 'YLChart'){
-                    this.refreshChart();
+                    this.refreshYLChart();
                 }
             }.bind(this));
         },
@@ -226,7 +248,7 @@ var comm = Vue.extend({
             this.chartOptions.yData1.push(((Math.random() - 0.4) + data1[data1.length - 1]).toFixed(2));
             this.chartOptions.yData2.push(((Math.random() - 0.4) * 10 + data2[data2.length - 1]).toFixed(2));
         },
-        refreshChart:function(){
+        refreshYLChart:function(){
             this.timer = setInterval(function(){
                 this.addData();
                 this.options.series[0].data = this.chartOptions.yData1;
@@ -234,9 +256,14 @@ var comm = Vue.extend({
                 this.myChart.setOption(this.options,true);
             }.bind(this),2000);
         },
+        reloadChart:function(){
+            this.myChart.setOption(this.options,true);
+        }
     },
     mounted: function () {
-
+        this.$on('reloadChart',function(){
+            this.myChart.setOption(this.options,true);
+        }.bind(this));
     },
     components: {}
 });

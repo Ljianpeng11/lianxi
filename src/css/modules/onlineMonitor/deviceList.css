@@ -12,14 +12,18 @@
     left:10px;
 }
 .listBoxTop{
-    height: 8em;
-    padding:1em;
+    height: 11.5em;
+    background: #2f91e4;
 }
 .listBoxTitle{
-    height:2em;
+    height: 3em;
+    line-height: 3em;
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
+    padding: 0 1em;
+    color: #fff;
+    background: #007EDF;
 }
 .listBadge{
     padding: 0.2em 0.8em;
@@ -32,6 +36,15 @@
 }
 .rotate-down{
     transform:rotate(90deg);
+}
+.filterBox{
+    padding: 0 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.filterBox .cesc-tag{
+    padding: 0.3em 0.5em;
 }
 .deviceSearch{
     display: block;
@@ -47,39 +60,85 @@
     background-color: #fff;
 }
 .listBoxContent{
-    height: calc(100% - 8em);
+    height: calc(100% - 11.5em);
     overflow: auto;
+    padding: 0 5px;
+    background: #f1f1f1;
 }
 .listBoxContent > li{
     background: #fff;
-    border-bottom:1px solid #eee;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    border:1px solid #eee;
+}
+.listBoxContent > li:first-child{
+    margin-top:5px;
 }
 .listBoxContent > li:hover,.listBoxContent .active{
-    background: #f8f8f8;
+    background: #EDF6FD;
     cursor: default;
 }
 .listItemTop{
-    padding:1em 1em 0;
+    height: 2.6em;
+    line-height: 2.6em;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size:16px;
+    font-size: 16px;
+    border-bottom: 2px solid #f1f1f1;
+    padding: 0 1em;
+    position: relative;
+    overflow: hidden;
 }
 .listItemTop > span{
     color:#555;
     flex:1;
+}
+.listItemTop > i {
+    padding-right:5px;
+    font-size:1.2em;
+}
+.listItemTop > i:last-child {
+    padding-right:0;
 }
 .listContent{
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     padding: 1em 0;
+    position: relative;
+    overflow: hidden;
+}
+.listItemTop:before,.listItemTop:after,.listContent:before,.listContent:after{
+    display: block;
+    content:'';
+    position: absolute;
+    width:1em;
+    height:1em;
+    background: #f1f1f1;
+    border-radius:2em;
+}
+.listItemTop:before{
+    left:-0.5em;
+    bottom:-0.5em;
+}
+.listItemTop:after{
+    right:-0.5em;
+    bottom:-0.5em;
+}
+.listContent:before{
+    left:-0.5em;
+    top:-0.5em;
+}
+.listContent:after{
+    right:-0.5em;
+    top:-0.5em;
 }
 .listLabel-left{
-    flex-basis:40%;
+    flex-basis:30%;
 }
 .listLabel-right{
-    flex-basis:60%;
+    flex-basis:50%;
 }
 .listLabel-left{
     text-align: right;
@@ -107,4 +166,24 @@
     border-radius: 20px;
     height: 30px;
     font-size: 10px;
+}
+.cesc-color{
+    color: #2f91e4;
+}
+.leftDotBox{
+    flex-basis: 20%;
+    text-align: center;
+}
+.statusDot{
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 2em;
+    background: #9d9d9d
+}
+.dangerDot{
+    background: #fe5240;
+}
+.warningDot{
+    background: #f2b817;
 }

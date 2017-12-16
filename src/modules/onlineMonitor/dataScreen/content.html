@@ -22,26 +22,14 @@
         </div>
     </div>
     <div class="devicePanel-bottom dataScreen-bottom" style="padding:10px;">
-        <el-row :span="24" :gutter="10" style="height:calc(30% - 10px);margin-bottom:10px;">
-            <el-col :span="8" style="height: 100%;">
-                <div class="cesc-box">
-                    <div class="devicePanel-top weatherData-top">
-                        <div class="deviceLeft">
-                            <i class="icon iconfont icon-tianqi weather-icon"></i><span class="weather-num">12</span>
-                        </div>
-                        <span>2017-12-07&nbsp;&nbsp;&nbsp;星期四</span>
-                    </div>
-                    <div class="devicePanel-bottom weatherData-bottom">
-
-                    </div>
-                </div>
-            </el-col>
-            <el-col :span="16" style="height: 100%;">
-                <div class="cesc-box">
-                    <div class="devicePanel-top">
-                        <div>
-                            <span style="margin-right:3em;">累计降雨量：0.00mm</span>
-                            <span class="selectItem">雨量计：
+        <el-row :gutter="10" style="height: 100%">
+            <el-col :span="12" style="height:100%;">
+                <el-row style="height:32%;margin-bottom:10px;">
+                    <div class="cesc-box">
+                        <div class="devicePanel-top">
+                            <div>
+                                <span style="margin-right:3em;">累计降雨量：0.00mm</span>
+                                <span class="selectItem">雨量计：
                                  <el-select class="selectBox" v-model="YLDistrictOption.value" placeholder="请选择">
                                     <el-option
                                             v-for="item in YLDistrictOption.options"
@@ -51,190 +39,223 @@
                                     </el-option>
                                 </el-select>
                             </span>
+                            </div>
+                            <div>
+                                <span class="cesc-tag cesc-tag-active">8小时</span>
+                                <span class="cesc-tag">24小时</span>
+                                <span class="cesc-tag">48小时</span>
+                            </div>
                         </div>
-                        <div>
-                            <span class="cesc-tag cesc-tag-active">8小时</span>
-                            <span class="cesc-tag">24小时</span>
-                            <span class="cesc-tag">48小时</span>
+                        <div class="devicePanel-bottom">
+                            <chart-lib :chartId="'lineChart'" :chartOptions="chartOptions3"></chart-lib>
                         </div>
                     </div>
-                    <div class="devicePanel-bottom">
-                        <chart-lib :chartId="'lineChart'" :chartOptions="chartOptions3"></chart-lib>
-                    </div>
-                </div>
-            </el-col>
-        </el-row>
-        <el-row :span="24" :gutter="10" style="height:calc(30% - 10px);margin-bottom:10px;">
-            <el-col :span="8" style="height: 100%;">
-                <div class="cesc-box">
-                    <el-col :span="16" style="height: 100%;">
-                        <chart-lib :chartId="'pieChart1'" :chartOptions="chartOptions1"></chart-lib>
+                </el-row>
+                <el-row :gutter="10" style="height:calc(34% - 10px);margin-bottom:10px;">
+                    <el-col :span="12" style="height:100%;">
+                        <div class="cesc-box weatherBox">
+                            <div class="weatherDataItem" >
+                                <div class="weatherData-top">
+                                    <i class="icon iconfont icon-tianqi weather-icon"></i><span class="weather-num">12</span>
+                                </div>
+                                <span>2017-12-07&nbsp;&nbsp;&nbsp;星期四</span>
+                            </div>
+                            <div class="weatherDataItem" >
+                                <span>最大降雨量</span>
+                                <div class="weatherData-top">
+                                    <span class="warningStatus">67.5mm</span>
+                                </div>
+                            </div>
+                            <div class="weatherDataItem" >
+                                <span>累计降雨量(12h)</span>
+                                <div class="weatherData-top">
+                                    <span class="dangerStatus">150mm</span>
+                                </div>
+                            </div>
+                            <div class="weatherDataItem" >
+                                <span>最大降雨时长</span>
+                                <div class="weatherData-top">
+                                    <span class="warningStatus">12h</span>
+                                </div>
+                            </div>
+                        </div>
                     </el-col>
-                    <el-col :span="8" style="height: 100%;padding:0;">
-                        <el-table
-                                :data="alarmTableData"
-                                border
-                                style="width: 100%;height: 100%;"
-                                class="scrollTable">
-                            <el-table-column
-                                    prop="name"
-                                    label="报警点"
-                                    :row-class-name="'dangerStatus'"
-                            >
-                                <!--<template scope="scope">-->
-                                    <!--<span :class="{'dangerStatus':scope.row.status === 2,-->
-                                                    <!--'warningStatus':scope.row.status === 1-->
-                                                    <!--}">-->
-                                        <!--{{scope.row.name}}-->
-                                    <!--</span>-->
-                                <!--</template>-->
-                            </el-table-column>
-                        </el-table>
-                    </el-col>
-                </div>
-            </el-col>
-            <el-col :span="8" style="height: 100%;">
-                <el-col :span="16" style="height: 100%;">
-                    <chart-lib :chartId="'pieChart2'" :chartOptions="chartOptions2"></chart-lib>
-                </el-col>
-                <el-col :span="8" style="height: 100%;padding:0;">
-                    <el-table
-                            :data="alarmTableData"
-                            border
-                            style="width: 100%;height: 100%;"
-                            class="scrollTable">
-                        <el-table-column
-                                prop="name"
-                                label="报警点">
-                            <template scope="scope">
-                                    <span :class="{'dangerStatus':scope.row.status === 2,
-                                                    'warningStatus':scope.row.status === 1
-                                                    }">
-                                        <i class="icon iconfont icon-changfangxing"></i>
-                                        {{scope.row.name}}
-                                    </span>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-col>
-            </el-col>
-            <el-col :span="8" style="height: 100%;">
-                <div class="cesc-box">
-                    <div class="devicePanel-top" style="background:#fff;">
-                        <span>预警报警历史信息列表</span>
-                        <div>
-                            <span class="cesc-tag cesc-tag-active">8小时</span>
-                            <span class="cesc-tag">24小时</span>
-                            <span class="cesc-tag">48小时</span>
+                    <el-col :span="12" style="height:100%;">
+                        <div class="cesc-box">
+                            <el-col :span="16" style="height: 100%;">
+                                <chart-lib ref="pieChart1" :chartId="'pieChart1'" :chartOptions="chartOptions1"></chart-lib>
+                            </el-col>
+                            <el-col :span="8" style="height: 100%;padding:0;">
+                                <el-table
+                                        :data="alarmTableData"
+                                        border
+                                        style="width: 100%;height: 100%;"
+                                        class="scrollTable"
+                                        :row-class-name="bindRowClass">
+                                    <el-table-column
+                                            prop="name"
+                                            label="报警点"
+                                            show-overflow-tooltip="true">
+                                    </el-table-column>
+                                </el-table>
+                            </el-col>
                         </div>
-                    </div>
-                    <div class="devicePanel-bottom">
-                        <el-table
-                                :data="tableData"
-                                border
-                                style="width: 100%">
-                            <el-table-column
-                                    prop="district"
-                                    label="报警点">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="measureNum"
-                                    label="测量值">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="currentNum"
-                                    label="当前测量值">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="alarmNum"
-                                    label="报警值">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="date"
-                                    label="报警时间">
-                            </el-table-column>
-                        </el-table>
-                    </div>
-                </div>
-            </el-col>
-        </el-row>
-        <el-row :gutter="10" style="height:40% ">
-            <div class="cesc-box">
-                <div class="devicePanel-top">
-                    <div class="deviceLeft">
-                        <span>已关注点</span>
-                        <span class="cesc-tag-active">添加关注点</span>
-                        <span><b class="highlight-text">设备：</b>
-                            <b class="cesc-badge-active">液位仪</b>
-                        </span>
-                        <span><b class="highlight-text">警报：</b>
-                        <b class="cesc-badge-active">液位警报</b>
-                        <b class="cesc-badge">电量警报</b>
-                    </span>
-                        <span><b class="highlight-text">排序:</b>
-                        <span class="cesc-badge cesc-badge-active">数据时间
-                            <i class="icon iconfont icon-xiajiantou arrow-up"></i>
-                            <i class="icon iconfont icon-xiajiantou arrow-down"></i>
-                        </span>
-                        <span class="cesc-badge">剩余电量
-                            <i class="icon iconfont icon-xiajiantou arrow-up"></i>
-                            <i class="icon iconfont icon-xiajiantou arrow-down"></i>
-                        </span>
-                        <span class="cesc-badge">警报状态
-                            <i class="icon iconfont icon-xiajiantou arrow-up"></i>
-                            <i class="icon iconfont icon-xiajiantou arrow-down"></i>
-                        </span>
-                        <span class="cesc-badge">设备编号
-                            <i class="icon iconfont icon-xiajiantou arrow-up"></i>
-                            <i class="icon iconfont icon-xiajiantou arrow-down"></i>
-                        </span>
-                        <span class="cesc-badge">安装点
-                            <i class="icon iconfont icon-xiajiantou arrow-up"></i>
-                            <i class="icon iconfont icon-xiajiantou arrow-down"></i>
-                        </span>
-                    </span>
-                    </div>
-                </div>
-                <div class="devicePanel-bottom" style="padding: 10px;">
-                    <el-col :span="6" style="height: 100%;" v-for="(item,index) in collectList">
+                    </el-col>
+                </el-row>
+                <el-row :gutter="10" style="height:calc(34% - 10px);">
+                    <el-col :span="12" style="height:100%;">
+                        <div class="cesc-box">
+                            <el-col :span="16" style="height: 100%;">
+                                <chart-lib :chartId="'pieChart2'" :chartOptions="chartOptions2"></chart-lib>
+                            </el-col>
+                            <el-col :span="8" style="height: 100%;padding:0;">
+                                <el-table
+                                        :data="offlineTableData"
+                                        border
+                                        style="width: 100%;height: 100%;"
+                                        class="scrollTable">
+                                    <el-table-column
+                                            prop="name"
+                                            show-overflow-tooltip="true"
+                                            label="断线点"
+                                            :row-class-name="bindRowClass">
+                                    </el-table-column>
+                                </el-table>
+                            </el-col>
+                        </div>
+                    </el-col>
+                    <el-col :span="12" style="height:100%;">
                         <div class="cesc-box">
                             <div class="devicePanel-top">
-                                <span>{{item.title}}</span>
+                                <span>预警报警历史信息列表</span>
                                 <div>
-                                    <i class="icon iconfont icon-shuaxin1"></i>
-                                    <i class="icon iconfont icon-shanchu"></i>
+                                    <span class="cesc-tag cesc-tag-active">8小时</span>
+                                    <span class="cesc-tag">24小时</span>
+                                    <span class="cesc-tag">48小时</span>
                                 </div>
                             </div>
                             <div class="devicePanel-bottom">
-                                <div class="devicePanel-top" style="background: #fff;">
-                                    <span>
-                                        <i class="icon iconfont"
-                                           :class="{'icon-dianliang_low dangerStatus':item.voltage === 'low',
-                                                    'icon-dianliang_middl warningStatus':item.voltage === 'middle',
-                                                    'icon-dianliang_high normalStatus':item.voltage === 'high',
-                                                    }">
-                                        </i>&nbsp;
-                                        液位仪：&nbsp;{{item.deviceCode}}
-                                    </span>
-                                    <span class="selectItem">雨量计：
-                                         <el-select class="selectBox" v-model="item.title" placeholder="请选择">
-                                            <el-option
-                                                    v-for="item in typeOption.options"
-                                                    :key="item.value"
-                                                    :label="item.label"
-                                                    :value="item.value">
-                                            </el-option>
-                                        </el-select>
-                                    </span>
-                                </div>
-                                <div class="devicePanel-bottom" style="padding:0 20px">
-                                    <chart-lib :chartId="'chart'+index" :chartOptions="chartOptions3"></chart-lib>
-                                </div>
+                                <el-table
+                                        :data="tableData"
+                                        border
+                                        style="width: 100%">
+                                    <el-table-column
+                                            prop="district"
+                                            label="报警点">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="measureNum"
+                                            label="测量值">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="currentNum"
+                                            label="当前测量值">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="alarmNum"
+                                            label="报警值">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="date"
+                                            label="报警时间">
+                                    </el-table-column>
+                                </el-table>
                             </div>
                         </div>
                     </el-col>
+                </el-row>
+            </el-col>
+            <el-col :span="12" style="height:100%;">
+                <div class="cesc-box">
+                    <div class="devicePanel-top">
+                        <div class="deviceLeft">
+                            <span>已关注点</span>
+                        </div>
+                    </div>
+                    <div class="devicePanel-bottom" style="padding: 10px;">
+                        <div class="cescBox-top">
+                            <p>
+                                <b class="highlight-text">设备：</b>
+                                <b class="cesc-badge-active">液位仪</b>
+                            </p>
+                            <p>
+                                <b class="highlight-text">警报：</b>
+                                <b class="cesc-badge-active">液位警报</b>
+                                <b class="cesc-badge">电量警报</b>
+                            </p>
+                            <p>
+                                <span><b class="highlight-text">排序：</b>
+                                    <span class="cesc-badge cesc-badge-active">数据时间
+                                        <i class="icon iconfont icon-xiajiantou arrow-up active"></i>
+                                        <i class="icon iconfont icon-xiajiantou arrow-down"></i>
+                                    </span>
+                                    <span class="cesc-badge">剩余电量
+                                        <i class="icon iconfont icon-xiajiantou arrow-up active"></i>
+                                        <i class="icon iconfont icon-xiajiantou arrow-down"></i>
+                                    </span>
+                                    <span class="cesc-badge">警报状态
+                                        <i class="icon iconfont icon-xiajiantou arrow-up active"></i>
+                                        <i class="icon iconfont icon-xiajiantou arrow-down"></i>
+                                    </span>
+                                    <span class="cesc-badge">设备编号
+                                        <i class="icon iconfont icon-xiajiantou arrow-up active"></i>
+                                        <i class="icon iconfont icon-xiajiantou arrow-down"></i>
+                                    </span>
+                                    <span class="cesc-badge">安装点
+                                        <i class="icon iconfont icon-xiajiantou arrow-up active"></i>
+                                        <i class="icon iconfont icon-xiajiantou arrow-down"></i>
+                                    </span>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="cescBox-bottom" style="padding-top:10px;">
+                            <el-col :span="12" style="height:calc(50% - 10px);margin-bottom:10px;" v-for="(item,index) in collectList">
+                                <div class="cesc-box collect-box">
+                                    <div class="devicePanel-top border-line">
+                                        <span>{{item.title}}</span>
+                                        <div>
+                                            <i class="icon iconfont icon-shuaxin1"></i>
+                                            <i class="icon iconfont icon-shanchu"></i>
+                                        </div>
+                                    </div>
+                                    <div class="devicePanel-bottom">
+                                        <div class="devicePanel-top">
+                                            <span>
+                                                <i class="icon iconfont"
+                                                   :class="{'icon-dianliang_low dangerStatus':item.voltage === 'low',
+                                                            'icon-dianliang_middl warningStatus':item.voltage === 'middle',
+                                                            'icon-dianliang_high normalStatus':item.voltage === 'high',
+                                                            }">
+                                                </i>&nbsp;
+                                                液位仪：&nbsp;{{item.deviceCode}}
+                                            </span>
+                                            <span class="selectItem">雨量计：
+                                                 <el-select class="selectBox" v-model="item.title" placeholder="请选择">
+                                                    <el-option
+                                                            v-for="item in typeOption.options"
+                                                            :key="item.value"
+                                                            :label="item.label"
+                                                            :value="item.value">
+                                                    </el-option>
+                                                </el-select>
+                                            </span>
+                                        </div>
+                                        <div class="devicePanel-bottom" style="padding:0 20px">
+                                            <chart-lib :chartId="'chart'+index" :chartOptions="chartOptions3"></chart-lib>
+                                        </div>
+                                    </div>
+                                </div>
+                            </el-col>
+                            <el-col :span="12" style="height:calc(50% - 10px);margin-bottom:10px;">
+                                <div class="cesc-box collect-box collect-add">
+                                    <i class="el-icon-plus"></i>
+                                    <p>添加关注点</p>
+                                </div>
+                            </el-col>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </el-col>
         </el-row>
     </div>
 </div>

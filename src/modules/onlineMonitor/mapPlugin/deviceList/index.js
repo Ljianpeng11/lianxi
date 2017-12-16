@@ -12,81 +12,34 @@ var comm = Vue.extend({
             isOpenList:false,
             highLightIndex:-1,
             showDiv:false,
-            deviceList:[
-                {
-                    title:'五华区公众雨量监测点',
-                    status:0,
-                    voltage:'low',
-                    signal:'on',
-                    type:'RF',
-                    deviceCode:'17120011',
-                    deviceNum:0,
-                    onlineTime:'2',
-                    collect:0,
-                    x:117.8216341936,
-                    y:37.1701173675
-                },{
-                    title:'市体育馆',
-                    status:1,
-                    voltage:'middle',
-                    signal:'off',
-                    type:'WD',
-                    deviceCode:'16310128',
-                    deviceNum:'2.506',
-                    onlineTime:'2',
-                    collect:0,
-                    x:117.8563419346,
-                    y:37.1701172675
-                },{
-                    title:'普吉路与小路沟交叉口',
-                    status:2,
-                    voltage:'high',
-                    signal:'on',
-                    type:'WD',
-                    deviceCode:'17120011',
-                    deviceNum:'4.582',
-                    onlineTime:'2',
-                    collect:1,
-                    x:117.8143419346,
-                    y:37.1603759513
-                },{
-                    title:'滇缅大道戛纳小镇旁',
-                    status:3,
-                    voltage:'middle',
-                    signal:'off',
-                    type:'WD',
-                    deviceCode:'16310128',
-                    deviceNum:'1.964',
-                    onlineTime:'2',
-                    collect:1,
-                    x:117.8200419346,
-                    y:37.1706172675
-                },{
-                    title:'海源学院正门口',
-                    status:3,
-                    voltage:'middle',
-                    signal:'off',
-                    type:'WD',
-                    deviceCode:'16310128',
-                    deviceNum:'1.964',
-                    onlineTime:'2',
-                    collect:0,
-                    x:1,
-                    y:2
-                },{
-                    title:'西二环春苑小区对面',
-                    status:3,
-                    voltage:'middle',
-                    signal:'off',
-                    type:'WD',
-                    deviceCode:'16310128',
-                    deviceNum:'1.964',
-                    onlineTime:'2',
-                    collect:0,
-                    x:1,
-                    y:2
-                }
-            ],
+            typeOption1:{
+                value:'状态',
+                options: [{
+                    value: '正常',
+                    label: '正常'
+                }, {
+                    value: '预警',
+                    label: '预警'
+                }, {
+                    value: '报警',
+                    label: '报警'
+                }]
+            },
+            typeOption2:{
+                value:'地区',
+                options: []
+            },
+            typeOption3:{
+                value:'是否收藏',
+                options: [{
+                    value: '已收藏',
+                    label: '已收藏'
+                }, {
+                    value: '未收藏',
+                    label: '未收藏'
+                }]
+            },
+            deviceList:[],
             selectIitem:{}
         }
     },
@@ -97,7 +50,7 @@ var comm = Vue.extend({
                 var parentHeight = $(".deviceListBox").parent().height();
                 $(".deviceListBox").animate({'height':(parentHeight - 20) +'px'},1000);
             }else{
-                $(".deviceListBox").animate({'height':'8em'},1000);
+                $(".deviceListBox").animate({'height':'11.5em'},1000);
             }
         },
         openMapWindow:function(index,item){
@@ -127,27 +80,38 @@ var comm = Vue.extend({
                 item.status = 0;
                 item.signal = 'on';
                 item.facilityDevice.devices.forEach(function(val){
-                    val.items.forEach(function(monitorData){
-                        switch(monitorData.name){
-                            case '电压':
-                                monitorData.dValue = monitorData.dValue + 'V';
-                                if(monitorData.dValue < monitorData.lowAlarm){item.voltage = 'low'}
-                                else if(monitorData > monitorData.highAlarm){item.voltage = 'high'}
-                                else{item.voltage = 'middle'}
-                                break;
-                            case '电压比':
-                                monitorData.dValue = monitorData.dValue*100 + '%';
-                                break;
-                            case '水位':
-                                monitorData.dValue = monitorData.dValue.toFixed(2) + '(m)';
-                                break;
-                            default:break;
-                        }
-                        sysUpdateTime = monitorData.sysUpdateTime;
-                    });
-                });
+                   val.items.forEach(function(monitorData,index){
+                       switch(monitorData.name){
+                           case '电压':
+                               monitorData.dValue = monitorData.dValue + 'V';
+                               if(monitorData.dValue < monitorData.lowAlarm){item.voltage = 'low'}
+                               else if(monitorData > monitorData.highAlarm){item.voltage = 'high'}
+                               else{item.voltage = 'middle'}
+                               // val.items.splice(index,1);
+                               break;
+                           case '电量':
+                               monitorData.dValue = monitorData.dValue*100 + '%';
+                               // val.items.splice(index,1);
+                               break;
+                           case '信号强度':
+                               // val.items.splice(index,1);
+                               break;
+                           case '水位':
+                               monitorData.dValue = parseInt(monitorData.dValue).toFixed(2) + '(m)';
+                               break;
+                           default:break;
+                       }
+                       sysUpdateTime = monitorData.sysUpdateTime;
+                   });
+                    val.items.filter(function(){})
+               });
                 item.sysUpdateTime = sysUpdateTime;
-            });
+                var optionValue = {
+                    value:item.name,
+                    label:item.name
+                };
+                this.typeOption2.options.push(optionValue);
+            }.bind(this));
             this.deviceList = list;
             console.log(this.deviceList);
         },

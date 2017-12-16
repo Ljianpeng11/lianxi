@@ -57,16 +57,16 @@
 .cesc-tag{
     padding:0.3em 1.2em;
     border-radius:2em;
-    border:1px solid #999;
-    color: #999;
+    border:1px solid #fff;
+    color: #fff;
     cursor:pointer;
 }
 .cesc-tag-active{
     padding:0.3em 1.2em;
     border-radius:2em;
-    background: #2f91e4;
-    border:none;
-    color: #fff;
+    background: #fff;
+    border:1px solid #fff;
+    color: #666;
     cursor:pointer;
 }
 .selectItem > b,.selectItem > i{

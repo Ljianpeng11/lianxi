@@ -1,3 +1,26 @@
+.dataScreen-top{
+    height: 3.8em;
+    line-height: 3.8em;
+    background: #f1f1f1;
+}
+.dataScreen-top .cesc-tag{
+    border:1px solid #999;
+    color: #999;
+}
+.dataScreen-top .cesc-tag-active{
+    border:1px solid #2f91e4;
+    color: #fff;
+    background: #2f91e4;
+}
+.dataScreen-top .selectBox{
+    color: #2f91e4;
+}
+.dataScreen-top .selectBox>i{
+    color: #2f91e4;
+}
+.dataScreen-bottom{
+    height:calc(100% - 3.8em);
+}
 .dataScreenBox .deviceLeft{
     align-self: flex-start;
 }
@@ -12,38 +35,94 @@
     height: 100%;
 }
 .weatherData-top{
-    height:5.5em;
-    line-height:5.5em;
-}
-.weatherData-top .deviceLeft{
-    padding-left:1em;
     display: flex;
+    justify-content: space-evenly;
     align-items: center;
-}
-.weatherData-top > span{
-    padding-right:2em;
-}
-.weatherData-top .weather-icon{
-    font-size:4em;
-}
-.weatherData-bottom{
-    height: calc(100% - 5.5em);
+    font-size:2em;
 }
 .weather-num{
-    color: #2f91e4;
-    font-size:3em;
     position:relative;
     margin-left:10px;
+    font-size:1.2em;
 }
 .weather-num:before{
     content:'℃';
     position: absolute;
     top: -0.8em;
     right: -1em;
-    color: #333;
     display: block;
     font-size: 16px;
 }
 .scrollTable .el-table__body-wrapper{
     height:calc(100% - 3em);
+}
+.scrollTable .el-table__body{
+    width:calc(100% - 6px)!important;
+}
+.cescBox-top p{
+    height:2.5em;
+    line-height:2.5em;
+}
+.cescBox-bottom{
+    height:calc(100% - 7.5em);
+    overflow:auto;
+}
+.weatherBox{
+    color: #2f91e4;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 20px;
+}
+.weatherDataItem{
+    flex-basis: 50%;
+    text-align: center;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    padding: 20px 0 10px;
+}
+.weatherDataItem:first-child{
+    border-right: 1px solid #2f91e4;
+    border-bottom: 1px solid #2f91e4;
+}
+.weatherDataItem:last-child{
+    border-top: 1px solid #2f91e4;
+    border-left: 1px solid #2f91e4;
+}
+.weather-icon{
+    display: block;
+    transform: scale(3.5);
+}
+.collect-box .devicePanel-top{
+    background: transparent;
+    color: #666;
+}
+.collect-box .devicePanel-top i{
+    display: inline-block;
+    transform: scale(1.5);
+    vertical-align: middle;
+    margin-right: 5px;
+}
+.collect-box .selectBox{
+    color: #2f91e4;
+}
+.collect-box .border-line{
+    border-bottom:1px solid #ccc;
+}
+.collect-box{
+    box-shadow: none;
+    border: 1px solid #ccc;
+}
+.collect-add{
+    border:1px dashed #ccc;
+    display: flex;
+    flex-flow:column;
+    justify-content:center;
+    align-items: center;
+}
+.collect-add > i{
+    font-size:3em;
+}
+.collect-add > p{
+    margin-top:2em;
 }
