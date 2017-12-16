@@ -36,3 +36,11 @@
     background: #009ace;
     color: #fff;
 }
+
+
+.gaoqingPopup .esri-popup__position-container .listLabel-left{
+    flex-basis:40%;
+}
+.gaoqingPopup .esri-popup__position-container .listLabel-right{
+    flex-basis:60%;
+}
