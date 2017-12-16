@@ -15,7 +15,7 @@ var copy= require("gulp-copy");
 var zip = require("gulp-zip");
 var rimraf = require("rimraf");
 var git = require('gulp-git');
-var serverIP = '139.159.246.230:14041';
+var serverIP = '139.159.246.230:9000';
 
 /**
  * 合并lib文件
@@ -82,8 +82,8 @@ gulp.task('webpack-build',['concat-lib'],function () {
         }
         gulp.src('../src/index.html')
             .pipe(greplace('../release/','./'))
-            .pipe(greplace('../lib/arcgis', 'http://' + serverIP + '/lib/arcgis'))
-            .pipe(greplace('../lib/arcgis', 'http://' + serverIP + '/lib/arcgis'))
+            .pipe(greplace('../lib/arcgis/4.4/', 'http://' + serverIP + '/lib/arcgis/4.4/'))
+            .pipe(greplace('../lib/arcgis/4.4/', 'http://' + serverIP + '/lib/arcgis/4.4/'))
             .pipe(greplace('../vendors','./vendors'))
             .pipe(greplace('<!--build',''))
             .pipe(greplace('build-->',''))
