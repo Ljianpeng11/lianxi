@@ -50,28 +50,32 @@
    <ul class="listBoxContent">
       <li v-for="(item,index) in deviceList"
           @click="openMapWindow(index,item)"
-          :class="{'active':highLightIndex === index,'warningItem':item.status === 1,'dangerItem':item.status === 2}">
+          :class="{'active':highLightIndex === index}">
          <div class="listItemTop">
+            <i class="icon iconfont icon-pingjia"
+               :class="{'cesc-color':item.collect === 1}">
+            </i>
             <span>{{item.name}}</span>
             <i class="icon iconfont"
-               :class="{'icon-dianliang_low dangerStatus':item.voltage === 'low',
-                        'icon-dianliang_middl warningStatus':item.voltage === 'middle',
-                        'icon-dianliang_high normalStatus':item.voltage === 'high',
+               :class="{'icon-dianliang_low':item.voltage === 'low',
+                        'icon-dianliang_middl cesc-color':item.voltage === 'middle',
+                        'icon-dianliang_high cesc-color':item.voltage === 'high',
                         }">
             </i>
-            <i class="icon iconfont"
-               :class="{'icon-lianjie normalStatus':item.signal === 'on',
-                        'icon-disconnect warningStatus':item.signal === 'off',
-                        }">
-            </i>
-            <i class="icon iconfont icon-pingjia"
-               :class="{'warningStatus':item.collect === 1}">
+            <i class="icon iconfont icon-WIFI"
+               :class="{'cesc-color':item.signal === 'on'}">
             </i>
          </div>
          <div class="listContent" v-for="devicesItem in item.facilityDevice.devices">
+               <div class="leftDotBox">
+                  <span class="statusDot" :class="{
+                        'warningDot':item.status === 1,
+                        'dangerDot':item.status === 2
+                 }"></span>
+               </div>
                <div class="listLabel-left">
                   <p>设备名：</p>
-                  <p v-for="item in devicesItem.items">{{item.name}}</p>
+                  <p v-for="item in devicesItem.items">{{item.name}}：</p>
                   <p>最近通讯：</p>
                </div>
                <div class="listLabel-right">

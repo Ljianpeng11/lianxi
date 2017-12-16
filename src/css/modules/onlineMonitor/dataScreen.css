@@ -68,8 +68,7 @@
     overflow:auto;
 }
 .weatherBox{
-    background: #2f91e4;
-    color: #fff;
+    color: #2f91e4;
     display: flex;
     flex-wrap: wrap;
     padding: 10px 20px;
@@ -83,12 +82,12 @@
     padding: 20px 0 10px;
 }
 .weatherDataItem:first-child{
-    border-right: 1px solid #fff;
-    border-bottom: 1px solid #fff;
+    border-right: 1px solid #2f91e4;
+    border-bottom: 1px solid #2f91e4;
 }
 .weatherDataItem:last-child{
-    border-top: 1px solid #fff;
-    border-left: 1px solid #fff;
+    border-top: 1px solid #2f91e4;
+    border-left: 1px solid #2f91e4;
 }
 .weather-icon{
     display: block;
