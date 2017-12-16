@@ -87,22 +87,23 @@ var comm = Vue.extend({
                                if(monitorData.dValue < monitorData.lowAlarm){item.voltage = 'low'}
                                else if(monitorData > monitorData.highAlarm){item.voltage = 'high'}
                                else{item.voltage = 'middle'}
-                               val.items.splice(index,1);
+                               // val.items.splice(index,1);
                                break;
                            case '电量':
                                monitorData.dValue = monitorData.dValue*100 + '%';
-                               val.items.splice(index,1);
+                               // val.items.splice(index,1);
                                break;
                            case '信号强度':
-                               val.items.splice(index,1);
+                               // val.items.splice(index,1);
                                break;
                            case '水位':
-                               monitorData.dValue = monitorData.dValue.toFixed(2) + '(m)';
+                               monitorData.dValue = parseInt(monitorData.dValue).toFixed(2) + '(m)';
                                break;
                            default:break;
                        }
                        sysUpdateTime = monitorData.sysUpdateTime;
                    });
+                    val.items.filter(function(){})
                });
                 item.sysUpdateTime = sysUpdateTime;
                 var optionValue = {
