@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "gulp default --gulpfile build/gulpfile.js",
     "build": "gulp build --gulpfile build/gulpfile.js",
+    "config-hw": "gulp replace-setting --gulpfile build/gulpfile.js",
     "release": "gulp release --gulpfile build/gulpfile.js"
   },
   "keywords": [
@@ -34,7 +35,7 @@
     "jsplumb": "^2.4.3",
     "mint-ui": "^2.2.7",
     "momentjs": "^2.0.0",
-    "q": "^1.5.0",
+    "q": "^1.5.1",
     "require-dir": "^0.3.2",
     "sortablejs": "^1.6.0",
     "underscore": "^1.8.3",
