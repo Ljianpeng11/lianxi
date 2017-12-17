@@ -52,7 +52,8 @@
     text-align: center;
     border-radius: 2em;
     margin: 1em 0;
-    line-height: 3em;
+    line-height: 2em;
+    height: 2em;
     outline: none;
     border: none;
     color: #333;

@@ -1,0 +1,20 @@
+
+/* IE9+ */
+.el-select .el-input .el-input__icon {
+    top: 25% !important;
+}
+
+/* IE9+ */
+.el-select .el-input .el-input__icon.is-reverse {
+    top: 80% !important;
+}
+/* IE9+ */
+.gaoqingPopup .esri-popup__position-container .listLabel-left {
+    float: left;
+    flex-basis: calc(40% - 0.5em) !important;
+}
+/* IE9+ */
+.gaoqingPopup .esri-popup__position-container .listLabel-right{
+    float: left;
+    flex-basis: calc(60% - 0.5em) !important;
+}
