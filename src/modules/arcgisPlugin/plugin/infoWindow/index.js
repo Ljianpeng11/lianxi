@@ -20,7 +20,7 @@ var comm = Vue.extend({
                 if (this.isNumber(items[i].x) && this.isNumber(items[i].y)) {
                     var boxID = '#infoBox-' + items[i].facilityId;
                     var screenPoint = this.baseView.toScreen(items[i]);
-                    var x = screenPoint.x - 125;
+                    var x = screenPoint.x - 102;
                     var y = screenPoint.y - 30 -$(boxID).height();
                     items[i].style.top = y+"px";
                     items[i].style.left = x+"px";
@@ -95,7 +95,7 @@ var comm = Vue.extend({
                 var boxID = '#infoBox-' + item.facilityId;
                 var screenPoint = this.baseView.toScreen(item);
                 var x = screenPoint.x - 150;
-                var y = screenPoint.y - 30 -$(boxID).height();
+                var y = screenPoint.y - 54 -$(boxID).height();
                 item.style.top = y+"px";
                 item.style.left = x+"px";
                 item.style.display  = "block";

@@ -19,6 +19,7 @@
 .devicePanel-top .top-label{
     font-size:14px;
     margin-right:1em;
+    align-self: flex-end;
 }
 .deviceMiddle{
     color: #555;
@@ -52,7 +53,7 @@
 .multiDeviceBox{
     position: absolute;
     top:160px;
-    bottom:calc(18em + 20px);
+    bottom:calc(18em + 10px);
     right: 10px;
     width:400px;
 }
@@ -60,21 +61,25 @@
     height:8em;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 .tabInfoImg{
     flex-basis:40%;
 }
-.tabInfoItem{
-    
-}
+
 .mediaBox{
     height: calc(100% - 8em);
+    min-height:8em;
     overflow: auto;
 }
 .tabContent{
-    flex-basis: 60%;
-    padding:0;
+    flex-basis: 100%;
+    padding: 0;
+    height: 100%;
+    justify-content: center;
+}
+.tabContent listLabel-left,.tabContent listLabel-right{
+    flex-basis:50%;
 }
 .cesc-badge .arrow-up{
     display: inline-block;

@@ -1,21 +1,24 @@
-.devicePanel{
+.devicePanel {
     background: #f1f1f1;
     color: #9d9d9d;
-    box-shadow: 1px 1px 15px 0 rgba(0,0,0,.1);
-    z-index:1;
+    box-shadow: 1px 1px 15px 0 rgba(0, 0, 0, .1);
+    z-index: 1;
 }
-.deviceListBox{
-    width:18.5%;
-    height:8em;
+
+.deviceListBox {
+    width: 18.5%;
+    height: calc(100% - 20px);
     position: absolute;
-    top:10px;
-    left:10px;
+    top: 10px;
+    left: 10px;
 }
-.listBoxTop{
+
+.listBoxTop {
     height: 11.5em;
     background: #2f91e4;
 }
-.listBoxTitle{
+
+.listBoxTitle {
     height: 3em;
     line-height: 3em;
     display: flex;
@@ -25,60 +28,72 @@
     color: #fff;
     background: #007EDF;
 }
-.listBadge{
+
+.listBadge {
     padding: 0.2em 0.8em;
     background: #f2b817;
     border-radius: 2em;
     color: #fff;
 }
-.rotate-up{
-    transform:rotate(-90deg);
+
+.rotate-up {
+    transform: rotate(-90deg);
 }
-.rotate-down{
-    transform:rotate(90deg);
+
+.rotate-down {
+    transform: rotate(90deg);
 }
-.filterBox{
+
+.filterBox {
     padding: 0 1em;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.filterBox .cesc-tag{
+
+.filterBox .cesc-tag {
     padding: 0.3em 0.5em;
 }
-.deviceSearch{
+
+.deviceSearch {
     display: block;
-    width: 100%;
+    width: calc(100% - 0.4em);
     text-align: center;
     border-radius: 2em;
-    margin: 1em 0;
-    line-height: 3em;
+    margin: 1em 0.2em;
+    line-height: 2em;
+    height: 2em;
     outline: none;
     border: none;
     color: #333;
-    background: url("../../images/searchBtn.png")no-repeat 2em;
+    background: url("../../images/searchBtn.png") no-repeat 2em;
     background-color: #fff;
 }
-.listBoxContent{
+
+.listBoxContent {
     height: calc(100% - 11.5em);
     overflow: auto;
     padding: 0 5px;
     background: #f1f1f1;
 }
-.listBoxContent > li{
+
+.listBoxContent > li {
     background: #fff;
     border-radius: 5px;
     margin-bottom: 5px;
-    border:1px solid #eee;
+    border: 1px solid #eee;
 }
-.listBoxContent > li:first-child{
-    margin-top:5px;
+
+.listBoxContent > li:first-child {
+    margin-top: 5px;
 }
-.listBoxContent > li:hover,.listBoxContent .active{
+
+.listBoxContent > li:hover, .listBoxContent .active {
     background: #EDF6FD;
     cursor: default;
 }
-.listItemTop{
+
+.listItemTop {
     height: 2.6em;
     line-height: 2.6em;
     display: flex;
@@ -90,18 +105,25 @@
     position: relative;
     overflow: hidden;
 }
-.listItemTop > span{
-    color:#555;
-    flex:1;
+
+.listItemTop > span {
+    color: #555;
+    flex: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
+
 .listItemTop > i {
-    padding-right:5px;
-    font-size:1.2em;
+    padding-right: 5px;
+    font-size: 1.2em;
 }
+
 .listItemTop > i:last-child {
-    padding-right:0;
+    padding-right: 0;
 }
-.listContent{
+
+.listContent {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -109,64 +131,87 @@
     position: relative;
     overflow: hidden;
 }
-.listItemTop:before,.listItemTop:after,.listContent:before,.listContent:after{
+
+.listItemTop:before, .listItemTop:after, .listContent:before, .listContent:after {
     display: block;
-    content:'';
+    content: '';
     position: absolute;
-    width:1em;
-    height:1em;
+    width: 1em;
+    height: 1em;
     background: #f1f1f1;
-    border-radius:2em;
+    border-radius: 2em;
 }
-.listItemTop:before{
-    left:-0.5em;
-    bottom:-0.5em;
+
+.listItemTop:before {
+    left: -0.5em;
+    bottom: -0.5em;
 }
-.listItemTop:after{
-    right:-0.5em;
-    bottom:-0.5em;
+
+.listItemTop:after {
+    right: -0.5em;
+    bottom: -0.5em;
 }
-.listContent:before{
-    left:-0.5em;
-    top:-0.5em;
+
+.listContent:before {
+    left: -0.5em;
+    top: -0.5em;
 }
-.listContent:after{
-    right:-0.5em;
-    top:-0.5em;
+
+.listContent:after {
+    right: -0.5em;
+    top: -0.5em;
 }
-.listLabel-left{
-    flex-basis:30%;
-}
-.listLabel-right{
-    flex-basis:50%;
-}
-.listLabel-left{
+
+.listLabel-left {
+    flex-basis: calc(30% - 0.5em);
     text-align: right;
-    padding-right:0.5em;
-    color:#2f91e4;
-}
-.listLabel-right{
-    text-align: left;
-    padding-left:0.5em;
-    color:#666;
-}
-.cesc-color{
+    padding-right: 0.5em;
     color: #2f91e4;
 }
-.leftDotBox{
+
+.listLabel-right {
+    flex-basis: calc(50% - 0.5em);
+    text-align: left;
+    padding-left: 0.5em;
+    color: #666;
+}
+
+.devicePanel .unVisibleDiv {
+    display: none;
+}
+
+.devicePanel .unVisibleDiv .mapInfo {
+    width: 100%;
+}
+
+.mapInfo .mapInfoDetail {
+    text-align: center;
+    padding-bottom: 10px;
+}
+.mapInfo .mapInfoDetail .el-button{
+    padding:0 3em;
+    border-radius: 20px;
+    height: 30px;
+    font-size: 10px;
+}
+
+.mapInfo .listLabel-left {
+    flex-basis: 50%;
+}
+
+.mapInfo .listLabel-right {
+    flex-basis: 50%;
+}
+
+.cesc-color {
+    color: #2f91e4;
+}
+
+.leftDotBox {
     flex-basis: 20%;
     text-align: center;
 }
-.statusDot{
-    display: inline-block;
-    width: 1.5em;
-    height: 1.5em;
-    border-radius: 2em;
-    background: #9d9d9d
-}
-.dangerDot{
-    background: #fe5240;
-}
-.warningDot{
-    background: #f2b817;
+
+.icon-icon-life-alarm {
+    font-size: 1.5em;
 }

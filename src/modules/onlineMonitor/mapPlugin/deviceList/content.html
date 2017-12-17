@@ -10,7 +10,6 @@
       <input class="deviceSearch" type="text" placeholder="设备编号\监测点或拼音"/>
       <div class="filterBox">
          <div>
-            <span class="cesc-tag">
             <el-select class="selectBox" v-model="typeOption1.value" placeholder="请选择" style="width: 4em;">
                 <el-option
                         v-for="item in typeOption1.options"
@@ -19,10 +18,8 @@
                         :value="item.value">
                 </el-option>
             </el-select>
-         </span>
          </div>
          <div>
-            <span class="cesc-tag">
             <el-select class="selectBox" v-model="typeOption2.value" placeholder="请选择" style="width: 4em;">
                 <el-option
                         v-for="item in typeOption2.options"
@@ -31,10 +28,8 @@
                         :value="item.value">
                 </el-option>
             </el-select>
-         </span>
          </div>
          <div>
-            <span class="cesc-tag">
             <el-select class="selectBox" v-model="typeOption3.value" placeholder="请选择">
                 <el-option
                         v-for="item in typeOption3.options"
@@ -43,7 +38,6 @@
                         :value="item.value">
                 </el-option>
             </el-select>
-         </span>
          </div>
       </div>
    </div>
@@ -55,7 +49,7 @@
             <i class="icon iconfont icon-pingjia"
                :class="{'cesc-color':item.collect === 1}">
             </i>
-            <span>{{item.name}}</span>
+            <span :title="item.name">{{item.name}}</span>
             <i class="icon iconfont"
                :class="{'icon-dianliang_low':item.voltage === 'low',
                         'icon-dianliang_middl cesc-color':item.voltage === 'middle',
@@ -68,9 +62,11 @@
          </div>
          <div class="listContent" v-for="devicesItem in item.facilityDevice.devices">
                <div class="leftDotBox">
-                  <span class="statusDot" :class="{
-                        'warningDot':item.status === 1,
-                        'dangerDot':item.status === 2
+                  <span class="icon iconfont icon-icon-life-alarm" :class="{
+                        'normalStatus':item.status === 0,
+                        'warningStatus':item.status === 1,
+                        'dangerStatus':item.status === 2,
+                        'offlineStatus':item.status === 3
                  }"></span>
                </div>
                <div class="listLabel-left">

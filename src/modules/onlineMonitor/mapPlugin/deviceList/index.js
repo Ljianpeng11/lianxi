@@ -9,7 +9,7 @@ var comm = Vue.extend({
     props:["baseView"],
     data: function () {
         return {
-            isOpenList:false,
+            isOpenList:true,
             highLightIndex:-1,
             showDiv:false,
             typeOption1:{
@@ -80,30 +80,36 @@ var comm = Vue.extend({
                 item.status = 0;
                 item.signal = 'on';
                 item.facilityDevice.devices.forEach(function(val){
-                   val.items.forEach(function(monitorData,index){
-                       switch(monitorData.name){
-                           case '电压':
-                               monitorData.dValue = monitorData.dValue + 'V';
-                               if(monitorData.dValue < monitorData.lowAlarm){item.voltage = 'low'}
-                               else if(monitorData > monitorData.highAlarm){item.voltage = 'high'}
-                               else{item.voltage = 'middle'}
-                               // val.items.splice(index,1);
-                               break;
-                           case '电量':
-                               monitorData.dValue = monitorData.dValue*100 + '%';
-                               // val.items.splice(index,1);
-                               break;
-                           case '信号强度':
-                               // val.items.splice(index,1);
-                               break;
-                           case '水位':
-                               monitorData.dValue = parseInt(monitorData.dValue).toFixed(2) + '(m)';
-                               break;
-                           default:break;
-                       }
-                       sysUpdateTime = monitorData.sysUpdateTime;
-                   });
-                    val.items.filter(function(){})
+                    for(var i = 0;i<val.items.length;i++){
+                        var monitorData = val.items[i];
+                        switch(monitorData.name){
+                            case '电压':
+                                monitorData.dValue = monitorData.dValue + 'V';
+                                if(monitorData.dValue < monitorData.lowAlarm){item.voltage = 'low'}
+                                else if(monitorData > monitorData.highAlarm){item.voltage = 'high'}
+                                else{item.voltage = 'middle'}
+                                val.items.splice(i,1);
+                                i --;
+                                break;
+                            case '电量':
+                                monitorData.dValue = monitorData.dValue*100 + '%';
+                                val.items.splice(i,1);
+                                i --;
+                                break;
+                            case '信号强度':
+                                val.items.splice(i,1);
+                                i --;
+                                break;
+                            case '水位':
+                                monitorData.dValue = parseInt(monitorData.dValue).toFixed(2) + '(m)';
+                                break;
+                            default:break;
+                        }
+                        sysUpdateTime = monitorData.sysUpdateTime;
+                    }
+                   // val.items.forEach(function(monitorData,index){
+                   //
+                   // });
                });
                 item.sysUpdateTime = sysUpdateTime;
                 var optionValue = {

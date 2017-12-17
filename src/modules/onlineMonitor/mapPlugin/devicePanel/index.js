@@ -1,6 +1,6 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
-var echarts = require('echarts');
+var controller = require('controllers/rightPanelController');
 var moment = require('moment');
 
 //加载组件
@@ -49,6 +49,7 @@ var comm = Vue.extend({
                 if(!!this.timer){
                     clearInterval(this.timer);
                 }
+
             }.bind(this));
         }.bind(this));
     },
@@ -73,10 +74,15 @@ var comm = Vue.extend({
             this.isOpenPanel = true;
             this.deviceInfo = {
                 title:selectItem.name
-            }
+            };
             if(!!this.timer){
                 clearInterval(this.timer);
-            }
+            };
+            var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+            var startDate = moment().subtract(1, 'hours').format('YYYY-MM-DD HH:mm:ss');
+            controller.getHistoricalDataByMonitor(selectItem.facilityId, startDate, endDate, function (result) {
+                console.log(result);
+            });
         }.bind(this));
     },
     components: {

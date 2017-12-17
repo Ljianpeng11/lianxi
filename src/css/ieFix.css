@@ -1,0 +1,10 @@
+
+/* IE9+ */
+.el-select .el-input .el-input__icon {
+    top: 25% !important;
+}
+
+/* IE9+ */
+.el-select .el-input .el-input__icon.is-reverse {
+    top: 80% !important;
+}

@@ -168,9 +168,8 @@ var comm = Vue.extend({
                 {value:data.warningCount, name:'预警'},
                 {value:data.alarmCount, name:'报警'}
             ];
-            this.$refs.pieChart1.$emit('reloadChart');
             debugger;
-            console.log(this.alarmTableData);
+            this.$refs.pieChart1.reloadChart(this.chartOptions1);
         }.bind(this))
     },
     methods: {
