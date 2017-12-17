@@ -102,7 +102,7 @@ var comm = Vue.extend({
                                     self.chartOptions.yData2 = [];
                                     result.forEach(function(value){
                                         self.chartOptions.xData.push(value.deviceUpdateTime);
-                                        self.chartOptions.yData1.push(value.dValue);
+                                        self.chartOptions.yData1.push(value.dValue.toFixed(2));
                                         self.chartOptions.yData2.push(0);
                                     });
                                     console.log(self.chartOptions);
