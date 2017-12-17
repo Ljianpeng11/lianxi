@@ -79,10 +79,29 @@ var comm = Vue.extend({
                 clearInterval(this.timer);
             };
             var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
-            var startDate = moment().subtract(1, 'hours').format('YYYY-MM-DD HH:mm:ss');
-            controller.getHistoricalDataByMonitor(selectItem.facilityId, startDate, endDate, function (result) {
-                console.log(result);
-            });
+            var startDate = moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+            var self = this;
+            selectItem.facilityDevice.devices.forEach(function (val) {
+                val.items.forEach(function(item){
+                    if(item.itemTypeName.indexOf('waterLevel') !== -1){
+                        var itemID = item.itemID;
+                        controller.getHistoricalDataByMonitor(itemID, startDate, endDate, function (result) {
+                            if(!!result){
+                                self.chartOptions.xData = [];
+                                self.chartOptions.yData1 = [];
+                                self.chartOptions.yData2 = [];
+                                result.forEach(function(value){
+                                    self.chartOptions.xData.push(value.deviceUpdateTime);
+                                    self.chartOptions.yData1.push(value.dValue);
+                                    self.chartOptions.yData2.push(0);
+                                });
+                                console.log(self.chartOptions);
+                                self.$refs.deviceWaterChart.reloadChart(self.chartOptions);
+                            }
+                        });
+                    };
+                })
+            })
         }.bind(this));
     },
     components: {

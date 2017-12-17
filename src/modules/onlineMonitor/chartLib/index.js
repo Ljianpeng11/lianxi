@@ -238,9 +238,9 @@ var comm = Vue.extend({
                         this.myChart.resize();
                     }.bind(this), 1000)
                 }.bind(this));
-                if(data.type === 'YLChart'){
-                    this.refreshYLChart();
-                }
+                // if(data.type === 'YLChart'){
+                //     this.refreshYLChart();
+                // }
             }.bind(this));
         },
         addData:function(){

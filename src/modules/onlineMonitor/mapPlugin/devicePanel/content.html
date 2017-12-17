@@ -103,7 +103,7 @@
                 <i class="el-icon-d-arrow-right rotate-up" @click="closePanel"></i>
             </div>
             <div class="devicePanel-bottom">
-                <chart-lib :chartId="'deviceWaterChart'" :chartOptions="chartOptions"></chart-lib>
+                <chart-lib :chartId="'deviceWaterChart'" ref="deviceWaterChart" :chartOptions="chartOptions"></chart-lib>
             </div>
         </div>
     </transition>
