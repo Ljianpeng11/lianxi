@@ -78,7 +78,7 @@ var comm = Vue.extend({
                 var devices = selectItem.facilityDevice.devices;
                 var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
                 var startDate = moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
-
+                console.log(selectItem)
                 devices.forEach(function (device) {
                     var items = device.items;
                     items.forEach(function (item) {
@@ -93,7 +93,7 @@ var comm = Vue.extend({
                         } else if (item.itemID.indexOf('stressWaterLine') > 0) {
                             self.deviceInfo.stressWaterLine = item.dValue;
                         }
-                        if(item.itemTypeName.indexOf('waterLevel') !== -1) {
+                        if (item.itemTypeName.indexOf('waterLevel') !== -1) {//todo 动态输入水位值（超声波、压力）
                             var itemID = item.itemID;
                             controller.getHistoricalDataByMonitor(itemID, startDate, endDate, function (result) {
                                 if (!!result) {
@@ -112,12 +112,16 @@ var comm = Vue.extend({
                         }
                     })
                 });
-                if (selectItem.facilityDevice.pics) {
+                if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics > 0) {
                     var pics = selectItem.facilityDevice.pics;
                     self.devicePics.splice(0, self.devicePics.length);
                     pics.forEach(function (pic) {
                         self.devicePics.push(serviceHelper.getPicUrl(pic.id));
                     })
+                } else {
+                    self.devicePics = [
+                        './img/mediaGallery/default.png'
+                    ]
                 }
                 this.deviceInfo.title = selectItem.name;
                 this.isOpenPanel = true;
