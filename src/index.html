@@ -13,6 +13,7 @@
     <meta http-equiv="Cache" content="no-cache">
     <title>高青县城市排水防汛应急指挥系统</title>
     <link rel="stylesheet" href="./css/login.css">
+
     <script type="text/javascript">
         function login() {
             $('#loginPanel').hide();
@@ -128,22 +129,58 @@
 <script src="../3rd/vue/dist/vue.min.js"></script>
 <script src="../lib/arcgis/4.4/init.js"></script>
 
-    <script type="text/javascript">
-        window.cesc = {
-            require: require,
-            define: define,
-            dojo: dojo
-        }
-    </script>
+<script type="text/javascript">
+    window.cesc = {
+        require: require,
+        define: define,
+        dojo: dojo
+    }
+    var agent = navigator.userAgent.toLowerCase();
+    var regStr_ie = /msie [\d.]+/gi;
+    var regStr_ff = /firefox\/[\d.]+/gi
+    var regStr_chrome = /chrome\/[\d.]+/gi;
+    var regStr_saf = /safari\/[\d.]+/gi;
+    var isIE = false;
+    //IE
+    if (agent.indexOf("msie") > 0) {
+        isIE = true;
+    }
+    //firefox
+    if (agent.indexOf("firefox") > 0) {
+    }
+    //Chrome
+    if (agent.indexOf("chrome") > 0) {
+    }
+    //Safari
+    if (agent.indexOf("safari") > 0) {
+    }
+    if (isIE11()) {
+        isIE = true;
+    }
+    //IE11
+    function isIE11() { //IE
+        if (!!window.ActiveXObject || "ActiveXObject" in window)
+            return true;
+        else
+            return false;
+    }
+    if (isIE) {
+        var link = document.createElement('link');
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
+        link.href = './css/ieFix.css';
+        document.getElementsByTagName("head")[0].appendChild(link);
+    }
+</script>
 
 
-    <script src="../vendors/gridly/javascripts/jquery.gridly.js" async="async"></script>
+<script src="../vendors/gridly/javascripts/jquery.gridly.js" async="async"></script>
 
-    <!--webpack dll文件-->
-    <script src="../build/dist/vendor.dll.js"></script>
-    <script type="text/javascript" src="../release/app.bundle.js"></script>
-    <!-- Custom Theme Scripts -->
-    <script src="../vendors/custom.js"></script>
-    <script src="../vendors/skycons/skycons.js"></script>
+<!--webpack dll文件-->
+<script src="../build/dist/vendor.dll.js"></script>
+<script type="text/javascript" src="../release/app.bundle.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="../vendors/custom.js"></script>
+<script src="../vendors/skycons/skycons.js"></script>
 </body>
 </html>

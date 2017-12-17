@@ -10,7 +10,6 @@
       <input class="deviceSearch" type="text" placeholder="设备编号\监测点或拼音"/>
       <div class="filterBox">
          <div>
-            <span class="cesc-tag">
             <el-select class="selectBox" v-model="typeOption1.value" placeholder="请选择" style="width: 4em;">
                 <el-option
                         v-for="item in typeOption1.options"
@@ -19,10 +18,8 @@
                         :value="item.value">
                 </el-option>
             </el-select>
-         </span>
          </div>
          <div>
-            <span class="cesc-tag">
             <el-select class="selectBox" v-model="typeOption2.value" placeholder="请选择" style="width: 4em;">
                 <el-option
                         v-for="item in typeOption2.options"
@@ -31,10 +28,8 @@
                         :value="item.value">
                 </el-option>
             </el-select>
-         </span>
          </div>
          <div>
-            <span class="cesc-tag">
             <el-select class="selectBox" v-model="typeOption3.value" placeholder="请选择">
                 <el-option
                         v-for="item in typeOption3.options"
@@ -43,7 +38,6 @@
                         :value="item.value">
                 </el-option>
             </el-select>
-         </span>
          </div>
       </div>
    </div>
@@ -55,7 +49,7 @@
             <i class="icon iconfont icon-pingjia"
                :class="{'cesc-color':item.collect === 1}">
             </i>
-            <span>{{item.name}}</span>
+            <span :title="item.name">{{item.name}}</span>
             <i class="icon iconfont"
                :class="{'icon-dianliang_low':item.voltage === 'low',
                         'icon-dianliang_middl cesc-color':item.voltage === 'middle',

@@ -69,13 +69,14 @@ li {
 .navFix .nav_menu {
     height: 100%;
 }
+
 .titleBackground {
     background-color: #105ba3;
     background-size: 7em 6em;
     height: 6.8em;
-    width:100%;
-    background:url("../img/LOGO.png") center center no-repeat;
-    border-bottom:2px solid #095393;
+    width: 100%;
+    background: url("../img/LOGO.png") center center no-repeat;
+    border-bottom: 2px solid #095393;
 }
 
 ::-webkit-scrollbar {
@@ -139,20 +140,24 @@ li {
     margin: 0 0;
     /*padding: 15px 15px;*/
 }
-.weatherReportPanel{
+
+.weatherReportPanel {
     position: absolute;
     top: 0em;
     z-index: 999;
     background-color: white;
 }
-.radarReportPanel{
+
+.radarReportPanel {
     position: absolute;
     bottom: 7em;
     z-index: 999;
     background-color: white;
     width: 17em;
 }
-.mainContentBox{
+
+.mainContentBox {
     height: calc(100% - 5em - 2px);
     margin-top: 5em;
 }
+
