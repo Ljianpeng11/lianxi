@@ -6,7 +6,7 @@
 }
 .deviceListBox{
     width:18.5%;
-    height:8em;
+    height:calc(100% - 20px);
     position: absolute;
     top:10px;
     left:10px;
@@ -168,6 +168,12 @@
     height: 30px;
     font-size: 10px;
 }
+.mapInfo .listLabel-left{
+    flex-basis:50%;
+}
+.mapInfo .listLabel-right{
+    flex-basis:50%;
+}
 .cesc-color{
     color: #2f91e4;
 }
@@ -175,16 +181,6 @@
     flex-basis: 20%;
     text-align: center;
 }
-.statusDot{
-    display: inline-block;
-    width: 1.5em;
-    height: 1.5em;
-    border-radius: 2em;
-    background: #9d9d9d
-}
-.dangerDot{
-    background: #fe5240;
-}
-.warningDot{
-    background: #f2b817;
+.icon-icon-life-alarm{
+    font-size: 1.5em;
 }

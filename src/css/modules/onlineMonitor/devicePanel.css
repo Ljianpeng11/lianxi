@@ -19,6 +19,7 @@
 .devicePanel-top .top-label{
     font-size:14px;
     margin-right:1em;
+    align-self: flex-end;
 }
 .deviceMiddle{
     color: #555;
@@ -52,7 +53,7 @@
 .multiDeviceBox{
     position: absolute;
     top:160px;
-    bottom:calc(18em + 20px);
+    bottom:calc(18em + 10px);
     right: 10px;
     width:400px;
 }
@@ -60,14 +61,12 @@
     height:8em;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 .tabInfoImg{
     flex-basis:40%;
 }
-.tabInfoItem{
-    
-}
+
 .mediaBox{
     height: calc(100% - 8em);
     overflow: auto;

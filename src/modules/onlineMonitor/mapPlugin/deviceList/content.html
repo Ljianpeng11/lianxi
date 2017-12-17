@@ -62,9 +62,11 @@
          </div>
          <div class="listContent" v-for="devicesItem in item.facilityDevice.devices">
                <div class="leftDotBox">
-                  <span class="statusDot" :class="{
-                        'warningDot':item.status === 1,
-                        'dangerDot':item.status === 2
+                  <span class="icon iconfont icon-icon-life-alarm" :class="{
+                        'normalStatus':item.status === 0,
+                        'warningStatus':item.status === 1,
+                        'dangerStatus':item.status === 2,
+                        'offlineStatus':item.status === 3
                  }"></span>
                </div>
                <div class="listLabel-left">
