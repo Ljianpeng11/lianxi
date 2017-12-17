@@ -2,69 +2,72 @@
     <div class="devicePanel multiDeviceBox" v-if="isOpenPanel">
         <div class="devicePanel-top">
             <span>{{deviceInfo.title}}</span>
-            <i class="el-icon-d-arrow-right rotate-up" @click="closeBox"></i>
+            <i class="el-icon-d-arrow-right rotate-up" @click="closePanel"></i>
         </div>
         <div class="devicePanel-bottom">
             <el-tabs type="border-card" class="multiTabs">
                 <!--<el-tab-pane label="雨量计">-->
-                    <!--<div class="tabInfoBox">-->
-                        <!--<div class="tabInfoImg">-->
-                            <!--<img src="../../../../img/mediaGallery/device-yj.jpg" alt="" width="100%">-->
-                        <!--</div>-->
-                        <!--<div class="listContent tabContent">-->
-                            <!--<div class="listLabel-left">-->
-                                <!--<p>设备编号：</p>-->
-                                <!--<p>降雨量：</p>-->
-                                <!--<p>电压：</p>-->
-                                <!--<p>电量：</p>-->
-                                <!--<p>最近通讯：</p>-->
-                            <!--</div>-->
-                            <!--<div class="listLabel-right">-->
-                                <!--<p>16310218</p>-->
-                                <!--<p class="numStatus">0(mm)</p>-->
-                                <!--<p>3.9V</p>-->
-                                <!--<p>90%</p>-->
-                                <!--<p>2分钟前</p>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="mediaBox">-->
-                        <!--<img src="../../../../img/mediaGallery/video.jpg" alt="" width="100%" height="100%">-->
-                    <!--</div>-->
+                <!--<div class="tabInfoBox">-->
+                <!--<div class="tabInfoImg">-->
+                <!--<img src="../../../../img/mediaGallery/device-yj.jpg" alt="" width="100%">-->
+                <!--</div>-->
+                <!--<div class="listContent tabContent">-->
+                <!--<div class="listLabel-left">-->
+                <!--<p>设备编号：</p>-->
+                <!--<p>降雨量：</p>-->
+                <!--<p>电压：</p>-->
+                <!--<p>电量：</p>-->
+                <!--<p>最近通讯：</p>-->
+                <!--</div>-->
+                <!--<div class="listLabel-right">-->
+                <!--<p>16310218</p>-->
+                <!--<p class="numStatus">0(mm)</p>-->
+                <!--<p>3.9V</p>-->
+                <!--<p>90%</p>-->
+                <!--<p>2分钟前</p>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="mediaBox">-->
+                <!--<img src="../../../../img/mediaGallery/video.jpg" alt="" width="100%" height="100%">-->
+                <!--</div>-->
                 <!--</el-tab-pane>-->
                 <el-tab-pane label="液位仪">
                     <div class="tabInfoBox">
-                        <div class="tabInfoImg">
-                            <img src="../../../../img/mediaGallery/device-yj.jpg" alt="" width="100%">
-                        </div>
-                        <div class="tabInfoImg">
-                            <img src="../../../../img/mediaGallery/device-yj.jpg" alt="" width="100%">
+                        <div class="tabInfoImg" v-for="pic in devicePics">
+                            <img :src="pic" alt="设备图片" width="100%">
                         </div>
                         <!--<div class="listContent tabContent">-->
-                            <!--<div class="listLabel-left">-->
-                                <!--<p>设备编号：</p>-->
-                                <!--<p>液位：</p>-->
-                                <!--<p>最近通讯：</p>-->
-                            <!--</div>-->
-                            <!--<div class="listLabel-right">-->
-                                <!--<p>16310218</p>-->
-                                <!--<p class="numStatus">0(m)</p>-->
-                                <!--<p>2分钟前</p>-->
-                            <!--</div>-->
+                        <!--<div class="listLabel-left">-->
+                        <!--<p>设备编号：</p>-->
+                        <!--<p>液位：</p>-->
+                        <!--<p>最近通讯：</p>-->
+                        <!--</div>-->
+                        <!--<div class="listLabel-right">-->
+                        <!--<p>16310218</p>-->
+                        <!--<p class="numStatus">0(m)</p>-->
+                        <!--<p>2分钟前</p>-->
+                        <!--</div>-->
                         <!--</div>-->
                     </div>
                     <div class="mediaBox">
                         <!--<img src="../../../../img/mediaGallery/video.jpg" alt="" width="100%" height="100%">-->
-                        <div class="listContent tabContent">
+                        <div class="listContent tabContent" v-if="facilityTypeName=='WD'">
                             <div class="listLabel-left">
-                                <p>设备编号：</p>
-                                <p>液位：</p>
+                                <p>超声波水位：</p>
+                                <p>压力水位：</p>
+                                <p>井盖高度：</p>
+                                <p>预警值：</p>
+                                <p>报警值：</p>
                                 <p>最近通讯：</p>
                             </div>
                             <div class="listLabel-right">
-                                <p>16310218</p>
-                                <p class="numStatus">0(m)</p>
-                                <p>2分钟前</p>
+                                <p>{{deviceInfo.waterLevel}}</p>
+                                <p class="numStatus">{{deviceInfo.stressWaterLine}}&nbsp(m)</p>
+                                <p class="numStatus">{{deviceInfo.pipeHeight}}&nbsp(m)</p>
+                                <p class="numStatus">{{deviceInfo.warningHeight}}&nbsp(m)</p>
+                                <p class="numStatus">{{deviceInfo.alarmHeight}}&nbsp(m)</p>
+                                <p>{{deviceInfo.sysUpdateTime}}</p>
                             </div>
                         </div>
                     </div>
@@ -77,24 +80,24 @@
             <div class="devicePanel-top">
                 <span style="flex:1;">{{deviceInfo.title}}</span>
                 <!--<div class="deviceMiddle">-->
-                    <!--<span class="selectItem">参考线：-->
-                         <!--<b>参考线</b><i class="icon iconfont icon-xiajiantou"></i>-->
-                         <!--<ul class="selectBox" style="display:none">-->
-                            <!--<li></li>-->
-                         <!--</ul>-->
-                    <!--</span>-->
-                    <!--<span class="selectItem">数据显示：-->
-                         <!--<b>测量液位(m)</b><i class="icon iconfont icon-xiajiantou"></i>-->
-                         <!--<ul class="selectBox" style="display:none">-->
-                            <!--<li></li>-->
-                         <!--</ul>-->
-                    <!--</span>-->
-                    <!--<span class="selectItem">参考雨量计：-->
-                         <!--<b>五华区公众雨量监测点</b><i class="icon iconfont icon-xiajiantou"></i>-->
-                         <!--<ul class="selectBox" style="display:none">-->
-                            <!--<li></li>-->
-                         <!--</ul>-->
-                    <!--</span>-->
+                <!--<span class="selectItem">参考线：-->
+                <!--<b>参考线</b><i class="icon iconfont icon-xiajiantou"></i>-->
+                <!--<ul class="selectBox" style="display:none">-->
+                <!--<li></li>-->
+                <!--</ul>-->
+                <!--</span>-->
+                <!--<span class="selectItem">数据显示：-->
+                <!--<b>测量液位(m)</b><i class="icon iconfont icon-xiajiantou"></i>-->
+                <!--<ul class="selectBox" style="display:none">-->
+                <!--<li></li>-->
+                <!--</ul>-->
+                <!--</span>-->
+                <!--<span class="selectItem">参考雨量计：-->
+                <!--<b>五华区公众雨量监测点</b><i class="icon iconfont icon-xiajiantou"></i>-->
+                <!--<ul class="selectBox" style="display:none">-->
+                <!--<li></li>-->
+                <!--</ul>-->
+                <!--</span>-->
                 <!--</div>-->
                 <span class="top-label">
                     <!--累计降雨量：<b>0</b>mm&nbsp;&nbsp;&nbsp;-->

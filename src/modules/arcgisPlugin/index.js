@@ -189,10 +189,11 @@ var comm = Vue.extend({
                                         return;
                                     }
                                     // mapHelper.setCenter(graView, evt.mapPoint.x, evt.mapPoint.y);
-                                    if (layerId === 'graphicLayer') {
+                              /*      if (layerId === 'graphicLayer') {
+                                        eventHelper.emit('openDevicePanel',selectItem);
                                         self.$refs.rightPanel.open(attributes.item, attributes.facilityTypeName);
                                         return;
-                                    }
+                                    }*/
                                 });
                             });
                         });
