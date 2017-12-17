@@ -256,6 +256,7 @@
 
 body .container.body .right_col {
     background: #F7F7F7;
+    overflow-y: hidden;
 }
 
 .nav_title {
