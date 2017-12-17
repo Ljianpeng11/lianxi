@@ -260,7 +260,7 @@ var comm = Vue.extend({
             }.bind(this),2000);
         },
         reloadChart:function(data){
-            this.chartOptions = data;
+            this.loadChart('#' + this.chartId,data);
         }
     },
     mounted: function () {
