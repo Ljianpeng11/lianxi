@@ -14,24 +14,22 @@
             <!-- /Popup Header -->
             <!-- Popup Content -->
             <article class="esri-popup__content">
-                <div class="mapInfo">
-                    <div class="listContent" style="align-items: baseline;" v-for="devicesItem in infoBox.facilityDevice.devices">
-                        <div class="listLabel-left">
-                            <p>设备名：</p>
-                            <p v-for="monitorData in devicesItem.items">{{monitorData.name}}：</p>
-                            <p>最近通讯：</p>
-                        </div>
-                        <div class="listLabel-right">
-                            <p>{{devicesItem.name}}</p>
-                            <p v-for="monitorData in devicesItem.items">{{monitorData.dValue}}</p>
-                            <p>{{devicesItem.sysUpdateTime}}</p>
-                        </div>
+                <div class="gaoqingListContent" style="align-items: baseline;" v-for="devicesItem in infoBox.facilityDevice.devices">
+                    <div class="listLabel-left">
+                        <p>设备名：</p>
+                        <p v-for="monitorData in devicesItem.items">{{monitorData.name}}：</p>
+                        <p>最近通讯：</p>
                     </div>
-                    <div class="mapInfoDetail">
-                        <button type="button" class="el-button mapInfoDetailBtn el-button--primary"  v-on:click="showDevicePanel(infoBox)" >
-                            <span>详情</span>
-                        </button>
+                    <div class="listLabel-right">
+                        <p>{{devicesItem.name}}</p>
+                        <p v-for="monitorData in devicesItem.items">{{monitorData.dValue}}</p>
+                        <p>{{devicesItem.sysUpdateTime}}</p>
                     </div>
+                </div>
+                <div class="detailBtnDiv">
+                    <button type="button" class="el-button detailBtn el-button--primary"  v-on:click="showDevicePanel(infoBox)" >
+                        <span>详情</span>
+                    </button>
                 </div>
             </article>
             <!-- /Popup Content -->
