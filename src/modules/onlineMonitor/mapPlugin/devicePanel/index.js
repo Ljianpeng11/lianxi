@@ -77,7 +77,7 @@ var comm = Vue.extend({
                 var self = this;
                 var devices = selectItem.facilityDevice.devices;
                 var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
-                var startDate = moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+                var startDate = moment().subtract(6, 'hours').format('YYYY-MM-DD HH:mm:ss');
                 console.log(selectItem)
                 devices.forEach(function (device) {
                     var items = device.items;
