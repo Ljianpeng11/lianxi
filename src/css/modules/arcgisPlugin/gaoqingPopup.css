@@ -1,5 +1,5 @@
 .gaoqingPopup .esri-popup__main-container {
-    width: 250px;
+    width: 200px;
     border-radius: 10px;
     padding-bottom: 0px;
 }
@@ -22,7 +22,9 @@
     max-width: 13em;
     word-break: keep-all;
 }
-
+.gaoqingPopup .esri-popup__content{
+    margin:0 10px;
+}
 .gaoqingPopup .esri-popup__content .listContent{
     padding-bottom: 0px;
 }
