@@ -49,7 +49,7 @@
             <i class="icon iconfont icon-pingjia"
                :class="{'cesc-color':item.collect === 1}">
             </i>
-            <span>{{item.name}}</span>
+            <span :title="item.name">{{item.name}}</span>
             <i class="icon iconfont"
                :class="{'icon-dianliang_low':item.voltage === 'low',
                         'icon-dianliang_middl cesc-color':item.voltage === 'middle',

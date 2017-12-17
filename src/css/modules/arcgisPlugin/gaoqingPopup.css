@@ -41,8 +41,8 @@
 
 
 .gaoqingPopup .esri-popup__position-container .listLabel-left{
-    flex-basis:40%;
+    flex-basis: calc(40% - 0.5em);
 }
 .gaoqingPopup .esri-popup__position-container .listLabel-right{
-    flex-basis:60%;
+    flex-basis: calc(60% - 0.5em);
 }
