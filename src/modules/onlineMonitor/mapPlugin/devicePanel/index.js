@@ -79,7 +79,7 @@ var comm = Vue.extend({
                 clearInterval(this.timer);
             };
             var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
-            var startDate = moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+            var startDate = moment().subtract(6, 'hours').format('YYYY-MM-DD HH:mm:ss');
             var self = this;
             selectItem.facilityDevice.devices.forEach(function (val) {
                 val.items.forEach(function(item){
