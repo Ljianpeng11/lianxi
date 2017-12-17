@@ -1,6 +1,6 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
-var echarts = require('echarts');
+var controller = require('controllers/rightPanelController');
 var moment = require('moment');
 var serviceHelper = require('services/serviceHelper');
 
@@ -76,6 +76,9 @@ var comm = Vue.extend({
             if (!!selectItem.facilityDevice) {
                 var self = this;
                 var devices = selectItem.facilityDevice.devices;
+                var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+                var startDate = moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+
                 devices.forEach(function (device) {
                     var items = device.items;
                     items.forEach(function (item) {
@@ -89,6 +92,23 @@ var comm = Vue.extend({
                             }
                         } else if (item.itemID.indexOf('stressWaterLine') > 0) {
                             self.deviceInfo.stressWaterLine = item.dValue;
+                        }
+                        if(item.itemTypeName.indexOf('waterLevel') !== -1) {
+                            var itemID = item.itemID;
+                            controller.getHistoricalDataByMonitor(itemID, startDate, endDate, function (result) {
+                                if (!!result) {
+                                    self.chartOptions.xData = [];
+                                    self.chartOptions.yData1 = [];
+                                    self.chartOptions.yData2 = [];
+                                    result.forEach(function (value) {
+                                        self.chartOptions.xData.push(value.deviceUpdateTime);
+                                        self.chartOptions.yData1.push(value.dValue);
+                                        self.chartOptions.yData2.push(0);
+                                    });
+                                    console.log(self.chartOptions);
+                                    self.$refs.deviceWaterChart.reloadChart(self.chartOptions);
+                                }
+                            });
                         }
                     })
                 });

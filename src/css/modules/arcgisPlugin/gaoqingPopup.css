@@ -30,16 +30,22 @@
 }
 .gaoqingPopup .esri-popup__content .detailBtnDiv {
     text-align: center;
-    width: 100%;
     padding-bottom: 10px;
 }
 .gaoqingPopup .esri-popup__content .detailBtn {
-    border-radius: 2em;
-    background: #009ace;
-    color: #fff;
+    width: 150px;
+    border-radius: 20px;
+    height: 30px;
+    font-size: 10px;
 }
-
-
+.gaoqingPopup .esri-popup__content .gaoqingListContent{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 1em;
+    position: relative;
+    overflow: hidden;
+}
 .gaoqingPopup .esri-popup__position-container .listLabel-left{
     flex-basis: calc(40% - 0.5em);
 }
