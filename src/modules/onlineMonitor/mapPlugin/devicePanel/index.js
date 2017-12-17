@@ -96,11 +96,11 @@ var comm = Vue.extend({
                         if (item.itemTypeName.indexOf('waterLevel') !== -1) {//todo 动态输入水位值（超声波、压力）
                             var itemID = item.itemID;
                             controller.getHistoricalDataByMonitor(itemID, startDate, endDate, function (result) {
-                                if (!!result) {
+                                if(!!result){
                                     self.chartOptions.xData = [];
                                     self.chartOptions.yData1 = [];
                                     self.chartOptions.yData2 = [];
-                                    result.forEach(function (value) {
+                                    result.forEach(function(value){
                                         self.chartOptions.xData.push(value.deviceUpdateTime);
                                         self.chartOptions.yData1.push(value.dValue);
                                         self.chartOptions.yData2.push(0);
