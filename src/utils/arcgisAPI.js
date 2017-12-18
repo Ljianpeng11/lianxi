@@ -327,7 +327,7 @@ define(function () {
         var fullExtent = new instance.Extent(-180.0, -90.0, 180.0, 90.0, spatialReference);
         var tiledVectorLayer = new instance.WebTileLayer({
             id: "facilitySuperMapLayer",
-            urlTemplate: "http://223.99.169.187:20070/iserver/services/map-gx/wmts-china/gx/default/ChinaPublicServices_gx/{level}/{row}/{col}.png",
+            urlTemplate: "http://223.99.169.187:20070/iserver/services/map-gx_new/wmts-china/gx/default/ChinaPublicServices_gx/{level}/{row}/{col}.png",
             copyright: "",
             spatialReference: spatialReference,
             fullExtent: fullExtent,
