@@ -38,6 +38,9 @@ var comm = Vue.extend({
             facilityTypeName: '',
             chartOptions: {
                 type: 'YLChart',
+                warningHeight:0,
+                wellLidHeight:0,
+                alarmHeight:0,
                 xData: xData,
                 yData1: yData1,
                 yData2: yData2
@@ -87,9 +90,18 @@ var comm = Vue.extend({
                                 sysUpdateTime: device.sysUpdateTime,
                                 alarmHeight: item.alarmHeight,
                                 warningHeight: item.warningHeight,
-                                pipeHeight: item.wellLidHeight,
+                                wellLidHeight: item.wellLidHeight,
                                 waterLevel: item.dValue
                             }
+                            if(!!item.alarmHeight){
+                                self.chartOptions.alarmHeight = item.wellLidHeight;
+                            }
+                            if(!!item.warningHeight){
+                                self.chartOptions.warningHeight = item.warningHeight;
+                            }
+                            // if(!!item.wellLidHeight){
+                            //     self.chartOptions.wellLidHeight = item.wellLidHeight;
+                            // }
                         } else if (item.itemID.indexOf('stressWaterLine') > 0) {
                             self.deviceInfo.stressWaterLine = item.dValue;
                         }
@@ -105,14 +117,14 @@ var comm = Vue.extend({
                                         self.chartOptions.yData1.push(value.dValue.toFixed(2));
                                         self.chartOptions.yData2.push(0);
                                     });
-                                    console.log(self.chartOptions);
+                                    debugger;
                                     self.$refs.deviceWaterChart.reloadChart(self.chartOptions);
                                 }
                             });
                         }
                     })
                 });
-                if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics > 0) {
+                if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics.length > 0) {
                     var pics = selectItem.facilityDevice.pics;
                     self.devicePics.splice(0, self.devicePics.length);
                     pics.forEach(function (pic) {

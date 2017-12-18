@@ -62,7 +62,13 @@ var comm = Vue.extend({
                                 {
                                     name: '测量液位(m)',
                                     type: 'value',
-                                    // max: 4,
+                                    max: (function(){
+                                        if(!!data.alarmHeight){
+                                            return Math.ceil(parseFloat(data.alarmHeight) + 1);
+                                        }else{
+                                            return 1;
+                                        }
+                                    })(),
                                     splitNumber: 4,
                                     axisLine: {
                                         show: false
@@ -122,45 +128,9 @@ var comm = Vue.extend({
                                             // }
                                         }
                                     },
-                                    // markLine: {
-                                    //     lineStyle: {
-                                    //         normal: {
-                                    //             color: '#fe5240',
-                                    //             width: 1,
-                                    //             type: 'solid'
-                                    //         }
-                                    //     },
-                                    //     symbolSize: 0,
-                                    //     data: [{
-                                    //         yAxis: 0.5,
-                                    //         label: {
-                                    //             normal: {
-                                    //                 show: true,
-                                    //                 formatter: '预警',
-                                    //                 position:'start'
-                                    //             }
-                                    //         },
-                                    //         lineStyle:{
-                                    //             normal:{
-                                    //                 color:'#f2b817'
-                                    //             }
-                                    //         }
-                                    //     }, {
-                                    //         yAxis: 0.8,
-                                    //         label: {
-                                    //             normal: {
-                                    //                 show: true,
-                                    //                 formatter: '报警',
-                                    //                 position:'start'
-                                    //             }
-                                    //         }
-                                    //     }],
-                                    //     label: {
-                                    //         normal: {
-                                    //             formatter: '{b}:{d}'
-                                    //         }
-                                    //     }
-                                    // },
+                                    markLine:{
+                                        symbolSize: 0
+                                    },
                                     data: data.yData1
                                 },{
                                     name: '降雨量(mm)',
@@ -187,6 +157,62 @@ var comm = Vue.extend({
                                 }
                             ]
                         };
+                        this.options.series[0].markLine.data = [];
+                        if(!!data.warningHeight){
+                            this.options.series[0].markLine.data.push({
+                                yAxis: data.warningHeight,
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        formatter: '预警',
+                                        position:'start'
+                                    }
+                                },
+                                lineStyle:{
+                                    normal:{
+                                        color:'#f2b817',
+                                        width: 1,
+                                        type: 'solid'
+                                    }
+                                }
+                            });
+                        }
+                        if(!!data.alarmHeight){
+                            this.options.series[0].markLine.data.push({
+                                yAxis: data.alarmHeight,
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        formatter: '报警',
+                                        position:'start'
+                                    }
+                                },
+                                lineStyle: {
+                                    normal: {
+                                        color: '#fe5240',
+                                        width: 1,
+                                        type: 'solid'
+                                    }
+                                }
+                            })
+                        }
+                        // if(!!data.wellLidHeight){
+                        //     this.options.series[0].markLine.data.push({
+                        //         yAxis: data.wellLidHeight,
+                        //         label: {
+                        //             normal: {
+                        //                 show: true,
+                        //                 formatter: '溢流',
+                        //                 position:'start'
+                        //             }
+                        //         },
+                        //         lineStyle:{
+                        //             normal:{
+                        //                 color:'#FF00FF'
+                        //             }
+                        //         }
+                        //     })
+                        // }
                         break;
                     case 'pieChart':
                         this.options = {

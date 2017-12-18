@@ -159,18 +159,22 @@ var comm = Vue.extend({
     },
     created:function(){
         iotController.getIotDeviceRunningState(function(data){
-            var warningIotDeviceList = data.warningIotDeviceList;
-            var alarmIotDeviceList = data.alarmIotDeviceList;
-            alarmIotDeviceList.push(...alarmIotDeviceList);
-            this.alarmTableData = alarmIotDeviceList;
+            this.alarmTableData = data.alarmIotDeviceList;
             this.chartOptions1.data = [
                 {value:data.healthCount, name:'正常'},
                 {value:data.warningCount, name:'预警'},
                 {value:data.alarmCount, name:'报警'}
             ];
-            debugger;
             this.$refs.pieChart1.reloadChart(this.chartOptions1);
-        }.bind(this))
+        }.bind(this));
+        iotController.getIotDeviceOnlineState(function(data) {
+            this.offlineTableData = data.illIotDeviceList;
+            this.chartOptions2.data = [
+                {value: data.illCount, name: '断线'},
+                {value: data.healthCount, name: '在线'},
+            ];
+            this.$refs.pieChart2.reloadChart(this.chartOptions2);
+        }.bind(this));
     },
     methods: {
         bindRowClass:function(row,index){

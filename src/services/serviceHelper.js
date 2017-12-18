@@ -33,7 +33,8 @@ define(['config'], function (config) {
         saveIotDeviceInfo: basicUrl + '/iotDevice/save',
         sendDataCommand: basicUrl + '/iotDevice/registerSendDataCommand',
         iotFacilityInfo: basicUrl + '/iotDevice/list',
-        getIotDeviceRunningState:basicUrl + '/iotDevice/iotDeviceRunningState'
+        getIotDeviceRunningState:basicUrl + '/iotDevice/iotDeviceRunningState',
+        getIotDeviceOnlineState:basicUrl + '/iotDevice/iotDeviceOnlineState'
     }
     return {
         setToken: function (token) {
