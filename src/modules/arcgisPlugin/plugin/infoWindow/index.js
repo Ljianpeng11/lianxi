@@ -30,7 +30,7 @@ var comm = Vue.extend({
             }
         },
         highLight: function (item) {
-            item.style.zIndex=20;
+            item.style.zIndex=2;
         },
         normalize: function (item) {
             item.style.zIndex=1;

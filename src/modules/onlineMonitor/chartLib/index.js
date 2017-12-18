@@ -62,7 +62,7 @@ var comm = Vue.extend({
                                 {
                                     name: '测量液位(m)',
                                     type: 'value',
-                                    max: 4,
+                                    // max: 4,
                                     splitNumber: 4,
                                     axisLine: {
                                         show: false
@@ -79,28 +79,28 @@ var comm = Vue.extend({
                                     }
                                 }
                             ],
-                            visualMap: {
-                                top: 10,
-                                right: 10,
-                                seriesIndex:0,
-                                showLabel:false,
-                                show:false,
-                                pieces: [{
-                                    gt: 0,
-                                    lte: 0.5,
-                                    color: '#2f91e4'
-                                }, {
-                                    gt: 0.5,
-                                    lte: 0.8,
-                                    color: '#f2b817'
-                                }, {
-                                    gt: 0.8,
-                                    color: '#fe5240'
-                                }],
-                                outOfRange: {
-                                    color: '#999'
-                                }
-                            },
+                            // visualMap: {
+                            //     top: 10,
+                            //     right: 10,
+                            //     seriesIndex:0,
+                            //     showLabel:false,
+                            //     show:false,
+                            //     pieces: [{
+                            //         gt: 0,
+                            //         lte: 0.5,
+                            //         color: '#2f91e4'
+                            //     }, {
+                            //         gt: 0.5,
+                            //         lte: 0.8,
+                            //         color: '#f2b817'
+                            //     }, {
+                            //         gt: 0.8,
+                            //         color: '#fe5240'
+                            //     }],
+                            //     outOfRange: {
+                            //         color: '#999'
+                            //     }
+                            // },
                             series: [
                                 {
                                     name: '测量液位(m)',
@@ -111,56 +111,56 @@ var comm = Vue.extend({
                                         trigger: 'axis'
                                     },
                                     smooth: true,
-                                    // itemStyle: {
-                                    //     normal: {
-                                    //         color: 'rgba(67,67,72, 1)',
-                                    //         lineStyle: {
-                                    //             color: 'rgba(67,67,72, 0.8)'
+                                    itemStyle: {
+                                        normal: {
+                                            color: '#2f91e4',
+                                            lineStyle: {
+                                                color: '#2f91e4'
+                                            },
+                                            // areaStyle: {
+                                            //     color: 'rgba(67,67,72, 0.8)'
+                                            // }
+                                        }
+                                    },
+                                    // markLine: {
+                                    //     lineStyle: {
+                                    //         normal: {
+                                    //             color: '#fe5240',
+                                    //             width: 1,
+                                    //             type: 'solid'
+                                    //         }
+                                    //     },
+                                    //     symbolSize: 0,
+                                    //     data: [{
+                                    //         yAxis: 0.5,
+                                    //         label: {
+                                    //             normal: {
+                                    //                 show: true,
+                                    //                 formatter: '预警',
+                                    //                 position:'start'
+                                    //             }
                                     //         },
-                                    //         areaStyle: {
-                                    //             color: 'rgba(67,67,72, 0.8)'
+                                    //         lineStyle:{
+                                    //             normal:{
+                                    //                 color:'#f2b817'
+                                    //             }
+                                    //         }
+                                    //     }, {
+                                    //         yAxis: 0.8,
+                                    //         label: {
+                                    //             normal: {
+                                    //                 show: true,
+                                    //                 formatter: '报警',
+                                    //                 position:'start'
+                                    //             }
+                                    //         }
+                                    //     }],
+                                    //     label: {
+                                    //         normal: {
+                                    //             formatter: '{b}:{d}'
                                     //         }
                                     //     }
                                     // },
-                                    markLine: {
-                                        lineStyle: {
-                                            normal: {
-                                                color: '#fe5240',
-                                                width: 1,
-                                                type: 'solid'
-                                            }
-                                        },
-                                        symbolSize: 0,
-                                        data: [{
-                                            yAxis: 0.5,
-                                            label: {
-                                                normal: {
-                                                    show: true,
-                                                    formatter: '预警',
-                                                    position:'start'
-                                                }
-                                            },
-                                            lineStyle:{
-                                                normal:{
-                                                    color:'#f2b817'
-                                                }
-                                            }
-                                        }, {
-                                            yAxis: 0.8,
-                                            label: {
-                                                normal: {
-                                                    show: true,
-                                                    formatter: '报警',
-                                                    position:'start'
-                                                }
-                                            }
-                                        }],
-                                        label: {
-                                            normal: {
-                                                formatter: '{b}:{d}'
-                                            }
-                                        }
-                                    },
                                     data: data.yData1
                                 },{
                                     name: '降雨量(mm)',
@@ -238,9 +238,9 @@ var comm = Vue.extend({
                         this.myChart.resize();
                     }.bind(this), 1000)
                 }.bind(this));
-                if(data.type === 'YLChart'){
-                    this.refreshYLChart();
-                }
+                // if(data.type === 'YLChart'){
+                //     this.refreshYLChart();
+                // }
             }.bind(this));
         },
         addData:function(){
