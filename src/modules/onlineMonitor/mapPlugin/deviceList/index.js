@@ -101,7 +101,7 @@ var comm = Vue.extend({
                                 i --;
                                 break;
                             case '水位':
-                                monitorData.dValue = parseInt(monitorData.dValue).toFixed(2) + '(m)';
+                                monitorData.dValue = parseFloat(monitorData.dValue).toFixed(2) + '(m)';
                                 break;
                             default:break;
                         }

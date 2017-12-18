@@ -33,10 +33,10 @@
     padding-bottom: 10px;
 }
 .gaoqingPopup .esri-popup__content .detailBtn {
-    width: 150px;
     border-radius: 20px;
     height: 30px;
     font-size: 10px;
+    padding:0 2em;
 }
 .gaoqingPopup .esri-popup__content .gaoqingListContent{
     display: flex;

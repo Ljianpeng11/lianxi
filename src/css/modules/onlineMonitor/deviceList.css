@@ -6,7 +6,8 @@
 }
 
 .deviceListBox {
-    width: 18.5%;
+    min-width: 18em;
+    width:18.5%;
     height: calc(100% - 20px);
     position: absolute;
     top: 10px;

@@ -1,5 +1,6 @@
 .deviceInfo{
-    width: calc(81.5% - 25px);
+    max-width: calc(100% - 18em - 25px);
+    width:calc(81.5% - 25px);
     height: 18em;
     position: absolute;
     right: 5px;
@@ -64,13 +65,15 @@
     justify-content: space-around;
 }
 .tabInfoImg{
-    flex-basis:40%;
+    flex-basis: 45%;
+    height: 100%;
 }
 
 .mediaBox{
     height: calc(100% - 8em);
-    min-height:8em;
+    min-height: 10em;
     overflow: auto;
+    padding: 1em;
 }
 .tabContent{
     flex-basis: 100%;
@@ -78,7 +81,7 @@
     height: 100%;
     justify-content: center;
 }
-.tabContent listLabel-left,.tabContent listLabel-right{
+.tabContent .listLabel-left,.tabContent .listLabel-right{
     flex-basis:50%;
 }
 .cesc-badge .arrow-up{
