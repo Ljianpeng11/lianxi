@@ -48,7 +48,7 @@
 .weather-num:before{
     content:'℃';
     position: absolute;
-    top: -0.8em;
+    top: 0;
     right: -1em;
     display: block;
     font-size: 16px;

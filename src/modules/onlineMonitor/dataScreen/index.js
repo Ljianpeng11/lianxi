@@ -15,7 +15,8 @@ for(var i = 0;i<12;i++){
     time = moment().subtract(i,'h').format('YYYY-MM-DD hh:ss');
     xData[(11 - i)] = time;
     yData1.push(((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2));
-    yData2.push(((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2));
+    // yData2.push(((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2));
+    yData2.push(0);
 }
 
 // 定义组件
@@ -23,6 +24,26 @@ var comm = Vue.extend({
     template: template,
     data: function () {
         return {
+            weather:{
+                date:moment(new Date()).format('YYYY-MM-DD'),
+                week:(function(){
+                    var week = moment(new Date()).format('e');
+                    var s;
+                    switch(week){
+                        case '1': s = '星期一';break;
+                        case '2': s = '星期二';break;
+                        case '3': s = '星期三';break;
+                        case '4': s = '星期四';break;
+                        case '5': s = '星期五';break;
+                        case '6': s = '星期六';break;
+                        case '7': s = '星期日';break;
+                        default:break;
+                    }
+                    return s;
+                })(),
+                icon:'',
+                wendu:''
+            },
             districtOption:{
                 value:'',
                 options: [{
@@ -189,23 +210,51 @@ var comm = Vue.extend({
         },
         deleteCollectItem:function(index,item){
 
+        },
+        setIcon: function (iconItem) {
+            //天气图标
+            var icons = new Skycons();
+            if (iconItem.type === '晴') {
+                icons.set(iconItem.iconId, "partly-cloudy-day");
+            } else if (iconItem.type === '小雨' || iconItem.type === '中雨') {
+                icons.set(iconItem.iconId, "rain");
+            } else if (iconItem.type === '阴') {
+                icons.set(iconItem.iconId, "fog");
+            } else if (iconItem.type === '多云') {
+                icons.set(iconItem.iconId, "cloudy");
+            } else if (iconItem.type === '雪') {
+                icons.set(iconItem.iconId, "snow");
+            }
+            icons.play();
+            // list  = [
+            //     "clear-day", "clear-night", "partly-cloudy-day",
+            //     "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
+            //     "fog"
+            // ]
+
         }
     },
     mounted: function () {
-        // iotController.getIotDeviceRunningState(function(data){
-        //     var warningIotDeviceList = data.warningIotDeviceList;
-        //     var alarmIotDeviceList = data.alarmIotDeviceList;
-        //     alarmIotDeviceList.push(...alarmIotDeviceList);
-        //     this.alarmTableData = alarmIotDeviceList;
-        //     this.chartOptions1.data = [
-        //         {value:data.healthCount, name:'正常'},
-        //         {value:data.warningCount, name:'预警'},
-        //         {value:data.alarmCount, name:'报警'}
-        //     ];
-        //     this.$refs.pieChart1.$emit('reloadChart');
-        //     debugger;
-        //     console.log(this.alarmTableData);
-        // }.bind(this))
+        var self = this;
+        $.ajax({
+            url: "http://wthrcdn.etouch.cn/weather_mini?city=济南",
+            dataType: 'jsonp',
+            data: '',
+            success: function (result) {
+                var data = result.data;
+                self.weather.wendu = data.wendu;
+                self.weather.iconId = 'todayIcon';
+                data.forecast.forEach(function(val,index,array){
+                    self.weather.type = array[0].type;
+                });
+                self.$nextTick(function () {
+                    self.setIcon(self.weather);
+                }, 200);
+            },
+            error: function () {
+                alert('无法获取天气数据');
+            }
+        });
     },
     components: {
         'chart-lib':chartLib

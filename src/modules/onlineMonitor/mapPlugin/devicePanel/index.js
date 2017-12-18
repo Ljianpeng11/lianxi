@@ -7,20 +7,6 @@ var serviceHelper = require('services/serviceHelper');
 //加载组件
 var chartLib = require('modules/onlineMonitor/chartLib');
 
-
-//雨量数据
-var xData = [], yData1 = [], yData2 = [];
-var data1 = [Math.random() * 60];
-var data2 = [Math.random() * 1.2];
-var time;
-
-for (var i = 0; i < 12; i++) {
-    time = moment().subtract(i, 'h');
-    xData[(11 - i)] = time.format('YYYY-MM-DD hh:ss');
-    yData1.push(((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2));
-    yData2.push(((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2));
-}
-
 // 定义组件
 var comm = Vue.extend({
     template: template,
@@ -41,9 +27,9 @@ var comm = Vue.extend({
                 warningHeight:0,
                 wellLidHeight:0,
                 alarmHeight:0,
-                xData: xData,
-                yData1: yData1,
-                yData2: yData2
+                xData: [],
+                yData1: [],
+                yData2: []
             }
         }
     },

@@ -101,7 +101,7 @@ var comm = Vue.extend({
                     var imgObj = {
                         url: newIcon,
                         width: "24px",
-                        height: "24px"
+                        height: "32px"
                     };
                     var attributes = {
                         'item': facilities[i],
