@@ -51,7 +51,11 @@ var comm = crudBase.extend({
                 },
                 //刷新录入表单后的回调
                 afterRefreshFormHandler: function (row) {
-                    this.facilityId = row.facilityId || null;
+                    if(!!row){
+                        this.facilityId = row.facilityId;
+                    }else{
+                        this.facilityId = null;
+                    }
                 },
                 //获取自定义保存的值（如果默认的从界面获取保存的值不满足需求，可以重写此方法，自定义获取值）
                 getCustomSaveValue: function () {
