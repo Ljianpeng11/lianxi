@@ -19,6 +19,11 @@ define([ 'services/iotService'], function ( iotService) {
             iotService.getIotDeviceOnlineState(function(data){
                 cb(data);
             })
+        },
+        getRainFacility:function(cb){
+            iotService.getRainFacility(function(data){
+                cb(data);
+            })
         }
     }
 });

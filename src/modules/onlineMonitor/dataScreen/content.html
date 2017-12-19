@@ -56,7 +56,7 @@
                         <div class="cesc-box weatherBox">
                             <div class="weatherDataItem" >
                                 <div class="weatherData-top">
-                                    <span id="todayIcon" style="width:24px;height:24px;display: block;"></span><span class="weather-num">{{weather.wendu}}</span>
+                                    <canvas id="todayIcon" style="width:60px;display: block;transform:scale(2)"></canvas><span class="weather-num">{{weather.wendu}}</span>
                                 </div>
                                 <span>{{weather.date}}&nbsp;&nbsp;&nbsp;{{weather.week}}</span>
                             </div>
@@ -93,7 +93,7 @@
                                         class="scrollTable"
                                         :row-class-name="bindRowClass">
                                     <el-table-column
-                                            prop="name"
+                                            prop="facilityName"
                                             label="报警点"
                                             show-overflow-tooltip="true">
                                     </el-table-column>
@@ -115,7 +115,7 @@
                                         style="width: 100%;height: 100%;"
                                         class="scrollTable">
                                     <el-table-column
-                                            prop="name"
+                                            prop="facilityName"
                                             show-overflow-tooltip="true"
                                             label="断线点"
                                             :row-class-name="bindRowClass">
@@ -241,7 +241,7 @@
                                             </span>
                                         </div>
                                         <div class="devicePanel-bottom" style="padding:0 20px">
-                                            <chart-lib :chartId="'chart'+index" :chartOptions="chartOptions3"></chart-lib>
+                                            <chart-lib :chartId="'chart'+index" ref="lineChart" :chartOptions="chartOptions3"></chart-lib>
                                         </div>
                                     </div>
                                 </div>
