@@ -67,7 +67,8 @@ define([
     'modules/appFacilityManager/dataRoleFacilityManager',
     'modules/onlineMonitor/statisticsPanel',
     'modules/onlineMonitor/facilityInfoTable',
-    'modules/onlineMonitor/dataScreen'
+    'modules/onlineMonitor/dataScreen',
+    'modules/onlineMonitor/eLTEVideo'
 ], function (appContent,
              appDemoForm,
              elementForm,
@@ -136,7 +137,8 @@ define([
              dataRoleFacilityManager,
              statisticsPanel,
              facilityInfoTable,
-             dataScreen) {
+             dataScreen,
+             eLTEVideo) {
     return {
         'app-content': appContent,
         'app-demo-form': appDemoForm,
@@ -206,6 +208,9 @@ define([
         'dataRoleFacilityManager': dataRoleFacilityManager,
         'statisticsPanel':statisticsPanel,
         'facility-info-table':facilityInfoTable,
-        'dataScreen':dataScreen
+        'dataScreen':dataScreen,
+        'elte-video':eLTEVideo
+
+
     }
 });

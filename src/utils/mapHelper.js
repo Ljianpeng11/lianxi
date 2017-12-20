@@ -35,7 +35,7 @@ define(function () {
             }, clickCb);
         },
         /**
-         * 超图WMTS
+         * 超图底图WMTS
          **/
         initSuperMap: function (container, centerX, centerY, zoom, cb, clickCb) {
             if (this.apiVersion !== 'C') {
@@ -48,7 +48,7 @@ define(function () {
             }, clickCb);
         },
         /**
-         * 超图WMTS
+         * 超图管网WMTS
          **/
         initFacilitySuperMap: function (view) {
             if (this.apiVersion !== 'C') {
@@ -56,6 +56,16 @@ define(function () {
                 return;
             }
             this.apiInstance.initSuperFacilityMapLayer(view);
+        },
+        /**
+         * 视频点图层
+         **/
+        createVideoGraphicsLayer: function (map,id) {
+            if (this.apiVersion !== 'C') {
+                console.error('天地图只支持arcgis 方式加载');
+                return;
+            }
+            return this.apiInstance.createGraphicsLayer(map,id);
         },
         nnTraceAnalysisByRecursive:function (event, traceAnalysisType, vue, cb) {
             this.apiInstance.nnTraceAnalysisByRecursive(event, traceAnalysisType, vue, cb);
@@ -112,11 +122,8 @@ define(function () {
         createSymbol: function (layer, x, y, styleObj) {
             return this.apiInstance.createSymbol(layer, x, y, styleObj);
         },
-        createPictureMarkSymbol: function (layer, x, y, imgObj,attributes) {
-            return this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj,attributes);
-        },
-        createPictureMarkSymbol: function (layer, x, y, imgObj,attributes) {
-            return this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj,attributes);
+        createPictureMarkSymbol: function (layer, x, y, imgObj,attributes,popupTemplate) {
+            return this.apiInstance.createPictureMarkSymbol(layer, x, y, imgObj,attributes,popupTemplate);
         },
         createPolygon: function (layer, coords, styleObj) {
             return this.apiInstance.createPolygon(layer, coords, styleObj);
