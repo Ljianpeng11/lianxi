@@ -106,3 +106,17 @@
     color: inherit;
     text-overflow:ellipsis;
 }
+.selectBox input::-webkit-input-placeholder{
+    color: #666;
+}
+
+.selectBox input:-moz-placeholder, textarea:-moz-placeholder {
+    color:#666;
+}
+
+.selectBox　　input::-moz-placeholder, textarea::-moz-placeholder {
+    color:#666;
+ }
+.selectBox　　input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+    color:#666;
+}

@@ -15,13 +15,16 @@ var comm = Vue.extend({
             typeOption1:{
                 value:'状态',
                 options: [{
-                    value: '正常',
+                    value: '',
+                    label: '全部'
+                },{
+                    value: '0',
                     label: '正常'
                 }, {
-                    value: '预警',
+                    value: '1',
                     label: '预警'
                 }, {
-                    value: '报警',
+                    value: '2',
                     label: '报警'
                 }]
             },
@@ -32,16 +35,42 @@ var comm = Vue.extend({
             typeOption3:{
                 value:'是否收藏',
                 options: [{
-                    value: '已收藏',
+                    value: '',
+                    label: '全部'
+                },{
+                    value: '1',
                     label: '已收藏'
                 }, {
-                    value: '未收藏',
+                    value: '0',
                     label: '未收藏'
                 }]
             },
             deviceList:[],
-            selectIitem:{}
+            selectIitem:{},
+            queryString:{
+                name:'',
+                collection:'',
+                status:''
+            },
+            queryList:[]
         }
+    },
+    // computed:{
+    //     queryList:function(){
+    //         var results = this.queryString ? this.deviceList.filter(this.createStateFilter(this.queryString)) : this.deviceList;
+    //         return results;
+    //     }
+    // },
+    watch:{
+        queryString:{
+            handler: function(val){
+                this.queryList = val ? this.deviceList.filter(this.createStateFilter(val)) : this.deviceList;
+            },
+            deep: true
+        }
+    },
+    created:function(){
+        this.loadData();
     },
     methods: {
         toggleList:function(){
@@ -119,18 +148,31 @@ var comm = Vue.extend({
                 this.typeOption2.options.push(optionValue);
             }.bind(this));
             this.deviceList = list;
-            console.log(this.deviceList);
+            this.queryList = list;
         },
         loadData:function(){
-            facilityController.getCurrentUserFacilitysMonitor(function (list) {;
+            $.ajaxSettings.async = false;
+            facilityController.getCurrentUserFacilitysMonitor(function (list) {
                 //设备列表加载测站数据
                 this.renderList(list);
             }.bind(this));
+            $.ajaxSettings.async = true;
+        },
+        createStateFilter(queryString) {
+            return (queryItem) => {
+                return (queryItem.name.indexOf(queryString.name.toLowerCase()) !== -1 || queryItem.collection.toString() == queryString.collection || queryItem.status.toString() == queryString.status);
+            };
+        },
+        handleSelect:function(type,value) {
+           if(type === 'status'){
+               this.queryString.status = value;
+           }else if(type === 'collection'){
+               this.queryString.collection = value;
+           }
         }
-
     },
     mounted: function () {
-        this.loadData();
+
     },
     components: {}
 });

@@ -61,6 +61,7 @@
     border-radius: 2em;
     position: relative;
     left: 42px;
+    top:-5px;
     box-shadow:0 0 10px 0 rgba(0,0,0,0.3);
 }
 .gaoqingPopup .windowBox-sm:before,.gaoqingPopup .esri-popup__main-container:before{

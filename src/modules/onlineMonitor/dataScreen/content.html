@@ -40,14 +40,14 @@
                                 </el-select>
                             </span>
                             </div>
-                            <div>
-                                <span class="cesc-tag cesc-tag-active">8小时</span>
-                                <span class="cesc-tag">24小时</span>
-                                <span class="cesc-tag">48小时</span>
+                            <div class="deviceLeft">
+                                <span class="cesc-tag" v-for="(item,index) in timeRangeArr" :class="{'cesc-tag-active':currentTimeIndex === index}" @click="changeTimeRange(index,item)">
+                                    {{item.num}}小时
+                                </span>
                             </div>
                         </div>
                         <div class="devicePanel-bottom">
-                            <chart-lib :chartId="'lineChart'" :chartOptions="chartOptions3"></chart-lib>
+                            <chart-lib :chartId="'lineChart'" ref="lineChart" :chartOptions="chartOptions3"></chart-lib>
                         </div>
                     </div>
                 </el-row>
@@ -63,19 +63,19 @@
                             <div class="weatherDataItem" >
                                 <span>最大降雨量</span>
                                 <div class="weatherData-top">
-                                    <span class="warningStatus">67.5mm</span>
+                                    <span class="warningStatus">0mm</span>
                                 </div>
                             </div>
                             <div class="weatherDataItem" >
                                 <span>累计降雨量(12h)</span>
                                 <div class="weatherData-top">
-                                    <span class="dangerStatus">150mm</span>
+                                    <span class="dangerStatus">0mm</span>
                                 </div>
                             </div>
                             <div class="weatherDataItem" >
                                 <span>最大降雨时长</span>
                                 <div class="weatherData-top">
-                                    <span class="warningStatus">12h</span>
+                                    <span class="warningStatus">8h</span>
                                 </div>
                             </div>
                         </div>
@@ -241,7 +241,7 @@
                                             </span>
                                         </div>
                                         <div class="devicePanel-bottom" style="padding:0 20px">
-                                            <chart-lib :chartId="'chart'+index" ref="lineChart" :chartOptions="chartOptions3"></chart-lib>
+                                            <chart-lib :chartId="'chart'+index" :chartOptions="chartOptions3"></chart-lib>
                                         </div>
                                     </div>
                                 </div>

@@ -8,24 +8,25 @@ var controller = require('controllers/rightPanelController');
 //加载图表组件
 var chartLib = require('modules/onlineMonitor/chartLib');
 
-//雨量数据
-var xData = [],yData1 = [],yData2 = [],tableData = [];
-var data1 = [Math.random() *60];
-var data2 = [Math.random() *2];
-var time;
-for(var i = 0;i<12;i++){
-    time = moment().subtract(i,'h').format('YYYY-MM-DD hh:ss');
-    xData[(11 - i)] = time;
-    yData1.push(((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2));
-    // yData2.push(((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2));
-    yData2.push(0);
-}
-
 // 定义组件
 var comm = Vue.extend({
     template: template,
     data: function () {
         return {
+            currentTimeIndex:0,
+            facilityId:null,
+            timeRangeArr:[
+                {
+                    num:8,
+                    uint:'hour'
+                },{
+                    num:12,
+                    uint:'hour'
+                },{
+                    num:24,
+                    uint:'hour'
+                }
+            ],
             weather:{
                 date:moment(new Date()).format('YYYY-MM-DD'),
                 week:(function(){
@@ -90,9 +91,9 @@ var comm = Vue.extend({
             },
             chartOptions3:{
                 type:'YLChart',
-                xData:xData,
-                yData1:yData1,
-                yData2:yData2
+                xData:[],
+                yData1:[],
+                yData2:[]
             },
             tableData:[
                 {
@@ -178,10 +179,11 @@ var comm = Vue.extend({
         //获取雨量数据
         iotController.getRainFacility(function(result){
             this.YLDistrictOption.value = result[0].facilityName;
+            this.facilityId = result[0].facilityId;
             this.loadChart(result[0].facilityId,{num:8,timeUnit:'hours'});
             result.forEach(function(val){
                 this.YLDistrictOption.options.push({
-                    value:val.facilityName,
+                    value:val.facilityId,
                     label:val.facilityName
                 })
             }.bind(this));
@@ -275,6 +277,13 @@ var comm = Vue.extend({
                     }
                 })
             }.bind(this));
+        },
+        changeTimeRange:function(index,item){
+            this.currentTimeIndex = index;
+            this.loadChart(this.facilityId,item);
+        },
+        changeYLopts:function(val){
+            this.loadChart(val,this.timeRangeArr[this.currentTimeIndex]);
         },
         openDetail:function(index,item){
 
