@@ -51,13 +51,22 @@ var comm = Vue.extend({
                 name:'',
                 collection:'',
                 status:''
-            }
+            },
+            queryList:[]
         }
     },
-    computed:{
-        queryList:function(){
-            var results = this.queryString ? this.deviceList.filter(this.createStateFilter(this.queryString)) : this.deviceList;
-            return results;
+    // computed:{
+    //     queryList:function(){
+    //         var results = this.queryString ? this.deviceList.filter(this.createStateFilter(this.queryString)) : this.deviceList;
+    //         return results;
+    //     }
+    // },
+    watch:{
+        queryString:{
+            handler: function(val){
+                this.queryList = val ? this.deviceList.filter(this.createStateFilter(val)) : this.deviceList;
+            },
+            deep: true
         }
     },
     created:function(){
@@ -139,6 +148,7 @@ var comm = Vue.extend({
                 this.typeOption2.options.push(optionValue);
             }.bind(this));
             this.deviceList = list;
+            this.queryList = list;
         },
         loadData:function(){
             $.ajaxSettings.async = false;
@@ -150,7 +160,7 @@ var comm = Vue.extend({
         },
         createStateFilter(queryString) {
             return (queryItem) => {
-                return (queryItem.name.indexOf(queryString.name.toLowerCase()) !== -1 || queryItem.collection === queryString.collection || queryItem.status === queryString.status);
+                return (queryItem.name.indexOf(queryString.name.toLowerCase()) !== -1 || queryItem.collection.toString() == queryString.collection || queryItem.status.toString() == queryString.status);
             };
         },
         handleSelect:function(type,value) {
