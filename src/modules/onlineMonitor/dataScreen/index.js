@@ -3,6 +3,8 @@ var eventHelper = require('utils/eventHelper');
 var moment = require('moment');
 //请求数据
 var iotController = require('controllers/iotController.js');
+var facilityController = require('controllers/facilityController');
+var controller = require('controllers/rightPanelController');
 //加载图表组件
 var chartLib = require('modules/onlineMonitor/chartLib');
 
@@ -55,14 +57,8 @@ var comm = Vue.extend({
                 }]
             },
             YLDistrictOption:{
-                value:'五华区雨量公众监测点',
-                options: [{
-                    value: '五华区雨量公众监测点',
-                    label: '五华区雨量公众监测点'
-                }, {
-                    value: '市体育馆',
-                    label: '市体育馆'
-                }]
+                value:'',
+                options: []
             },
             typeOption:{
                 options: [{
@@ -179,7 +175,20 @@ var comm = Vue.extend({
         }
     },
     created:function(){
+        //获取雨量数据
+        iotController.getRainFacility(function(result){
+            this.YLDistrictOption.value = result[0].facilityName;
+            this.loadChart(result[0].facilityId,{num:8,timeUnit:'hours'});
+            result.forEach(function(val){
+                this.YLDistrictOption.options.push({
+                    value:val.facilityName,
+                    label:val.facilityName
+                })
+            }.bind(this));
+        }.bind(this));
+        //获取设备运行状态数据
         iotController.getIotDeviceRunningState(function(data){
+            data.alarmIotDeviceList.push(...data.warningIotDeviceList);
             this.alarmTableData = data.alarmIotDeviceList;
             this.chartOptions1.data = [
                 {value:data.healthCount, name:'正常'},
@@ -188,6 +197,7 @@ var comm = Vue.extend({
             ];
             this.$refs.pieChart1.reloadChart(this.chartOptions1);
         }.bind(this));
+        //获取设备在线状态数据
         iotController.getIotDeviceOnlineState(function(data) {
             this.offlineTableData = data.illIotDeviceList;
             this.chartOptions2.data = [
@@ -199,21 +209,15 @@ var comm = Vue.extend({
     },
     methods: {
         bindRowClass:function(row,index){
-            if(row.status === 1){
+            if(row.iotDeviceState === 1){
                 return 'warningItem';
-            }else if(row.status === 2){
+            }else if(row.iotDeviceState === 2){
                 return 'dangerItem';
             }
         },
-        openDetail:function(index,item){
-
-        },
-        deleteCollectItem:function(index,item){
-
-        },
         setIcon: function (iconItem) {
             //天气图标
-            var icons = new Skycons();
+            var icons = new Skycons({color:'#2f91e4'});
             if (iconItem.type === '晴') {
                 icons.set(iconItem.iconId, "partly-cloudy-day");
             } else if (iconItem.type === '小雨' || iconItem.type === '中雨') {
@@ -232,9 +236,55 @@ var comm = Vue.extend({
             //     "fog"
             // ]
 
+        },
+        setTimeRange:function(timeRange){
+            var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+            var startDate = moment().subtract(timeRange.num, timeRange.timeUnit).format('YYYY-MM-DD HH:mm:ss');
+            var time = {
+                startDate:startDate,
+                endDate:endDate
+            }
+            return time;
+        },
+        loadChart:function(facilityId,time){
+            var self = this;
+            var timeRange = this.setTimeRange(time);
+            facilityController.getCurrentUserFacilitysMonitor(function (data) {
+                data.forEach(function(val){
+                    if(val.facilityId === facilityId){
+                        var arr = val.facilityDevice.devices;
+                        for(var i = 0;i<arr.length;i++){
+                            arr[i].items.forEach(function(item){
+                                if(item.itemTypeName.indexOf('rainfall') !== -1){
+                                    controller.getHistoricalDataByMonitor(item.itemID, timeRange.startDate, timeRange.endDate, function (result) {
+                                        if(!!result && result.length > 0){
+                                            self.chartOptions3.xData = [];
+                                            self.chartOptions3.yData1 = [];
+                                            self.chartOptions3.yData2 = [];
+                                            result.forEach(function(value){
+                                                self.chartOptions3.xData.push(value.deviceUpdateTime);
+                                                self.chartOptions3.yData1.push(0);
+                                                self.chartOptions3.yData2.push(parseFloat(value.dValue).toFixed(2));
+                                            });
+                                        }
+                                        self.$refs.lineChart.reloadChart(self.chartOptions3);
+                                    });
+                                }
+                            })
+                        }
+                    }
+                })
+            }.bind(this));
+        },
+        openDetail:function(index,item){
+
+        },
+        deleteCollectItem:function(index,item){
+
         }
     },
     mounted: function () {
+        //获取天气数据
         var self = this;
         $.ajax({
             url: "http://wthrcdn.etouch.cn/weather_mini?city=济南",

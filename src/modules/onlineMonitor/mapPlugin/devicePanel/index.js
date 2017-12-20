@@ -66,7 +66,7 @@ var comm = Vue.extend({
                 var self = this;
                 var devices = selectItem.facilityDevice.devices;
                 var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
-                var startDate = moment().subtract(6, 'hours').format('YYYY-MM-DD HH:mm:ss');
+                var startDate = moment().subtract(12, 'days').format('YYYY-MM-DD HH:mm:ss');
                 console.log(selectItem)
                 devices.forEach(function (device) {
                     var items = device.items;
@@ -94,18 +94,17 @@ var comm = Vue.extend({
                         if (item.itemTypeName.indexOf('waterLevel') !== -1) {//todo 动态输入水位值（超声波、压力）
                             var itemID = item.itemID;
                             controller.getHistoricalDataByMonitor(itemID, startDate, endDate, function (result) {
-                                if(!!result){
+                                if(!!result && result.length > 0){
                                     self.chartOptions.xData = [];
                                     self.chartOptions.yData1 = [];
                                     self.chartOptions.yData2 = [];
                                     result.forEach(function(value){
                                         self.chartOptions.xData.push(value.deviceUpdateTime);
-                                        self.chartOptions.yData1.push(value.dValue.toFixed(2));
+                                        self.chartOptions.yData1.push(parseFloat(value.dValue).toFixed(2));
                                         self.chartOptions.yData2.push(0);
                                     });
-                                    debugger;
-                                    self.$refs.deviceWaterChart.reloadChart(self.chartOptions);
                                 }
+                                self.$refs.deviceWaterChart.reloadChart(self.chartOptions);
                             });
                         }
                     })

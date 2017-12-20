@@ -34,7 +34,8 @@ define(['config'], function (config) {
         sendDataCommand: basicUrl + '/iotDevice/registerSendDataCommand',
         iotFacilityInfo: basicUrl + '/iotDevice/list',
         getIotDeviceRunningState:basicUrl + '/iotDevice/iotDeviceRunningState',
-        getIotDeviceOnlineState:basicUrl + '/iotDevice/iotDeviceOnlineState'
+        getIotDeviceOnlineState:basicUrl + '/iotDevice/iotDeviceOnlineState',
+        getRainFacility:basicUrl + '/iotDevice/getRainFacility'
     }
     return {
         setToken: function (token) {
