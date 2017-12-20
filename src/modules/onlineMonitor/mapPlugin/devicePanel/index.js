@@ -7,20 +7,6 @@ var serviceHelper = require('services/serviceHelper');
 //加载组件
 var chartLib = require('modules/onlineMonitor/chartLib');
 
-
-//雨量数据
-var xData = [], yData1 = [], yData2 = [];
-var data1 = [Math.random() * 60];
-var data2 = [Math.random() * 1.2];
-var time;
-
-for (var i = 0; i < 12; i++) {
-    time = moment().subtract(i, 'h');
-    xData[(11 - i)] = time.format('YYYY-MM-DD hh:ss');
-    yData1.push(((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2));
-    yData2.push(((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2));
-}
-
 // 定义组件
 var comm = Vue.extend({
     template: template,
@@ -38,9 +24,12 @@ var comm = Vue.extend({
             facilityTypeName: '',
             chartOptions: {
                 type: 'YLChart',
-                xData: xData,
-                yData1: yData1,
-                yData2: yData2
+                warningHeight:0,
+                wellLidHeight:0,
+                alarmHeight:0,
+                xData: [],
+                yData1: [],
+                yData2: []
             }
         }
     },
@@ -77,7 +66,7 @@ var comm = Vue.extend({
                 var self = this;
                 var devices = selectItem.facilityDevice.devices;
                 var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
-                var startDate = moment().subtract(6, 'hours').format('YYYY-MM-DD HH:mm:ss');
+                var startDate = moment().subtract(12, 'days').format('YYYY-MM-DD HH:mm:ss');
                 console.log(selectItem)
                 devices.forEach(function (device) {
                     var items = device.items;
@@ -87,32 +76,40 @@ var comm = Vue.extend({
                                 sysUpdateTime: device.sysUpdateTime,
                                 alarmHeight: item.alarmHeight,
                                 warningHeight: item.warningHeight,
-                                pipeHeight: item.wellLidHeight,
+                                wellLidHeight: item.wellLidHeight,
                                 waterLevel: item.dValue
                             }
+                            if(!!item.alarmHeight){
+                                self.chartOptions.alarmHeight = item.wellLidHeight;
+                            }
+                            if(!!item.warningHeight){
+                                self.chartOptions.warningHeight = item.warningHeight;
+                            }
+                            // if(!!item.wellLidHeight){
+                            //     self.chartOptions.wellLidHeight = item.wellLidHeight;
+                            // }
                         } else if (item.itemID.indexOf('stressWaterLine') > 0) {
                             self.deviceInfo.stressWaterLine = item.dValue;
                         }
                         if (item.itemTypeName.indexOf('waterLevel') !== -1) {//todo 动态输入水位值（超声波、压力）
                             var itemID = item.itemID;
                             controller.getHistoricalDataByMonitor(itemID, startDate, endDate, function (result) {
-                                if(!!result){
+                                if(!!result && result.length > 0){
                                     self.chartOptions.xData = [];
                                     self.chartOptions.yData1 = [];
                                     self.chartOptions.yData2 = [];
                                     result.forEach(function(value){
                                         self.chartOptions.xData.push(value.deviceUpdateTime);
-                                        self.chartOptions.yData1.push(value.dValue.toFixed(2));
+                                        self.chartOptions.yData1.push(parseFloat(value.dValue).toFixed(2));
                                         self.chartOptions.yData2.push(0);
                                     });
-                                    console.log(self.chartOptions);
-                                    self.$refs.deviceWaterChart.reloadChart(self.chartOptions);
                                 }
+                                self.$refs.deviceWaterChart.reloadChart(self.chartOptions);
                             });
                         }
                     })
                 });
-                if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics > 0) {
+                if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics.length > 0) {
                     var pics = selectItem.facilityDevice.pics;
                     self.devicePics.splice(0, self.devicePics.length);
                     pics.forEach(function (pic) {

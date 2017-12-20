@@ -24,6 +24,28 @@ define(['./serviceHelper'], function (serviceHelper) {
                     return;
                 }
             })
-        }
+        },
+        getIotDeviceOnlineState:function(cb){
+            var parameter = {
+                id:'getIotDeviceOnlineState'
+            }
+            $.get(serviceHelper.getPath(parameter),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+            })
+        },
+        getRainFacility:function(cb){
+            var parameter = {
+                id:'getRainFacility'
+            }
+            $.get(serviceHelper.getPath(parameter),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+            })
+    }
     }
 });

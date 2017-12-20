@@ -1,5 +1,5 @@
 <div>
-    <div class="devicePanel multiDeviceBox" v-if="isOpenPanel&&false">
+    <div class="devicePanel multiDeviceBox" v-if="isOpenPanel">
         <div class="devicePanel-top">
             <span>{{deviceInfo.title}}</span>
             <i class="el-icon-d-arrow-right rotate-up" @click="closePanel"></i>
@@ -35,7 +35,7 @@
                 <el-tab-pane label="液位仪">
                     <div class="tabInfoBox">
                         <div class="tabInfoImg" v-for="pic in devicePics">
-                            <img :src="pic" alt="设备图片" width="100%">
+                            <img :src="pic" alt="设备图片" width="100%" height="100%">
                         </div>
                         <!--<div class="listContent tabContent">-->
                         <!--<div class="listLabel-left">-->

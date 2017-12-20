@@ -1,6 +1,7 @@
 <div class="gaoqingPopup">
-    <div v-bind:style="infoBox.style" v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+infoBox.facilityId" @mouseenter="highLight(infoBox)" @mouseleave="normalize(infoBox)" class="esri-popup__position-container esri-popup--shadow esri-popup--title-visible esri-popup--content-visible esri-popup--top-aligned" >
-        <div class="esri-popup__main-container">
+    <div v-bind:style="infoBox.style" v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+infoBox.facilityId" @mouseenter="highLight(infoBox)" @mouseleave="normalize(infoBox)" class="esri-popup__position-container esri-popup--title-visible esri-popup--content-visible esri-popup--top-aligned" >
+        <div class="windowBox-sm" v-show="!infoBox.showBigBox"><span>水位：{{waterLevel}}</span></div>
+        <div class="esri-popup__main-container" v-show="infoBox.showBigBox">
             <!-- Popup Header -->
             <header class="esri-popup__header">
                 <span class="esri-popup__header-title">{{infoBox.name}}</span>
@@ -35,9 +36,9 @@
             <!-- /Popup Content -->
         </div>
         <!-- Popup Pointer -->
-        <div class="esri-popup__pointer">
-            <div class="esri-popup__pointer-direction esri-popup--shadow"></div>
-        </div>
+        <!--<div class="esri-popup__pointer">-->
+            <!--<div class="esri-popup__pointer-direction esri-popup&#45;&#45;shadow"></div>-->
+        <!--</div>-->
         <!-- /Popup Pointer -->
     </div>
 </div>

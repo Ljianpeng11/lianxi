@@ -11,7 +11,8 @@ var comm = Vue.extend({
             infoBoxes: [],
             fcEvents: [],
             showInput: false,
-            registerEvents: []
+            registerEvents: [],
+            waterLevel:null
         }
     },
     methods: {
@@ -24,6 +25,7 @@ var comm = Vue.extend({
                     var y = screenPoint.y - 30 -$(boxID).height();
                     items[i].style.top = y+"px";
                     items[i].style.left = x+"px";
+                    items[i].showBigBox = false;
                 } else {
                     items[i].style.display = "none";
                 }
@@ -31,6 +33,7 @@ var comm = Vue.extend({
         },
         highLight: function (item) {
             item.style.zIndex=2;
+            item.showBigBox = true;
         },
         normalize: function (item) {
             item.style.zIndex=1;
@@ -138,6 +141,7 @@ var comm = Vue.extend({
                                     case '水位':
                                         monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) + '(m)' : '-';
                                         deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
+                                        this.waterLevel = monitorData.dValue;
                                         break;
                                     default:
                                         break;

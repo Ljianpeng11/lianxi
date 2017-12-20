@@ -3,26 +3,50 @@ var eventHelper = require('utils/eventHelper');
 var moment = require('moment');
 //请求数据
 var iotController = require('controllers/iotController.js');
+var facilityController = require('controllers/facilityController');
+var controller = require('controllers/rightPanelController');
 //加载图表组件
 var chartLib = require('modules/onlineMonitor/chartLib');
-
-//雨量数据
-var xData = [],yData1 = [],yData2 = [],tableData = [];
-var data1 = [Math.random() *60];
-var data2 = [Math.random() *2];
-var time;
-for(var i = 0;i<12;i++){
-    time = moment().subtract(i,'h').format('YYYY-MM-DD hh:ss');
-    xData[(11 - i)] = time;
-    yData1.push(((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2));
-    yData2.push(((Math.random() - 0.4) * 10 + data1[data1.length - 1]).toFixed(2));
-}
 
 // 定义组件
 var comm = Vue.extend({
     template: template,
     data: function () {
         return {
+            currentTimeIndex:0,
+            facilityId:null,
+            timeRangeArr:[
+                {
+                    num:8,
+                    uint:'hour'
+                },{
+                    num:12,
+                    uint:'hour'
+                },{
+                    num:24,
+                    uint:'hour'
+                }
+            ],
+            weather:{
+                date:moment(new Date()).format('YYYY-MM-DD'),
+                week:(function(){
+                    var week = moment(new Date()).format('e');
+                    var s;
+                    switch(week){
+                        case '1': s = '星期一';break;
+                        case '2': s = '星期二';break;
+                        case '3': s = '星期三';break;
+                        case '4': s = '星期四';break;
+                        case '5': s = '星期五';break;
+                        case '6': s = '星期六';break;
+                        case '7': s = '星期日';break;
+                        default:break;
+                    }
+                    return s;
+                })(),
+                icon:'',
+                wendu:''
+            },
             districtOption:{
                 value:'',
                 options: [{
@@ -34,14 +58,8 @@ var comm = Vue.extend({
                 }]
             },
             YLDistrictOption:{
-                value:'五华区雨量公众监测点',
-                options: [{
-                    value: '五华区雨量公众监测点',
-                    label: '五华区雨量公众监测点'
-                }, {
-                    value: '市体育馆',
-                    label: '市体育馆'
-                }]
+                value:'',
+                options: []
             },
             typeOption:{
                 options: [{
@@ -73,9 +91,9 @@ var comm = Vue.extend({
             },
             chartOptions3:{
                 type:'YLChart',
-                xData:xData,
-                yData1:yData1,
-                yData2:yData2
+                xData:[],
+                yData1:[],
+                yData2:[]
             },
             tableData:[
                 {
@@ -158,27 +176,114 @@ var comm = Vue.extend({
         }
     },
     created:function(){
+        //获取雨量数据
+        iotController.getRainFacility(function(result){
+            this.YLDistrictOption.value = result[0].facilityName;
+            this.facilityId = result[0].facilityId;
+            this.loadChart(result[0].facilityId,{num:8,timeUnit:'hours'});
+            result.forEach(function(val){
+                this.YLDistrictOption.options.push({
+                    value:val.facilityId,
+                    label:val.facilityName
+                })
+            }.bind(this));
+        }.bind(this));
+        //获取设备运行状态数据
         iotController.getIotDeviceRunningState(function(data){
-            var warningIotDeviceList = data.warningIotDeviceList;
-            var alarmIotDeviceList = data.alarmIotDeviceList;
-            alarmIotDeviceList.push(...alarmIotDeviceList);
-            this.alarmTableData = alarmIotDeviceList;
+            data.alarmIotDeviceList.push(...data.warningIotDeviceList);
+            this.alarmTableData = data.alarmIotDeviceList;
             this.chartOptions1.data = [
                 {value:data.healthCount, name:'正常'},
                 {value:data.warningCount, name:'预警'},
                 {value:data.alarmCount, name:'报警'}
             ];
-            debugger;
             this.$refs.pieChart1.reloadChart(this.chartOptions1);
-        }.bind(this))
+        }.bind(this));
+        //获取设备在线状态数据
+        iotController.getIotDeviceOnlineState(function(data) {
+            this.offlineTableData = data.illIotDeviceList;
+            this.chartOptions2.data = [
+                {value: data.illCount, name: '断线'},
+                {value: data.healthCount, name: '在线'},
+            ];
+            this.$refs.pieChart2.reloadChart(this.chartOptions2);
+        }.bind(this));
     },
     methods: {
         bindRowClass:function(row,index){
-            if(row.status === 1){
+            if(row.iotDeviceState === 1){
                 return 'warningItem';
-            }else if(row.status === 2){
+            }else if(row.iotDeviceState === 2){
                 return 'dangerItem';
             }
+        },
+        setIcon: function (iconItem) {
+            //天气图标
+            var icons = new Skycons({color:'#2f91e4'});
+            if (iconItem.type === '晴') {
+                icons.set(iconItem.iconId, "partly-cloudy-day");
+            } else if (iconItem.type === '小雨' || iconItem.type === '中雨') {
+                icons.set(iconItem.iconId, "rain");
+            } else if (iconItem.type === '阴') {
+                icons.set(iconItem.iconId, "fog");
+            } else if (iconItem.type === '多云') {
+                icons.set(iconItem.iconId, "cloudy");
+            } else if (iconItem.type === '雪') {
+                icons.set(iconItem.iconId, "snow");
+            }
+            icons.play();
+            // list  = [
+            //     "clear-day", "clear-night", "partly-cloudy-day",
+            //     "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
+            //     "fog"
+            // ]
+
+        },
+        setTimeRange:function(timeRange){
+            var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+            var startDate = moment().subtract(timeRange.num, timeRange.timeUnit).format('YYYY-MM-DD HH:mm:ss');
+            var time = {
+                startDate:startDate,
+                endDate:endDate
+            }
+            return time;
+        },
+        loadChart:function(facilityId,time){
+            var self = this;
+            var timeRange = this.setTimeRange(time);
+            facilityController.getCurrentUserFacilitysMonitor(function (data) {
+                data.forEach(function(val){
+                    if(val.facilityId === facilityId){
+                        var arr = val.facilityDevice.devices;
+                        for(var i = 0;i<arr.length;i++){
+                            arr[i].items.forEach(function(item){
+                                if(item.itemTypeName.indexOf('rainfall') !== -1){
+                                    controller.getHistoricalDataByMonitor(item.itemID, timeRange.startDate, timeRange.endDate, function (result) {
+                                        if(!!result && result.length > 0){
+                                            self.chartOptions3.xData = [];
+                                            self.chartOptions3.yData1 = [];
+                                            self.chartOptions3.yData2 = [];
+                                            result.forEach(function(value){
+                                                self.chartOptions3.xData.push(value.deviceUpdateTime);
+                                                self.chartOptions3.yData1.push(0);
+                                                self.chartOptions3.yData2.push(parseFloat(value.dValue).toFixed(2));
+                                            });
+                                        }
+                                        self.$refs.lineChart.reloadChart(self.chartOptions3);
+                                    });
+                                }
+                            })
+                        }
+                    }
+                })
+            }.bind(this));
+        },
+        changeTimeRange:function(index,item){
+            this.currentTimeIndex = index;
+            this.loadChart(this.facilityId,item);
+        },
+        changeYLopts:function(val){
+            this.loadChart(val,this.timeRangeArr[this.currentTimeIndex]);
         },
         openDetail:function(index,item){
 
@@ -188,20 +293,27 @@ var comm = Vue.extend({
         }
     },
     mounted: function () {
-        // iotController.getIotDeviceRunningState(function(data){
-        //     var warningIotDeviceList = data.warningIotDeviceList;
-        //     var alarmIotDeviceList = data.alarmIotDeviceList;
-        //     alarmIotDeviceList.push(...alarmIotDeviceList);
-        //     this.alarmTableData = alarmIotDeviceList;
-        //     this.chartOptions1.data = [
-        //         {value:data.healthCount, name:'正常'},
-        //         {value:data.warningCount, name:'预警'},
-        //         {value:data.alarmCount, name:'报警'}
-        //     ];
-        //     this.$refs.pieChart1.$emit('reloadChart');
-        //     debugger;
-        //     console.log(this.alarmTableData);
-        // }.bind(this))
+        //获取天气数据
+        var self = this;
+        $.ajax({
+            url: "http://wthrcdn.etouch.cn/weather_mini?city=济南",
+            dataType: 'jsonp',
+            data: '',
+            success: function (result) {
+                var data = result.data;
+                self.weather.wendu = data.wendu;
+                self.weather.iconId = 'todayIcon';
+                data.forecast.forEach(function(val,index,array){
+                    self.weather.type = array[0].type;
+                });
+                self.$nextTick(function () {
+                    self.setIcon(self.weather);
+                }, 200);
+            },
+            error: function () {
+                alert('无法获取天气数据');
+            }
+        });
     },
     components: {
         'chart-lib':chartLib
