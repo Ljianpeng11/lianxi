@@ -320,7 +320,7 @@ var comm = crudBase.extend({
             field: 'name',
             title: '名称'
         }, {
-            field: 'iotDeviceTypeId',
+            field: 'iotDeviceTypeNameCn',
             title: 'Iot设备类型'
         }, {
             field: 'imei',
