@@ -46,6 +46,17 @@ define(['./serviceHelper'], function (serviceHelper) {
                     return;
                 }
             })
-    }
+        },
+        getCurRequestInfo:function(cb){
+            var parameter = {
+                id:'getCurRequestInfo'
+            }
+            $.get(serviceHelper.getPath(parameter),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+            });
+        }
     }
 });

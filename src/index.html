@@ -182,5 +182,16 @@
 <!-- Custom Theme Scripts -->
 <script src="../vendors/custom.js"></script>
 <script src="../vendors/skycons/skycons.js"></script>
+
+<script src="../vendors/skycons/skycons.js"></script>
+<!-- ocx 事件处理 -->
+<script language="javascript" for="eLTE_PlayerOCX" event="ELTE_OCX_Event(ulEventType,pEventDataXml)">
+    window.eventHelper.emit("handleELTEOCXEvent",[ulEventType,pEventDataXml]);
+</script>
+
+<!-- ocx 加载 -->
+<div class="ocxDiv">
+    <OBJECT id="eLTE_PlayerOCX" classid="CLSID:6AB35B6F-D5D4-4DA3-9503-1AD4E5E1E589"/>
+</div>
 </body>
 </html>

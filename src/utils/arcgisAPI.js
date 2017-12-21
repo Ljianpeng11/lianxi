@@ -197,7 +197,7 @@ define(function () {
         }.bind(this));
         return cacheLayers;
     },
-        instance.initSuperMapLayer = function (container, x, y, zoom, success, click) {
+    instance.initSuperMapLayer = function (container, x, y, zoom, success, click) {
             var tileInfo = new instance.TileInfo({
                 "dpi": 96,
                 "rows": 256,
@@ -333,6 +333,10 @@ define(function () {
             fullExtent: fullExtent,
             tileInfo: tileInfo,
         });
+        view.map.add(tiledVectorLayer);
+    };
+    instance.initVideoLayer = function (view) {
+
         view.map.add(tiledVectorLayer);
     };
     instance.removeGraphics = function (layer, graphics) {
@@ -514,10 +518,12 @@ define(function () {
         });
         view.on('click', function (evt) {
             console.log(evt);
-            evt.stopPropagation();
+            //evt.stopPropagation();
             if (!!click)
                 click(evt);
         });
+        //移除esri logo
+        view.ui.remove("attribution");
         success(map, view);
     };
     instance.createPoint = function (x, y) {
@@ -627,7 +633,7 @@ define(function () {
         layer.add(markPoint);
         return markPoint;
     };
-    instance.createPictureMarkSymbol = function (layer, x, y, imgObj, attributes) {
+    instance.createPictureMarkSymbol = function (layer, x, y, imgObj, attributes,popupAttribute) {
         var point = new instance.Point({
             longitude: x,
             latitude: y
@@ -646,12 +652,12 @@ define(function () {
              width: "8px",
              height: "8px"
              }*/);
-
         // Create a graphic and add the geometry and symbol to it
         var markPoint = new instance.Graphic({
             geometry: point,
             symbol: markerSymbol,
-            attributes: attributes
+            attributes: attributes,
+            popupTemplate:popupAttribute
         });
         layer.add(markPoint);
         return markPoint;
@@ -700,7 +706,6 @@ define(function () {
              }*/);
         graphic.symbol = markerSymbol;
     };
-
     instance.createGraphicsLayer = function (map, id) {
         var layer = new instance.GraphicsLayer({
             id: id
@@ -1040,7 +1045,8 @@ define(function () {
                 "esri/layers/MapImageLayer",
                 "esri/geometry/ScreenPoint",
                 "dojo/on",
-                "dojo/_base/lang"
+                "dojo/_base/lang",
+                "esri/PopupTemplate"
             ], function (arcgisMap,
                          arcgisPoint,
                          arcgisExtent,
@@ -1067,7 +1073,8 @@ define(function () {
                          MapImageLayer,
                          ScreenPoint,
                          On,
-                         Lang) {
+                         Lang,
+                         PopupTemplate) {
                 instance.Map = arcgisMap;
                 instance.Point = arcgisPoint;
                 instance.Extent = arcgisExtent;
@@ -1095,6 +1102,7 @@ define(function () {
                 instance.geometryEngine = geometryEngine;
                 instance.On = On;
                 instance.Lang = Lang;
+                instance.PopupTemplate = PopupTemplate;
                 instance.drawConfig = {
                     drawingSymbol: new arcgisSimpleFillSymbol({
                         color: [102, 0, 255, 0.15],

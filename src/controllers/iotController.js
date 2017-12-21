@@ -8,7 +8,6 @@ define([ 'services/iotService'], function ( iotService) {
             iotService.geIotFacilityInfo(param,function (data) {
                 cb(data);
             });
-
         },
         getIotDeviceRunningState:function(cb){
             iotService.getIotDeviceRunningState(function(data){
@@ -24,6 +23,11 @@ define([ 'services/iotService'], function ( iotService) {
             iotService.getRainFacility(function(data){
                 cb(data);
             })
-        }
+        },
+        getCurRequestInfo:function(cb){
+            iotService.getCurRequestInfo(function(data){
+                cb(data);
+            });
+        },
     }
 });
