@@ -50,7 +50,7 @@ var comm = Vue.extend({
             queryString:{
                 name:'',
                 collection:null,
-                status:null
+                state:null
             },
             queryList:[]
         }
@@ -64,7 +64,7 @@ var comm = Vue.extend({
     watch:{
         queryString:{
             handler: function(val){
-                if(!!val.name || !!val.collection || !!val.status){
+                if(!!val.name || !!val.collection || !!val.state){
                     this.queryList = this.deviceList.filter(this.createStateFilter(val));
                 }else{
                     this.queryList = this.deviceList;
@@ -109,12 +109,12 @@ var comm = Vue.extend({
         },
         renderList:function(list){
             list.forEach(function(item){
-                var sysUpdateTime;
-                item.status = 0;
-                item.signal = 'on';
                 item.facilityDevice.devices.forEach(function(val){
                     for(var i = 0;i<val.items.length;i++){
                         var monitorData = val.items[i];
+                        if(Number(monitorData.dValue) != parseInt(Number(monitorData.dValue))){
+                            monitorData.dValue = parseFloat(monitorData.dValue).toFixed(2);
+                        }
                         switch(monitorData.name){
                             case '电压':
                                 monitorData.dValue = monitorData.dValue + 'V';
@@ -125,7 +125,7 @@ var comm = Vue.extend({
                                 i --;
                                 break;
                             case '电量':
-                                monitorData.dValue = monitorData.dValue*100 + '%';
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue * 100 + '%':"-";
                                 val.items.splice(i,1);
                                 i --;
                                 break;
@@ -134,17 +134,24 @@ var comm = Vue.extend({
                                 i --;
                                 break;
                             case '水位':
-                                monitorData.dValue = parseFloat(monitorData.dValue).toFixed(2) + '(m)';
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(m)':'-';
+                                item.state = monitorData.state;
+                                break;
+                            case '积水深度':
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(m)':'-';
+                                item.state = monitorData.state;
+                                break;
+                            case '雨量':
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(mm)':'-';
+                                item.state = monitorData.state;
                                 break;
                             default:break;
                         }
-                        sysUpdateTime = monitorData.sysUpdateTime;
+                        if(!!monitorData.sysUpdateTime){
+                            item.sysUpdateTime = monitorData.sysUpdateTime;
+                        }
                     }
-                   // val.items.forEach(function(monitorData,index){
-                   //
-                   // });
                });
-                item.sysUpdateTime = sysUpdateTime;
                 var optionValue = {
                     value:item.name,
                     label:item.name
@@ -171,8 +178,8 @@ var comm = Vue.extend({
                 }else{
                     b = true;
                 }
-                if(!!queryString.status){
-                    c = queryItem.status === parseInt(queryString.status);
+                if(!!queryString.state){
+                    c = queryItem.state === parseInt(queryString.state);
                 }else{
                     c = true;
                 }
@@ -180,8 +187,8 @@ var comm = Vue.extend({
             };
         },
         handleSelect:function(type,value) {
-           if(type === 'status'){
-               this.queryString.status = value;
+           if(type === 'state'){
+               this.queryString.state = value;
            }else if(type === 'collection'){
                this.queryString.collection = value;
            }

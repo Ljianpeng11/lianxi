@@ -1,10 +1,16 @@
 <div class="gaoqingPopup">
     <div v-bind:style="infoBox.style" v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+infoBox.facilityId" @mouseenter="highLight(infoBox)" @mouseleave="normalize(infoBox)" class="esri-popup__position-container esri-popup--title-visible esri-popup--content-visible esri-popup--top-aligned" >
-        <div class="windowBox-sm" v-show="!infoBox.showBigBox"><span>水位：{{waterLevel}}</span></div>
+        <div class="windowBox-sm" v-show="!infoBox.showBigBox"
+             :class="{
+                        'warningStatus-bg':infoBox.state === 1,
+                        'dangerStatus-bg':infoBox.state === 2
+                 }">
+            <span>水位：{{infoBox.waterLevel}}</span>
+        </div>
         <div class="esri-popup__main-container" v-show="infoBox.showBigBox">
             <!-- Popup Header -->
             <header class="esri-popup__header">
-                <span class="esri-popup__header-title">{{infoBox.name}}</span>
+                <span class="esri-popup__header-title" :title="infoBox.name">{{infoBox.name}}</span>
                 <div class="esri-popup__header-buttons">
                     <div class="esri-popup__button" title="关闭" v-on:click="closePopup(index)">
                         <span aria-hidden="true" class="esri-popup__icon esri-icon-close"></span>

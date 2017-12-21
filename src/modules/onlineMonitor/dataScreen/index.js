@@ -18,13 +18,13 @@ var comm = Vue.extend({
             timeRangeArr:[
                 {
                     num:8,
-                    uint:'hour'
+                    uint:'days'
                 },{
                     num:12,
-                    uint:'hour'
+                    uint:'days'
                 },{
                     num:24,
-                    uint:'hour'
+                    uint:'days'
                 }
             ],
             weather:{
@@ -180,7 +180,7 @@ var comm = Vue.extend({
         iotController.getRainFacility(function(result){
             this.YLDistrictOption.value = result[0].facilityName;
             this.facilityId = result[0].facilityId;
-            this.loadChart(result[0].facilityId,{num:8,timeUnit:'hours'});
+            this.loadChart(result[0].facilityId,{num:8,timeUnit:'days'});
             result.forEach(function(val){
                 this.YLDistrictOption.options.push({
                     value:val.facilityId,
@@ -203,8 +203,8 @@ var comm = Vue.extend({
         iotController.getIotDeviceOnlineState(function(data) {
             this.offlineTableData = data.illIotDeviceList;
             this.chartOptions2.data = [
-                {value: data.illCount, name: '断线'},
                 {value: data.healthCount, name: '在线'},
+                {value: data.illCount, name: '断线'}
             ];
             this.$refs.pieChart2.reloadChart(this.chartOptions2);
         }.bind(this));

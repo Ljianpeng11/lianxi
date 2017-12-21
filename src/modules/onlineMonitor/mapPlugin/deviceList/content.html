@@ -20,7 +20,7 @@
        </el-autocomplete>
       <div class="filterBox">
          <div>
-            <el-select class="selectBox" v-model="typeOption1.value" placeholder="请选择" @change="handleSelect('status',typeOption1.value)" style="width: 4em;">
+            <el-select class="selectBox" v-model="typeOption1.value" placeholder="请选择" @change="handleSelect('state',typeOption1.value)" style="width: 4em;">
                 <el-option
                         v-for="item in typeOption1.options"
                         :key="item.value"
@@ -67,17 +67,16 @@
                         }">
             </i>
             <i class="icon iconfont icon-WIFI"
-               :class="{'cesc-color':item.signal === 'on'}">
+               :class="{'cesc-color':item.onlineState}">
             </i>
          </div>
          <div class="listContent" v-for="devicesItem in item.facilityDevice.devices">
                <div class="leftDotBox">
                   <span class="icon iconfont icon-icon-life-alarm"
-                        v-if="item.status !== 0"
+                        v-if="item.state !== 0"
                         :class="{
-                        'warningStatus':item.status === 1,
-                        'dangerStatus':item.status === 2,
-                        'offlineStatus':item.status === 3
+                        'warningStatus':item.state === 1,
+                        'dangerStatus':item.state === 2
                  }"></span>
                </div>
                <div class="listLabel-left">
