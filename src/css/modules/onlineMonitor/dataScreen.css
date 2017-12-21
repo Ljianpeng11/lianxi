@@ -3,11 +3,11 @@
     line-height: 3.8em;
     background: #f1f1f1;
 }
-.dataScreen-top .cesc-tag{
+.cesc-tag-b{
     border:1px solid #999;
     color: #999;
 }
-.dataScreen-top .cesc-tag-active{
+.cesc-tag-active-b{
     border:1px solid #2f91e4;
     color: #fff;
     background: #2f91e4;

@@ -15,7 +15,7 @@ var comm = Vue.extend({
             typeOption1:{
                 value:'状态',
                 options: [{
-                    value: '',
+                    value: null,
                     label: '全部'
                 },{
                     value: '0',
@@ -35,7 +35,7 @@ var comm = Vue.extend({
             typeOption3:{
                 value:'是否收藏',
                 options: [{
-                    value: '',
+                    value: null,
                     label: '全部'
                 },{
                     value: '1',
@@ -49,8 +49,8 @@ var comm = Vue.extend({
             selectIitem:{},
             queryString:{
                 name:'',
-                collection:'',
-                status:''
+                collection:null,
+                status:null
             },
             queryList:[]
         }
@@ -64,7 +64,11 @@ var comm = Vue.extend({
     watch:{
         queryString:{
             handler: function(val){
-                this.queryList = val ? this.deviceList.filter(this.createStateFilter(val)) : this.deviceList;
+                if(!!val.name || !!val.collection || !!val.status){
+                    this.queryList = this.deviceList.filter(this.createStateFilter(val));
+                }else{
+                    this.queryList = this.deviceList;
+                }
             },
             deep: true
         }
@@ -160,7 +164,19 @@ var comm = Vue.extend({
         },
         createStateFilter(queryString) {
             return (queryItem) => {
-                return (queryItem.name.indexOf(queryString.name.toLowerCase()) !== -1 || queryItem.collection.toString() == queryString.collection || queryItem.status.toString() == queryString.status);
+                var a = queryItem.name.indexOf(queryString.name) !== -1;
+                var b,c;
+                if(!!queryString.collection){
+                    b = queryItem.collection === parseInt(queryString.collection);
+                }else{
+                    b = true;
+                }
+                if(!!queryString.status){
+                    c = queryItem.status === parseInt(queryString.status);
+                }else{
+                    c = true;
+                }
+                return (a && b && c);
             };
         },
         handleSelect:function(type,value) {
