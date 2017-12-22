@@ -67,6 +67,8 @@ var comm = crudBase.extend({
                     pagination: true,
                     //是否能编辑（影响编辑功能，例如双击编辑功能）
                     canEdit: true,
+                    //查询条件，创立时间
+                    createDates: "",
                 }
             },
             methods: {
@@ -86,6 +88,13 @@ var comm = crudBase.extend({
                     var formData = {};
                     //可以通过如下方式添加任意值
                     formData.abcId = 888;
+
+                    //查询条件，创立时间
+                    if (this.createDates && this.createDates[0] && this.createDates[1]) {
+                        //注意本例的日期控件格式是date，也就是日期，年月日，因此用moment转换成字符串格式是YYYY-MM-DD。但如果是其他格式，例如datetime，format的值就会不同，详情请看moment的demo
+                        formData.createDateStart = moment(this.createDates[0]).format("YYYY-MM-DD");
+                        formData.createDateEnd = moment(this.createDates[1]).format("YYYY-MM-DD");
+                    }
 
                     return formData;
                 },
@@ -326,6 +335,9 @@ var comm = crudBase.extend({
                     this.toolbarQueryParam = {};
                     //select控件，用vue绑定，绑定的属性要存在，否则就无法设初始值
                     this.toolbarQueryParam.type = "";
+
+                    //查询条件，创立时间
+                    this.createDates = "";
                 },
             }
         });

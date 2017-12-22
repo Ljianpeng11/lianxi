@@ -172,7 +172,7 @@ var comm = Vue.extend({
                                     normal:{
                                         color:'#f2b817',
                                         width: 1,
-                                        type: 'solid'
+                                        // type: 'solid'
                                     }
                                 }
                             });
@@ -191,7 +191,7 @@ var comm = Vue.extend({
                                     normal: {
                                         color: '#fe5240',
                                         width: 1,
-                                        type: 'solid'
+                                        // type: 'solid'
                                     }
                                 }
                             })

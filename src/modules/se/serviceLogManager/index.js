@@ -80,6 +80,9 @@ var comm = crudBase.extend({
             field: 'clientIp',
             title: '客户端ip'
         }, {
+            field: 'dataSize',
+            title: '流量（KB）'
+        }, {
             field: 'operDate',
             title: '发生时间'
         }]);

@@ -36,7 +36,8 @@ define(['config'], function (config) {
         getIotDeviceRunningState:basicUrl + '/iotDevice/iotDeviceRunningState',
         getIotDeviceOnlineState:basicUrl + '/iotDevice/iotDeviceOnlineState',
         getRainFacility:basicUrl + '/iotDevice/getRainFacility',
-        getCurRequestInfo:basicUrl + '/elteVideo/getRequestInfo'
+        getCurRequestInfo:basicUrl + '/elteVideo/getRequestInfo',
+        collectFacilities:basicUrl + '/userFacilityCollection/updateUserFacilityCollection'
     }
     return {
         setToken: function (token) {
@@ -73,7 +74,9 @@ define(['config'], function (config) {
                         if (ajaxResult.success === true) {
                             var result = ajaxResult.data;
 
-                            successHandler(result);
+                            if (successHandler) {
+                                successHandler(result);
+                            }
                         } else {
                             //后台操作失败的代码
                             alert(ajaxResult.msg);
@@ -100,7 +103,9 @@ define(['config'], function (config) {
                         if (ajaxResult.success === true) {
                             var result = ajaxResult.data;
 
-                            successHandler(result);
+                            if (successHandler) {
+                                successHandler(result);
+                            }
                         } else {
                             //后台操作失败的代码
                             alert(ajaxResult.msg);

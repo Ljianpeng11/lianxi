@@ -14,49 +14,56 @@ define(['./serviceHelper'], function (serviceHelper) {
                 console.log('Error:', result);
             });
         },
+        collectFacilities:function(facilityId,cb){
+            var param = {
+                id:'collectFacilities',
+                parameter:{
+                    facilityId:facilityId
+                }
+            }
+            $.get(serviceHelper.getPath(param),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+                console.log('Error:', result);
+            })
+        },
         getIotDeviceRunningState:function(cb){
-            var parameter = {
-                id:'getIotDeviceRunningState'
-            }
-            $.get(serviceHelper.getPath(parameter),function(result){
-                if(!!result.success){
-                    cb(result.data);
-                    return;
-                }
-            })
-        },
-        getIotDeviceOnlineState:function(cb){
-            var parameter = {
-                id:'getIotDeviceOnlineState'
-            }
-            $.get(serviceHelper.getPath(parameter),function(result){
-                if(!!result.success){
-                    cb(result.data);
-                    return;
-                }
-            })
-        },
-        getRainFacility:function(cb){
-            var parameter = {
-                id:'getRainFacility'
-            }
-            $.get(serviceHelper.getPath(parameter),function(result){
-                if(!!result.success){
-                    cb(result.data);
-                    return;
-                }
-            })
-        },
-        getCurRequestInfo:function(cb){
-            var parameter = {
-                id:'getCurRequestInfo'
-            }
-            $.get(serviceHelper.getPath(parameter),function(result){
+            $.get(serviceHelper.getPath('getIotDeviceRunningState'),function(result){
                 if(!!result.success){
                     cb(result.data);
                     return;
                 }
             });
+            console.log('Error:', result);
+        },
+        getIotDeviceOnlineState:function(cb){
+            $.get(serviceHelper.getPath('getIotDeviceOnlineState'),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+            });
+            console.log('Error:', result);
+        },
+        getRainFacility:function(cb){
+            $.get(serviceHelper.getPath('getRainFacility'),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+            });
+            console.log('Error:', result);
+        },
+        getCurRequestInfo:function(cb){
+            $.get(serviceHelper.getPath('getCurRequestInfo'),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+            });
+            console.log('Error:', result);
         }
     }
 });

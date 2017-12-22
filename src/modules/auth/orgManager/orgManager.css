@@ -1,0 +1,31 @@
+/*组织图标*/
+.ztree li span.button.orgManager_org_ico_open {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/org.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+.ztree li span.button.orgManager_org_ico_close {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/org.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+/*用户图标*/
+.ztree li span.button.orgManager_user_ico_docu {
+    margin-left: 2px;
+    margin-top: 2px;
+    background: url('./img/user.png') no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+/*本框架引用了其他css，对.button的有污染，以下样式是清除样式污染*/
+.ztree .button {
+    box-shadow: none;
+    border-radius: 0;
+}
