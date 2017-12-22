@@ -12,9 +12,9 @@ var comm = Vue.extend({
             loginInfo:{
                 userName : "8889",
                 password : "8889",
-                serverIP : "60.210.40.198",
+                serverIP : "69.8.0.131",
                 localIP : "192.168.0.111",
-                sipPort : "5064"
+                sipPort : "5060"
             },
             groupUserArray:[]
         }
@@ -195,7 +195,6 @@ var comm = Vue.extend({
             var msg = "EventType: ";
             var isLogin = false;
             msg +=    ulEventType;
-            console.log(pEventDataXml);
             if (ulEventType == 2){
                 var xmlDoc = $.parseXML(pEventDataXml);
                 xmlDoc = $(xmlDoc);
@@ -209,8 +208,7 @@ var comm = Vue.extend({
                         isLogin = true;
                     }
                 } else if (type == 15 && value != 4011 && value != 4017) {
-                    if(isLogin == true)
-                    {
+                    if(isLogin == true) {
                         alert("login failed");
                     }
                 } else if (type == 11) {
@@ -257,28 +255,28 @@ var comm = Vue.extend({
                     var remoteVideoPort = xmlDoc.find("RemoteVideoPort").text();
                     var remoteAudioPort = xmlDoc.find("RemoteAudioPort").text();
 
-                    $("#localVideoPort").val(localVideoPort);
-                    $("#localAudioPort").val(localAudioPort);
-                    $("#remoteVideoPort").val(remoteVideoPort);
-                    $("#remoteAudioPort").val(remoteAudioPort);
+                    //$("#localVideoPort").val(localVideoPort);
+                    //$("#localAudioPort").val(localAudioPort);
+                    //$("#remoteVideoPort").val(remoteVideoPort);
+                    //$("#remoteAudioPort").val(remoteAudioPort);
                     //为了与界面按钮状态保持一致这里需要静音
                     var param = "<Content><MuteParam><CallType>2</CallType></MuteParam></Content>";
 
                     resultXml = eLTE_PlayerOCX.ELTE_OCX_VolMute(xmlDoc.find("Callee").text(), param);
                 } else if (type == 3009) {
-                    $("#localVideoPort").val("");
-                    $("#localAudioPort").val("");
-                    $("#remoteVideoPort").val("");
-                    $("#remoteAudioPort").val("");
+                    //$("#localVideoPort").val("");
+                    //$("#localAudioPort").val("");
+                    //$("#remoteVideoPort").val("");
+                    //$("#remoteAudioPort").val("");
                 } else if (type == 3011) {
                     var strResID = xmlDoc.find("Uri").text();
                     var strMuteType = xmlDoc.find("SoundMute").text();
                     $("#resourceId").val(strResID);
                     $("#muteType").val(strMuteType);
                     if(confirm(strResID + " Video call prompt")) {
-                        RecvVideoPlay();
+                        //RecvVideoPlay();
                     } else {
-                        StopRealPlay();
+                        //StopRealPlay();
                     }
                 } else if (type == 3006) {
                     //In order to keep in line with the button state of the interface, there is a need for silence.
@@ -292,7 +290,7 @@ var comm = Vue.extend({
                     if(3008 == type) {
                         strResID = xmlDoc.find("Uri").text();
                     }
-                    StopCurrentRealPlay(strResID);
+                    //StopCurrentRealPlay(strResID);
                 }
 
                 msg += " type:"
@@ -330,14 +328,14 @@ var comm = Vue.extend({
                 var status = xmlDoc.find("GroupCallStatus").text();
                 var speaker = xmlDoc.find("Speaker").text();
 
-                $("#groupId").val(grpId);
-                $("#speakerId").val(speaker);
+                //$("#groupId").val(grpId);
+                //$("#speakerId").val(speaker);
             } else if (ulEventType ==0 || ulEventType == 8 || ulEventType == 9 || ulEventType == 10 || ulEventType == 11) {
                 msg += pEventDataXml;
             } else if (ulEventType ==7) {
                 //alert(pEventDataXml);
             }
-            $("#eventType").val(msg);
+            //$("#eventType").val(msg);
         }
     },
     mounted: function () {
