@@ -225,19 +225,7 @@ var comm = Vue.extend({
         },
         initVideoGraphicsLayer:function(view){
             //临时加载
-            var ep820VideoLayer = mapHelper.createVideoGraphicsLayer(view.map,"ep820Video");
-            var imgObj = {
-                url:  './img/toolbar/buliding-video.png',
-                width: "24px",
-                height: "24px"
-            };
-            var attribute = {};
-            var popupTemplate = {
-                title: "测试",
-                content: "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('initeLTEVideo','1');\"><span>打开视频</span></button>"
-            };
-
-            var graphic = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.82261612882854, 37.16445993323195, imgObj,attribute,popupTemplate);
+            mapHelper.createVideoGraphicsLayer(view.map,"ep820Video");
             //测试ep820轨迹
             /*var points = [[37.16078158522525,117.81400013975333],
                 [37.16074587770515,117.8141280984407],

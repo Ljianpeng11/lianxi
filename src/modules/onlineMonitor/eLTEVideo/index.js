@@ -1,9 +1,11 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
 var iotController = require('controllers/iotController');
+var mapHelper = require('utils/mapHelper');
 // 定义组件
 var comm = Vue.extend({
     template: template,
+    props:["baseView"],
     data: function () {
         return {
             ocxObj:{},
@@ -87,11 +89,11 @@ var comm = Vue.extend({
                 console.log(" ELTE_OCX_StartRealPlay:" +result);
                 if(result==0){
                     setTimeout(function(){
-                        this.startRealPlay();
-                    }.bind(this),800)
-                } else {
-                    setTimeout(function(){
                         this.showRealPlay();
+                    }.bind(this),800)
+                } else if(result == -40006){
+                    setTimeout(function(){
+                        this.StopRealPlay();
                     }.bind(this),800)
                 }
             }
@@ -176,25 +178,32 @@ var comm = Vue.extend({
             var result = $(xmlDoc).find("ResultCode").text();
             console.log(" ELTE_OCX_GISSubscribe:" +result);
         },
-        getGroupUsers : function(){
+        getGroupUsers : function() {
             var resultXml = this.ocxObj.ELTE_OCX_GetGroupUsers(8900);
             var xmlDoc = $.parseXML(resultXml);
             var result = $(xmlDoc).find("ResultCode").text();
-            this.groupUserArray= [];
-            if(result==0){
+            this.groupUserArray = [];
+            console.log(" ELTE_OCX_GetGroupUsers:" + result);
+            if (result == 0) {
                 var userInfos = $(xmlDoc).find("GroupUserInfo");
-                if(userInfos.length>0){
-                    for(i= 0,len=userInfos.length; i < len; i++) {
+                if (userInfos.length > 0) {
+                    for (i = 0, len = userInfos.length; i < len; i++) {
                         this.groupUserArray.push($(userInfos[i]).find("UserID").text());
                     }
                     this.setGISSubscribe(this.groupUserArray.join(","));
+                    console.log(" ELTE_OCX_GetGroupUsersContent:" + this.groupUserArray.join(","));
                 }
+            } else if(result==2135103001) {
+                setTimeout(function(){
+                    this.getGroupUsers();
+                }.bind(this),800)
             }
         },
         handleELTEOCXEvent:function(ulEventType,pEventDataXml){
             var msg = "EventType: ";
             var isLogin = false;
             msg +=    ulEventType;
+            console.log(ulEventType+" "+pEventDataXml);
             if (ulEventType == 2){
                 var xmlDoc = $.parseXML(pEventDataXml);
                 xmlDoc = $(xmlDoc);
@@ -330,12 +339,65 @@ var comm = Vue.extend({
 
                 //$("#groupId").val(grpId);
                 //$("#speakerId").val(speaker);
-            } else if (ulEventType ==0 || ulEventType == 8 || ulEventType == 9 || ulEventType == 10 || ulEventType == 11) {
+            } else if (ulEventType ==0 || ulEventType == 9 || ulEventType == 10 || ulEventType == 11) {
                 msg += pEventDataXml;
             } else if (ulEventType ==7) {
                 //alert(pEventDataXml);
+            } else if( ulEventType == 8){
+                var Content = $($.parseXML(pEventDataXml));
+                var Time =  Content.find("Time").text();
+                var Altitude =  Content.find("Altitude").text();
+                var Latitude =  Content.find("Latitude").text();
+                var Longtitude =  Content.find("Longtitude").text();
+                var ep820VideoLayer = this.baseView.map.findLayerById("ep820Video");
+                ep820VideoLayer.removeAll();
+                var imgObj = {
+                    url:  './img/toolbar/buliding-video.png',
+                    width: "24px",
+                    height: "24px"
+                };
+                var attribute = {
+                    time:Time,
+                    altitude:Altitude
+                };
+                var popupTemplate = {
+                    title: "测试",
+                    content: "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('initeLTEVideo','1');\"><span>打开视频</span></button><button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage');\"><span>发短信</span></button>"
+                };
+
+                var graphic = mapHelper.createPictureMarkSymbol(ep820VideoLayer, Number(Longtitude), Number(Latitude), imgObj,attribute,popupTemplate);
+
             }
             //$("#eventType").val(msg);
+        },
+        SDSSendMessage:function(){
+            var strSDSParam = "<Content>";
+            strSDSParam +=    "<SDSType>";
+            strSDSParam +=    "0001";
+            strSDSParam +=    "</SDSType>";
+            strSDSParam +=    "<MsgBody>";
+            strSDSParam +=    "test"
+            strSDSParam +=    "</MsgBody>";
+            strSDSParam +=    "<Receiver>";
+            strSDSParam +=    "8003"
+            strSDSParam +=    "</Receiver>";
+            strSDSParam +=    "<AttachFileList>";
+            strSDSParam +=    "</AttachFileList>";
+            strSDSParam +=    "</Content>";
+
+            var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+
+            var xmlDoc = $.parseXML(resultXml);
+            var result = $(xmlDoc).find("ResultCode").text();
+            console.log("ELTE_OCX_SDSSendMessage:" +result);
+        },
+        StopRealPlay : function () {
+            var resId = "8003";
+            var resultXml = this.ocxObj.ELTE_OCX_StopRealPlay(resId);
+            var xmlDoc = $.parseXML(resultXml);
+            var result = $(xmlDoc).find("ResultCode").text();
+            console.log(" ELTE_OCX_StopRealPlay:" +result);
+            this.startRealPlay();
         }
     },
     mounted: function () {
@@ -347,6 +409,9 @@ var comm = Vue.extend({
             var ulEventType = eventInfo[0];
             var pEventDataXml = eventInfo[1];
             this.handleELTEOCXEvent(ulEventType,pEventDataXml);
+        }.bind(this));
+        eventHelper.on("SDSSendMessage",function(){
+            this.SDSSendMessage();
         }.bind(this));
     },
     components: {
