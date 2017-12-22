@@ -74,7 +74,9 @@ define(['config'], function (config) {
                         if (ajaxResult.success === true) {
                             var result = ajaxResult.data;
 
-                            successHandler(result);
+                            if (successHandler) {
+                                successHandler(result);
+                            }
                         } else {
                             //后台操作失败的代码
                             alert(ajaxResult.msg);
@@ -101,7 +103,9 @@ define(['config'], function (config) {
                         if (ajaxResult.success === true) {
                             var result = ajaxResult.data;
 
-                            successHandler(result);
+                            if (successHandler) {
+                                successHandler(result);
+                            }
                         } else {
                             //后台操作失败的代码
                             alert(ajaxResult.msg);

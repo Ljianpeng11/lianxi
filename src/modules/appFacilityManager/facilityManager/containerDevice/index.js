@@ -85,6 +85,21 @@ var comm = container.extend({
 
             formData.deviceRelates = JSON.stringify(deviceRelates);
 
+            //获取设备字段的值
+            var deviceFields = [];
+            $(".deviceFieldInput", $('#deviceFieldContainer', $("#" + this.vm.mainContentDivId))).each(function (i, element) {
+                var $input = $(element);
+                var deviceField = {};
+                //设备类型字段id
+                deviceField.deviceTypeFieldId = $input.attr("deviceTypeFieldId");
+                //设备字段值
+                deviceField.value = $input.val();
+
+                deviceFields.push(deviceField);
+            });
+
+            formData.deviceFields = JSON.stringify(deviceFields);
+
             return formData;
         },
         //返回上一列表
@@ -123,23 +138,75 @@ var comm = container.extend({
                             for (var i = 0; i < deviceRelates.length; i++) {
                                 var field = deviceRelates[i];
 
-                                //设备关联select选项构建
-                                var strItem = "";
-                                strItem += '<option value=""></option>';
-                                var selectItems = field.selectItems;
-                                for (var s = 0; s < selectItems.length; s++) {
-                                    var selectItem = selectItems[s];
-
-                                    strItem += '<option value="' + selectItem.value + '">' + selectItem.text + '</option>';
+                                //设备字段类型，因为此数组既有设备关联字段，也有普通的设备字段，因此要区分
+                                //此值写在input或select的class里
+                                var deviceFieldInputType;
+                                //input的自定义值
+                                var inputCustomValue = "";
+                                if (field.deviceRelate) {
+                                    //设备关联字段
+                                    deviceFieldInputType = "deviceRelateInput";
+                                    inputCustomValue = ' deviceRelateTypeId="' + field.deviceRelateTypeId + '" ';
+                                }
+                                else {
+                                    //设备字段
+                                    deviceFieldInputType = "deviceFieldInput";
+                                    inputCustomValue = ' deviceTypeFieldId="' + field.deviceTypeFieldId + '" ';
                                 }
 
-                                var $input = $('<div class="form-group right-panel-fix">' +
-                                    '<label class="right-panel-label">' + field.nameCn + '</label>' +
-                                    '<div class="input-fix">' +
-                                    ' <select id="' + field.name + '" class="form-control deviceRelateInput" deviceRelateTypeId="' + field.deviceRelateTypeId + '">' +
-                                    strItem +
-                                    '</select>' +
-                                    '</div>' + +'</div>');
+                                var $input;
+
+                                //不同字段类型使用不用的控件
+                                //字段名写在input的id里，class写入itemFieldInput代表是监测项动态字段
+                                if (field.fieldType === "string") {
+                                    $input = $('<div class="row">' +
+                                        '<div class="form-group">' +
+                                        '<label class="col-sm-3 control-label">' + field.nameCn + '</label>' +
+                                        '<div class="col-sm-9">' +
+                                        '<input type="text" id="' + field.name + '" class="form-control ' + deviceFieldInputType + '" ' + inputCustomValue + '>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>');
+
+                                } else if (field.fieldType === "double" || field.fieldType === "int") {
+                                    $input = $('<div class="row">' +
+                                        '<div class="form-group">' +
+                                        '<label class="col-sm-3 control-label">' + field.nameCn + '</label>' +
+                                        '<div class="col-sm-9">' +
+                                        '<input type="number" id="' + field.name + '" class="form-control ' + deviceFieldInputType + '" ' + inputCustomValue + '>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>');
+                                }
+                                else if (field.fieldType === "select") {
+                                    //select下拉框
+                                    //下拉框所有值
+                                    var strItem = "";
+                                    if (field.selectItems) {
+                                        var selectItems = field.selectItems;
+                                        //插入一条没值的，让用户可以选择空值
+                                        strItem += '<option value=""></option>';
+                                        for (var s = 0; s < selectItems.length; s++) {
+                                            var selectItem = selectItems[s];
+
+                                            strItem += '<option value="' + selectItem.value + '">' + selectItem.text + '</option>';
+                                        }
+                                    }
+
+                                    $input = $('<div class="row">' +
+                                        '<div class="form-group">' +
+                                        '<label class="col-sm-3 control-label">' + field.nameCn + '</label>' +
+                                        '<div class="col-sm-9">' +
+                                        ' <select id="' + field.name + '" class="form-control ' + deviceFieldInputType + '" ' + inputCustomValue + '>' +
+                                        strItem +
+                                        '</select>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>');
+                                }
+                                else {
+                                    alert("不支持的字段类型：" + field.fieldType);
+                                }
 
                                 $('#deviceFieldContainer', $("#" + this.vm.mainContentDivId)).append($input);
                             }

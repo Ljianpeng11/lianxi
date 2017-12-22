@@ -114,23 +114,19 @@
                         </button>
                     </div>
                     <div class="btn-group hidden-xs" role="group">
-                        <form class="form-inline pull-left1">
-                         <!--   <div class="row">-->
-                                <div class="form-group" style="width:400px;">
-                                    <label class="col-sm-3 control-label">数据角色：</label>
-                                    <div class="col-sm-9">
-                                        <el-select v-model="containerFacility.dataRole" filterable
-                                                   placeholder="">
-                                            <el-option
-                                                    v-for="item in containerMain.dataRoles"
-                                                    :key="item.id"
-                                                    :label="item.name"
-                                                    :value="item.id">
-                                            </el-option>
-                                        </el-select>
-                                    </div>
-                                </div>
-                       <!--     </div>-->
+                        <form class="form-inline">
+                            <div class="form-group" style="width:400px;">
+                                <label>数据角色：</label>
+                                <el-select v-model="containerFacility.dataRole" filterable
+                                           placeholder="">
+                                    <el-option
+                                            v-for="item in containerMain.dataRoles"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </div>
                         </form>
                     </div>
                     <!--右侧搜索栏-->

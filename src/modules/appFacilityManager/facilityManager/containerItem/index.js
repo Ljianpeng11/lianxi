@@ -138,6 +138,8 @@ var comm = container.extend({
                                     var strItem = "";
                                     if (field.selectItems) {
                                         var selectItems = field.selectItems;
+                                        //插入一条没值的，让用户可以选择空值
+                                        strItem += '<option value=""></option>';
                                         for (var s = 0; s < selectItems.length; s++) {
                                             var selectItem = selectItems[s];
 

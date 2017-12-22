@@ -51,16 +51,13 @@ var comm = Vue.extend({
         changeMenu: function (child) {
             eventHelper.emit('change-menu', child);
 
+            //记录点击菜单的系统日志
             var formData = serviceHelper.getDefaultAjaxParam();
             formData.type = "3";//执行功能
+            //功能名称
             formData.funName = child.title;
 
-            var url = serviceHelper.getBasicPath() + "/systemLog/saveSystemLog";
-
-            function successCallback(result) {
-
-            }
-            serviceHelper.postJson(url,formData,successCallback);
+            serviceHelper.getJson( serviceHelper.getBasicPath() + "/systemLog/saveSystemLog", formData, null);
         },
         toggleOffMenu: function () {
             this.isMenuToggleOff = !this.isMenuToggleOff;

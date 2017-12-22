@@ -148,6 +148,8 @@ var comm = crudBase.extend({
                                             var strItem = "";
                                             if (field.selectItems) {
                                                 var selectItems = field.selectItems;
+                                                //插入一条没值的，让用户可以选择空值
+                                                strItem += '<option value=""></option>';
                                                 for (var s = 0; s < selectItems.length; s++) {
                                                     var selectItem = selectItems[s];
 
@@ -227,8 +229,6 @@ var comm = crudBase.extend({
                 getCustomQueryParam: function () {
                     //返回结果的类型是object
                     var formData = {};
-                    //可以通过如下方式添加任意值
-                    formData.name = this.containerMain.toolbarQueryParam.name;
                     //可以通过如下方式添加任意值
                     formData.lstFacilityTypeId = this.containerMain.lstFacilityTypeId.toString();
 
