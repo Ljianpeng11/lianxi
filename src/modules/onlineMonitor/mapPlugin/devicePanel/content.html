@@ -2,9 +2,9 @@
     <div class="devicePanel multiDeviceBox" v-if="isOpenPanel">
         <div class="devicePanel-top">
             <span>{{deviceInfo.title}}</span>
-            <i class="el-icon-d-arrow-right rotate-up" @click="closePanel"></i>
+            <i class="el-icon-d-arrow-right" :class="[isOpenBox?'rotate-up':'rotate-down']" @click="toggleBox"></i>
         </div>
-        <div class="devicePanel-bottom">
+        <div class="devicePanel-bottom" v-show="isOpenBox">
             <el-tabs type="border-card" class="multiTabs">
                 <!--<el-tab-pane label="雨量计">-->
                 <!--<div class="tabInfoBox">-->
@@ -76,7 +76,7 @@
         </div>
     </div>
     <transition enter-active-class="fadeInUP" leave-active-class="fadeOutDown">
-        <div class="devicePanel deviceInfo animated" v-if="isOpenPanel">
+        <div id="devicePanel" class="devicePanel deviceInfo animated" v-if="isOpenPanel">
             <div class="devicePanel-top">
                 <span>{{deviceInfo.title}}</span>
                 <div class="deviceMiddle">
@@ -115,7 +115,7 @@
                     <!--累计降雨量：<b>0</b>mm&nbsp;&nbsp;&nbsp;-->
                     <b class="cesc-tag-active" @click="openDeviceDetail">详情</b>
                 </span>
-                <i class="el-icon-d-arrow-right rotate-up" @click="closePanel"></i>
+                <i class="el-icon-d-arrow-right rotate-down" @click="closePanel"></i>
             </div>
             <div class="devicePanel-bottom">
                 <chart-lib :chartId="'deviceWaterChart'" ref="deviceWaterChart" :chartOptions="chartOptions"></chart-lib>

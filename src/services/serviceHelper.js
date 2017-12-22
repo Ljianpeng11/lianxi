@@ -36,7 +36,8 @@ define(['config'], function (config) {
         getIotDeviceRunningState:basicUrl + '/iotDevice/iotDeviceRunningState',
         getIotDeviceOnlineState:basicUrl + '/iotDevice/iotDeviceOnlineState',
         getRainFacility:basicUrl + '/iotDevice/getRainFacility',
-        getCurRequestInfo:basicUrl + '/elteVideo/getRequestInfo'
+        getCurRequestInfo:basicUrl + '/elteVideo/getRequestInfo',
+        collectFacilities:basicUrl + '/userFacilityCollection/updateUserFacilityCollection'
     }
     return {
         setToken: function (token) {

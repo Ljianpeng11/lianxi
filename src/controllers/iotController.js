@@ -9,6 +9,11 @@ define([ 'services/iotService'], function ( iotService) {
                 cb(data);
             });
         },
+        collectFacilities:function(item,cb){
+            iotService.collectFacilities(item,function(data){
+                cb(data);
+            });
+        },
         getIotDeviceRunningState:function(cb){
             iotService.getIotDeviceRunningState(function(data){
                 cb(data);

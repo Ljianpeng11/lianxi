@@ -2,6 +2,7 @@ var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
 var mapHelper = require('utils/mapHelper');
 var facilityController = require('controllers/facilityController');
+var iotController = require('controllers/iotController');
 
 // 定义组件
 var comm = Vue.extend({
@@ -102,6 +103,9 @@ var comm = Vue.extend({
                     //显示地图popup信息框
                     this.$parent.$refs.infoWindow.detailView(index);
                 }.bind(this));
+                if($('#chartPanel').css('display') === 'block'){
+                    this.$parent.$refs.infoWindow.showDevicePanel(item);
+                }
             }
         },
         detailView:function(selectItem){
@@ -192,6 +196,11 @@ var comm = Vue.extend({
            }else if(type === 'collection'){
                this.queryString.collection = value;
            }
+        },
+        collectItem:function(facilityItem){
+            iotController.collectFacilities(facilityItem.facilityId,function(data){
+                console.log(data);
+            });
         }
     },
     mounted: function () {

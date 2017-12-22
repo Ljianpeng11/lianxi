@@ -58,7 +58,7 @@
 }
 .multiDeviceBox{
     position: absolute;
-    top:0px;
+    top:155px;
     bottom:calc(18em + 10px);
     right: 5px;
     width:400px;

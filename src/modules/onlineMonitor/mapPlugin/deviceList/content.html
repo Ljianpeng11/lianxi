@@ -57,7 +57,8 @@
           :class="{'active':highLightIndex === index}">
          <div class="listItemTop">
             <i class="icon iconfont icon-pingjia"
-               :class="{'cesc-color':item.collection === 1}">
+               :class="{'cesc-color':item.collection === 1}"
+                @click="collectItem(item)">
             </i>
             <span :title="item.name">{{item.name}}</span>
             <i class="icon iconfont"

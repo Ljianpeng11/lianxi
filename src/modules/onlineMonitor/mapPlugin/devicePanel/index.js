@@ -111,6 +111,9 @@ var comm = Vue.extend({
                 clearInterval(this.timer);
             }
             this.isOpenPanel = false;
+        },
+        toggleBox:function(){
+            this.isOpenBox = !this.isOpenBox;
         }
     },
     mounted: function () {
@@ -131,7 +134,7 @@ var comm = Vue.extend({
                     items.forEach(function (item) {
                         if (item.itemID.indexOf('ultrasoundWaterLine') > 0) {
                             self.deviceInfo = {
-                                sysUpdateTime: device.sysUpdateTime,
+                                sysUpdateTime: item.sysUpdateTime,
                                 alarmHeight: item.alarmHeight,
                                 warningHeight: item.warningHeight,
                                 wellLidHeight: item.wellLidHeight,
@@ -168,6 +171,9 @@ var comm = Vue.extend({
                 }
                 this.deviceInfo.title = selectItem.name;
                 this.isOpenPanel = true;
+                if(screen.width < 1400){
+                    this.isOpenBox = false;
+                }
                 if (!!this.timer) {
                     clearInterval(this.timer);
                 }
