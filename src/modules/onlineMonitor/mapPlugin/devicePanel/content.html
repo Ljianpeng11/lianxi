@@ -78,8 +78,8 @@
     <transition enter-active-class="fadeInUP" leave-active-class="fadeOutDown">
         <div class="devicePanel deviceInfo animated" v-if="isOpenPanel">
             <div class="devicePanel-top">
-                <span style="flex:1;">{{deviceInfo.title}}</span>
-                <!--<div class="deviceMiddle">-->
+                <span>{{deviceInfo.title}}</span>
+                <div class="deviceMiddle">
                 <!--<span class="selectItem">参考线：-->
                 <!--<b>参考线</b><i class="icon iconfont icon-xiajiantou"></i>-->
                 <!--<ul class="selectBox" style="display:none">-->
@@ -98,7 +98,19 @@
                 <!--<li></li>-->
                 <!--</ul>-->
                 <!--</span>-->
-                <!--</div>-->
+                <span class="selectItem">选择时间范围：
+                     <el-date-picker
+                             style="width:22em;"
+                             class="selectBox"
+                             v-model="timeRangeObj"
+                             type="datetimerange"
+                             :picker-options="pickerOptions"
+                             placeholder="选择时间范围"
+                             align="right">
+                    </el-date-picker>
+                    <b class="cesc-tag-active" style="margin-left:1em;" @click="searchData">查询</b>
+                </span>
+                </div>
                 <span class="top-label">
                     <!--累计降雨量：<b>0</b>mm&nbsp;&nbsp;&nbsp;-->
                     <b class="cesc-tag-active" @click="openDeviceDetail">详情</b>

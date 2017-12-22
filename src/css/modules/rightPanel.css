@@ -999,18 +999,16 @@
 .dangerStatus {
     color: #fe5240;
 }
-
+.dangerItem{
+    border-left:6px solid #fe5240;
+    color:#fe5240;
+}
 .warningStatus {
     color: #f2b817;
 }
 .warningItem{
     border-left:6px solid #f2b817;
     color:#f2b817;
-}
-
-.dangerItem{
-    border-left:6px solid #fe5240;
-    color:#fe5240;
 }
 
 .device-content {

@@ -7,10 +7,10 @@
                     <li></li>
                  </ul>
             </span>
-            <span class="cesc-tag cesc-tag-active">今天</span>
-            <span class="cesc-tag">本周</span>
-            <span class="cesc-tag">本月</span>
-            <span class="cesc-tag">本年</span>
+            <span class="cesc-tag-active cesc-tag-active-b">今天</span>
+            <span class="cesc-tag cesc-tag-b">本周</span>
+            <span class="cesc-tag cesc-tag-b">本月</span>
+            <span class="cesc-tag cesc-tag-b">本年</span>
             <el-select class="selectBox" v-model="districtOption.value" placeholder="请选择">
                 <el-option
                         v-for="item in districtOption.options"
@@ -30,7 +30,7 @@
                             <div>
                                 <span style="margin-right:3em;">累计降雨量：0.00mm</span>
                                 <span class="selectItem">雨量计：
-                                 <el-select class="selectBox" v-model="YLDistrictOption.value" placeholder="请选择">
+                                 <el-select class="selectBox" v-model="YLDistrictOption.value" placeholder="请选择" @change="changeYLopts(YLDistrictOption.value)">
                                     <el-option
                                             v-for="item in YLDistrictOption.options"
                                             :key="item.value"

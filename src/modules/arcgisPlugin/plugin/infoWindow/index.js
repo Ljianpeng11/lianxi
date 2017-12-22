@@ -110,8 +110,6 @@ var comm = Vue.extend({
         renderList:function(list){
             for(var i=0,len=list.length;i<len;i++){
                 var item = list[i];
-                item.status = 0;
-                item.signal = 'on';
                 item.style={
                     zIndex: 1,
                     display:"block",
@@ -141,7 +139,19 @@ var comm = Vue.extend({
                                     case '水位':
                                         monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) + '(m)' : '-';
                                         deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
-                                        this.waterLevel = monitorData.dValue;
+                                        item.state = monitorData.state;
+                                        item.waterLevel = monitorData.dValue;
+                                        break;
+                                    case '积水深度':
+                                        monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) + '(m)' : '-';
+                                        deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
+                                        item.state = monitorData.state;
+                                        item.waterLevel = monitorData.dValue;
+                                        break;
+                                    case '雨量':
+                                        monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) + '(mm)':'-';
+                                        item.state = monitorData.state;
+                                        item.waterLevel = monitorData.dValue;
                                         break;
                                     default:
                                         break;

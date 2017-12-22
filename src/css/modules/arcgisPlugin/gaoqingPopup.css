@@ -79,3 +79,9 @@
 .gaoqingPopup .windowBox-sm > span{
     position: relative;
 }
+.dangerStatus-bg{
+    background: #fe5240!important;
+}
+.warningStatus-bg{
+    background: #f2b817!important;
+}

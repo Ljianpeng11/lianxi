@@ -23,7 +23,7 @@
     align-self: flex-end;
 }
 .deviceMiddle{
-    color: #555;
+    color: #fff;
     flex: 3;
     text-align: center;
     font-size: 12px;
@@ -33,6 +33,11 @@
 }
 .deviceMiddle > span:last-child{
     margin:0;
+}
+.deviceMiddle .selectBox .el-input__icon{
+    width: 12px;
+    top: 12px;
+    color: #fff;
 }
 .devicePanel-bottom{
     height: calc(100% - 3em);

@@ -30,7 +30,36 @@ var comm = Vue.extend({
                 xData: [],
                 yData1: [],
                 yData2: []
-            }
+            },
+            itemID:'',
+            timeRangeObj:[],
+            pickerOptions: {
+                shortcuts: [{
+                    text: '最近一周',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '最近一个月',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '最近三个月',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }]
+            },
         }
     },
     created(){
@@ -52,6 +81,31 @@ var comm = Vue.extend({
             eventHelper.emit('openDeviceInfoPanel', this.deviceInfo);
             // eventHelper.emit('loadStatisticData',this.deviceInfo);
         },
+        loadChart:function(itemID,timeRangeObj){
+            var self = this;
+            controller.getHistoricalDataByMonitor(itemID, timeRangeObj.startDate, timeRangeObj.endDate, function (result) {
+                if(!!result && result.length > 0){
+                    self.chartOptions.xData = [];
+                    self.chartOptions.yData1 = [];
+                    self.chartOptions.yData2 = [];
+                    result.forEach(function(value){
+                        self.chartOptions.xData.push(value.deviceUpdateTime);
+                        self.chartOptions.yData1.push(parseFloat(value.dValue).toFixed(2));
+                        self.chartOptions.yData2.push(0);
+                    });
+                }
+                self.$refs.deviceWaterChart.reloadChart(self.chartOptions);
+            });
+
+        },
+        searchData:function(){
+            if(!!this.timeRangeObj){
+                var timeObj = {};
+                timeObj.startDate = moment(this.timeRangeObj[0]).format('YYYY-MM-DD HH:ss:mm');
+                timeObj.endDate = moment(this.timeRangeObj[1]).format('YYYY-MM-DD HH:ss:mm');
+                this.loadChart(this.itemID,timeObj);
+            }
+        },
         closePanel: function () {
             if (!!this.timer) {
                 clearInterval(this.timer);
@@ -66,8 +120,12 @@ var comm = Vue.extend({
                 var self = this;
                 var devices = selectItem.facilityDevice.devices;
                 var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
-                var startDate = moment().subtract(12, 'days').format('YYYY-MM-DD HH:mm:ss');
-                console.log(selectItem)
+                var startDate = moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+                var timeRangeObj = {
+                    startDate:startDate,
+                    endDate:endDate
+                };
+                self.timeRangeObj = [startDate,endDate];
                 devices.forEach(function (device) {
                     var items = device.items;
                     items.forEach(function (item) {
@@ -92,20 +150,8 @@ var comm = Vue.extend({
                             self.deviceInfo.stressWaterLine = item.dValue;
                         }
                         if (item.itemTypeName.indexOf('waterLevel') !== -1) {//todo 动态输入水位值（超声波、压力）
-                            var itemID = item.itemID;
-                            controller.getHistoricalDataByMonitor(itemID, startDate, endDate, function (result) {
-                                if(!!result && result.length > 0){
-                                    self.chartOptions.xData = [];
-                                    self.chartOptions.yData1 = [];
-                                    self.chartOptions.yData2 = [];
-                                    result.forEach(function(value){
-                                        self.chartOptions.xData.push(value.deviceUpdateTime);
-                                        self.chartOptions.yData1.push(parseFloat(value.dValue).toFixed(2));
-                                        self.chartOptions.yData2.push(0);
-                                    });
-                                }
-                                self.$refs.deviceWaterChart.reloadChart(self.chartOptions);
-                            });
+                            self.itemID = item.itemID;
+                            self.loadChart(self.itemID,timeRangeObj);
                         }
                     })
                 });

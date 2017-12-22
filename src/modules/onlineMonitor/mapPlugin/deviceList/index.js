@@ -15,7 +15,7 @@ var comm = Vue.extend({
             typeOption1:{
                 value:'状态',
                 options: [{
-                    value: '',
+                    value: null,
                     label: '全部'
                 },{
                     value: '0',
@@ -35,7 +35,7 @@ var comm = Vue.extend({
             typeOption3:{
                 value:'是否收藏',
                 options: [{
-                    value: '',
+                    value: null,
                     label: '全部'
                 },{
                     value: '1',
@@ -49,8 +49,8 @@ var comm = Vue.extend({
             selectIitem:{},
             queryString:{
                 name:'',
-                collection:'',
-                status:''
+                collection:null,
+                state:null
             },
             queryList:[]
         }
@@ -64,7 +64,11 @@ var comm = Vue.extend({
     watch:{
         queryString:{
             handler: function(val){
-                this.queryList = val ? this.deviceList.filter(this.createStateFilter(val)) : this.deviceList;
+                if(!!val.name || !!val.collection || !!val.state){
+                    this.queryList = this.deviceList.filter(this.createStateFilter(val));
+                }else{
+                    this.queryList = this.deviceList;
+                }
             },
             deep: true
         }
@@ -105,12 +109,12 @@ var comm = Vue.extend({
         },
         renderList:function(list){
             list.forEach(function(item){
-                var sysUpdateTime;
-                item.status = 0;
-                item.signal = 'on';
                 item.facilityDevice.devices.forEach(function(val){
                     for(var i = 0;i<val.items.length;i++){
                         var monitorData = val.items[i];
+                        if(Number(monitorData.dValue) != parseInt(Number(monitorData.dValue))){
+                            monitorData.dValue = parseFloat(monitorData.dValue).toFixed(2);
+                        }
                         switch(monitorData.name){
                             case '电压':
                                 monitorData.dValue = monitorData.dValue + 'V';
@@ -121,7 +125,7 @@ var comm = Vue.extend({
                                 i --;
                                 break;
                             case '电量':
-                                monitorData.dValue = monitorData.dValue*100 + '%';
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue * 100 + '%':"-";
                                 val.items.splice(i,1);
                                 i --;
                                 break;
@@ -130,17 +134,24 @@ var comm = Vue.extend({
                                 i --;
                                 break;
                             case '水位':
-                                monitorData.dValue = parseFloat(monitorData.dValue).toFixed(2) + '(m)';
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(m)':'-';
+                                item.state = monitorData.state;
+                                break;
+                            case '积水深度':
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(m)':'-';
+                                item.state = monitorData.state;
+                                break;
+                            case '雨量':
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(mm)':'-';
+                                item.state = monitorData.state;
                                 break;
                             default:break;
                         }
-                        sysUpdateTime = monitorData.sysUpdateTime;
+                        if(!!monitorData.sysUpdateTime){
+                            item.sysUpdateTime = monitorData.sysUpdateTime;
+                        }
                     }
-                   // val.items.forEach(function(monitorData,index){
-                   //
-                   // });
                });
-                item.sysUpdateTime = sysUpdateTime;
                 var optionValue = {
                     value:item.name,
                     label:item.name
@@ -160,12 +171,24 @@ var comm = Vue.extend({
         },
         createStateFilter(queryString) {
             return (queryItem) => {
-                return (queryItem.name.indexOf(queryString.name.toLowerCase()) !== -1 || queryItem.collection.toString() == queryString.collection || queryItem.status.toString() == queryString.status);
+                var a = queryItem.name.indexOf(queryString.name) !== -1;
+                var b,c;
+                if(!!queryString.collection){
+                    b = queryItem.collection === parseInt(queryString.collection);
+                }else{
+                    b = true;
+                }
+                if(!!queryString.state){
+                    c = queryItem.state === parseInt(queryString.state);
+                }else{
+                    c = true;
+                }
+                return (a && b && c);
             };
         },
         handleSelect:function(type,value) {
-           if(type === 'status'){
-               this.queryString.status = value;
+           if(type === 'state'){
+               this.queryString.state = value;
            }else if(type === 'collection'){
                this.queryString.collection = value;
            }
