@@ -190,13 +190,13 @@ var comm = Vue.extend({
                     for (i = 0, len = userInfos.length; i < len; i++) {
                         this.groupUserArray.push($(userInfos[i]).find("UserID").text());
                     }
-                    this.setGISSubscribe(this.groupUserArray.join(","));
                     console.log(" ELTE_OCX_GetGroupUsersContent:" + this.groupUserArray.join(","));
+                    this.setGISSubscribe(this.groupUserArray.join(","));
                 }
-            } else if(result==2135103001) {
+            } else {
                 setTimeout(function(){
                     this.getGroupUsers();
-                }.bind(this),800)
+                }.bind(this),800);
             }
         },
         handleELTEOCXEvent:function(ulEventType,pEventDataXml){

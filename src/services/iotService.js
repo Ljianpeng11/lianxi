@@ -63,7 +63,6 @@ define(['./serviceHelper'], function (serviceHelper) {
                     return;
                 }
             });
-            console.log('Error:', result);
         }
     }
 });
