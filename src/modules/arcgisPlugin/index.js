@@ -11,7 +11,8 @@ var infoWindow = require('./plugin/infoWindow');
 var rightPanel = require('modules/rightPanel');
 var mapHelper = require('utils/mapHelper');
 var infoBoard = require('modules/emergencyRescue/mapTool/infoBoard');
-var addressServiceInput = require('./plugin/addressServiceInput')
+var facilityIdentify = require('./plugin/facilityIdentify');
+var addressServiceInput = require('./plugin/addressServiceInput');
 var tabModel = require('controllers/model/appTabModel');
 var retrospectDetail = require('modules/retrospectDetail');
 var statusTools = require('modules/onlineMonitor/mapPlugin/statusTools');
@@ -402,7 +403,8 @@ var comm = Vue.extend({
         'device-list': deviceList,
         'address-service-input': addressServiceInput,
         'device-panel': devicePanel,
-        'elte-video' :eLTEVideo
+        'elte-video' :eLTEVideo,
+        'facility-identify' :facilityIdentify
     }
 });
 module.exports = comm;

@@ -15,7 +15,7 @@ var comm = Vue.extend({
                 userName : "8889",
                 password : "8889",
                 serverIP : "69.8.0.131",
-                localIP : "192.168.0.111",
+                localIP : "192.168.43.31",
                 sipPort : "5060"
             },
             groupUserArray:[]
@@ -47,7 +47,7 @@ var comm = Vue.extend({
         login : function () {
             if (this.ocxObj){
                 iotController.getCurRequestInfo(function(data){
-                    this.loginInfo.localIP = data.remoteIp;
+                    //this.loginInfo.localIP = data.remoteIp;
                     var resultXml = this.ocxObj.ELTE_OCX_Login(this.loginInfo.userName, this.loginInfo.password, this.loginInfo.serverIP, this.loginInfo.localIP, this.loginInfo.sipPort);
                     var xmlDoc = $.parseXML(resultXml);
                     var result = $(xmlDoc).find("ResultCode").text();
@@ -165,7 +165,7 @@ var comm = Vue.extend({
             strGisParam +=    "7";
             strGisParam +=    "</SubType>";
             strGisParam +=    "<ResourceList>";
-            strGisParam +=    resId;
+            strGisParam +=    "8003";
             strGisParam +=    "</ResourceList>";
             strGisParam +=    "<Subscriber>";
             strGisParam +=    "</Subscriber>";
@@ -203,7 +203,7 @@ var comm = Vue.extend({
             var msg = "EventType: ";
             var isLogin = false;
             msg +=    ulEventType;
-            console.log(ulEventType+" "+pEventDataXml);
+            console.log(ulEventType+" "+pEventDataXml);/*
             if (ulEventType == 2){
                 var xmlDoc = $.parseXML(pEventDataXml);
                 xmlDoc = $(xmlDoc);
@@ -343,7 +343,8 @@ var comm = Vue.extend({
                 msg += pEventDataXml;
             } else if (ulEventType ==7) {
                 //alert(pEventDataXml);
-            } else if( ulEventType == 8){
+            } else*/
+            if( ulEventType == 8){
                 var Content = $($.parseXML(pEventDataXml));
                 var Time =  Content.find("Time").text();
                 var Altitude =  Content.find("Altitude").text();
