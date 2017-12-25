@@ -150,8 +150,8 @@ define(function () {
         executeIdentifyTask: function (parcelsURL,view,event, cb,cb1) {
             return this.apiInstance.executeIdentifyTask(parcelsURL,view,event, cb,cb1);
         },
-        createPolylineGeometry: function (paths,wkid) {
-            return this.apiInstance.createPolylineGeometry(paths,wkid);
+        createPolylineGeometry: function (paths) {
+            return this.apiInstance.createPolylineGeometry(paths);
         },
         webMercatorToGeographic: function (geometry) {
             return this.apiInstance.webMercatorToGeographic(geometry);

@@ -1003,12 +1003,12 @@ define(function () {
             }.bind(this));
         }).then(cb1);
     };
-    instance.createPolylineGeometry = function (paths,wkid) {
+    instance.createPolylineGeometry = function (paths) {
         var line = new instance.Polyline({
             hasZ: false,
             hasM: false,
             paths: paths,
-            spatialReference: { wkid: wkid }
+            spatialReference: { wkid: 4326 }
         });
         return line;
     };

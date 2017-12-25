@@ -68,6 +68,7 @@
     background-color: white;
     border-radius: 5px;
     border: 1px solid #96c2f1;
+    z-index: 30;
 }
 
 .identifyInfoDiv .el-card__header {

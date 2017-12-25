@@ -40,13 +40,14 @@ var comm = Vue.extend({
                     feature.prpos = prpos;
                     this.identifyData.push(feature);
                 }
+                this.showIdentifyResult=true;
                 this.handleCurrentChange(1);
             }
         },
         allPrpos : function(feature){
-            var props = {};
+            var props = [];
             for(var i in feature.fieldNames){
-                props[feature.fieldNames[i]] = feature.fieldValues[i];
+                props.push({title:feature.fieldNames[i],value:feature.fieldValues[i]});
             }
             return props;
         },
@@ -54,8 +55,7 @@ var comm = Vue.extend({
             var queryParam = {
                 'datasetNames':["gqpsfacilitygh:PS_CANAL_ZY_GLX","gqpsfacilitygh:PS_PIPE_ZY_GLX"],
                 'getFeatureMode':"BUFFER",
-                'bufferDistance':30,
-                "targetEpsgCode":4326,
+                'bufferDistance':5,
                 'geometry':{
                     'id':0,
                     'style':null,
@@ -74,7 +74,7 @@ var comm = Vue.extend({
             };
             $.ajax({
                 type:"POST",
-                url:"http://223.99.169.187:20070/iserver/services/data-gqpsfacility/rest/data/featureResults.rjson?returnContent=true",
+                url:"http://223.99.169.187:20070/iserver/services/data-gqpsfacility/rest/data/featureResults.json?returnContent=true",
                 data:JSON.stringify(queryParam),
                 dataType:"json",
                 success:this.handleSearchSuccess,
@@ -86,6 +86,7 @@ var comm = Vue.extend({
         },
         handleSearchSuccess:function(data){
             if(data.features.length>0){
+                debugger;
                 this.onCompleteFunction(data.features);
                 var style = {
                     color: [227, 139, 79, 0.8],
@@ -102,18 +103,11 @@ var comm = Vue.extend({
                         var path = [data.features[0].geometry.points[i].x,data.features[0].geometry.points[i].y];
                         paths.push(path);
                     }
-                    var line = mapHelper.createPolylineGeometry(paths,4610);
-                    location = mapHelper.webMercatorToGeographic(line);
-                    var projectGeometry1 = mapHelper.project(line,4326);
+                    location = mapHelper.createPolyline(facilityIdentifyLayer,paths,style);
                 } else {
                     location = mapHelper.createPolyline(facilityIdentifyLayer,data.features[0].geometry.points,style);
                 }
-                this.baseView.popup.open({
-                    location: location,
-                    title: "test",
-                    content: "test"
-                });
-                mapHelper.setCenter(this.baseView,location.extent.center.x,location.extent.center.x,13);
+                mapHelper.setCenter(this.baseView,location.geometry.extent.center.x,location.geometry.extent.center.y,13);
             } else {
                 this.$message.info('点查询无数据！');
             }

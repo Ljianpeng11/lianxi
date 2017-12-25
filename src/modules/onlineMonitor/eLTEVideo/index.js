@@ -14,9 +14,9 @@ var comm = Vue.extend({
             loginInfo:{
                 userName : "8889",
                 password : "8889",
-                serverIP : "69.8.0.131",
-                localIP : "192.168.43.31",
-                sipPort : "5060"
+                serverIP : "69.8.0.131",//60.210.40.198
+                localIP : "192.168.0.107",
+                sipPort : "5060"//5064
             },
             groupUserArray:[]
         }
@@ -52,9 +52,10 @@ var comm = Vue.extend({
                     var xmlDoc = $.parseXML(resultXml);
                     var result = $(xmlDoc).find("ResultCode").text();
                     console.log(" ELTE_OCX_Login:" +result);
-                    if(result==0)
-                        this.getGroupUsers();
                     this.isLogin = true;
+                    setInterval(function(){
+                        this.getGroupUsers();
+                    }.bind(this),2000)
                 }.bind(this));
             }
         },
@@ -203,7 +204,11 @@ var comm = Vue.extend({
             var msg = "EventType: ";
             var isLogin = false;
             msg +=    ulEventType;
-            console.log(ulEventType+" "+pEventDataXml);/*
+            console.log(ulEventType+" "+pEventDataXml);
+            /*if(ulEventType==4){
+                this.getGroupUsers();
+            }*/
+            /*
             if (ulEventType == 2){
                 var xmlDoc = $.parseXML(pEventDataXml);
                 xmlDoc = $(xmlDoc);
@@ -351,7 +356,7 @@ var comm = Vue.extend({
                 var Latitude =  Content.find("Latitude").text();
                 var Longtitude =  Content.find("Longtitude").text();
                 var ep820VideoLayer = this.baseView.map.findLayerById("ep820Video");
-                ep820VideoLayer.removeAll();
+                //ep820VideoLayer.removeAll();
                 var imgObj = {
                     url:  './img/toolbar/buliding-video.png',
                     width: "24px",
@@ -368,29 +373,57 @@ var comm = Vue.extend({
 
                 var graphic = mapHelper.createPictureMarkSymbol(ep820VideoLayer, Number(Longtitude), Number(Latitude), imgObj,attribute,popupTemplate);
 
+            } else if (ulEventType == 1) {
+                var xmlDoc = $.parseXML(pEventDataXml);
+                var type = $(xmlDoc).find("CallStatus").text();
+                if (type == 3011) {
+                    var strResID = $(xmlDoc).find("Uri").text();
+                    var strMuteType = $(xmlDoc).find("SoundMute").text();
+                    if (confirm(strResID + " Video call prompt")) {
+                        this.RecvVideoPlay(strResID);
+                    } else {
+                        //StopRealPlay();
+                    }
+                }
             }
             //$("#eventType").val(msg);
         },
-        SDSSendMessage:function(){
-            var strSDSParam = "<Content>";
-            strSDSParam +=    "<SDSType>";
-            strSDSParam +=    "0001";
-            strSDSParam +=    "</SDSType>";
-            strSDSParam +=    "<MsgBody>";
-            strSDSParam +=    "test"
-            strSDSParam +=    "</MsgBody>";
-            strSDSParam +=    "<Receiver>";
-            strSDSParam +=    "8003"
-            strSDSParam +=    "</Receiver>";
-            strSDSParam +=    "<AttachFileList>";
-            strSDSParam +=    "</AttachFileList>";
-            strSDSParam +=    "</Content>";
-
-            var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
-
+        RecvVideoPlay : function (resId){
+            var resultXml = this.ocxObj.ELTE_OCX_RecvVideoPlay(resId, "0");
             var xmlDoc = $.parseXML(resultXml);
             var result = $(xmlDoc).find("ResultCode").text();
-            console.log("ELTE_OCX_SDSSendMessage:" +result);
+            console.log("ELTE_OCX_RecvVideoPlay:" +result);
+            this.startRealPlay();
+        },
+        SDSSendMessage:function(){
+            var content = window.prompt("请输入短信内容", "");
+            if(content!=""){
+                var strSDSParam = "<Content>";
+                strSDSParam +=    "<SDSType>";
+                strSDSParam +=    "0001";
+                strSDSParam +=    "</SDSType>";
+                strSDSParam +=    "<MsgBody>";
+                strSDSParam +=    content
+                strSDSParam +=    "</MsgBody>";
+                strSDSParam +=    "<Receiver>";
+                strSDSParam +=    "8003"
+                strSDSParam +=    "</Receiver>";
+                strSDSParam +=    "<AttachFileList>";
+                strSDSParam +=    "</AttachFileList>";
+                strSDSParam +=    "</Content>";
+
+                var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+
+                var xmlDoc = $.parseXML(resultXml);
+                var result = $(xmlDoc).find("ResultCode").text();
+                console.log("ELTE_OCX_SDSSendMessage:" +result);
+            } else {
+                this.$message({
+                    type: 'info',
+                    message: '发送内容不能为空'
+                });
+            }
+
         },
         StopRealPlay : function () {
             var resId = "8003";
