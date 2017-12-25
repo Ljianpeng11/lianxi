@@ -7,7 +7,6 @@ var appProfile = require('modules/appProfile');
 var appNavigator = require('modules/appNavigator');
 var appFooter = require('modules/appFooter');
 var moduleController = require('controllers/moduleController');
-var appHome = require('modules/appHome');
 var appTab = require('modules/appTab');
 var mainView = require('modules/mainView');
 var appLogin = require('modules/login');
