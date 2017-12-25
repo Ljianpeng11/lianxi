@@ -105,11 +105,12 @@ var comm = Vue.extend({
             label: '高青县',
             value: 370322
         };
-        this.owner = {
+        var own = {
             value: '1',
             label: '高青住建局'
         };
         this.region = [district];
+        this.owner = [own];
         this.query();
     },
     components: {}

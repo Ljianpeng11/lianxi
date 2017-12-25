@@ -34,6 +34,7 @@
 @import "modules/onlineMonitor/facilityInfoTable.css";
 @import "modules/onlineMonitor/dataScreen.css";
 @import "modules/arcgisPlugin/facilityIdentify.css";
+@import "./modules/facilitySummary.css";
 .css
 :root {
     --base-color:#105ba3;

@@ -18,7 +18,7 @@ define(function () {
             totalRainCanalLength: 29749,//雨水沟总长
             totalDirtyCanalLength: 27,//污水沟总长
             totalMixinCanalLength: 0,//雨污合流沟总长
-            area: 2970000,//面积
+            area: 29700000,//面积
             rows:[
                 '区属,邦德路,3275.530106,1649.404809,912.954855,0,5837.88977',
                 '区属,北一路,3636.022015,1566.820039,0,0,5202.842054',

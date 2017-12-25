@@ -1,0 +1,151 @@
+.facilitySummary {
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.facilitySummary .tile_count {
+    margin-top: 0;
+}
+
+.facilitySummary .el-select {
+    width: 80%;
+}
+
+.facilitySummary .queryResult {
+    width: 100%;
+}
+
+.facilitySummary .queryResult .el-input {
+    width: 20%;
+}
+
+.facilitySummary .facilityChart {
+    height: 100%;
+    width: 50%;
+    float: left;
+}
+
+.facilitySummary .facilityChartContent {
+    height: calc(100% - 40px);
+}
+
+.facilitySummary .facilityChart .chartContent {
+    color: black;
+    height: 25%;
+    border: 1px solid #d6cdcd;
+}
+
+.facilitySummary .facilityChart .chartContent:hover {
+    background-color: gainsboro;
+}
+
+.facilitySummary .facilityChart .chartContent > span {
+    display: block;
+    font-size: 1.5em;
+    text-align: center;
+    height: 50%;
+}
+
+.facilitySummary .facilityChart .chartContent > span:before {
+    color: black;
+    display: block;
+    width: 0.5em;
+    height: 100%;
+    content: '';
+    float: left
+}
+
+.facilitySummary .canalPanel .chartContent > span:before {
+    float: right
+}
+
+.totalPipe > span:before {
+    background-color: gainsboro;
+}
+
+.rainPipe > span:before {
+    background-color: #00ffff;
+}
+
+.dirtyPipe > span:before {
+    background-color: #ff00cc;
+}
+
+.mixinPipe > span:before {
+    background-color: #ff6600;
+}
+
+.facilitySummary .radarChart {
+    width: 60%;
+}
+
+.facilitySummary .radarChartContent {
+    width: 40%;
+    float: left;
+    height: 100%;
+}
+
+.facilityChartContent .radarContent {
+    border: 1px solid;
+    width: 100%;
+    height: 33.3%;
+    color: black;
+}
+
+.facilityChartContent .radarContent > span {
+    display: block;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.facilityChartContent .radarContent > span:nth-child(odd) {
+    background-color: gray;
+    color: white;
+    margin-bottom: 5%;
+}
+
+.dirtyPipe:hover {
+    background-color: #ff00cc !important;
+}
+
+.rainPipe:hover {
+    background-color: #00ffff !important;
+}
+
+.mixinPipe:hover {
+    background-color: #ff6600 !important;
+}
+
+.totalPipe {
+}
+
+.dirty {
+    color: #ff00cc;
+
+}
+
+.rain {
+    color: #00ffff;
+}
+
+.mixin {
+    color: #ff6600;
+}
+
+.facilitySummary .count {
+    color: #009fff;
+}
+
+.facilitySummary .green {
+    color: #1ABB9C !important;
+}
+
+.facilitySummary .colFix {
+    width: 14.285% !important;
+}
+
+@media screen and (max-device-width: 1600px) {
+    .facilitySummary .facilityChart .chartContent > span {
+        font-size: 1em;
+    }
+}
