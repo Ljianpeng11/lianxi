@@ -1,7 +1,5 @@
 var template = require('./facilitySummary.html');
 var eventHelper = require('../../utils/eventHelper');
-/*var clickPipePlugin = require('../../utils/skyLine/clickPipePlugin');
-var skyLineClient = require('../../utils/skyLine/skyLineClient');*/
 var facilitySummaryCtrl = require('controllers/facilitySummaryController');
 // 定义组件
 var comm = Vue.extend({
@@ -36,39 +34,15 @@ var comm = Vue.extend({
                 rows: []
             },
             regions: [{
-                value: '440100',
-                label: '广州市',
-                district:[440112,440104,440103,440111,440106,440105]
-            }, {
-                value: '440105',
-                label: '海珠区'
-            }, {
-                value: '440106',
-                label: '天河区'
-            }, {
-                value: '440111',
-                label: '白云区'
-            }, {
-                value: '440103',
-                label: '荔湾区'
-            }, {
-                value: '440104',
-                label: '越秀区'
-            }, {
-                value: '440112',
-                label: '黄埔区'
+                value: '370322',
+                label: '高青县',
+                district:[370322]
             }
             ],
             owners: [
                 {
-                    value: '3',
-                    label: '其他权属单位'
-                }, {
-                    value: '2',
-                    label: '广州市污水治理有限责任公司'
-                }, {
                     value: '1',
-                    label: '区属单位（含广州市市政园林局、区建设和市政局）'
+                    label: '高青住建局'
                 }
             ],
             rows: [],
@@ -76,29 +50,6 @@ var comm = Vue.extend({
         }
     },
     methods: {
-        underGroundMode: function () {
-            skyLineClient.client.activePlugin('UndergroundModeCommand');
-        },
-        viewPipe: function (index, row) {
-            this.pipeDialogTitle = row.road + '管渠立体图';
-            this.showPipeDetail = true;
-            setTimeout(function () {
-
-                var rootPath = '';
-                var sgworld = document.getElementById('SGWorld');
-                //默认打开的fly文件路径，可以为本地磁盘路径
-                var flyPath = "C:\\Users\\Thz-02\\Desktop\\gzpsgx201708(1)\\default.FLY";
-                console.log(sgworld.Project);
-                sgworld.Project.Open(flyPath);
-                skyLineClient.client.init(sgworld);
-                //web路径的前缀，如/ads2/
-                skyLineClient.client.ctx = rootPath;
-                //放图片的路径，要包括整条路径，就是从http开始
-                //tefw.imagePath = "<%=webRootPath%>resources/tdImage/";
-                //初始化后激活平移操作的插件，使得默认是平移操作
-                skyLineClient.client.activePlugin('NavModeDragCommand');
-            }.bind(this), 1000);
-        },
         formatRow: function (formatArr) {
             var result = [];
             formatArr.forEach(function (formatStr) {
@@ -149,9 +100,17 @@ var comm = Vue.extend({
         }
     },
     mounted: function () {
-      /*  this.$refs.pipeMapToggle.$on('change', function (newValue) {
-            this.underGroundMode();
-        }.bind(this));*/
+        var district = {
+            district:[370322],
+            label: '高青县',
+            value: 370322
+        };
+        this.owner = {
+            value: '1',
+            label: '高青住建局'
+        };
+        this.region = [district];
+        this.query();
     },
     components: {}
 });

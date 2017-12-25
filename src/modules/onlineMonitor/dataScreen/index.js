@@ -62,13 +62,8 @@ var comm = Vue.extend({
                 options: []
             },
             typeOption:{
-                options: [{
-                    value: '五华区雨量公众监测点',
-                    label: '五华区雨量公众监测点'
-                }, {
-                    value: '市体育馆',
-                    label: '市体育馆'
-                }]
+                value:'',
+                options: []
             },
             chartOptions1:{
                 type:'pieChart',
@@ -106,33 +101,7 @@ var comm = Vue.extend({
             ],
             alarmTableData:[],
             offlineTableData:[],
-            collectList:[
-                {
-                    title:'黄三角产业园区南边水尺',
-                    status:0,
-                    voltage:'low',
-                    signal:'on',
-                    type:'RF',
-                    deviceCode:'17120011',
-                    deviceNum:0,
-                    onlineTime:'2',
-                    collect:0,
-                    x:117.8216341936,
-                    y:37.1701173675
-                },{
-                    title:'黄三角产业园区东边水尺',
-                    status:1,
-                    voltage:'middle',
-                    signal:'off',
-                    type:'WD',
-                    deviceCode:'16310128',
-                    deviceNum:'2.506',
-                    onlineTime:'2',
-                    collect:0,
-                    x:117.8563419346,
-                    y:37.1701172675
-                }
-            ]
+            collectList:[]
         }
     },
     created:function(){
@@ -140,7 +109,7 @@ var comm = Vue.extend({
         iotController.getRainFacility(function(result){
             this.YLDistrictOption.value = result[0].facilityName;
             this.facilityId = result[0].facilityId;
-            this.loadChart(result[0].facilityId,{num:8,timeUnit:'days'});
+            this.loadChart(result[0].facilityId,{num:8,timeUnit:'days'},'lineChart',this.chartOptions3);
             result.forEach(function(val){
                 this.YLDistrictOption.options.push({
                     value:val.facilityId,
@@ -167,6 +136,48 @@ var comm = Vue.extend({
                 {value: data.illCount, name: '断线'}
             ];
             this.$refs.pieChart2.reloadChart(this.chartOptions2);
+        }.bind(this));
+        //获取收藏数据
+        iotController.getCollectionFacilityList(function(data){
+            var self = this;
+            data.forEach(function(item){
+                var collectItem = {
+                    name:item.name,
+                    deviceName:'',
+                    voltage:'',
+                    onlineState:'',
+                    facilityId:item.facilityId,
+                    imei:item.imei,
+                    YLDistrictOption:self.YLDistrictOption,
+                    chartOptions:{
+                        type:'YLChart',
+                        xData:[],
+                        yData1:[],
+                        yData2:[]
+                    }
+                };
+                item.facilitys.devices.forEach(function(val,index){
+                    collectItem.deviceName = val.name;
+                    for(var i = 0;i<val.items.length;i++){
+                        var monitorData = val.items[i];
+                        if(Number(monitorData.dValue) != parseInt(Number(monitorData.dValue))){
+                            monitorData.dValue = parseFloat(monitorData.dValue).toFixed(2);
+                        }
+                        if(monitorData.name === '电压'){
+                            monitorData.dValue = monitorData.dValue + 'V';
+                            if(monitorData.dValue < monitorData.lowAlarm){collectItem.voltage = 'low'}
+                            else if(monitorData > monitorData.highAlarm){collectItem.voltage = 'high'}
+                            else{collectItem.voltage = 'middle'}
+                            monitorData.onlineState = collectItem.onlineState;
+                        }
+                    }
+                });
+                console.log(self.collectList);
+                self.collectList.push(collectItem);
+                self.collectList.forEach(function(item,index){
+                    self.loadChart(item.facilityId,{num:8,timeUnit:'days'},'collectChart'+index,item.chartOptions);
+                })
+            })
         }.bind(this));
     },
     methods: {
@@ -208,7 +219,7 @@ var comm = Vue.extend({
             }
             return time;
         },
-        loadChart:function(facilityId,time){
+        loadChart:function(facilityId,time,refsName,opts){
             var self = this;
             var timeRange = this.setTimeRange(time);
             facilityController.getCurrentUserFacilitysMonitor(function (data) {
@@ -217,33 +228,51 @@ var comm = Vue.extend({
                         var arr = val.facilityDevice.devices;
                         for(var i = 0;i<arr.length;i++){
                             arr[i].items.forEach(function(item){
+                                opts.xData = [];
+                                opts.yData1 = [];
+                                opts.yData2 = [];
                                 if(item.itemTypeName.indexOf('rainfall') !== -1){
+                                    itemID = item.itemID;
                                     controller.getHistoricalDataByMonitor(item.itemID, timeRange.startDate, timeRange.endDate, function (result) {
                                         if(!!result && result.length > 0){
-                                            self.chartOptions3.xData = [];
-                                            self.chartOptions3.yData1 = [];
-                                            self.chartOptions3.yData2 = [];
                                             result.forEach(function(value){
-                                                self.chartOptions3.xData.push(value.deviceUpdateTime);
-                                                self.chartOptions3.yData1 = [];
-                                                self.chartOptions3.yData2.push(parseFloat(value.dValue).toFixed(2));
+                                                opts.xData.push(value.deviceUpdateTime);
+                                                opts.yData1 = [];
+                                                opts.yData2.push(parseFloat(value.dValue).toFixed(2));
                                             });
+                                            var flag = refsName instanceof Array;
+                                            if(flag){
+                                                self.$refs[refsName[0]].reloadChart(opts);
+                                            }else{
+                                                self.$refs[refsName].reloadChart(opts);
+                                            }
                                         }
-                                        self.$refs.lineChart.reloadChart(self.chartOptions3);
                                     });
                                 }
+                                // else if(item.itemTypeName.indexOf('waterLevel') !== -1){
+                                //     controller.getHistoricalDataByMonitor(item.itemID, timeRange.startDate, timeRange.endDate, function (result) {
+                                //         if(!!result && result.length > 0){
+                                //             result.forEach(function(value){
+                                //                 opts.xData.push(value.deviceUpdateTime);
+                                //                 opts.yData1.push(parseFloat(value.dValue).toFixed(2));
+                                //                 opts.yData2 = [];
+                                //             });
+                                //             self.$refs.lineChart.reloadChart(opts);
+                                //         }
+                                //     });
+                                // }
                             })
                         }
                     }
                 })
             }.bind(this));
         },
-        changeTimeRange:function(index,item){
+        changeTimeRange:function(index,item,refsName,opts){
             this.currentTimeIndex = index;
-            this.loadChart(this.facilityId,item);
+            this.loadChart(this.facilityId,item,opts);
         },
-        changeYLopts:function(val){
-            this.loadChart(val,this.timeRangeArr[this.currentTimeIndex]);
+        changeYLopts:function(val,refsName,opts){
+            this.loadChart(val,this.timeRangeArr[this.currentTimeIndex],refsName,opts);
         },
         openDetail:function(index,item){
 

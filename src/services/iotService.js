@@ -59,6 +59,14 @@ define(['./serviceHelper'], function (serviceHelper) {
                     return;
                 }
             });
+        },
+        getCollectionFacilityList:function(cb){
+            $.get(serviceHelper.getPath('getCollectionFacilityList'),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+            })
         }
     }
 });
