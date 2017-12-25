@@ -1,0 +1,22 @@
+<div>
+    <div class="mapQueryStatus">
+        <div class="facilityIdentityStatus" v-show="isQueryFacility">
+            <span style="color:red;">管网点查询信息功能状态生效</span>
+            <div class="closeIcon" title="关闭点查询功能" v-on:click="closeIdentityQuery()"></div>
+        </div>
+    </div>
+    <el-card class="identifyInfoDiv" v-show="showIdentifyResult">
+        <div slot="header">
+            <div class='identifyHeader'><a href="#" v-show="currentPage>1" @click="currentPage = currentPage - 1;handleCurrentChange(currentPage)">
+                < </a>{{displayIdentifyInfoTitle}}<a href="#" v-show='currentPage<identifyData.length' @click="currentPage = currentPage +1;handleCurrentChange(currentPage)">
+                ></a></div>
+            <div class='identifyCounter'>{{currentPage}}/{{identifyData.length}}</div>
+        </div>
+        <div class="identifyInfoBody">
+            <div v-for="idenfityInfo in idenfityInfoArr" class="identifyContent">
+                <span class="title">{{idenfityInfo.title}}</span>
+                <span class="value" :title="idenfityInfo.value">{{idenfityInfo.value}}</span>
+            </div>
+        </div>
+    </el-card>
+</div>

@@ -146,6 +146,18 @@ define(function () {
         },
         createPoint: function ( x, y) {
             return this.apiInstance.createPoint( x, y);
-        }
+        },
+        executeIdentifyTask: function (parcelsURL,view,event, cb,cb1) {
+            return this.apiInstance.executeIdentifyTask(parcelsURL,view,event, cb,cb1);
+        },
+        createPolylineGeometry: function (paths,wkid) {
+            return this.apiInstance.createPolylineGeometry(paths,wkid);
+        },
+        webMercatorToGeographic: function (geometry) {
+            return this.apiInstance.webMercatorToGeographic(geometry);
+        },
+        project: function (geometry,wkid) {
+            return this.apiInstance.project(geometry,wkid);
+        },
     }
 });

@@ -327,7 +327,7 @@ define(function () {
         var fullExtent = new instance.Extent(-180.0, -90.0, 180.0, 90.0, spatialReference);
         var tiledVectorLayer = new instance.WebTileLayer({
             id: "facilitySuperMapLayer",
-            urlTemplate: "http://223.99.169.187:20070/iserver/services/map-gx_new/wmts-china/gx/default/ChinaPublicServices_gx/{level}/{row}/{col}.png",
+            urlTemplate: "http://223.99.169.187:20070/iserver/services/map-gqpsfacility/wmts-china/gx/default/ChinaPublicServices_gx/{level}/{row}/{col}.png",
             copyright: "",
             spatialReference: spatialReference,
             fullExtent: fullExtent,
@@ -986,6 +986,41 @@ define(function () {
     instance.dojoHitct = function (context,func) {
         return new instance.Lang.hitch(context,func);
     };
+    instance.executeIdentifyTask = function (parcelsUrl,view,event,cb,cb1) {
+        var identifyTask = new instance.IdentifyTask(parcelsUrl);
+        var identifyParams = new instance.IdentifyParameters();
+        identifyParams.tolerance = 3;
+        identifyParams.layerIds = [0, 1, 2];
+        identifyParams.layerOption = "top";
+        identifyParams.width = view.width;
+        identifyParams.height = view.height;
+        identifyParams.geometry = event.mapPoint;
+        identifyParams.mapExtent = view.extent;
+        identifyTask.execute(identifyParams).then(function(response) {
+            return new instance.arrayUtils.map(response.results, function(result) {
+                debugger;
+                cb(result);
+            }.bind(this));
+        }).then(cb1);
+    };
+    instance.createPolylineGeometry = function (paths,wkid) {
+        var line = new instance.Polyline({
+            hasZ: false,
+            hasM: false,
+            paths: paths,
+            spatialReference: { wkid: wkid }
+        });
+        return line;
+    };
+    instance.project = function (geometry,wkid) {
+        var spatialReference = new instance.SpatialReference({
+            wkid:wkid
+        });
+        return new instance.webMercatorUtils.project(geometry,spatialReference);
+    };
+    instance.webMercatorToGeographic = function (geometry) {
+        return new instance.webMercatorUtils.webMercatorToGeographic(geometry);
+    };
     var screenLengthToMapLength = function (map, screenPixel) {
         var screenWidth = map.width;
 
@@ -1046,7 +1081,11 @@ define(function () {
                 "esri/geometry/ScreenPoint",
                 "dojo/on",
                 "dojo/_base/lang",
-                "esri/PopupTemplate"
+                "esri/PopupTemplate",
+                "esri/tasks/IdentifyTask",
+                "esri/tasks/support/IdentifyParameters",
+                "dojo/_base/array",
+                "esri/geometry/support/webMercatorUtils"
             ], function (arcgisMap,
                          arcgisPoint,
                          arcgisExtent,
@@ -1074,7 +1113,11 @@ define(function () {
                          ScreenPoint,
                          On,
                          Lang,
-                         PopupTemplate) {
+                         PopupTemplate,
+                         IdentifyTask,
+                         IdentifyParameters,
+                         arrayUtils,
+                         webMercatorUtils) {
                 instance.Map = arcgisMap;
                 instance.Point = arcgisPoint;
                 instance.Extent = arcgisExtent;
@@ -1103,6 +1146,10 @@ define(function () {
                 instance.On = On;
                 instance.Lang = Lang;
                 instance.PopupTemplate = PopupTemplate;
+                instance.IdentifyTask = IdentifyTask;
+                instance.IdentifyParameters = IdentifyParameters;
+                instance.arrayUtils = arrayUtils;
+                instance.webMercatorUtils = webMercatorUtils;
                 instance.drawConfig = {
                     drawingSymbol: new arcgisSimpleFillSymbol({
                         color: [102, 0, 255, 0.15],
