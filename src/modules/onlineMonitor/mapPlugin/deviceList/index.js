@@ -199,8 +199,8 @@ var comm = Vue.extend({
         },
         collectItem:function(facilityItem){
             iotController.collectFacilities(facilityItem.facilityId,function(data){
-                console.log(data);
-            });
+                this.loadData();
+            }.bind(this));
         }
     },
     mounted: function () {

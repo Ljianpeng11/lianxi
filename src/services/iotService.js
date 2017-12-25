@@ -26,7 +26,6 @@ define(['./serviceHelper'], function (serviceHelper) {
                     cb(result.data);
                     return;
                 }
-                console.log('Error:', result);
             })
         },
         getIotDeviceRunningState:function(cb){
@@ -36,7 +35,6 @@ define(['./serviceHelper'], function (serviceHelper) {
                     return;
                 }
             });
-            console.log('Error:', result);
         },
         getIotDeviceOnlineState:function(cb){
             $.get(serviceHelper.getPath('getIotDeviceOnlineState'),function(result){
@@ -45,7 +43,6 @@ define(['./serviceHelper'], function (serviceHelper) {
                     return;
                 }
             });
-            console.log('Error:', result);
         },
         getRainFacility:function(cb){
             $.get(serviceHelper.getPath('getRainFacility'),function(result){
@@ -54,7 +51,6 @@ define(['./serviceHelper'], function (serviceHelper) {
                     return;
                 }
             });
-            console.log('Error:', result);
         },
         getCurRequestInfo:function(cb){
             $.get(serviceHelper.getPath('getCurRequestInfo'),function(result){

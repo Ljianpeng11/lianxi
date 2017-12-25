@@ -48,7 +48,7 @@ var comm = Vue.extend({
             alarmStatus: 0,
             alertMessage: '',
             activeIndex: '1',
-            facilityPic: '../src/img/combImg.png',
+            facilityPic: '',
             facilityName: '',
             selectedMode: '',
             facilityType: '',
@@ -174,7 +174,7 @@ var comm = Vue.extend({
                 }
                 else {
                     facilityTypeName = 'RV';
-                    this.facilityPic = '../src/img/combImg.png';
+                    this.facilityPic = '...png';
                     this.facilityType = facilityTypeName;
                 }
                 this.facilityName = facility.name;

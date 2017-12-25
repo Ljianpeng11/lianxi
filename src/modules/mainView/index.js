@@ -3,10 +3,8 @@ var template = require('./main-view.html');
 var eventHelper = require('../../utils/eventHelper');
 var moduleController = require('controllers/moduleController');
 var serviceHelper = require('../../services/serviceHelper');
-var appNoticeBox = require('modules/appNoticeBox');
 var mapHelper = require('utils/mapHelper');
 var components = {
-    'app-notice-box': appNoticeBox
 };
 //components = $.extend(components, moduleController);
 var userTemplate = '';

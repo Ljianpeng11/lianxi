@@ -66,7 +66,7 @@ var comm = Vue.extend({
             alarmStatus: 0,
             alertMessage: '',
             activeIndex: '1',
-            facilityPic: '../src/img/combImg.png',
+            facilityPic: '',
             facilityName: '',
             selectedMode: '',
             facilityType: '',
