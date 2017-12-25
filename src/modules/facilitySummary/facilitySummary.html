@@ -1,0 +1,333 @@
+<div class="mainContent facilitySummary">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title" @click="showQueryPanel = !showQueryPanel">
+                    <h2>统计条件
+                        <small>请输入统计条件内容</small>
+                    </h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link" @click="showQueryPanel = !showQueryPanel">
+                            <i v-show='showQueryPanel' class="fa fa-chevron-up"></i>
+                            <i v-show='!showQueryPanel' class="fa fa-chevron-down"></i>
+
+                        </a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <el-collapse-transition>
+                    <div class="x_content" v-show="showQueryPanel">
+                        <br>
+                        <form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left"
+                              novalidate="">
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="region">统计区域<span
+                                        class="required">*</span>
+                                </label>
+                                <div id="region" class="col-md-6 col-sm-6 col-xs-12">
+                                    <el-select v-model="region" multiple placeholder="请选择">
+                                        <el-option
+                                                v-for="item in regions"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="owner">权属单位
+                                </label>
+                                <div id="owner" class="col-md-6 col-sm-6 col-xs-12">
+                                    <el-select v-model="owner" multiple placeholder="请选择">
+                                        <el-option
+                                                v-for="item in owners"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                    <el-button type="success" @click="query">查询</el-button>
+                                    <el-button @click="query">重置</el-button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </el-collapse-transition>
+            </div>
+        </div>
+    </div>
+    <div class="queryResult" v-show='showQueryResult'>
+        <div class="row tile_count">
+            <div class="col-md-2 col-sm-4 col-xs-7 tile_stats_count colFix">
+                <span class="count_top"><i class="fa fa-bank"></i> 统计区域</span>
+                <div class="count green" v-if="region.length ==1">{{region[0].label}}</div>
+                <div class="count green" v-if="region.length >1 && region.length<6" :title="regionDescription">多区域统计
+                </div>
+                <div class="count green" v-if="region.length >5">广州市</div>
+                <span class="count_bottom">更新时间  <i class="green">2017年8月19日</i> </span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-7 tile_stats_count colFix">
+                <span class="count_top"><i class="fa fa-cog"></i> 管渠总长（km）</span>
+                <div class="count">{{(staticData.totalPipeCanalLength/1000).toFixed(2)}}</div>
+                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>1% </i>本月环比</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-7 tile_stats_count colFix">
+                <span class="count_top"><i class="fa fa-cog"></i> 雨水管渠长度（km）</span>
+                <div class="count">{{(staticData.totalRainLength/1000).toFixed(2)}}</div>
+                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i>本月环比</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-7 tile_stats_count colFix">
+                <span class="count_top"><i class="fa fa-cog"></i>污水管渠长度（km）</span>
+                <div class="count">{{(staticData.totalDirtyLength/1000).toFixed(2)}}</div>
+                <span class="count_bottom"><i><i class="fa fa-sort"></i>0% </i>本月环比</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-7 tile_stats_count colFix">
+                <span class="count_top"><i class="fa fa-cog"></i> 雨污合流管渠长度（km）</span>
+                <div class="count">{{(staticData.totalMixinLength/1000).toFixed(2)}}</div>
+                <span class="count_bottom"><i><i class="fa fa-sort"></i>0% </i>本月环比</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-7 tile_stats_count colFix">
+                <span class="count_top"><i class="fa fa-cog"></i>雨水口个数</span>
+                <div class="count">{{staticData.totalDir}}</div>
+                <span class="count_bottom"><i><i class="fa fa-sort"></i>0% </i>本月环比</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-7 tile_stats_count colFix">
+                <span class="count_top"><i class="fa fa-cog"></i>窨井个数</span>
+                <div class="count">{{staticData.totalWell}}</div>
+                <span class="count_bottom"><i><i class="fa fa-sort"></i>0% </i>本月环比</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-7 tile_stats_count colFix">
+                <span class="count_top"><i class="fa fa-cog"></i> 管渠道路密度</span>
+                <div class="count">{{(staticData.totalPipeCanalLength / staticData.totalRoadLength).toFixed(2)}}</div>
+                <span class="count_bottom" :title="(staticData.totalRoadLength/1000).toFixed(2)">道路总长度（km）<i
+                        class="green">{{(staticData.totalRoadLength/1000).toFixed(2)}} </i> </span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-7 tile_stats_count colFix">
+                <span class="count_top"><i class="fa fa-cog"></i> 区域密度（km /k㎡）</span>
+                <div class="count">{{(staticData.totalPipeCanalLength / staticData.area * 1000).toFixed(3)}}</div>
+                <span class="count_bottom">区域面积（k㎡）<i class="green" :title="staticData.area">{{(staticData.area/1000000).toFixed(2)}} </i> </span>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="x_panel tile fixed_height_320">
+                <div class="x_title">
+                    <h2>排水管道</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content" class='facilityChartContent'>
+                    <div id="pipeChart" class="facilityChart"></div>
+                    <div class="facilityChart">
+                        <div class="chartContent totalPipe">
+                            <span>排水管总长</span><span>{{(staticData.totalPipeLength/1000).toFixed(2)}}km</span></div>
+                        <div class="chartContent rainPipe"><span>雨水管</span><span>{{(staticData.totalRainPipeLength/1000).toFixed(2)}}km</span>
+                        </div>
+                        <div class="chartContent dirtyPipe">
+                            <span>污水管</span><span>{{(staticData.totalDirtyPipeLength/1000).toFixed(2)}}km</span></div>
+                        <div class="chartContent mixinPipe">
+                            <span>雨污合流管</span><span>{{(staticData.totalMixinPipeLength/1000).toFixed(2)}}km</span></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="x_panel tile fixed_height_320">
+                <div class="x_title">
+                    <h2>综合统计</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content" class='facilityChartContent'>
+                    <div class="radarChartContent">
+                        <div class="radarContent"><span>雨水管渠占比</span><span>{{(staticData.totalRainLength / staticData.totalPipeCanalLength *100).toFixed(2)}}%</span>
+                        </div>
+                        <div class="radarContent"><span>污水管渠占比</span><span>{{(staticData.totalDirtyLength / staticData.totalPipeCanalLength *100).toFixed(2)}}%</span>
+                        </div>
+                        <div class="radarContent"><span>雨污合流占比</span><span>{{(staticData.totalMixinLength / staticData.totalPipeCanalLength *100).toFixed(2)}}%</span>
+                        </div>
+                    </div>
+                    <div id="pipeRadar" class="facilityChart radarChart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="x_panel tile fixed_height_320">
+                <div class="x_title">
+                    <h2>排水沟</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content" class='facilityChartContent'>
+                    <div class="facilityChart canalPanel">
+                        <div class="chartContent totalPipe">
+                            <span>沟渠总长</span><span>{{(staticData.totalCanalLength/1000).toFixed(2)}}km</span></div>
+                        <div class="chartContent rainPipe">
+                            <span>雨水沟</span><span>{{(staticData.totalRainCanalLength/1000).toFixed(2)}}km</span></div>
+                        <div class="chartContent dirtyPipe">
+                            <span>污水沟</span><span>{{(staticData.totalDirtyCanalLength/1000).toFixed(2)}}km</span></div>
+                        <div class="chartContent mixinPipe"><span>雨污合流沟</span><span>{{(staticData.totalMixinCanalLength/1000).toFixed(2)}}km</span>
+                        </div>
+                    </div>
+                    <div id="pipeChart2" class="facilityChart"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="x_panel">
+            <div class="x_title">
+                <el-input
+                        placeholder="请输入搜索内容"
+                        icon="search"
+                        v-model="searchContent"
+                        :on-icon-click="handleSearch">
+                </el-input>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <el-table
+                        :data="rows"
+                        max-height="400"
+                        border
+                        style="width: 100%">
+                    <el-table-column label="权属信息" align="center">
+                        <el-table-column
+                                prop="owner"
+                                :filters="[{ text: '其他单位', value: '其他单位' }, { text: '净水公司', value: '净水公司' }, { text: '区属', value: '区属' }]"
+                                :filter-method="filterTag"
+                                label="权属信息" align="center">
+                            <template scope="scope">
+                                <el-popover trigger="hover" placement="right" v-if="scope.row.owner == '区属'">
+                                    <p>含广州市市政园林局、区建设和市政局</p>
+                                    <div slot="reference" class="name-wrapper">
+                                        <el-tag>{{scope.row.owner}}</el-tag>
+                                    </div>
+                                </el-popover>
+                                <el-tag v-if="scope.row.owner == '其他单位'" type="primary" title="其他权属单位">
+                                    {{scope.row.owner}}
+                                </el-tag>
+                                <el-tag v-if="scope.row.owner == '净水公司'" type="success" title="广州市污水治理有限责任公司">
+                                    {{scope.row.owner}}
+                                </el-tag>
+                            </template>
+                        </el-table-column>
+                    </el-table-column>
+                    <el-table-column label="道路信息" align="center">
+                        <el-table-column
+                                prop="road"
+                                label="道路名" align="center">
+                        </el-table-column>
+                    </el-table-column>
+                    <el-table-column label="排水管道（米）" align="center">
+                        <el-table-column
+                                prop="rainPipeLength"
+                                label="雨水管长度" align="center">
+                        </el-table-column>
+                        <el-table-column
+                                prop="dirtyPipeLength"
+                                label="污水管长度" align="center">
+                        </el-table-column>
+                        <el-table-column
+                                prop="mixinPipeLength"
+                                label="雨污合流长度" align="center">
+                        </el-table-column>
+                        <el-table-column
+                                prop="totalPipeLength"
+                                label="管道总长度" align="center">
+                        </el-table-column>
+                    </el-table-column>
+                    <el-table-column label="排水沟（米）" align="center">
+                        <el-table-column
+                                prop="rainCanalLength"
+                                label="雨水沟长度" align="center">
+                        </el-table-column>
+                        <el-table-column
+                                prop="dirtyCanalLength"
+                                label="污水沟长度" align="center">
+                        </el-table-column>
+                        <el-table-column
+                                prop="mixinCanalLength"
+                                label="雨污合流沟长度" align="center">
+                        </el-table-column>
+                        <el-table-column
+                                prop="totalCanalLength"
+                                label="沟渠总长度" align="center">
+                        </el-table-column>
+                    </el-table-column>
+                    <el-table-column label="窨井" align="center">
+                        <el-table-column
+                                prop="well"
+                                label="窨井" align="center" width="70">
+                        </el-table-column>
+                    </el-table-column>
+                    <el-table-column label="合计（米）" align="center">
+                        <el-table-column
+                                prop="totalPipeCanalLength"
+                                label="管渠长度合计" align="center">
+                        </el-table-column>
+                    </el-table-column>
+                    <el-table-column label="" align="center" width="64">
+                        <el-table-column label="操作" width="70">
+                            <template scope="scope">
+                                <a href='#' @click="viewPipe(scope.$index, scope.row)">查看</a>
+                            </template>
+                        </el-table-column>
+                    </el-table-column>
+                </el-table>
+                <el-pagination
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size="pageSize"
+                        layout="total, prev, pager, next"
+                        :total="staticData.rows.length">
+                </el-pagination>
+            </div>
+        </div>
+    </div>
+    <!--   <el-dialog
+               :title="pipeDialogTitle"
+               :visible.sync="showPipeDetail"
+               size="small"
+               custom-class="pipeDetailDialog"
+       >
+           <object id="TE3DWindow"
+                   classid="clsid:3a4f9192-65a8-11d5-85c1-0001023952c1"
+                   style="width:100%; height:100%;"></object>
+           <object id="SGWorld"
+                   classid="CLSID:3a4f91b1-65a8-11d5-85c1-0001023952c1"
+                   style="height:0px;display: none; "></object>
+           <span slot="footer" class="dialog-footer">
+               <span class="modeSpan">地下模式</span>
+               <el-switch ref='pipeMapToggle' v-model="pipeDetailMapMode"></el-switch>
+               <span class="modeSpan"></span>
+               <el-button type="primary" @click="showPipeDetail = false">关 闭</el-button>
+     </span>
+       </el-dialog>-->
+</div>
