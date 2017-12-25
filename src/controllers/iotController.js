@@ -34,5 +34,10 @@ define([ 'services/iotService'], function ( iotService) {
                 cb(data);
             });
         },
+        getCollectionFacilityList:function(cb){
+            iotService.getCollectionFacilityList(function(data){
+                cb(data);
+            })
+        }
     }
 });

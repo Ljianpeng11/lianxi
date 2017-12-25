@@ -30,7 +30,7 @@
                             <div>
                                 <span style="margin-right:3em;">累计降雨量：0.00mm</span>
                                 <span class="selectItem">雨量计：
-                                 <el-select class="selectBox" v-model="YLDistrictOption.value" placeholder="请选择" @change="changeYLopts(YLDistrictOption.value)">
+                                 <el-select class="selectBox" v-model="YLDistrictOption.value" placeholder="请选择" @change="changeYLopts(YLDistrictOption.value,'lineChart',chartOptions3)">
                                     <el-option
                                             v-for="item in YLDistrictOption.options"
                                             :key="item.value"
@@ -41,7 +41,7 @@
                             </span>
                             </div>
                             <div class="deviceLeft">
-                                <span class="cesc-tag" v-for="(item,index) in timeRangeArr" :class="{'cesc-tag-active':currentTimeIndex === index}" @click="changeTimeRange(index,item)">
+                                <span class="cesc-tag" v-for="(item,index) in timeRangeArr" :class="{'cesc-tag-active':currentTimeIndex === index}" @click="changeTimeRange(index,item,'lineChart',chartOptions3)">
                                     {{item.num}}小时
                                 </span>
                             </div>
@@ -212,7 +212,7 @@
                             <el-col :span="12" style="height:calc(50% - 10px);margin-bottom:10px;" v-for="(item,index) in collectList">
                                 <div class="cesc-box collect-box">
                                     <div class="devicePanel-top border-line">
-                                        <span>{{item.title}}</span>
+                                        <span>{{item.name}}</span>
                                         <div>
                                             <i class="icon iconfont icon-shuaxin1"></i>
                                             <i class="icon iconfont icon-shanchu"></i>
@@ -227,12 +227,12 @@
                                                             'icon-dianliang_high normalStatus':item.voltage === 'high',
                                                             }">
                                                 </i>&nbsp;
-                                                液位仪：&nbsp;{{item.deviceCode}}
+                                                液位仪：&nbsp;{{item.imei}}
                                             </span>
                                             <span class="selectItem">雨量计：
-                                                 <el-select class="selectBox" v-model="YLDistrictOption.value" placeholder="请选择">
+                                                 <el-select class="selectBox" v-model="item.YLDistrictOption.value" placeholder="请选择">
                                                     <el-option
-                                                            v-for="item in YLDistrictOption.options"
+                                                            v-for="item in item.YLDistrictOption.options"
                                                             :key="item.value"
                                                             :label="item.label"
                                                             :value="item.value">
@@ -241,7 +241,7 @@
                                             </span>
                                         </div>
                                         <div class="devicePanel-bottom" style="padding:0 20px">
-                                            <chart-lib :chartId="'chart'+index" :chartOptions="chartOptions3"></chart-lib>
+                                            <chart-lib :ref="'collectChart'+index" :chartId="'chart'+index" :chartOptions="item.chartOptions"></chart-lib>
                                         </div>
                                     </div>
                                 </div>

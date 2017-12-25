@@ -37,7 +37,8 @@ define([
     'modules/onlineMonitor/facilityInfoTable',
     'modules/onlineMonitor/dataScreen',
     'modules/onlineMonitor/eLTEVideo',
-    'modules/facilitySummary'
+    'modules/facilitySummary',
+    'modules/pipeAnalysis/rainPollution',
 ], function (
              arcgisPlugin,
              appInterfaceTest,
@@ -77,7 +78,8 @@ define([
              facilityInfoTable,
              dataScreen,
              eLTEVideo,
-             facilitySummary) {
+             facilitySummary,
+             rainPollution) {
     return {
         'arcgis-plugin': arcgisPlugin,
         'appInterfaceTest': appInterfaceTest,
@@ -117,6 +119,7 @@ define([
         'facility-info-table':facilityInfoTable,
         'dataScreen':dataScreen,
         'elte-video':eLTEVideo,
-        'facility-summary': facilitySummary
+        'facility-summary': facilitySummary,
+        'rainPollution':rainPollution
     }
 });

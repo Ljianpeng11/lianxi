@@ -1,0 +1,143 @@
+<div class="mainContent">
+    <device-list ref="deviceList" :baseView="detailView"></device-list>
+    <div class="devicePanel statisticsPanel">
+        <div class="statisticsPanel-top">
+            <div class="devicePanel-top">
+                <span>黄三角产业园区南边水尺&nbsp;&nbsp;(液位仪：{{deviceInfo.deviceCode}})</span>
+                <el-select class="selectBox" v-model="viewTypeOption.value" placeholder="请选择">
+                    <el-option
+                            v-for="item in viewTypeOption.options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+            <div class="devicePanel-bottom dataLayout">
+                <div class="dataLayoutItem">
+                    <p>最新数据时间</p>
+                    <p>2017-12-07 14:59:00</p>
+                </div>
+                <div class="dataLayoutItem">
+                    <p>最近通信</p>
+                    <p>18分钟前</p>
+                </div>
+                <div class="dataLayoutItem">
+                    <p>液位(m)</p>
+                    <p>0</p>
+                </div>
+                <div class="dataLayoutItem">
+                    <p>黄海液位(m)</p>
+                    <p>0.000</p>
+                </div>
+                <div class="dataLayoutItem">
+                    <p>中继电器(39%)</p>
+                    <p>39</p>
+                </div>
+                <div class="dataLayoutItem">
+                    <p>最新数据当天累计降雨量(mm)</p>
+                    <p>0.00</p>
+                </div>
+            </div>
+        </div>
+        <div class="statisticsPanel-bottom">
+            <ul class="devicePanel-top dataTabBox">
+                <li><a href="#" class="active">数据</a></li>
+                <li><a href="#">统计</a></li>
+                <li><a href="#">警报</a></li>
+                <li><a href="#">日志</a></li>
+                <li><a href="#">详情</a></li>
+                <li><a href="#">设置</a></li>
+                <li><a href="#">诊断</a></li>
+                <li><a href="#">电量</a></li>
+            </ul>
+            <div class="devicePanel-bottom chartPanel">
+                <div class="selectTools">
+                    <span class="selectItem">导航：
+                         <b>工期范围</b><i class="icon iconfont icon-xiajiantou"></i>
+                         <ul class="selectBox" style="display:none">
+                            <li></li>
+                         </ul>
+                    </span>
+                    <span class="selectItem">
+                        <b>2017-12-07~2017-12-08</b><i class="icon iconfont icon-xiajiantou"></i>
+                        <ul class="selectBox" style="display:none">
+                            <li></li>
+                        </ul>
+                    </span>
+                    <span class="selectItem">参考线：
+                         <b>参考线</b><i class="icon iconfont icon-xiajiantou"></i>
+                         <ul class="selectBox" style="display:none">
+                            <li></li>
+                         </ul>
+                    </span>
+                    <span class="selectItem">数据显示：
+                         <b>测量液位(m)</b><i class="icon iconfont icon-xiajiantou"></i>
+                         <ul class="selectBox" style="display:none">
+                            <li></li>
+                         </ul>
+                    </span>
+                    <span class="selectItem">参考雨量计：
+                         <b>五华区公众雨量监测点</b><i class="icon iconfont icon-xiajiantou"></i>
+                         <ul class="selectBox" style="display:none">
+                            <li></li>
+                         </ul>
+                    </span>
+                </div>
+                <div class="mainData-content">
+                    <div class="toggleGroup">
+                        <el-radio-group v-model="radioValue" @change="toggleDataView">
+                            <el-radio-button label="曲线"></el-radio-button>
+                            <el-radio-button label="表格"></el-radio-button>
+                        </el-radio-group>
+                        <p class="smallInfo">共935条记录，液位最大值：0.000m,最小值：0.000m,均值：0.000m,累计降雨量：0.0mm</p>
+                    </div>
+                    <div class="dataView" v-show="isShowChart">
+                        <div class="chartGroup">
+                            <p class="deviceChart-title">{{deviceInfo.title}}</p>
+                            <small>起止时间：2017-12-07~2017-12-07</small>
+                        </div>
+                        <div class="detailChartBox">
+                            <chart-lib :chartId="'waterChart'" :chartOptions="chartOptions"></chart-lib>
+                        </div>
+                    </div>
+                    <div class="dataView" v-show="!isShowChart">
+                        <el-table
+                                :data="tableData"
+                                class="scrollTable"
+                                style="width: calc(100% - 6px);height:100%">
+                            <el-table-column
+                                    prop="date"
+                                    label="数据时间">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="rainData"
+                                    label="降雨量(mm)">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="waterData"
+                                    label="测量液位(m)">
+                                <template scope="scope">
+                                    <span :class="{'dangerStatus':scope.row.status === 2,
+                                                    'warningStatus':scope.row.status === 1
+                                                    }">
+                                        {{scope.row.waterData}}
+                                    </span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="status"
+                                    label="状态">
+                                <template scope="scope">
+                                    <span v-if="scope.row.status === 0">正常</span>
+                                    <span v-if="scope.row.status === 1" class="warningStatus">预警</span>
+                                    <span v-if="scope.row.status === 2" class="dangerStatus">报警</span>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
