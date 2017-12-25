@@ -102,7 +102,7 @@ define(['services/serviceHelper', 'echarts', 'services/pipeService'], function (
                 area: 0,
                 rows: []
             };
-            if (code.length > 0 && code[0].value == '440100') {
+            if (code.length > 0 && code[0].value == '370322') {
                 code[0].district.forEach(function (region) {
                     var data = pipeService.getPipeList(region);
                     if (!!data) {
