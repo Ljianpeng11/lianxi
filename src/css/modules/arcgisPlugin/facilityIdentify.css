@@ -1,0 +1,144 @@
+.mapQueryStatus {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.closeIcon {
+    background-image: url("../../../img/icon/close_press.png");
+    background-repeat: no-repeat;
+    width: 21px;
+    height: 21px;
+    float: right;
+    padding: 0px 5px;
+    background-position: 0px 0px;
+}
+
+.closeIcon:hover {
+    background-position: 0px -21px;
+}
+
+.facilityTraceTable {
+    position: absolute;
+    bottom: 0px;
+    height: 150px;
+    width: 100%;
+    background-color: white;
+    color: black;
+}
+
+.loadingShade {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(178, 189, 215, 0.65);
+}
+
+.loadingImg {
+    top: 40%;
+    position: absolute;
+    left: 50%;
+    margin-left: -60px;
+    margin-top: -60px;
+}
+
+.loadingText {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    color: black;
+    margin-left: -112px;
+    margin-top: 50px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.mapDiv .el-table td, .el-table th {
+    height: 30px;
+}
+
+.identifyInfoDiv {
+    position: absolute;
+    top: 10%;
+    right: 0px;
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #96c2f1;
+}
+
+.identifyInfoDiv .el-card__header {
+    line-height: 2em;
+    padding: 0;
+    text-align: center;
+    background-color: #20a0ff;
+    color: white;
+    width: 100%;
+    height: 2em;
+}
+
+.identifyInfoDiv .identifyHeader {
+    width: calc(100% - 2em);
+    float: left;
+}
+
+.identifyInfoDiv .identifyHeader > a {
+    margin: 0.5em;
+    color: white;
+    font-weight: bold;
+}
+
+.identifyInfoDiv .identifyHeader > a :hover {
+    color: black;
+}
+
+.identifyInfoDiv .identifyCounter {
+    float: left;
+    width: 2em;
+}
+
+.identifyInfoDiv .el-card__body {
+    padding: 0px;
+}
+
+.identifyInfoBody .identifyContent {
+    border-bottom: 1px solid #aa96ac;
+    line-height: 2em;
+    width: 100%;
+    height: 2.077em;
+}
+
+.identifyInfoBody .identifyContent .title{
+    width: 45%;
+    background-color: gainsboro;
+    display: inline-block;
+    padding-left: 5px;
+}
+.identifyInfoBody .identifyContent .value{
+    width: 64%;
+}
+
+.identifyInfoBody {
+    height: 375px;
+    overflow-y: scroll;
+    color: black;
+    font-size: 14px;
+    overflow-x: hidden;
+}
+
+.identifyInfoTitle {
+    height: 20px;
+    overflow-y: hidden;
+    background-color: #20A0FF;
+    color: black;
+    font-size: 16px;
+    padding: 0px 5px;
+}
+
+.identifyInfoPagination {
+    margin-top: -3px;
+    float: right;
+}

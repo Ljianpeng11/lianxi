@@ -37,6 +37,7 @@
 @import "modules/arcgisPlugin/gaoqingPopup.css";
 @import "modules/onlineMonitor/facilityInfoTable.css";
 @import "modules/onlineMonitor/dataScreen.css";
+@import "modules/arcgisPlugin/facilityIdentify.css";
 .css
 :root {
     --base-color:#105ba3;
