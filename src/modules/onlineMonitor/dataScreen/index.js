@@ -97,58 +97,18 @@ var comm = Vue.extend({
             },
             tableData:[
                 {
-                    district:'五华区雨量公众监测点',
+                    district:'雨量监测1',
                     measureNum:'0',
                     currentNum:'0',
                     alarmNum:'0',
                     date:moment(new Date()).subtract(Math.floor(Math.random()*10),'h').format("YYYY-MM-DD hh:ss")
                 }
             ],
-            alarmTableData:[
-                {
-                    name:'五华区雨量公众监测点',
-                    status:0
-                },{
-                    name:'市体育馆',
-                    status:1
-                },{
-                    name:'普吉路与小路沟交叉口',
-                    status:2
-                },{
-                    name:'滇缅大道戛纳小镇旁',
-                    status:0
-                },{
-                    name:'海源学院正门口',
-                    status:0
-                },{
-                    name:'西二环春苑小区对面',
-                    status:0
-                }
-            ],
-            offlineTableData:[
-                {
-                    name:'五华区雨量公众监测点',
-                    status:0
-                },{
-                    name:'市体育馆',
-                    status:1
-                },{
-                    name:'普吉路与小路沟交叉口',
-                    status:2
-                },{
-                    name:'滇缅大道戛纳小镇旁',
-                    status:0
-                },{
-                    name:'海源学院正门口',
-                    status:0
-                },{
-                    name:'西二环春苑小区对面',
-                    status:0
-                }
-            ],
+            alarmTableData:[],
+            offlineTableData:[],
             collectList:[
                 {
-                    title:'五华区公众雨量监测点',
+                    title:'黄三角产业园区南边水尺',
                     status:0,
                     voltage:'low',
                     signal:'on',
@@ -160,7 +120,7 @@ var comm = Vue.extend({
                     x:117.8216341936,
                     y:37.1701173675
                 },{
-                    title:'市体育馆',
+                    title:'黄三角产业园区东边水尺',
                     status:1,
                     voltage:'middle',
                     signal:'off',
@@ -265,7 +225,7 @@ var comm = Vue.extend({
                                             self.chartOptions3.yData2 = [];
                                             result.forEach(function(value){
                                                 self.chartOptions3.xData.push(value.deviceUpdateTime);
-                                                self.chartOptions3.yData1.push(0);
+                                                self.chartOptions3.yData1 = [];
                                                 self.chartOptions3.yData2.push(parseFloat(value.dValue).toFixed(2));
                                             });
                                         }
