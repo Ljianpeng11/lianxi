@@ -240,8 +240,7 @@ var comm = Vue.extend({
                                                 opts.yData1 = [];
                                                 opts.yData2.push(parseFloat(value.dValue).toFixed(2));
                                             });
-                                            var flag = refsName instanceof Array;
-                                            if(flag){
+                                            if(refsName instanceof Array){
                                                 self.$refs[refsName[0]].reloadChart(opts);
                                             }else{
                                                 self.$refs[refsName].reloadChart(opts);

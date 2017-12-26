@@ -76,8 +76,7 @@ var comm = Vue.extend({
         this.$refs.deviceList.openMapWindow(0,this.$refs.deviceList.deviceList[0]);
     },
     components: {
-        'device-list':deviceList,
-        'chart-lib':chartLib
+
     }
 });
 module.exports = comm;

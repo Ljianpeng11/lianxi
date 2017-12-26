@@ -89,6 +89,8 @@ var comm = Vue.extend({
                 this.startPlan();
             } else if (menu.customid == 'plan-end') {
                 this.stopPlan();
+            } else if(menu.operType === '执行js'){
+                eventHelper.emit(menu.funUrl);
             } else {
                 if(menu.children.length != 0){
                     this.showTertiaryMenu = true;
