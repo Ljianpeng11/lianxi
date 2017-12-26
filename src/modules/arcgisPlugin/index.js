@@ -401,6 +401,9 @@ var comm = Vue.extend({
             this.$refs.rightPanel.open(point.item, point.facilityTypeName);
         }.bind(this));
         eventHelper.on('openCommandBox',function(){
+            if(this.$refs.devicePanel.isOpenPanel){
+                this.$refs.devicePanel.isOpenPanel = false;
+            }
             this.$refs.commandCenter.showCommandBox = true;
         }.bind(this));
     },
