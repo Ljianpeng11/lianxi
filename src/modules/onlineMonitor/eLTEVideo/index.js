@@ -20,7 +20,8 @@ var comm = Vue.extend({
             },
             groupUserArray:[],
             gpsInterval : null,
-            groupUsers:[]
+            groupUsers:[],
+            ocxStatus:"eLTE控件加载中"
         }
     },
     methods: {
@@ -41,6 +42,9 @@ var comm = Vue.extend({
                 var result = $(xmlDoc).find("ResultCode").text();
                 console.log(" ELTE_OCX_Load:" +result);
                 this.isLoad = true;
+                if(result!=0){
+                    this.ocxStatus="eLTE控件加载失败";
+                }
                 setTimeout(function(){
                     this.login();
                 }.bind(this),100);
@@ -55,6 +59,9 @@ var comm = Vue.extend({
                     var result = $(xmlDoc).find("ResultCode").text();
                     console.log(" ELTE_OCX_Login:" +result);
                     this.isLogin = true;
+                    if(result!=0){
+                        this.ocxStatus="eLTE控件登录失败";
+                    }
                     if(!this.gpsInterval){
                         this.gpsInterval = setInterval(function(){
                             this.getGroupUsers();
@@ -206,6 +213,7 @@ var comm = Vue.extend({
             }
         },
         handleELTEOCXEvent:function(ulEventType,pEventDataXml){
+            this.ocxStatus="eLTE控件加载成功";
             var msg = "EventType: ";
             var isLogin = false;
             msg +=    ulEventType;
@@ -439,6 +447,30 @@ var comm = Vue.extend({
             }
 
         },
+        SDSSendMessageAll:function(content){
+            for(var i=0,len=this.groupUsers.length;i<len;i++){
+                var strSDSParam = "<Content>";
+                strSDSParam +=    "<SDSType>";
+                strSDSParam +=    "0001";
+                strSDSParam +=    "</SDSType>";
+                strSDSParam +=    "<MsgBody>";
+                strSDSParam +=    content
+                strSDSParam +=    "</MsgBody>";
+                strSDSParam +=    "<Receiver>";
+                strSDSParam +=    this.groupUsers[i].userId
+                strSDSParam +=    "</Receiver>";
+                strSDSParam +=    "<AttachFileList>";
+                strSDSParam +=    "</AttachFileList>";
+                strSDSParam +=    "</Content>";
+
+                var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+
+                var xmlDoc = $.parseXML(resultXml);
+                var result = $(xmlDoc).find("ResultCode").text();
+                console.log("ELTE_OCX_SDSSendMessage:" +result)
+            }
+            ;
+        },
         StopRealPlay : function () {
             var resId = "8003";
             var resultXml = this.ocxObj.ELTE_OCX_StopRealPlay(resId);
@@ -587,6 +619,9 @@ var comm = Vue.extend({
         }.bind(this));
         eventHelper.on("p2p",function(){
             this.ocxObj.ELTE_OCX_P2PDial("8003");
+        }.bind(this));
+        eventHelper.on("SDSSendMessageAll",function(content){
+            this.SDSSendMessageAll(content);
         }.bind(this));
     },
     components: {

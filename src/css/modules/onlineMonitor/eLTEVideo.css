@@ -1,0 +1,8 @@
+.eLTE_PlayerDiv {
+    position: absolute;
+    right:0px;
+    bottom: 0px;
+}
+.eLTE_PlayerDiv .ocxStatus {
+    color:red;
+}
