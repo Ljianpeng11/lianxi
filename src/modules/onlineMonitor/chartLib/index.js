@@ -76,7 +76,7 @@ var comm = Vue.extend({
                                 },{
                                     name: '降雨量(mm)',
                                     type: 'value',
-                                    max: 120,
+                                    // max: 120,
                                     inverse: true,
                                     nameLocation: 'start',
                                     splitNumber: 4,
@@ -128,6 +128,11 @@ var comm = Vue.extend({
                                             // }
                                         }
                                     },
+                                    label:{
+                                        normal:{
+                                            fontSize:'24'
+                                        }
+                                    },
                                     markLine:{
                                         symbolSize: 0
                                     },
@@ -171,7 +176,7 @@ var comm = Vue.extend({
                                 lineStyle:{
                                     normal:{
                                         color:'#f2b817',
-                                        width: 1,
+                                        width: 2,
                                         // type: 'solid'
                                     }
                                 }
@@ -190,7 +195,7 @@ var comm = Vue.extend({
                                 lineStyle: {
                                     normal: {
                                         color: '#fe5240',
-                                        width: 1,
+                                        width: 2,
                                         // type: 'solid'
                                     }
                                 }
@@ -256,6 +261,95 @@ var comm = Vue.extend({
                             ]
                         };
                         break;
+                    case 'normalBarChart':
+                        this.options = {
+                            backgroundColor: '#fff',
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            grid: {
+                                left: '8%',
+                                right: '8%',
+                                bottom: '15%',
+                                top: '20%'
+                            },
+                            xAxis: [
+                                {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    axisLine: {
+                                        onZeroAxisIndex: 1
+                                    },
+                                    data: data.xData
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    name: '测量液位(m)',
+                                    type: 'value',
+                                    max: (function(){
+                                        if(!!data.alarmHeight){
+                                            return Math.ceil(parseFloat(data.alarmHeight) + 1);
+                                        }else{
+                                            return 1;
+                                        }
+                                    })(),
+                                    splitNumber: 4,
+                                    axisLine: {
+                                        show: false
+                                    }
+                                }
+                            ],
+                            // visualMap: {
+                            //     top: 10,
+                            //     right: 10,
+                            //     seriesIndex:0,
+                            //     showLabel:false,
+                            //     show:false,
+                            //     pieces: [{
+                            //         gt: 0,
+                            //         lte: 0.5,
+                            //         color: '#2f91e4'
+                            //     }, {
+                            //         gt: 0.5,
+                            //         lte: 0.8,
+                            //         color: '#f2b817'
+                            //     }, {
+                            //         gt: 0.8,
+                            //         color: '#fe5240'
+                            //     }],
+                            //     outOfRange: {
+                            //         color: '#999'
+                            //     }
+                            // },
+                            series: [
+                                {
+                                    name: '测量液位(m)',
+                                    type: 'line',
+                                    symbol: 'diamond',
+                                    symbolSize: 4,
+                                    tooltip: {
+                                        trigger: 'axis'
+                                    },
+                                    smooth: true,
+                                    itemStyle: {
+                                        normal: {
+                                            color: '#2f91e4',
+                                            lineStyle: {
+                                                color: '#2f91e4'
+                                            },
+                                            // areaStyle: {
+                                            //     color: 'rgba(67,67,72, 0.8)'
+                                            // }
+                                        }
+                                    },
+                                    markLine:{
+                                        symbolSize: 0
+                                    },
+                                    data: data.yData1
+                                }
+                            ]
+                        };
                     default:break;
                 }
                 this.myChart.setOption(this.options);

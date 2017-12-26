@@ -24,6 +24,7 @@
 @import "./modules/cescInfoWindow.css";
 @import "./modules/layerList.css";
 @import "./modules/emergencyRescue.css";
+@import "modules/emergenRescue/commandCenter/commandCenter.css";
 @import "modules/emergenRescue/mapTool/infoBoard/infoBoard.css";
 @import "modules/onlineMonitor/deviceList.css";
 @import "modules/onlineMonitor/statusTools.css";

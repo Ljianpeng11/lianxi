@@ -1,11 +1,9 @@
 var Vue = require('vue');
 var template = require('./map.html');
-var loginCtrl = require('../../controllers/loginController');
 var eventHelper = require('../../utils/eventHelper');
 var toolBar = require('./plugin/toolBar/toolBar');
 var mapType = require('./plugin/mapType');
 var layerList = require('./plugin/layerList');
-var global = require('./plugin/global');
 var facilityController = require('controllers/facilityController');
 var infoWindow = require('./plugin/infoWindow');
 var rightPanel = require('modules/rightPanel');
@@ -13,7 +11,6 @@ var mapHelper = require('utils/mapHelper');
 var infoBoard = require('modules/emergencyRescue/mapTool/infoBoard');
 var facilityIdentify = require('./plugin/facilityIdentify');
 var addressServiceInput = require('./plugin/addressServiceInput');
-var tabModel = require('controllers/model/appTabModel');
 var retrospectDetail = require('modules/retrospectDetail');
 var statusTools = require('modules/onlineMonitor/mapPlugin/statusTools');
 var deviceList = require('modules/onlineMonitor/mapPlugin/deviceList');
@@ -21,6 +18,7 @@ var devicePanel = require('modules/onlineMonitor/mapPlugin/devicePanel');
 var eLTEVideo = require('modules/onlineMonitor/eLTEVideo');
 var mapConfigHelper = require('utils/mapConfigHelper');
 var facilityModel = require('controllers/model/facilityModel');
+var commandCenter = require('modules/emergencyRescue/commandCenter');
 
 // 定义组件
 var comm = Vue.extend({
@@ -403,6 +401,12 @@ var comm = Vue.extend({
             map.centerAt([parseFloat(point.center[0]) + 0.005, point.center[1]]);
             this.$refs.rightPanel.open(point.item, point.facilityTypeName);
         }.bind(this));
+        eventHelper.on('openCommandBox',function(){
+            if(this.$refs.devicePanel.isOpenPanel){
+                this.$refs.devicePanel.isOpenPanel = false;
+            }
+            this.$refs.commandCenter.showCommandBox = true;
+        }.bind(this));
     },
     components: {
         'layer-list': layerList,
@@ -416,7 +420,8 @@ var comm = Vue.extend({
         'address-service-input': addressServiceInput,
         'device-panel': devicePanel,
         'elte-video' :eLTEVideo,
-        'facility-identify' :facilityIdentify
+        'facility-identify' :facilityIdentify,
+        'command-center':commandCenter
     }
 });
 module.exports = comm;
