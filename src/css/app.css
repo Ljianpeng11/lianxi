@@ -161,3 +161,11 @@ li {
     margin-top: 5em;
 }
 
+.closeDetailBtn{
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    position: absolute;
+    top: 143px;
+    right: 710px;
+}

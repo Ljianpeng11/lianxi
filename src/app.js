@@ -9,6 +9,7 @@ var appFooter = require('modules/appFooter');
 var moduleController = require('controllers/moduleController');
 var appTab = require('modules/appTab');
 var mainView = require('modules/mainView');
+var commandDetail = require('modules/commandDetail');
 var appLogin = require('modules/login');
 var eventHelper = require('utils/eventHelper');
 var ElementUI = require('element-ui');
@@ -78,7 +79,8 @@ var app = new Vue({
         'app-tab': appTab,
         'main-view': mainView,
         // 'app-search': appSearch,
-        'app-footer': appFooter
+        'app-footer': appFooter,
+        'command-detail':commandDetail
     }
 });
 mapHelper.register(arcgisAPI, function (apiInstance) {

@@ -41,6 +41,32 @@ var comm = Vue.extend({
                 location:'高苑路',
                 questionType:'数据不全'
             },{
+            connectArr:[
+                {
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'排放不明'
+                },{
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'流向混乱'
+                },{
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'雨污混接'
+                },{
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'污水直排'
+                },{
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'雨污混接'
+                },{
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'数据不全'
+                },{
                     id:'GQYW01',
                     location:'邦德路',
                     questionType:'排放不明'
@@ -103,9 +129,9 @@ var comm = Vue.extend({
                 color:['#4f9b0c','#f5c761','#fe5240'],
                 text:'雨污混接改造分类统计',
                 data: [
-                    {value:1, name:'雨污分流'},
-                    {value:2, name:'雨污合流但具备分流条件'},
-                    {value:3, name:'不具备分流条件'}
+                    {value:55.17, name:'雨污分流'},
+                    {value:3.32, name:'雨污合流但具备分流条件'},
+                    {value:41.51, name:'不具备分流条件'}
                 ]
             },
             barChartOptions:{
@@ -114,7 +140,7 @@ var comm = Vue.extend({
                 color:[
                     '#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
                 ],
-                xData:['邦德路','北一路','东环路','高苑路'],
+                xData:['高苑路','北一路','东环路','邦德路'],
                 seriesData:[
                     {
                         name:'排放不明',
