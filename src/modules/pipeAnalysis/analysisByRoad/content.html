@@ -16,7 +16,7 @@
                 <div class="devicePanel-bottom">
                     <el-table
                             :data="pipeLineArr"
-                            row-click="openMonitorPipe"
+                            @row-click="openMonitorPipe"
                             style="width: 100%;height: calc(100% - 3em);overflow: auto;">
                         <el-table-column
                                 prop="id"

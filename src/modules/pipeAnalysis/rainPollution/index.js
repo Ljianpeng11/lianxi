@@ -1,5 +1,6 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
+var mapHelper = require('utils/mapHelper');
 var moment = require('moment');
 
 //加载组件
@@ -8,14 +9,38 @@ var chartLib = require('modules/onlineMonitor/chartLib');
 // 定义组件
 var comm = Vue.extend({
     template: template,
+    props:["baseView"],
     data: function () {
         return {
             openRainPollution:false,
             showToggle:false,
             pageSize:100,
             currentPage:1,
-            connectArr:[
-                {
+            connectArr:[{
+                id:'GQYW11',
+                location:'高苑路',
+                questionType:'排放不明'
+            },{
+                id:'GQYW11',
+                location:'高苑路',
+                questionType:'流向混乱'
+            },{
+                id:'GQYW11',
+                location:'高苑路',
+                questionType:'雨污混接'
+            },{
+                id:'GQYW11',
+                location:'高苑路',
+                questionType:'污水直排'
+            },{
+                id:'GQYW11',
+                location:'高苑路',
+                questionType:'雨污混接'
+            },{
+                id:'GQYW11',
+                location:'高苑路',
+                questionType:'数据不全'
+            },{
                     id:'GQYW01',
                     location:'邦德路',
                     questionType:'排放不明'
@@ -71,30 +96,6 @@ var comm = Vue.extend({
                     id:'GQYW11',
                     location:'东环路',
                     questionType:'数据不全'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'排放不明'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'流向混乱'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'雨污混接'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'污水直排'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'雨污混接'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'数据不全'
                 }
             ],
             pieChartOptions:{
@@ -148,6 +149,13 @@ var comm = Vue.extend({
         },
         togglePollutionBox:function(){
             this.openRainPollution = false;
+        },
+        openMonitorPipe:function(){
+            var point = mapHelper.createPoint(117.8683719917964,37.167425970805766);
+            this.baseView.popup.location = point;
+            this.baseView.popup.content = "<div style=\"text-align: left;\"><p>问题类型：【排放不明】</p><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>";
+            this.baseView.popup.visible = true;
+            mapHelper.setCenter(this.baseView,117.87014423725806,37.16757634314801,16);
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
