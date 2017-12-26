@@ -298,9 +298,9 @@ var comm = Vue.extend({
                     self.setIcon(self.weather);
                 }, 200);
             },
-            error: function () {
-                alert('无法获取天气数据');
-            }
+            // error: function () {
+            //     alert('无法获取天气数据');
+            // }
         });
     },
     components: {
