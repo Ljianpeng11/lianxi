@@ -149,6 +149,8 @@ var comm = Vue.extend({
             this.openRainPollution = true;
         },
         togglePollutionBox:function(){
+            var rainSewageLayer = this.baseView.map.findLayerById("rainSewage");
+            rainSewageLayer.visible=false;
             this.openRainPollution = false;
         },
         openMonitorPipe:function(){
