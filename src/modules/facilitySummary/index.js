@@ -66,8 +66,8 @@ var comm = Vue.extend({
                 tempObj.dirtyCanalLength = tmpArr[8];
                 tempObj.mixinCanalLength = tmpArr[9];
                 tempObj.totalCanalLength = tmpArr[10];
-                tempObj.well = tmpArr[11];
-                tempObj.totalPipeCanalLength = tmpArr[12];
+                // tempObj.well = tmpArr[11];
+                tempObj.totalPipeCanalLength = tmpArr[11];
                 result.push(tempObj);
             });
             return result;
@@ -105,11 +105,12 @@ var comm = Vue.extend({
             label: '高青县',
             value: 370322
         };
-        this.owner = {
+        var own = {
             value: '1',
             label: '高青住建局'
         };
         this.region = [district];
+        this.owner = [own];
         this.query();
     },
     components: {}

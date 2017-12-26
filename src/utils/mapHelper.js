@@ -58,6 +58,16 @@ define(function () {
             this.apiInstance.initSuperFacilityMapLayer(view);
         },
         /**
+         * 超图雨污分流WMTS
+         **/
+        initSuperRainSewageMapLayer: function (view) {
+            if (this.apiVersion !== 'C') {
+                console.error('天地图只支持arcgis 方式加载');
+                return;
+            }
+            return this.apiInstance.initSuperRainSewageMapLayer(view);
+        },
+        /**
          * 视频点图层
          **/
         createVideoGraphicsLayer: function (map,id) {
@@ -150,8 +160,8 @@ define(function () {
         executeIdentifyTask: function (parcelsURL,view,event, cb,cb1) {
             return this.apiInstance.executeIdentifyTask(parcelsURL,view,event, cb,cb1);
         },
-        createPolylineGeometry: function (paths,wkid) {
-            return this.apiInstance.createPolylineGeometry(paths,wkid);
+        createPolylineGeometry: function (paths) {
+            return this.apiInstance.createPolylineGeometry(paths);
         },
         webMercatorToGeographic: function (geometry) {
             return this.apiInstance.webMercatorToGeographic(geometry);

@@ -119,7 +119,7 @@
             </div>
         </div>
         <div class="col-md-4 col-sm-4 col-xs-12">
-            <div class="x_panel tile fixed_height_220">
+            <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
                     <h2>排水管道</h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -148,7 +148,7 @@
             </div>
         </div>
         <div class="col-md-4 col-sm-4 col-xs-12">
-            <div class="x_panel tile fixed_height_220">
+            <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
                     <h2>综合统计</h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -168,15 +168,13 @@
                         </div>
                         <div class="radarContent"><span>雨污合流占比</span><span>{{(staticData.totalMixinLength / staticData.totalPipeCanalLength *100).toFixed(2)}}%</span>
                         </div>
-                        <div class="radarContent"><span>&nbsp;</span><span>&nbsp;</span>
-                        </div>
                     </div>
                     <div id="pipeRadar" class="facilityChart radarChart"></div>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-sm-4 col-xs-12">
-            <div class="x_panel tile fixed_height_220">
+            <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
                     <h2>排水沟</h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -227,17 +225,11 @@
                                 label="权属信息" align="center">
                             <template scope="scope">
                                 <el-popover trigger="hover" placement="right" v-if="scope.row.owner == '区属'">
-                                    <p>含广州市市政园林局、区建设和市政局</p>
+                                    <p>高青县</p>
                                     <div slot="reference" class="name-wrapper">
                                         <el-tag>{{scope.row.owner}}</el-tag>
                                     </div>
                                 </el-popover>
-                                <el-tag v-if="scope.row.owner == '其他单位'" type="primary" title="其他权属单位">
-                                    {{scope.row.owner}}
-                                </el-tag>
-                                <el-tag v-if="scope.row.owner == '净水公司'" type="success" title="广州市污水治理有限责任公司">
-                                    {{scope.row.owner}}
-                                </el-tag>
                             </template>
                         </el-table-column>
                     </el-table-column>
@@ -283,12 +275,12 @@
                                 label="沟渠总长度" align="center">
                         </el-table-column>
                     </el-table-column>
-                    <el-table-column label="窨井" align="center">
-                        <el-table-column
-                                prop="well"
-                                label="窨井" align="center" width="70">
-                        </el-table-column>
-                    </el-table-column>
+                    <!--<el-table-column label="窨井" align="center">-->
+                        <!--<el-table-column-->
+                                <!--prop="well"-->
+                                <!--label="窨井" align="center" width="70">-->
+                        <!--</el-table-column>-->
+                    <!--</el-table-column>-->
                     <el-table-column label="合计（米）" align="center">
                         <el-table-column
                                 prop="totalPipeCanalLength"
