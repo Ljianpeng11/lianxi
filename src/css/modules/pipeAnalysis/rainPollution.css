@@ -1,0 +1,21 @@
+.pollutionBox{
+    height:calc(100% - 10px);
+}
+.table-pagination{
+    height: 3em;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.rainChartBox{
+    max-width: calc(100% - 18em - 440px);
+    width: calc(81.5% - 440px);
+    height: 12em;
+    position: absolute;
+    right: 430px;
+    bottom: 5px;
+    z-index: 8;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+    background: #fff;
+}

@@ -8,15 +8,26 @@ var comm = Vue.extend({
     data: function () {
         return {
             showCommandBox:false,
+            showToggle:false,
+            isStart:false,
             todayInfo:{
-                'todayDate':'',
-                'todayTime':'',
-                'iconId':'',
-                'todayDegree':'',
-                'type':''
+                todayTime:moment().format('HH:mm:ss'),
+                todayDate:(function(){
+                    var week = moment().weekday();
+                    switch(week){
+                        case 1:week = '星期一';break;
+                        case 2:week = '星期二';break;
+                        case 3:week = '星期三';break;
+                        case 4:week = '星期四';break;
+                        case 5:week = '星期五';break;
+                        case 6:week = '星期六';break;
+                        case 7:week = '星期日';break;
+                    }
+                    return moment().format('YYYY/MM/DD ')+week;
+                })(),
+                todayDegree:''
             },
             weatherData:[],
-            logData:[],
             seeperArr:[
                 {
                     title:'大悦路东',
@@ -130,80 +141,26 @@ var comm = Vue.extend({
         }
     },
     methods: {
+        init:function(){
+            this.showCommandBox = true;
+            this.isStart = false;
+        },
         handleClick(row) {
             console.log(row);
         },
-        setTodayDate:function(){
-            var self = this;
-            var today = moment(new Date());
-            var todayDate = today.weekday();
-            var newDate;
-            switch(todayDate){
-                case 1:newDate = '星期一';break;
-                case 2:newDate = '星期二';break;
-                case 3:newDate = '星期三';break;
-                case 4:newDate = '星期四';break;
-                case 5:newDate = '星期五';break;
-                case 6:newDate = '星期六';break;
-                case 7:newDate = '星期日';break;
-                default:break;
-            }
-            var todayTime = today.format('HH:mm:ss');
-            self.todayInfo.todayDate = today.format('YYYY/MM/DD') + newDate;
-            self.todayInfo.todayTime = todayTime;
+        toggleCommadBox:function(){
+            this.showCommandBox = false;
         },
-        loadWeatherData:function(data){
-            var yesterday = data.yesterday;
-            var forecastArr = data.forecast;
-            this.dealArr(yesterday,0);
-            forecastArr.forEach(function(val,index){
-                this.dealArr(val,index+1);
-            }.bind(this));
-        },
-        dealArr:function(val,index){
-            var date = val.date.slice(val.date.length -3,val.date.length);
-            var degree = val.low.split(' ')[1].substr(0,2)+'~'+val.high.split(' ')[1];
-            var r = /^.+?\[(.+?\[(.+?)\])\].*$/;
-            if(!!val.fengli){
-                var fengli = val.fengli.match(r)[2];
+        startStep:function(){
+            if(!this.isStart){
+                this.isStart = true;
+                var smsContent = "高青县气象局2017年12月26日10点37分发布暴雨红色报警信号";
+                eventHelper.emit("SDSSendMessageAll",smsContent);
             }else{
-                var fengli = val.fl.match(r)[2];
-            }
-            var arr = {
-                iconId:'icon_'+index,
-                date:date,
-                degree:degree,
-                fengli:fengli,
-                type:val.type
-            };
-            this.weatherData.push(arr);
-            this.$nextTick(function(){
-                this.setIcon(arr);
-            }.bind(this));
-        },
-        chooseWeatherIcon:function(degree){
 
-        },
-        setIcon:function(iconItem){
-            //天气图标
-            var icons = new Skycons();
-            if(iconItem.type === '晴'){
-                icons.set(iconItem.iconId, "partly-cloudy-day");
-            }else if(iconItem.type === '雨'){
-                icons.set(iconItem.iconId,"rain");
-            }else if(iconItem.type === '阴'){
-                icons.set(iconItem.iconId,"fog");
-            }else if(iconItem.type === '多云'){
-                icons.set(iconItem.iconId,"cloudy");
-            }else if(iconItem.type === '雪'){
-                icons.set(iconItem.iconId,"snow");
             }
-            icons.play();
-            // list  = [
-            //     "clear-day", "clear-night", "partly-cloudy-day",
-            //     "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-            //     "fog"
-            // ]
+        },
+        endStep:function(){
 
         }
     },
@@ -218,13 +175,6 @@ var comm = Vue.extend({
             success:function(result) {
                weatherDatas = result.data;
                self.todayInfo.todayDegree = weatherDatas.wendu;
-               self.todayInfo.iconId = 'todayIcon';
-               self.todayInfo.type = '雨';
-               self.setTodayDate();
-               self.loadWeatherData(weatherDatas);
-               self.$nextTick(function(){
-                   self.setIcon(self.todayInfo);
-               },200);
             },
             error:function(){
                 alert('无法获取天气数据');

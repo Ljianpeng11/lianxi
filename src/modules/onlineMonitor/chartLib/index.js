@@ -10,7 +10,7 @@ var data2 = [Math.random() *60];
 // 定义组件
 var comm = Vue.extend({
     template: template,
-    props:['chartId','type','chartOptions'],
+    props:['chartId','chartOptions'],
     data: function () {
         return {
             myChart:null,
@@ -65,8 +65,6 @@ var comm = Vue.extend({
                                     max: (function(){
                                         if(!!data.alarmHeight){
                                             return Math.ceil(parseFloat(data.alarmHeight) + 1);
-                                        }else{
-                                            return 1;
                                         }
                                     })(),
                                     splitNumber: 4,
@@ -223,9 +221,25 @@ var comm = Vue.extend({
                         this.options = {
                             color:data.color,
                             title : {
-                                subtext: data.subtext,
+                                text:(function(){
+                                    if(!!data.text){
+                                        return data.text;
+                                    }
+                                })(),
+                                subtext:(function(){
+                                    if(!!data.subtext){
+                                        return data.subtext;
+                                    }
+                                })(),
                                 left:'10px',
-                                top:'-20px'
+                                top:(function(){
+                                    if(!data.text){
+                                        return '-20px'
+                                    }
+                                })(),
+                                subtextStyle:{
+                                    color:'#333'
+                                }
                             },
                             tooltip : {
                                 trigger: 'item',
@@ -263,92 +277,27 @@ var comm = Vue.extend({
                         break;
                     case 'normalBarChart':
                         this.options = {
-                            backgroundColor: '#fff',
-                            tooltip: {
-                                trigger: 'axis'
+                            title: {
+                                text: data.title,
+                                x:'center',
+                                y:'5px'
                             },
+                            tooltip: {},
                             grid: {
                                 left: '8%',
                                 right: '8%',
                                 bottom: '15%',
-                                top: '20%'
+                                top: '25%'
                             },
-                            xAxis: [
-                                {
-                                    type: 'category',
-                                    boundaryGap: false,
-                                    axisLine: {
-                                        onZeroAxisIndex: 1
-                                    },
-                                    data: data.xData
-                                }
-                            ],
-                            yAxis: [
-                                {
-                                    name: '测量液位(m)',
-                                    type: 'value',
-                                    max: (function(){
-                                        if(!!data.alarmHeight){
-                                            return Math.ceil(parseFloat(data.alarmHeight) + 1);
-                                        }else{
-                                            return 1;
-                                        }
-                                    })(),
-                                    splitNumber: 4,
-                                    axisLine: {
-                                        show: false
-                                    }
-                                }
-                            ],
-                            // visualMap: {
-                            //     top: 10,
-                            //     right: 10,
-                            //     seriesIndex:0,
-                            //     showLabel:false,
-                            //     show:false,
-                            //     pieces: [{
-                            //         gt: 0,
-                            //         lte: 0.5,
-                            //         color: '#2f91e4'
-                            //     }, {
-                            //         gt: 0.5,
-                            //         lte: 0.8,
-                            //         color: '#f2b817'
-                            //     }, {
-                            //         gt: 0.8,
-                            //         color: '#fe5240'
-                            //     }],
-                            //     outOfRange: {
-                            //         color: '#999'
-                            //     }
-                            // },
-                            series: [
-                                {
-                                    name: '测量液位(m)',
-                                    type: 'line',
-                                    symbol: 'diamond',
-                                    symbolSize: 4,
-                                    tooltip: {
-                                        trigger: 'axis'
-                                    },
-                                    smooth: true,
-                                    itemStyle: {
-                                        normal: {
-                                            color: '#2f91e4',
-                                            lineStyle: {
-                                                color: '#2f91e4'
-                                            },
-                                            // areaStyle: {
-                                            //     color: 'rgba(67,67,72, 0.8)'
-                                            // }
-                                        }
-                                    },
-                                    markLine:{
-                                        symbolSize: 0
-                                    },
-                                    data: data.yData1
-                                }
-                            ]
+                            xAxis: {
+                                data: data.xData
+                            },
+                            yAxis: {},
+                            series: [{
+                                type: 'bar',
+                                barWidth:'10%',
+                                data: data.yData
+                            }]
                         };
                     default:break;
                 }

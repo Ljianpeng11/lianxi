@@ -19,6 +19,7 @@ var eLTEVideo = require('modules/onlineMonitor/eLTEVideo');
 var mapConfigHelper = require('utils/mapConfigHelper');
 var facilityModel = require('controllers/model/facilityModel');
 var commandCenter = require('modules/emergencyRescue/commandCenter');
+var rainPollution = require('modules/pipeAnalysis/rainPollution');
 
 // 定义组件
 var comm = Vue.extend({
@@ -228,7 +229,7 @@ var comm = Vue.extend({
         initVideoGraphicsLayer:function(view){
             //临时加载
             var ep820VideoLayer = mapHelper.createGraphicsLayer(view.map,"ep820Video");
-            var imgObj = {
+            /*var imgObj = {
                 url:  './img/toolbar/buliding-video.png',
                 width: "24px",
                 height: "24px"
@@ -239,6 +240,7 @@ var comm = Vue.extend({
             };
 
             var graphic = mapHelper.createPictureMarkSymbol(ep820VideoLayer,117.8125465523411,37.160464325281644, imgObj,{},popupTemplate);
+            */
             //测试ep820轨迹
             /*var points = [[37.16078158522525,117.81400013975333],
                 [37.16074587770515,117.8141280984407],
@@ -407,7 +409,19 @@ var comm = Vue.extend({
             if(this.$refs.devicePanel.isOpenPanel){
                 this.$refs.devicePanel.isOpenPanel = false;
             }
-            this.$refs.commandCenter.showCommandBox = true;
+            if(this.$refs.rainPollution.openRainPollution){
+                this.$refs.rainPollution.openRainPollution = false;
+            }
+            this.$refs.commandCenter.init();
+        }.bind(this));
+        eventHelper.on('openRainPollution',function(){
+            if(this.$refs.devicePanel.isOpenPanel){
+                this.$refs.devicePanel.isOpenPanel = false;
+            }
+            if(this.$refs.commandCenter.showCommandBox){
+                this.$refs.commandCenter.showCommandBox = false;
+            }
+            this.$refs.rainPollution.init();
         }.bind(this));
         //开启雨污分析图层
         eventHelper.on('open-rainSewage-map',function(){
@@ -436,7 +450,8 @@ var comm = Vue.extend({
         'device-panel': devicePanel,
         'elte-video' :eLTEVideo,
         'facility-identify' :facilityIdentify,
-        'command-center':commandCenter
+        'command-center':commandCenter,
+        'rain-pollution':rainPollution
     }
 });
 module.exports = comm;

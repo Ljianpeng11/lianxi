@@ -105,6 +105,12 @@ var comm = Vue.extend({
             }
         },
         showDevicePanel:function(selectItem){
+            if(this.$parent.$refs.commandCenter.showCommandBox){
+                this.$parent.$refs.commandCenter.showCommandBox = false;
+            }
+            if(this.$parent.$refs.rainPollution.openRainPollution){
+                this.$parent.$refs.rainPollution.openRainPollution = false;
+            }
             eventHelper.emit('openDevicePanel',selectItem);
         },
         renderList:function(list){
