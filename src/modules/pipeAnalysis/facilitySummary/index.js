@@ -1,5 +1,5 @@
 var template = require('./facilitySummary.html');
-var eventHelper = require('../../utils/eventHelper');
+var eventHelper = require('utils/eventHelper');
 var facilitySummaryCtrl = require('controllers/facilitySummaryController');
 // 定义组件
 var comm = Vue.extend({
