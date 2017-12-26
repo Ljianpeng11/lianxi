@@ -19,7 +19,7 @@ var comm = Vue.extend({
                 sipPort : "5060"//5064
             },
             groupUserArray:[],
-            gpsInterval : {},
+            gpsInterval : null,
             groupUsers:[]
         }
     },
@@ -446,7 +446,9 @@ var comm = Vue.extend({
             var resultXml = this.ocxObj.ELTE_OCX_GetUserInfo(userId);
             var xmlDoc = $.parseXML(resultXml);
             var result = $(xmlDoc).find("ResultCode").text();
-            if(result==0){
+            debugger;
+            var user = this.groupUsers.find((n) => n.userId = userId);
+            if(result==0&&user==null){
                 var userObj = {};
                 userObj.userId=$(xmlDoc).find("UserID").text();
                 userObj.userName=$(xmlDoc).find("UserName").text();
