@@ -157,7 +157,36 @@ var comm = Vue.extend({
                 var smsContent = "高青县气象局2017年12月26日10点37分发布暴雨红色报警信号";
                 eventHelper.emit("SDSSendMessageAll",smsContent);
             }else{
-
+                const h = this.$createElement;
+                this.$msgbox({
+                    title: '消息',
+                    message: h('div', null, [
+                        h('img', null, ' '),
+                        h('i', { style: 'color: teal' }, 'VNode')
+                    ]),
+                    showCancelButton: true,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    beforeClose: (action, instance, done) => {
+                        if (action === 'confirm') {
+                            instance.confirmButtonLoading = true;
+                            instance.confirmButtonText = '执行中...';
+                            setTimeout(() => {
+                                done();
+                                setTimeout(() => {
+                                    instance.confirmButtonLoading = false;
+                                }, 300);
+                            }, 3000);
+                        } else {
+                            done();
+                        }
+                    }
+                }).then(action => {
+                    this.$message({
+                        type: 'info',
+                        message: 'action: ' + action
+                    });
+                });
             }
         },
         endStep:function(){

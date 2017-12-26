@@ -1,5 +1,6 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
+var mapHelper = require('utils/mapHelper');
 var moment = require('moment');
 
 //加载组件
@@ -41,6 +42,7 @@ var pipeLineChartOptions = {
 // 定义组件
 var comm = Vue.extend({
     template: template,
+    props:["baseView"],
     data: function () {
         return {
             openAnalysisRoad:false,
@@ -68,7 +70,7 @@ var comm = Vue.extend({
             this.openAnalysisRoad = true;
         },
         openMonitorPipe:function(){
-            
+            mapHelper.setCenter(this.baseView,117.8124871849,37.1604873613,15);
         },
         togglePipeLineBox:function(){
             this.openAnalysisRoad = false;
