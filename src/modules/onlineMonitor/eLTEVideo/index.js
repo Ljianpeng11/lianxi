@@ -54,7 +54,7 @@ var comm = Vue.extend({
         login : function () {
             if (this.ocxObj){
                 iotController.getCurRequestInfo(function(data){
-                    //this.loginInfo.localIP = data.remoteIp;
+                    this.loginInfo.localIP = data.remoteIp;
                     var resultXml = this.ocxObj.ELTE_OCX_Login(this.loginInfo.userName, this.loginInfo.password, this.loginInfo.serverIP, this.loginInfo.localIP, this.loginInfo.sipPort);
                     var xmlDoc = $.parseXML(resultXml);
                     var result = $(xmlDoc).find("ResultCode").text();
@@ -795,7 +795,6 @@ var comm = Vue.extend({
         eventHelper.on("eLTEtrace",function(resId){
             this.eLTEtrace(resId);
         }.bind(this));
-
     },
     components: {
     }
