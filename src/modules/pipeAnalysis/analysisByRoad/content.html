@@ -56,20 +56,18 @@
     <transition enter-active-class="fadeInUP" leave-active-class="fadeOutDown">
         <div class="rainChartBox animated" v-if="openAnalysisRoadBox && showData">
             <el-col :span="8" style="height: 100%;">
-                <div class="tile_stats_count colFix" style="text-align: center;">
+                <div class="col-md-12 col-sm-12 col-xs-12 tile_stats_count colFix" style="text-align: center;">
                     <span class="count_top"><i class="fa fa-cog"></i> 全县管线总长度：</span>
-
-
                     <div class="count"  style="font-size: 20px;font-weight: 600;color: #009fff;">157.75公里；</div>
                 </div>
-                <div class="tile_stats_count colFix" style="text-align: center;">
+                <div class="col-md-12 col-sm-12 col-xs-12 tile_stats_count colFix" style="text-align: center;">
                     <span class="count_top"><i class="fa fa-cog"></i> 已实时监测管线长度：</span>
                     <div class="count"  style="font-size: 20px;font-weight: 600;color: #009fff;">42.33公里；</div>
                 </div>
 
-                <div class="tile_stats_count colFix" style="text-align: center;">
+                <div class="col-md-12 col-sm-12 col-xs-12 tile_stats_count colFix" style="text-align: center;">
                     <span class="count_top"><i class="fa fa-cog"></i>高水位运行管线长度：</span>
-                    <div class="count"  style="font-size: 16px;font-weight: 600;color: #009fff;">29.40公里占比18.64%</div>
+                    <div class="count"  style="font-size: 20px;font-weight: 600;color: #009fff;">29.40公里占比{{pipeInfo.rate}}%</div>
                 </div>
             </el-col>
             <el-col :span="16" style="height: 100%;">

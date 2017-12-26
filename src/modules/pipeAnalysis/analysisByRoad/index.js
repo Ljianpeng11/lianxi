@@ -20,16 +20,23 @@ road.forEach(function(val,index){
            }
        })(),
        location:val,
-       length:((Math.random() - 0.2) * 100 + randomNum).toFixed(2)
+       length:(function(){
+           var num = ((Math.random() - 0.4) * 1000 + randomNum).toFixed(2);
+           if(num < 0){
+               return 0-num;
+           }else{
+               return num;
+           }
+       })()
    };
     yData.push(item.length);
     pipeLineArr.push(item);
 });
 var pipeLineChartOptions = {
     type:'categoryBarChart',
-    title:'高水位运行管线比例统计',
+    title:'高水位运行管线统计',
     color:[
-        '#2f91e4',
+        '#f00',
     ],
     xData:road,
     seriesData:[
@@ -51,11 +58,11 @@ var comm = Vue.extend({
             pageSize:100,
             currentPage:1,
             pipeInfo:{
-                totalLength:'157.75',
-                currentLength:'42.33',
-                highLevelLength:'29.40',
+                totalLength:157.75,
+                currentLength:42.33,
+                highLevelLength:29.40,
                 rate:(function(){
-                    var num = (this.totalLength/this.highLevelLength).toFixed(2)*100 + '%';
+                    var num = (29.40/42.33).toFixed(2)*100;
                     return num;
                 }.bind(this))()
             },
