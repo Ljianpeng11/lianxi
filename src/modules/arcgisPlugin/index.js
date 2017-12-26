@@ -54,6 +54,8 @@ var comm = Vue.extend({
             radarImg: "",
             rainSewageLayer : "",
             isSuperRainSewageOpen : false,
+            hightWaterLineLayer : "",
+            isHightWaterLineOpen : false,
         }
     },
     methods: {
@@ -433,6 +435,18 @@ var comm = Vue.extend({
                 //临时加载雨污分析图层
                 this.rainSewageLayer = mapHelper.initSuperRainSewageMapLayer(this.baseView);
                 this.rainSewageLayer.opacity = 0.45;
+            }
+        }.bind(this));
+        //开启高水位隐患排查图层
+        eventHelper.on('open-highWaterLine-map',function(){
+            if(this.isHightWaterLineOpen){
+                this.isHightWaterLineOpen = false;
+                this.hightWaterLineLayer.visible = false;
+            }else{
+                this.isHightWaterLineOpen = true;
+                //临时加载高水位隐患排查图层
+                this.hightWaterLineLayer = mapHelper.initSuperHighWaterLineMapLayer(this.baseView);
+                this.hightWaterLineLayer.opacity = 0.75;
             }
         }.bind(this));
 

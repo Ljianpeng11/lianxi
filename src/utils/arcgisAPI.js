@@ -384,6 +384,56 @@ define(function () {
         view.map.add(tiledVectorLayer);
         return tiledVectorLayer;
     };
+
+    instance.initSuperHighWaterLineMapLayer = function (view) {
+            var tileInfo = new instance.TileInfo({
+                "dpi": 96,
+                "rows": 256,
+                "cols": 256,
+                "compressionQuality": 0,
+                "origin": {
+                    "x": -180,
+                    "y": 90
+                },
+                "spatialReference": {
+                    "wkid": 4326
+                },
+                "lods": [
+                    {"level": 0, "resolution": 0.703125, "scale": 295829355.450000},
+                    {"level": 1, "resolution": 0.3515625, "scale": 147914677.725000},
+                    {"level": 2, "resolution": 0.17578125, "scale": 73957338.862500},
+                    {"level": 3, "resolution": 0.087890625, "scale": 36978669.431250},
+                    {"level": 4, "resolution": 0.0439453125, "scale": 18489334.715625},
+                    {"level": 5, "resolution": 0.02197265625, "scale": 9244667.357812},
+                    {"level": 6, "resolution": 0.010986328125, "scale": 4622333.678906},
+                    {"level": 7, "resolution": 0.0054931640625, "scale": 2311166.839453},
+                    {"level": 8, "resolution": 0.00274658203125, "scale": 1155583.419727},
+                    {"level": 9, "resolution": 0.001373291015625, "scale": 577791.709863},
+                    {"level": 10, "resolution": 0.0006866455078125, "scale": 288895.854932},
+                    {"level": 11, "resolution": 0.00034332275390625, "scale": 144447.927466},
+                    {"level": 12, "resolution": 0.000171661376953125, "scale": 72223.963733},
+                    {"level": 13, "resolution": 8.58306884765625e-005, "scale": 36111.981866},
+                    {"level": 14, "resolution": 4.291534423828125e-005, "scale": 18055.990933},
+                    {"level": 15, "resolution": 2.1457672119140625e-005, "scale": 9027.995467},
+                    {"level": 16, "resolution": 1.0728836059570313e-005, "scale": 4513.997733},
+                    {"level": 17, "resolution": 5.3644180297851563e-006, "scale": 2256.998867},
+                    {"level": 18, "resolution": 2.682209014892578e-6, "scale": 1128.499433},
+                    {"level": 19, "resolution": 1.341104507446289e-6, "scale": 564.249717}
+                ]
+            });
+            var spatialReference = new instance.SpatialReference({wkid: 4326});
+            var fullExtent = new instance.Extent(-180.0, -90.0, 180.0, 90.0, spatialReference);
+            var tiledVectorLayer = new instance.WebTileLayer({
+                id: "facilitySuperMapLayer",
+                urlTemplate: "http://11.0.204.11:8090/iserver/services/map-overWaterLine2/wmts-china/problem_Project%40superMapOverWater/default/ChinaPublicServices_problem_Project@superMapOverWater/{level}/{row}/{col}.png",
+                copyright: "",
+                spatialReference: spatialReference,
+                fullExtent: fullExtent,
+                tileInfo: tileInfo,
+            });
+            view.map.add(tiledVectorLayer);
+            return tiledVectorLayer;
+        };
     instance.initVideoLayer = function (view) {
 
         view.map.add(tiledVectorLayer);
