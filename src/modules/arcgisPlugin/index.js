@@ -20,6 +20,7 @@ var mapConfigHelper = require('utils/mapConfigHelper');
 var facilityModel = require('controllers/model/facilityModel');
 var commandCenter = require('modules/emergencyRescue/commandCenter');
 var rainPollution = require('modules/pipeAnalysis/rainPollution');
+var analysisByRoad = require('modules/pipeAnalysis/analysisByRoad');
 
 // 定义组件
 var comm = Vue.extend({
@@ -423,6 +424,9 @@ var comm = Vue.extend({
             if(this.$refs.commandCenter.showCommandBox){
                 this.$refs.commandCenter.showCommandBox = false;
             }
+            if(this.$refs.analysisRoad.openAnalysisRoad){
+                this.$refs.analysisRoad.openAnalysisRoad = false;
+            }
             this.$refs.rainPollution.init();
             if(this.isSuperRainSewageOpen){
                 this.isSuperRainSewageOpen = false;
@@ -435,13 +439,17 @@ var comm = Vue.extend({
             }
         }.bind(this));
         //开启高水位管线分析功能
-        eventHelper.on('openPipeLineAnalysis',function(){
+        eventHelper.on('openAnalysisRoad',function(){
             if(this.$refs.devicePanel.isOpenPanel){
                 this.$refs.devicePanel.isOpenPanel = false;
             }
             if(this.$refs.commandCenter.showCommandBox){
                 this.$refs.commandCenter.showCommandBox = false;
             }
+            if(this.$refs.rainPollution.openRainPollution){
+                this.$refs.rainPollution.openRainPollution = false;
+            }
+            this.$refs.analysisRoad.init();
         }.bind(this));
     },
     components: {
@@ -458,7 +466,8 @@ var comm = Vue.extend({
         'elte-video' :eLTEVideo,
         'facility-identify' :facilityIdentify,
         'command-center':commandCenter,
-        'rain-pollution':rainPollution
+        'rain-pollution':rainPollution,
+        'analysis-road':analysisByRoad
     }
 });
 module.exports = comm;

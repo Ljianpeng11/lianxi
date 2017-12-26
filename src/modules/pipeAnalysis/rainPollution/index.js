@@ -107,8 +107,8 @@ var comm = Vue.extend({
                     {value:3, name:'不具备分流条件'}
                 ]
             },
-            lineChartOptions:{
-                type:'normalBarChart',
+            barChartOptions:{
+                type:'categoryBarChart',
                 title:'问题分类统计',
                 color:[
                     '#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',

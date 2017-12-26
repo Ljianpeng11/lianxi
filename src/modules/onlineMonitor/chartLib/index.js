@@ -275,7 +275,7 @@ var comm = Vue.extend({
                             ]
                         };
                         break;
-                    case 'normalBarChart':
+                    case 'categoryBarChart':
                         this.options = {
                             color:data.color,
                             title: {
@@ -324,10 +324,14 @@ var comm = Vue.extend({
                                         name:val.name,
                                         type:'bar',
                                         data:val.data,
-                                        label: {
-                                            show: true,
-                                            position: 'top',
-                                            formatter: '{c}'
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top',
+                                                    formatter: '{c}'
+                                                }
+                                            }
                                         }
                                     }
                                     arr.push(item);
@@ -335,6 +339,33 @@ var comm = Vue.extend({
                                 return arr;
                             })()
                         };
+                        break;
+                    case 'normalBarChart':
+                        this.options = {
+                            color:data.color,
+                            title: {
+                                text: data.title,
+                                x:'5px',
+                                y:'0px'
+                            },
+                            tooltip: {},
+                            grid: {
+                                left: '8%',
+                                right: '8%',
+                                bottom: '15%',
+                                top: '25%'
+                            },
+                            xAxis: {
+                                data: data.xData
+                            },
+                            yAxis: {},
+                            series: [{
+                                name: '销量',
+                                type: 'bar',
+                                data: data.yData
+                            }]
+                        };
+                        break;
                     default:break;
                 }
                 this.myChart.setOption(this.options);
