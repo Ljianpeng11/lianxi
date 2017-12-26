@@ -102,9 +102,9 @@ var comm = Vue.extend({
                 color:['#4f9b0c','#f5c761','#fe5240'],
                 text:'雨污混接改造分类统计',
                 data: [
-                    {value:1, name:'雨污分流'},
-                    {value:2, name:'雨污合流但具备分流条件'},
-                    {value:3, name:'不具备分流条件'}
+                    {value:55.17, name:'雨污分流'},
+                    {value:3.32, name:'雨污合流但具备分流条件'},
+                    {value:41.51, name:'不具备分流条件'}
                 ]
             },
             barChartOptions:{
