@@ -112,9 +112,12 @@
                 <span class="count_bottom" :title="(staticData.totalRoadLength/1000).toFixed(2)">道路总长度（km）<i
                         class="green">{{(staticData.totalRoadLength/1000).toFixed(2)}} </i> </span>
             </div>
-            <div class="col-md-2 col-sm-4 col-xs-7 tile_stats_count colFix">
+            <div class="col-md-4 col-sm-4 col-xs-8 tile_stats_count colFix" style="width: 350px !important;">
                 <span class="count_top"><i class="fa fa-cog"></i> 区域密度（km /k㎡）</span>
-                <div class="count">{{(staticData.totalPipeCanalLength / staticData.area * 1000).toFixed(3)}}</div>
+                <div class="count">
+                    <font color="red">{{(staticData.totalPipeCanalLength / staticData.area * 1000).toFixed(3)}}</font>
+                    <font color="#7cfc00" size="6">(正常值10+)</font>
+                </div>
                 <span class="count_bottom">区域面积（k㎡）<i class="green" :title="staticData.area">{{(staticData.area/1000000).toFixed(2)}} </i> </span>
             </div>
         </div>
