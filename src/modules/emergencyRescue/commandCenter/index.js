@@ -25,7 +25,7 @@ var comm = Vue.extend({
                     }
                     return moment().format('YYYY/MM/DD ')+week;
                 })(),
-                todayDegree:''
+                todayDegree:4
             },
             weatherData:[],
             seeperArr:[
