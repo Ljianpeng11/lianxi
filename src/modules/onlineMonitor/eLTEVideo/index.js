@@ -92,6 +92,7 @@ var comm = Vue.extend({
                 var xmlDoc = $.parseXML(resultXml);
                 var result = $(xmlDoc).find("ResultCode").text();
                 console.log(" ELTE_OCX_StartRealPlay:" +result);
+                this.SetTitleText("8003");
                 if(result==0){
                     setTimeout(function(){
                         this.showRealPlay();
@@ -161,6 +162,8 @@ var comm = Vue.extend({
                 var xmlDoc = $.parseXML(resultXml);
                 var result = $(xmlDoc).find("ResultCode").text();
                 console.log(" ELTE_OCX_SetVideoWindowPos:" +result);
+
+
             }
         },
         setGISSubscribe : function(resId){
@@ -195,9 +198,10 @@ var comm = Vue.extend({
                     for (i = 0, len = userInfos.length; i < len; i++) {
                         this.groupUserArray.push($(userInfos[i]).find("UserID").text());
                         this.GetUserInfo($(userInfos[i]).find("UserID").text());
+                        this.setGISSubscribe($(userInfos[i]).find("UserID").text());
                     }
                     console.log(" ELTE_OCX_GetGroupUsersContent:" + this.groupUserArray.join(","));
-                    this.setGISSubscribe(this.groupUserArray.join(","));
+                    //this.setGISSubscribe(this.groupUserArray.join(","));
                 }
             }
         },
@@ -352,7 +356,7 @@ var comm = Vue.extend({
             } else*/
             if( ulEventType == 8){
                 clearInterval(this.gpsInterval);
-                //this.redrawMapGraphic(pEventDataXml);
+                this.redrawMapGraphic(pEventDataXml);
             } else if (ulEventType == 1) {
                 var xmlDoc = $.parseXML(pEventDataXml);
                 var type = $(xmlDoc).find("CallStatus").text();
@@ -402,6 +406,7 @@ var comm = Vue.extend({
             var xmlDoc = $.parseXML(resultXml);
             var result = $(xmlDoc).find("ResultCode").text();
             console.log("ELTE_OCX_RecvVideoPlay:" +result);
+            this.SetTitleText(resId);
             this.startRealPlay();
         },
         SDSSendMessage:function(){
@@ -446,8 +451,13 @@ var comm = Vue.extend({
             var resultXml = this.ocxObj.ELTE_OCX_GetUserInfo(userId);
             var xmlDoc = $.parseXML(resultXml);
             var result = $(xmlDoc).find("ResultCode").text();
-            debugger;
-            var user = this.groupUsers.find((n) => n.userId = userId);
+            var user = null;
+            for(var i=0,len=this.groupUsers.length;i<len;i++){
+                if(this.groupUsers[i].userId == userId){
+                    user = this.groupUsers[i];
+                    break;
+                }
+            }
             if(result==0&&user==null){
                 var userObj = {};
                 userObj.userId=$(xmlDoc).find("UserID").text();
@@ -464,38 +474,102 @@ var comm = Vue.extend({
         },
         redrawMapGraphic : function (pEventDataXml){
             var Content = $($.parseXML(pEventDataXml));
-
             var userId =  Content.find("ResourceID").text();
             var time =  Number(Content.find("Time").text());
             var altitude =  Number(Content.find("Altitude").text());
             var latitude =  Number(Content.find("Latitude").text());
             var longtitude =  Number(Content.find("Longtitude").text());
+
             if(latitude>0&&longtitude>0){
                 var ep820VideoLayer = this.baseView.map.findLayerById("ep820Video");
-                var graphic = ep820VideoLayer.graphics.find((n) => n.attributes.userId =userId);
+                var graphic = null;
+                var graphic = ep820VideoLayer.graphics.find(function(graphic){
+                    return graphic.attributes&&graphic.attributes.userId === userId;
+                });
                 if(graphic!=null) {
                     var point = mapHelper.createPoint(longtitude,latitude);
+                    graphic.attributes.time = this.fmtDate(time);
+                    graphic.attributes.altitude = altitude;
+                    graphic.attributes.latitude = latitude;
+                    graphic.attributes.longtitude = longtitude;
                     graphic.geometry = point;
-                } else {
-                    if( this.groupUsers.length)
-                    var userObj = this.groupUsers.find((n) => n.userId =userId);
-                    userObj.time = time;
-                    userObj.altitude = altitude;
-                    userObj.latitude = latitude;
-                    userObj.longtitude = longtitude;
                     var imgObj = {
-                        url:  './img/toolbar/buliding-video.png',
+                        url: './img/toolbar/buliding-video.png',
                         width: "24px",
                         height: "24px"
                     };
                     var popupTemplate = {
-                        title: "测试",
-                        content: "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('initeLTEVideo','1');\"><span>打开视频</span></button><button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage');\"><span>发短信</span></button>"
+                        title: graphic.attributes.userName,
+                        content: "<p>用户编号：{userId}</p>"+
+                        "<p>语音状态：{p2pstatus}</p>"+
+                        "<p>GPS上报时间：{time}</p>"+
+                        "<p>高程：{altitude}</p>"+
+                        "<p>经度：{longtitude}</p>"+
+                        "<p>纬度：{latitude}</p>"+
+                        "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('initeLTEVideo','1');\"><span>打开视频</span></button>" +
+                        "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage');\"><span>发短信</span></button>"+
+                        "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('p2p');\"><span>语音</span></button>"
                     };
+                    var graphic_new = mapHelper.createPictureMarkSymbol(ep820VideoLayer, longtitude,latitude, imgObj, graphic.attributes, popupTemplate);
 
-                    var graphic = mapHelper.createPictureMarkSymbol(ep820VideoLayer,longtitude,latitude,imgObj,userObj,popupTemplate);
+                    ep820VideoLayer.remove(graphic);
+                } else {
+                    var userObj = null;
+                    for(var i=0,len=this.groupUsers.length;i<len;i++){
+                        if(this.groupUsers[i].userId == userId){
+                            userObj = this.groupUsers[i];
+                            break;
+                        }
+                    }
+                    if(userObj!=null) {
+                        userObj.time = this.fmtDate(time);
+                        userObj.altitude = altitude;
+                        userObj.latitude = latitude;
+                        userObj.longtitude = longtitude;
+                        var imgObj = {
+                            url: './img/toolbar/buliding-video.png',
+                            width: "24px",
+                            height: "24px"
+                        };
+                        var popupTemplate = {
+                            title: userObj.userName,
+                            content: "<p>用户编号：{userId}</p>"+
+                                    "<p>语音状态：{p2pstatus}</p>"+
+                                    "<p>GPS上报时间：{time}</p>"+
+                                    "<p>高程：{altitude}</p>"+
+                                    "<p>经度：{longtitude}</p>"+
+                                    "<p>纬度：{latitude}</p>"+
+                                    "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('initeLTEVideo','1');\"><span>打开视频</span></button>" +
+                                    "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage');\"><span>发短信</span></button>"+
+                                    "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('p2p');\"><span>语音</span></button>"
+                        };
+
+                        var graphic = mapHelper.createPictureMarkSymbol(ep820VideoLayer, longtitude, latitude, imgObj, userObj, popupTemplate);
+                    } else {
+                        debugger;
+                    }
                 }
             }
+        },
+        SetTitleText : function (userId) {
+            var userObj = null;
+            for(var i=0,len=this.groupUsers.length;i<len;i++){
+                if(this.groupUsers[i].userId == userId){
+                    userObj = this.groupUsers[i];
+                    break;
+                }
+            }
+            var resultXml = this.ocxObj.ELTE_OCX_SetTitleText(userObj.userName+"实时回传视频");
+            var xmlDoc = $.parseXML(resultXml);
+            var result = $(xmlDoc).find("ResultCode").text();
+            console.log(" ELTE_OCX_SetVideoWindowPos:" +result);
+        },
+        fmtDate : function (obj){
+            var date =  new Date(obj);
+            var y = 1900+date.getYear();
+            var m = "0"+(date.getMonth()+1);
+            var d = "0"+date.getDate();
+            return y+"-"+m.substring(m.length-2,m.length)+"-"+d.substring(d.length-2,d.length);
         }
     },
     mounted: function () {

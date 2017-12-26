@@ -228,7 +228,7 @@ var comm = Vue.extend({
         initVideoGraphicsLayer:function(view){
             //临时加载
             var ep820VideoLayer = mapHelper.createGraphicsLayer(view.map,"ep820Video");
-            var imgObj = {
+            /*var imgObj = {
                 url:  './img/toolbar/buliding-video.png',
                 width: "24px",
                 height: "24px"
@@ -239,6 +239,7 @@ var comm = Vue.extend({
             };
 
             var graphic = mapHelper.createPictureMarkSymbol(ep820VideoLayer,117.8125465523411,37.160464325281644, imgObj,{},popupTemplate);
+            */
             //测试ep820轨迹
             /*var points = [[37.16078158522525,117.81400013975333],
                 [37.16074587770515,117.8141280984407],
@@ -420,10 +421,9 @@ var comm = Vue.extend({
                 this.isSuperRainSewageOpen = true;
                 //临时加载雨污分析图层
                 this.rainSewageLayer = mapHelper.initSuperRainSewageMapLayer(this.baseView);
-                this.rainSewageLayer.layer.opacity = 0.5;
+                this.rainSewageLayer.opacity = 0.5;
             }
         }.bind(this));
-
     },
     components: {
         'layer-list': layerList,
