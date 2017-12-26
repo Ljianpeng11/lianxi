@@ -277,27 +277,63 @@ var comm = Vue.extend({
                         break;
                     case 'normalBarChart':
                         this.options = {
+                            color:data.color,
                             title: {
                                 text: data.title,
-                                x:'center',
-                                y:'5px'
+                                x:'5px',
+                                y:'0px'
                             },
-                            tooltip: {},
+                            tooltip : {
+                                trigger: 'axis',
+                                axisPointer : {
+                                    type : 'shadow'
+                                }
+                            },
+                            legend: {
+                                right:'5px',
+                                top:'5px',
+                                data:(function(){
+                                    var arr = [];
+                                    data.seriesData.forEach(function(val){
+                                        arr.push(val.name);
+                                    });
+                                    return arr;
+                                })()
+                            },
                             grid: {
                                 left: '8%',
                                 right: '8%',
                                 bottom: '15%',
                                 top: '25%'
                             },
-                            xAxis: {
-                                data: data.xData
-                            },
-                            yAxis: {},
-                            series: [{
-                                type: 'bar',
-                                barWidth:'10%',
-                                data: data.yData
-                            }]
+                            xAxis : [
+                                {
+                                    type : 'category',
+                                    data : data.xData
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type : 'value'
+                                }
+                            ],
+                            series: (function(){
+                                var arr = [];
+                                data.seriesData.forEach(function(val){
+                                    var item = {
+                                        name:val.name,
+                                        type:'bar',
+                                        data:val.data,
+                                        label: {
+                                            show: true,
+                                            position: 'top',
+                                            formatter: '{c}'
+                                        }
+                                    }
+                                    arr.push(item);
+                                })
+                                return arr;
+                            })()
                         };
                     default:break;
                 }
