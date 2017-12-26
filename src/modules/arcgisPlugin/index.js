@@ -412,15 +412,13 @@ var comm = Vue.extend({
         //开启雨污分析图层
         eventHelper.on('open-rainSewage-map',function(){
             if(this.isSuperRainSewageOpen){
-                console.log("关闭雨污分析图层");
                 this.isSuperRainSewageOpen = false;
                 this.rainSewageLayer.visible = false;
             }else{
-                console.log("初始化雨污分析图层");
                 this.isSuperRainSewageOpen = true;
                 //临时加载雨污分析图层
                 this.rainSewageLayer = mapHelper.initSuperRainSewageMapLayer(this.baseView);
-                this.rainSewageLayer.layer.opacity = 0.5;
+                this.rainSewageLayer.opacity = 0.45;
             }
         }.bind(this));
 
