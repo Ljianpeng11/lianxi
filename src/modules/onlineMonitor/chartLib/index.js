@@ -275,12 +275,78 @@ var comm = Vue.extend({
                             ]
                         };
                         break;
-                    case 'normalBarChart':
+                    case 'categoryBarChart':
                         this.options = {
+                            color:data.color,
                             title: {
                                 text: data.title,
-                                x:'center',
-                                y:'5px'
+                                x:'5px',
+                                y:'0px'
+                            },
+                            tooltip : {
+                                trigger: 'axis',
+                                axisPointer : {
+                                    type : 'shadow'
+                                }
+                            },
+                            legend: {
+                                right:'5px',
+                                top:'5px',
+                                data:(function(){
+                                    var arr = [];
+                                    data.seriesData.forEach(function(val){
+                                        arr.push(val.name);
+                                    });
+                                    return arr;
+                                })()
+                            },
+                            grid: {
+                                left: '8%',
+                                right: '8%',
+                                bottom: '15%',
+                                top: '25%'
+                            },
+                            xAxis : [
+                                {
+                                    type : 'category',
+                                    data : data.xData
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type : 'value'
+                                }
+                            ],
+                            series: (function(){
+                                var arr = [];
+                                data.seriesData.forEach(function(val){
+                                    var item = {
+                                        name:val.name,
+                                        type:'bar',
+                                        data:val.data,
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top',
+                                                    formatter: '{c}'
+                                                }
+                                            }
+                                        }
+                                    }
+                                    arr.push(item);
+                                })
+                                return arr;
+                            })()
+                        };
+                        break;
+                    case 'normalBarChart':
+                        this.options = {
+                            color:data.color,
+                            title: {
+                                text: data.title,
+                                x:'5px',
+                                y:'0px'
                             },
                             tooltip: {},
                             grid: {
@@ -294,11 +360,12 @@ var comm = Vue.extend({
                             },
                             yAxis: {},
                             series: [{
+                                name: '销量',
                                 type: 'bar',
-                                barWidth:'10%',
                                 data: data.yData
                             }]
                         };
+                        break;
                     default:break;
                 }
                 this.myChart.setOption(this.options);

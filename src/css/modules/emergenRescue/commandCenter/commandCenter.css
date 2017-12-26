@@ -107,14 +107,14 @@
     background: #403E38;
     color: #fff;
 }
-.commadPanel .menuToggle{
+.projectMenu .menuToggle{
     position: absolute;
     left: -200px!important;
     top: calc(50% - 100px);
     border-left: 50px solid transparent;
     border-right: 23px solid #105ba3;
 }
-.commadPanel .menuToggle .toggleOff{
+.projectMenu .menuToggle .toggleOff{
     position: absolute;
     left:125px;
 }

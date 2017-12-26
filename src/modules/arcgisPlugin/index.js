@@ -20,6 +20,7 @@ var mapConfigHelper = require('utils/mapConfigHelper');
 var facilityModel = require('controllers/model/facilityModel');
 var commandCenter = require('modules/emergencyRescue/commandCenter');
 var rainPollution = require('modules/pipeAnalysis/rainPollution');
+var analysisByRoad = require('modules/pipeAnalysis/analysisByRoad');
 
 // 定义组件
 var comm = Vue.extend({
@@ -407,6 +408,7 @@ var comm = Vue.extend({
             map.centerAt([parseFloat(point.center[0]) + 0.005, point.center[1]]);
             this.$refs.rightPanel.open(point.item, point.facilityTypeName);
         }.bind(this));
+        //开启应急调度功能
         eventHelper.on('openCommandBox',function(){
             if(this.$refs.devicePanel.isOpenPanel){
                 this.$refs.devicePanel.isOpenPanel = false;
@@ -416,6 +418,7 @@ var comm = Vue.extend({
             }
             this.$refs.commandCenter.init();
         }.bind(this));
+        //开启雨污分析功能
         eventHelper.on('openRainPollution',function(){
             if(this.$refs.devicePanel.isOpenPanel){
                 this.$refs.devicePanel.isOpenPanel = false;
@@ -423,10 +426,10 @@ var comm = Vue.extend({
             if(this.$refs.commandCenter.showCommandBox){
                 this.$refs.commandCenter.showCommandBox = false;
             }
+            if(this.$refs.analysisRoad.openAnalysisRoad){
+                this.$refs.analysisRoad.openAnalysisRoad = false;
+            }
             this.$refs.rainPollution.init();
-        }.bind(this));
-        //开启雨污分析图层
-        eventHelper.on('open-rainSewage-map',function(){
             if(this.isSuperRainSewageOpen){
                 this.isSuperRainSewageOpen = false;
                 this.rainSewageLayer.visible = false;
@@ -437,8 +440,18 @@ var comm = Vue.extend({
                 this.rainSewageLayer.opacity = 0.45;
             }
         }.bind(this));
-        //开启高水位隐患排查图层
-        eventHelper.on('open-highWaterLine-map',function(){
+        //开启高水位管线分析功能
+        eventHelper.on('openAnalysisRoad',function(){
+            if(this.$refs.devicePanel.isOpenPanel){
+                this.$refs.devicePanel.isOpenPanel = false;
+            }
+            if(this.$refs.commandCenter.showCommandBox){
+                this.$refs.commandCenter.showCommandBox = false;
+            }
+            if(this.$refs.rainPollution.openRainPollution){
+                this.$refs.rainPollution.openRainPollution = false;
+            }
+            this.$refs.analysisRoad.init();
             if(this.isHightWaterLineOpen){
                 this.isHightWaterLineOpen = false;
                 this.hightWaterLineLayer.visible = false;
@@ -449,7 +462,6 @@ var comm = Vue.extend({
                 this.hightWaterLineLayer.opacity = 0.75;
             }
         }.bind(this));
-
     },
     components: {
         'layer-list': layerList,
@@ -465,7 +477,8 @@ var comm = Vue.extend({
         'elte-video' :eLTEVideo,
         'facility-identify' :facilityIdentify,
         'command-center':commandCenter,
-        'rain-pollution':rainPollution
+        'rain-pollution':rainPollution,
+        'analysis-road':analysisByRoad
     }
 });
 module.exports = comm;

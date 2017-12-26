@@ -1,21 +1,22 @@
 <div class="rainPollutionPanel projectMenu" @mouseover="showToggle = true;" @mouseleave="showToggle = false;">
     <!--<transition enter-active-class="slideInDown" leave-active-class="slideOutUp">-->
-        <!--<div class="weatherAlarmBox animated" v-if="openRainPollution">-->
+        <!--<div class="weatherAlarmBox animated" v-if="openAnalysisRoad">-->
             <!--<img src="../../../img/icon/tianqi.png" alt="">-->
             <!--<marquee class="alarmInfo" behavior="scroll" direction="left" style="width: calc(100% - 93px);">当前：晴天，今晚夜间：多云转阴有小雨，降水概率80%；</marquee>-->
         <!--</div>-->
     <!--</transition>-->
     <transition enter-active-class="fadeInRight" leave-active-class="fadeOutRight">
-        <div class="commandBox pollutionBox animated" v-if="openRainPollution">
-            <div class="menuToggle" v-show="showToggle"><a class='toggleButton' :class='{toggleOff:openRainPollution}'
-                                                           @click="togglePollutionBox"></a></div>
+        <div class="commandBox pollutionBox animated" v-if="openAnalysisRoad">
+            <div class="menuToggle" v-show="showToggle"><a class='toggleButton' :class='{toggleOff:openAnalysisRoad}'
+                                                           @click="togglePipeLineBox"></a></div>
             <div class="commandItem" style="height: 100%;">
                 <div class="devicePanel-top text-center">
-                    <span style="flex:1;">雨污混接问题列表</span>
+                    <span style="flex:1;">高水位运行问题列表</span>
                 </div>
                 <div class="devicePanel-bottom">
                     <el-table
-                            :data="connectArr"
+                            :data="pipeLineArr"
+                            row-click="openMonitorPipe"
                             style="width: 100%;height: calc(100% - 3em);overflow: auto;">
                         <el-table-column
                                 prop="id"
@@ -29,10 +30,12 @@
                                 label="所在道路">
                         </el-table-column>
                         <el-table-column
-                                prop="questionType"
-                                label="问题类型"
-                                width="120"
-                                >
+                                prop="length"
+                                label="管线长度"
+                                width="120">
+                            <template scope="scope">
+                                {{scope.row.length}}米
+                            </template>
                         </el-table-column>
                     </el-table>
                     <div class="table-pagination">
@@ -43,7 +46,7 @@
                                 :page-sizes="[100, 200, 300, 400]"
                                 :page-size="pageSize"
                                 layout="total, sizes, prev, pager, next, jumper"
-                                :total="connectArr.length">
+                                :total="pipeLineArr.length">
                         </el-pagination>
                     </div>
                 </div>
@@ -51,9 +54,9 @@
         </div>
     </transition>
     <transition enter-active-class="fadeInUP" leave-active-class="fadeOutDown">
-        <div class="rainChartBox animated" v-if="openRainPollution">
+        <div class="rainChartBox animated" v-if="openAnalysisRoad">
             <el-col :span="8" style="height: 100%;">
-                <chart-lib :chartId="'pieChart'" ref="pieChart" :chartOptions="pieChartOptions"></chart-lib>
+
             </el-col>
             <el-col :span="16" style="height: 100%;">
                 <chart-lib :chartId="'lineChart'" ref="lineChart" :chartOptions="barChartOptions"></chart-lib>
