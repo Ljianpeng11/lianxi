@@ -19,6 +19,7 @@ var eLTEVideo = require('modules/onlineMonitor/eLTEVideo');
 var mapConfigHelper = require('utils/mapConfigHelper');
 var facilityModel = require('controllers/model/facilityModel');
 var commandCenter = require('modules/emergencyRescue/commandCenter');
+var rainPollution = require('modules/pipeAnalysis/rainPollution');
 
 // 定义组件
 var comm = Vue.extend({
@@ -404,7 +405,19 @@ var comm = Vue.extend({
             if(this.$refs.devicePanel.isOpenPanel){
                 this.$refs.devicePanel.isOpenPanel = false;
             }
-            this.$refs.commandCenter.showCommandBox = true;
+            if(this.$refs.rainPollution.openRainPollution){
+                this.$refs.rainPollution.openRainPollution = false;
+            }
+            this.$refs.commandCenter.init();
+        }.bind(this));
+        eventHelper.on('openRainPollution',function(){
+            if(this.$refs.devicePanel.isOpenPanel){
+                this.$refs.devicePanel.isOpenPanel = false;
+            }
+            if(this.$refs.commandCenter.showCommandBox){
+                this.$refs.commandCenter.showCommandBox = false;
+            }
+            this.$refs.rainPollution.init();
         }.bind(this));
     },
     components: {
@@ -420,7 +433,8 @@ var comm = Vue.extend({
         'device-panel': devicePanel,
         'elte-video' :eLTEVideo,
         'facility-identify' :facilityIdentify,
-        'command-center':commandCenter
+        'command-center':commandCenter,
+        'rain-pollution':rainPollution
     }
 });
 module.exports = comm;

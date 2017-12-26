@@ -1,16 +1,19 @@
-<div class="mainContent">
+<div class="commadPanel" @mouseover="showToggle = true;" @mouseleave="showToggle = false;">
    <transition enter-active-class="slideInDown" leave-active-class="slideOutUp">
       <div class="weatherAlarmBox animated" v-if="showCommandBox">
          <img src="../../../img/emegency/red-light.png" alt="">
-         <marquee behavior="scroll" direction="left">高青县气象局2017年12月26日10点37分发布暴雨红色报警信号</marquee>
-         <span class="normalBtn startStepBtn">启动预案</span>
+         <span class="alarmInfo">高青县气象局2017年12月26日10点37分发布<b class="alarm-text">暴雨红色报警信号</b></span>
+         <span class="normalBtn startStepBtn" @click="startStep" v-text="isStart?'提闸申请':'启动预案'"></span>
+         <span class="normalBtn endStepBtn" @click="endStep" v-show="isStart">结束预案</span>
       </div>
    </transition>
-   <transition enter-active-class="fadeInRight" leave-active-class="fadeOutLeft">
+   <transition enter-active-class="fadeInRight" leave-active-class="fadeOutRight">
       <div class="commandBox animated" v-if="showCommandBox">
-         <div class="commandItem cesc-box">
-            <div class="devicePanel-top">
-               <span>{{todayInfo.todayDate}}</span>
+         <div class="menuToggle" v-show="showToggle"><a class='toggleButton' :class='{toggleOff:showCommandBox}'
+                                                        @click="toggleCommadBox"></a></div>
+         <div class="commandItem" style="height: 40%;">
+            <div class="devicePanel-top text-center">
+               <span style="flex:1;">{{todayInfo.todayDate}}</span>
             </div>
             <div class="devicePanel-bottom">
                <el-col :span="8" class="radar-left">
@@ -31,8 +34,8 @@
                </el-col>
             </div>
          </div>
-         <div class="commandItem">
-            <div class="devicePanel-top">
+         <div class="commandItem" style="height: 60%;">
+            <div class="devicePanel-top text-center">
                <span style="flex:1;">应急队伍</span>
             </div>
             <div class="devicePanel-bottom">

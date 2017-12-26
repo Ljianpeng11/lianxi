@@ -36,6 +36,7 @@
 @import "modules/onlineMonitor/dataScreen.css";
 @import "modules/arcgisPlugin/facilityIdentify.css";
 @import "./modules/facilitySummary.css";
+@import "modules/pipeAnalysis/rainPollution.css";
 .css
 :root {
     --base-color:#105ba3;
