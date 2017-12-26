@@ -37,7 +37,7 @@ define([
     'modules/onlineMonitor/facilityInfoTable',
     'modules/onlineMonitor/dataScreen',
     'modules/onlineMonitor/eLTEVideo',
-    'modules/facilitySummary',
+    'modules/pipeAnalysis/facilitySummary',
     'modules/pipeAnalysis/rainPollution',
 ], function (
              arcgisPlugin,

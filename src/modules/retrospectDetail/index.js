@@ -1,22 +1,14 @@
 var template = require('./content.html');
 var controller = require('controllers/rightPanelController');
-// var monitor = require('./monitor');
-// var statistics = require('./statistics');
-// var dateController = require('./dateControl');
-// var facilityController = require('controllers/facilityController');
-// var serviceHelper = require('services/serviceHelper');
 var moment = require('moment');
 var eventHelper = require('utils/eventHelper');
 var echarts = require('echarts');
 var waterCacheData = require('services/mock/deviceDetail').rows;
 var mapHelper = require('utils/mapHelper');
-// var jsonData = require('services/mock/pipeTraceJSON.json');
-// var Polyline = cesc.require('esri/geometry/Polyline');
-// var traceAbilityAnalysis = require('../arcgisPlugin/plugin/arcgisExpand/traceAbilityAnalysis');
 var refreshTime = 1000;
 var dustColor = '#8b6829';
 var pipeColor = '#d4c9b6';
-var mapHelper = require('utils/mapHelper');
+
 
 var topFormat = {
     name: '管线剖面',
@@ -208,7 +200,7 @@ var comm = Vue.extend({
             form: {
                 name: '',
                 date: moment().format('YYYY-MM-DD HH:mm'),
-                owner: '广州市净水有限公司',
+                owner: '高青县住建局',
                 address: '',
                 handler: '',
                 coord: '',
@@ -694,7 +686,7 @@ var comm = Vue.extend({
 
             }.bind(this));
         }.bind(this));
-        eventHelper.on('open-small-right-panel', function () {
+        eventHelper.on('open-small-right-panel', function () {debugger;
             if (this.smallRightPanelOpen == false) {
                 this.smallRightPanelOpen = true;
                 //初始化状态

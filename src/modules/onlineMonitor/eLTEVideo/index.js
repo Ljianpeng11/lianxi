@@ -54,7 +54,7 @@ var comm = Vue.extend({
         login : function () {
             if (this.ocxObj){
                 iotController.getCurRequestInfo(function(data){
-                    //this.loginInfo.localIP = data.remoteIp;
+                    this.loginInfo.localIP = data.remoteIp;
                     var resultXml = this.ocxObj.ELTE_OCX_Login(this.loginInfo.userName, this.loginInfo.password, this.loginInfo.serverIP, this.loginInfo.localIP, this.loginInfo.sipPort);
                     var xmlDoc = $.parseXML(resultXml);
                     var result = $(xmlDoc).find("ResultCode").text();
@@ -512,8 +512,8 @@ var comm = Vue.extend({
             if(latitude>0&&longtitude>0){
                 var ep820VideoLayer = this.baseView.map.findLayerById("ep820Video");
                 var graphic = null;
-                var graphic = ep820VideoLayer.graphics.find(function(graphic){
-                    return graphic.attributes&&graphic.attributes.userId === userId;
+                var graphic = ep820VideoLayer.graphics.find(function(item){
+                    return item.attributes&&item.attributes.userId === userId;
                 });
                 if(graphic!=null) {
                     var point = mapHelper.createPoint(longtitude,latitude);
@@ -776,6 +776,7 @@ var comm = Vue.extend({
         this.load();
         eventHelper.on("initeLTEVideo",function(param){
             this.startRealPlay(param);
+            this.ocxObj.ELTE_OCX_P2PDial(param);
         }.bind(this));
         eventHelper.on("handleELTEOCXEvent",function(eventInfo){
             var ulEventType = eventInfo[0];
@@ -786,7 +787,7 @@ var comm = Vue.extend({
             this.SDSSendMessage();
         }.bind(this));
         eventHelper.on("p2p",function(param){
-            this.ocxObj.ELTE_OCX_P2PDial("8003");
+            this.ocxObj.ELTE_OCX_P2PDial(param);
         }.bind(this));
         eventHelper.on("SDSSendMessageAll",function(content){
             this.SDSSendMessageAll(content);
@@ -794,7 +795,6 @@ var comm = Vue.extend({
         eventHelper.on("eLTEtrace",function(resId){
             this.eLTEtrace(resId);
         }.bind(this));
-
     },
     components: {
     }

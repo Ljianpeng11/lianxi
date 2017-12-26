@@ -67,6 +67,16 @@ define(function () {
             }
             return this.apiInstance.initSuperRainSewageMapLayer(view);
         },
+        /**
+         * 超图高水位WMTS
+         **/
+        initSuperHighWaterLineMapLayer: function (view) {
+            if (this.apiVersion !== 'C') {
+                console.error('天地图只支持arcgis 方式加载');
+                return;
+            }
+            return this.apiInstance.initSuperHighWaterLineMapLayer(view);
+        },
         nnTraceAnalysisByRecursive:function (event, traceAnalysisType, vue, cb) {
             this.apiInstance.nnTraceAnalysisByRecursive(event, traceAnalysisType, vue, cb);
         },
