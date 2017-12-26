@@ -6,8 +6,8 @@
         <!--</div>-->
     <!--</transition>-->
     <transition enter-active-class="fadeInRight" leave-active-class="fadeOutRight">
-        <div class="commandBox pollutionBox animated" v-if="openAnalysisRoad">
-            <div class="menuToggle" v-show="showToggle"><a class='toggleButton' :class='{toggleOff:openAnalysisRoad}'
+        <div class="commandBox pollutionBox animated" v-if="openAnalysisRoadBox">
+            <div class="menuToggle" v-show="showToggle"><a class='toggleButton' :class='{toggleOff:openAnalysisRoadBox}'
                                                            @click="togglePipeLineBox"></a></div>
             <div class="commandItem" style="height: 100%;">
                 <div class="devicePanel-top text-center">
@@ -16,7 +16,7 @@
                 <div class="devicePanel-bottom">
                     <el-table
                             :data="pipeLineArr"
-                            row-click="openMonitorPipe"
+                            @row-click="openMonitorPipe"
                             style="width: 100%;height: calc(100% - 3em);overflow: auto;">
                         <el-table-column
                                 prop="id"
@@ -54,7 +54,7 @@
         </div>
     </transition>
     <transition enter-active-class="fadeInUP" leave-active-class="fadeOutDown">
-        <div class="rainChartBox animated" v-if="openAnalysisRoad">
+        <div class="rainChartBox animated" v-if="openAnalysisRoadBox && showData">
             <el-col :span="8" style="height: 100%;">
 
             </el-col>

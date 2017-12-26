@@ -1,6 +1,6 @@
 <div class="commadPanel projectMenu" @mouseover="showToggle = true;" @mouseleave="showToggle = false;">
    <transition enter-active-class="slideInDown" leave-active-class="slideOutUp">
-      <div class="weatherAlarmBox animated" v-if="showCommandBox">
+      <div class="weatherAlarmBox animated" v-if="showAlarmBox">
          <img src="../../../img/emegency/red-light.png" alt="">
          <span class="alarmInfo">高青县气象局2017年12月26日10点37分发布<b class="alarm-text">暴雨红色报警信号</b></span>
          <span class="normalBtn startStepBtn" @click="startStep" v-text="isStart?'提闸申请':'启动预案'"></span>

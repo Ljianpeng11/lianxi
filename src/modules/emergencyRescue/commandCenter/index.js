@@ -10,6 +10,7 @@ var comm = Vue.extend({
             showCommandBox:false,
             showToggle:false,
             isStart:false,
+            showAlarmBox:false,
             todayInfo:{
                 todayTime:moment().format('HH:mm:ss'),
                 todayDate:(function(){
@@ -150,47 +151,20 @@ var comm = Vue.extend({
         },
         toggleCommadBox:function(){
             this.showCommandBox = false;
+            this.showAlarmBox = false;
         },
         startStep:function(){
             if(!this.isStart){
                 this.isStart = true;
+                this.showCommandBox = true;
                 var smsContent = "高青县气象局2017年12月26日10点37分发布暴雨红色报警信号";
                 eventHelper.emit("SDSSendMessageAll",smsContent);
             }else{
-                const h = this.$createElement;
-                this.$msgbox({
-                    title: '消息',
-                    message: h('div', null, [
-                        h('img', null, ' '),
-                        h('i', { style: 'color: teal' }, 'VNode')
-                    ]),
-                    showCancelButton: true,
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    beforeClose: (action, instance, done) => {
-                        if (action === 'confirm') {
-                            instance.confirmButtonLoading = true;
-                            instance.confirmButtonText = '执行中...';
-                            setTimeout(() => {
-                                done();
-                                setTimeout(() => {
-                                    instance.confirmButtonLoading = false;
-                                }, 300);
-                            }, 3000);
-                        } else {
-                            done();
-                        }
-                    }
-                }).then(action => {
-                    this.$message({
-                        type: 'info',
-                        message: 'action: ' + action
-                    });
-                });
+                eventHelper.emit('openCommandDetail');
             }
         },
         endStep:function(){
-
+            eventHelper.emit('openComandEndDetail');
         }
     },
     mounted: function () {
@@ -205,11 +179,16 @@ var comm = Vue.extend({
                weatherDatas = result.data;
                self.todayInfo.todayDegree = weatherDatas.wendu;
             },
-            error:function(){
-                alert('无法获取天气数据');
-            }
+            // error:function(){
+            //     alert('无法获取天气数据');
+            // }
         });
+        eventHelper.on('showCommandPanel',function(){
+            this.showAlarmBox = true;
+        }.bind(this));
     },
-    components: {}
+    components: {
+
+    }
 });
 module.exports = comm;

@@ -16,6 +16,30 @@ var comm = Vue.extend({
             currentPage:1,
             connectArr:[
                 {
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'排放不明'
+                },{
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'流向混乱'
+                },{
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'雨污混接'
+                },{
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'污水直排'
+                },{
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'雨污混接'
+                },{
+                    id:'GQYW11',
+                    location:'高苑路',
+                    questionType:'数据不全'
+                },{
                     id:'GQYW01',
                     location:'邦德路',
                     questionType:'排放不明'
@@ -71,30 +95,6 @@ var comm = Vue.extend({
                     id:'GQYW11',
                     location:'东环路',
                     questionType:'数据不全'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'排放不明'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'流向混乱'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'雨污混接'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'污水直排'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'雨污混接'
-                },{
-                    id:'GQYW11',
-                    location:'高苑路',
-                    questionType:'数据不全'
                 }
             ],
             pieChartOptions:{
@@ -113,7 +113,7 @@ var comm = Vue.extend({
                 color:[
                     '#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
                 ],
-                xData:['邦德路','北一路','东环路','高苑路'],
+                xData:['高苑路','北一路','东环路','邦德路'],
                 seriesData:[
                     {
                         name:'排放不明',

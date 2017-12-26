@@ -70,7 +70,11 @@ var comm = Vue.extend({
             ]
         }
     },
-    methods: {},
+    methods: {
+        showCommandPanel:function(){
+            eventHelper.emit('showCommandPanel');
+        }
+    },
     mounted: function () {
     },
     components: {}

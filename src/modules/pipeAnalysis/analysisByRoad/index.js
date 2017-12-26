@@ -45,8 +45,9 @@ var comm = Vue.extend({
     props:["baseView"],
     data: function () {
         return {
-            openAnalysisRoad:false,
+            openAnalysisRoadBox:false,
             showToggle:false,
+            showData:true,
             pageSize:100,
             currentPage:1,
             pipeInfo:{
@@ -67,13 +68,13 @@ var comm = Vue.extend({
     },
     methods: {
         init:function(){
-            this.openAnalysisRoad = true;
+            this.openAnalysisRoadBox = true;
         },
         openMonitorPipe:function(){
             mapHelper.setCenter(this.baseView,117.8124871849,37.1604873613,15);
         },
         togglePipeLineBox:function(){
-            this.openAnalysisRoad = false;
+            this.openAnalysisRoadBox = false;
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
@@ -95,7 +96,11 @@ var comm = Vue.extend({
     }
     ,
     mounted: function () {
-
+        eventHelper.on('togglePipeChart',function () {
+            this.showData = false;
+            $(".pollutionBox").css('height','calc(100% - 18em - 10px');
+            // $(".pollutionBox").animate({'height':'calc(100% - 18em - 10px)'},1000);
+        }.bind(this));
     },
     components: {
         'chart-lib':chartLib

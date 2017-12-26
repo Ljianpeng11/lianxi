@@ -424,8 +424,8 @@ var comm = Vue.extend({
             if(this.$refs.commandCenter.showCommandBox){
                 this.$refs.commandCenter.showCommandBox = false;
             }
-            if(this.$refs.analysisRoad.openAnalysisRoad){
-                this.$refs.analysisRoad.openAnalysisRoad = false;
+            if(this.$refs.analysisRoad.openAnalysisRoadBox){
+                this.$refs.analysisRoad.openAnalysisRoadBox = false;
             }
             this.$refs.rainPollution.init();
             if(this.isSuperRainSewageOpen){
