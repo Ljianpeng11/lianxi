@@ -180,7 +180,6 @@ var comm = Vue.extend({
     }
     ,
     mounted: function () {
-
     },
     components: {
         'chart-lib':chartLib
