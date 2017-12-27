@@ -1,9 +1,9 @@
 .gaoqingPopup .esri-popup__main-container {
-    width: 200px;
+    width: 300px;
     border-radius: 10px;
     padding-bottom: 0px;
-    transform: translate(0,-85%);
     box-shadow:0 0 10px 0 rgba(0,0,0,0.3);
+    border: 1px solid #007EDF;
 }
 .gaoqingPopup .esri-popup__position-container {
     border-radius: 10px;
@@ -17,6 +17,7 @@
     height: 40px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    background-color: #007EDF;
 }
 .gaoqingPopup .esri-popup__header .esri-popup__header-title{
     text-overflow: ellipsis;
