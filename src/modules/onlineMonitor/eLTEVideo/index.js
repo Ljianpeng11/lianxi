@@ -15,7 +15,7 @@ var comm = Vue.extend({
                 userName : "8889",
                 password : "8889",
                 serverIP : "69.8.0.131",//60.210.40.198
-                localIP : "192.168.43.32",
+                localIP : "192.168.43.31",
                 sipPort : "5060"//5064
             },
             groupUserArray:[],
