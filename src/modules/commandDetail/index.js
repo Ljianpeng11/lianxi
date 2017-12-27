@@ -28,6 +28,7 @@ var comm = Vue.extend({
         },
         saveImgFun:function(){
 
+            eventHelper.emit("SDSSendMessageFile","提闸申请");
         }
     },
     mounted: function () {
