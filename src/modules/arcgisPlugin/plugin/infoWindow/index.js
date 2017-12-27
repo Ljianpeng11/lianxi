@@ -111,6 +111,9 @@ var comm = Vue.extend({
             if(this.$parent.$refs.rainPollution.openRainPollution){
                 this.$parent.$refs.rainPollution.openRainPollution = false;
             }
+            if(this.$refs.$parent.analysisRoad.openAnalysisRoadBox){
+                this.$refs.$parent.analysisRoad.openAnalysisRoadBox = false;
+            }
             eventHelper.emit('openDevicePanel',selectItem);
             if(this.$parent.$refs.analysisRoad.showData){
                 eventHelper.emit('togglePipeChart');
