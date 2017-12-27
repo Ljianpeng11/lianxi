@@ -122,8 +122,8 @@ var comm = Vue.extend({
                 var smsContent = "高青县气象局2017年12月26日10点37分发布暴雨红色报警信号";
                 eventHelper.emit("SDSSendMessageAll",smsContent);
             }else{
-                // eventHelper.emit('openCommandDetail');
-                this.showSmallDialog = true;
+                eventHelper.emit('openCommandDetail');
+                // this.showSmallDialog = true;
             }
         },
         endStep:function(){
