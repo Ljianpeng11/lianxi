@@ -78,4 +78,14 @@
          </div>
       </div>
    </transition>
+   <el-dialog :visible.sync="showSmallDialog"
+              :show-close="false"
+              custom-class="normalDialog appleyBox-sm">
+      <div slot="title" class="dialog-title">
+          <p>提闸排水请示</p>
+          <div class="shareBox">
+             <i class="shareIcon icon iconfont"></i>
+          </div>
+      </div>
+   </el-dialog>
 </div>

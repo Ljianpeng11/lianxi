@@ -35,6 +35,7 @@ var comm = Vue.extend({
                 todayDegree:4
             },
             weatherData:[],
+            showSmallDialog:false,
             seeperArr:seeperArr,
             emergencyData:[
             {
@@ -82,7 +83,24 @@ var comm = Vue.extend({
                 department:'综合行政执法局',
                 team:'城市管理局',
                 step:'撤防'
-            }]
+            }],
+            gridData: [{
+                date: '2016-05-02',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-04',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-01',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }],
         }
     },
     methods: {
@@ -104,7 +122,8 @@ var comm = Vue.extend({
                 var smsContent = "高青县气象局2017年12月26日10点37分发布暴雨红色报警信号";
                 eventHelper.emit("SDSSendMessageAll",smsContent);
             }else{
-                eventHelper.emit('openCommandDetail');
+                // eventHelper.emit('openCommandDetail');
+                this.showSmallDialog = true;
             }
         },
         endStep:function(){
@@ -129,6 +148,7 @@ var comm = Vue.extend({
         });
         eventHelper.on('showCommandPanel',function(){
             this.showAlarmBox = true;
+            this.isStart = false;
         }.bind(this));
         eventHelper.on('closeCommand',function(){
             this.toggleCommadBox();

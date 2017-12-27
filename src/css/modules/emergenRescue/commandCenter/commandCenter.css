@@ -129,3 +129,10 @@
     width:80%;
     padding:0.5em 0;
 }
+.normalDialog{
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+.appleyBox-sm{
+    width: 25%;
+}
