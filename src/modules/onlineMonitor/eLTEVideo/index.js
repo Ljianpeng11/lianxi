@@ -15,7 +15,7 @@ var comm = Vue.extend({
                 userName : "8889",
                 password : "8889",
                 serverIP : "69.8.0.131",//60.210.40.198
-                localIP : "192.168.43.31",
+                localIP : "192.168.43.32",
                 sipPort : "5060"//5064
             },
             groupUserArray:[],
@@ -54,7 +54,7 @@ var comm = Vue.extend({
         login : function () {
             if (this.ocxObj){
                 iotController.getCurRequestInfo(function(data){
-                    this.loginInfo.localIP = data.remoteIp;
+                    //this.loginInfo.localIP = data.remoteIp;
                     var resultXml = this.ocxObj.ELTE_OCX_Login(this.loginInfo.userName, this.loginInfo.password, this.loginInfo.serverIP, this.loginInfo.localIP, this.loginInfo.sipPort);
                     var xmlDoc = $.parseXML(resultXml);
                     var result = $(xmlDoc).find("ResultCode").text();
@@ -380,29 +380,28 @@ var comm = Vue.extend({
                 var status = $(xmlDoc).find("P2pcallStatus").text();
                 var caller = $(xmlDoc).find("Caller").text();
                 var callee = $(xmlDoc).find("Callee").text();
-
                 if (status == 2002) {
                     //指示调度台收到点呼请求
-                    alert("Call request:" + caller);
+                    //alert("Call request:" + caller);
                     this.ocxObj.ELTE_OCX_P2PRecv(caller);
                 } else if (status == 2003) {
                     //指示调度台（做主叫时）对端已接听
-                    alert("P2P accepted");
+                    //alert("P2P accepted");
                 } else if (status == 2009 || status == 2010) {
                     // 指示对端已挂断
-                    alert("P2P hangup");
+                    //alert("P2P hangup");
                 } else if (status == 2011) {
                     //指示点呼请求已取消
-                    alert("P2P canceled");
+                    //alert("P2P canceled");
                 } else if (status == 2013) {
                     //指示对端忙
-                    alert("P2P busy");
+                    //alert("P2P busy");
                 } else if (status == 2017) {
                     //指示对端无应答
-                    alert("P2P no answer");
+                    //alert("P2P no answer");
                 } else if (status == 2020) {
                     //指示音频流组织失败
-                    alert("P2P failed");
+                    //alert("P2P failed");
                 }
             }
             //$("#eventType").val(msg);
