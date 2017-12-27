@@ -327,7 +327,7 @@ define(function () {
         var fullExtent = new instance.Extent(-180.0, -90.0, 180.0, 90.0, spatialReference);
         var tiledVectorLayer = new instance.WebTileLayer({
             id: "facilitySuperMapLayer",
-            urlTemplate: "http://11.0.204.11:20070/iserver/services/map-gqpsfacility/wmts-china/gx/default/ChinaPublicServices_gx/{level}/{row}/{col}.png",
+            urlTemplate: "http://11.0.204.11:8090/iserver/services/map-gqpsfacility/wmts-china/gx/default/ChinaPublicServices_gx/{level}/{row}/{col}.png",
             copyright: "",
             spatialReference: spatialReference,
             fullExtent: fullExtent,
@@ -374,7 +374,7 @@ define(function () {
         var spatialReference = new instance.SpatialReference({wkid: 4326});
         var fullExtent = new instance.Extent(-180.0, -90.0, 180.0, 90.0, spatialReference);
         var tiledVectorLayer = new instance.WebTileLayer({
-            id: "facilitySuperMapLayer",
+            id: "rainSewage",
             urlTemplate: "http://11.0.204.11:8090/iserver/services/map-rainSewage/wmts-china/color%40rainSewage/default/ChinaPublicServices_color@rainSewage/{level}/{row}/{col}.png",
             copyright: "",
             spatialReference: spatialReference,
@@ -384,7 +384,6 @@ define(function () {
         view.map.add(tiledVectorLayer);
         return tiledVectorLayer;
     };
-
     instance.initSuperHighWaterLineMapLayer = function (view) {
             var tileInfo = new instance.TileInfo({
                 "dpi": 96,
@@ -424,7 +423,7 @@ define(function () {
             var spatialReference = new instance.SpatialReference({wkid: 4326});
             var fullExtent = new instance.Extent(-180.0, -90.0, 180.0, 90.0, spatialReference);
             var tiledVectorLayer = new instance.WebTileLayer({
-                id: "facilitySuperMapLayer",
+                id: "highWaterLine",
                 urlTemplate: "http://11.0.204.11:8090/iserver/services/map-hightWaterLine/wmts-china/PS_CANAL_ZY_Project%40hightWaterLine/default/ChinaPublicServices_PS_CANAL_ZY_Project@hightWaterLine/{level}/{row}/{col}.png",
                 copyright: "",
                 spatialReference: spatialReference,
@@ -435,7 +434,6 @@ define(function () {
             return tiledVectorLayer;
         };
     instance.initVideoLayer = function (view) {
-
         view.map.add(tiledVectorLayer);
     };
     instance.removeGraphics = function (layer, graphics) {
