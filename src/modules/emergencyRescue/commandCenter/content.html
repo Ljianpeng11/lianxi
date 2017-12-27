@@ -72,7 +72,11 @@
                   <span>{{item.title}}</span>
                </div>
                <div class="seeperItem-bottom">
-                  <span class="cesc-red-box">积水：{{item.num}}</span>
+                  <span class="cesc-red-box"
+                        :class="{'dangerBg':item.status === 2,
+                                 'warningBg':item.status === 1,
+                                 'normalBg':item.status === 0}">
+                     {{item.name}}：{{item.num}}</span>
                </div>
             </div>
          </div>
@@ -80,12 +84,18 @@
    </transition>
    <el-dialog :visible.sync="showSmallDialog"
               :show-close="false"
+              top="50%"
               custom-class="normalDialog appleyBox-sm">
       <div slot="title" class="dialog-title">
-          <p>提闸排水请示</p>
+          <p class="dailog-text">提闸排水请示</p>
           <div class="shareBox">
-             <i class="shareIcon icon iconfont"></i>
+             <i class="shareIcon icon iconfont icon-yunpan"></i>
+             <i class="shareIcon icon iconfont icon-youxiang"></i>
+             <i class="shareIcon icon iconfont icon-QQ"></i>
+             <i class="shareIcon icon iconfont icon-weixin"></i>
           </div>
+         <span class="title-btn title-close icon iconfont "></span>
+         <span class="title-btn title-scale"></span>
       </div>
    </el-dialog>
 </div>
