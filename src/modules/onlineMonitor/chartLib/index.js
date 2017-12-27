@@ -314,7 +314,9 @@ var comm = Vue.extend({
                             ],
                             yAxis: [
                                 {
-                                    type : 'value'
+                                    type : 'value',
+                                    minInterval : 1,
+                                    name:data.yAxisName
                                 }
                             ],
                             series: (function(){
@@ -338,32 +340,6 @@ var comm = Vue.extend({
                                 })
                                 return arr;
                             })()
-                        };
-                        break;
-                    case 'normalBarChart':
-                        this.options = {
-                            color:data.color,
-                            title: {
-                                text: data.title,
-                                x:'5px',
-                                y:'0px'
-                            },
-                            tooltip: {},
-                            grid: {
-                                left: '8%',
-                                right: '8%',
-                                bottom: '15%',
-                                top: '25%'
-                            },
-                            xAxis: {
-                                data: data.xData
-                            },
-                            yAxis: {},
-                            series: [{
-                                name: '销量',
-                                type: 'bar',
-                                data: data.yData
-                            }]
                         };
                         break;
                     default:break;

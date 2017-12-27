@@ -39,6 +39,7 @@ var pipeLineChartOptions = {
         '#f00',
     ],
     xData:road,
+    yAxisName:'单位：米',
     seriesData:[
         {
             name:'',

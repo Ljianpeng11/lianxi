@@ -118,3 +118,15 @@
     position: absolute;
     left:125px;
 }
+.rainChartInfo{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.rainChartInfo .colFix{
+    width:80%;
+    padding:0.5em 0;
+    margin:0.5em 0;
+}

@@ -1,12 +1,12 @@
-<div id="maskPanel" style="width:100%;height: 100%;position:absolute;top:0;left:0;z-index:1000;" v-show="isShowAll" @click="closeDetail">
-   <div style="width: 100%;height: 100%;" v-show="isShowDetail&&!isShowEndDetail">
+<div id="maskPanel" style="width:100%;height: 100%;position:absolute;top:0;left:0;z-index:1000;" v-show="isShowAll">
+   <div style="width: 100%;height: 100%;" v-show="isShowDetail&&!isShowEndDetail" @click="closeDetail">
       <img src="../../img/emegency/apply-sm.png" alt="" style="width:100%;height: 100%;">
       <span class="closeDetailBtn" @click.stop="toggleDetail"></span>
    </div>
-   <div style="width: 100%;height: 100%;" v-show="!isShowDetail&&!isShowEndDetail">
+   <div style="width: 100%;height: 100%;" v-show="!isShowDetail&&!isShowEndDetail" @click="closeDetail">
       <img src="../../img/emegency/apply-lg.png" alt="" style="width:100%;height: 100%;">
    </div>
-   <div style="width: 100%;height: 100%;" v-show="isShowEndDetail">
+   <div style="width: 100%;height: 100%;" v-show="isShowEndDetail" @click="closeEndDetail">
       <img src="../../img/emegency/endApply.png" alt="" style="width:100%;height: 100%;">
    </div>
 </div>

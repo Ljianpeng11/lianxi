@@ -186,6 +186,9 @@ var comm = Vue.extend({
         eventHelper.on('showCommandPanel',function(){
             this.showAlarmBox = true;
         }.bind(this));
+        eventHelper.on('closeCommand',function(){
+            this.toggleCommadBox();
+        }.bind(this));
     },
     components: {
 
