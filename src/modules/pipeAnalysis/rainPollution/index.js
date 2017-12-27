@@ -18,90 +18,90 @@ var comm = Vue.extend({
             currentPage:1,
             connectArr:[
                 {
-                    id:'GQYW11',
+                    id:'GQYW1',
                     location:'高苑路',
                     questionType:'排放不明'
                 },{
-                    id:'GQYW11',
+                    id:'GQYW2',
                     location:'高苑路',
                     questionType:'流向混乱'
                 },{
-                    id:'GQYW11',
+                    id:'GQYW3',
                     location:'高苑路',
                     questionType:'雨污混接'
                 },{
-                    id:'GQYW11',
+                    id:'GQYW4',
                     location:'高苑路',
                     questionType:'污水直排'
                 },{
-                    id:'GQYW11',
+                    id:'GQYW5',
                     location:'高苑路',
                     questionType:'雨污混接'
                 },{
-                    id:'GQYW11',
+                    id:'GQYW6',
                     location:'高苑路',
                     questionType:'数据不全'
                 },{
-                    id:'GQYW01',
+                    id:'GQYW7',
                     location:'邦德路',
                     questionType:'排放不明'
                 },{
-                    id:'GQYW02',
+                    id:'GQYW8',
                     location:'邦德路',
                     questionType:'流向混乱'
                 },{
-                    id:'GQYW03',
+                    id:'GQYW9',
                     location:'邦德路',
-                    questionType:'雨污混接'
-                },{
-                    id:'GQYW04',
-                    location:'邦德路',
-                    questionType:'雨污混接'
-                },{
-                    id:'GQYW05',
-                    location:'邦德路',
-                    questionType:'雨污混接'
-                },{
-                    id:'GQYW06',
-                    location:'北一路',
-                    questionType:'排放不明'
-                },{
-                    id:'GQYW07',
-                    location:'北一路',
-                    questionType:'雨污混接'
-                },{
-                    id:'GQYW08',
-                    location:'北一路',
-                    questionType:'污水直排'
-                },{
-                    id:'GQYW09',
-                    location:'东环路',
                     questionType:'雨污混接'
                 },{
                     id:'GQYW10',
-                    location:'东环路',
-                    questionType:'流向混乱'
-                },{
-                    id:'GQYW11',
-                    location:'东环路',
-                    questionType:'污水直排'
-                },{
-                    id:'GQYW11',
-                    location:'东环路',
-                    questionType:'污水直排'
-                },{
-                    id:'GQYW11',
-                    location:'东环路',
+                    location:'邦德路',
                     questionType:'雨污混接'
                 },{
                     id:'GQYW11',
+                    location:'邦德路',
+                    questionType:'雨污混接'
+                },{
+                    id:'GQYW12',
+                    location:'北一路',
+                    questionType:'排放不明'
+                },{
+                    id:'GQYW13',
+                    location:'北一路',
+                    questionType:'雨污混接'
+                },{
+                    id:'GQYW14',
+                    location:'北一路',
+                    questionType:'污水直排'
+                },{
+                    id:'GQYW15',
+                    location:'东环路',
+                    questionType:'雨污混接'
+                },{
+                    id:'GQYW16',
+                    location:'东环路',
+                    questionType:'流向混乱'
+                },{
+                    id:'GQYW17',
+                    location:'东环路',
+                    questionType:'污水直排'
+                },{
+                    id:'GQYW18',
+                    location:'东环路',
+                    questionType:'污水直排'
+                },{
+                    id:'GQYW19',
+                    location:'东环路',
+                    questionType:'雨污混接'
+                },{
+                    id:'GQYW20',
                     location:'东环路',
                     questionType:'数据不全'
                 }
             ],
             pieChartOptions: {
-                type: 'pieChart',
-                color: ['#4f9b0c', '#f5c761', '#fe5240'],
+                type: 'pieInnerChart',
+                color: ['#4f9b0c', '#FFA500', '#fe5240'],
                 text: '雨污混接改造分类统计',
                 data: [
                     {value: 55.17, name: '雨污分流'},
@@ -110,35 +110,35 @@ var comm = Vue.extend({
                 ]
             },
             barChartOptions: {
-                    type: 'categoryBarChart',
-                    title: '问题分类统计',
-                    color: [
-                        '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
-                    ],
-                    xData: ['高苑路', '北一路', '东环路', '邦德路'],
-                    seriesData: [
-                        {
-                            name: '排放不明',
-                            data: [1, 1, 0, 2]
-                        },
-                        {
-                            name: '流向混乱',
-                            data: [1, 0, 1, 1]
-                        },
-                        {
-                            name: '雨污混接',
-                            data: [1, 0, 0, 1]
-                        },
-                        {
-                            name: '污水直排',
-                            data: [0, 1, 2, 1]
-                        },
-                        {
-                            name: '数据不全',
-                            data: [2, 1, 3, 1]
-                        },
-                    ]
-                }
+                type: 'categoryBarChart',
+                title: '问题分类统计',
+                color: [
+                    '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
+                ],
+                xData: ['高苑路', '北一路', '东环路', '邦德路'],
+                seriesData: [
+                    {
+                        name: '排放不明',
+                        data: [1, 1, 0, 2]
+                    },
+                    {
+                        name: '流向混乱',
+                        data: [1, 0, 1, 1]
+                    },
+                    {
+                        name: '雨污混接',
+                        data: [1, 0, 0, 1]
+                    },
+                    {
+                        name: '污水直排',
+                        data: [0, 1, 2, 1]
+                    },
+                    {
+                        name: '数据不全',
+                        data: [2, 1, 3, 1]
+                    },
+                ]
+            }
         }
     },
     created:function(){
