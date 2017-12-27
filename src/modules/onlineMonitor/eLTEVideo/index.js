@@ -769,7 +769,32 @@ var comm = Vue.extend({
                     this.traceObj = mapHelper.createPolyline(ep820VideoLayer,points,styleObj);
                 }
             }
-        }
+        },
+        SDSSendMessageFile:function(content){
+            debugger;
+            var strSDSParam = "<Content>";
+            strSDSParam +=    "<SDSType>";
+            strSDSParam +=    "0004";
+            strSDSParam +=    "</SDSType>";
+            strSDSParam +=    "<MsgBody>";
+            strSDSParam +=    content
+            strSDSParam +=    "</MsgBody>";
+            strSDSParam +=    "<Receiver>";
+            strSDSParam +=    "8003"
+            strSDSParam +=    "</Receiver>";
+            strSDSParam +=    "<AttachFileList>";
+            strSDSParam +=    "<AttachFile>";
+            strSDSParam +=    "d:\\\\1.jpg";
+            strSDSParam +=    "</AttachFile>";
+            strSDSParam +=    "</AttachFileList>";
+            strSDSParam +=    "</Content>";
+
+            var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+
+            var xmlDoc = $.parseXML(resultXml);
+            var result = $(xmlDoc).find("ResultCode").text();
+            console.log("ELTE_OCX_SDSSendMessage:" +result);
+        },
     },
     mounted: function () {
         this.load();
@@ -793,6 +818,9 @@ var comm = Vue.extend({
         }.bind(this));
         eventHelper.on("eLTEtrace",function(resId){
             this.eLTEtrace(resId);
+        }.bind(this));
+        eventHelper.on("SDSSendMessageFile",function(content){
+            this.SDSSendMessageFile(content);
         }.bind(this));
     },
     components: {
