@@ -314,7 +314,9 @@ var comm = Vue.extend({
                             ],
                             yAxis: [
                                 {
-                                    type : 'value'
+                                    type : 'value',
+                                    minInterval : 1,
+                                    name:data.yAxisName
                                 }
                             ],
                             series: (function(){
@@ -364,6 +366,82 @@ var comm = Vue.extend({
                                 type: 'bar',
                                 data: data.yData
                             }]
+                        };
+                        break;
+                    case 'pieInnerChart':
+                        this.options = {
+                            color:data.color,
+                            title : {
+                                text:(function(){
+                                    if(!!data.text){
+                                        return data.text;
+                                    }
+                                })(),
+                                subtext:(function(){
+                                    if(!!data.subtext){
+                                        return data.subtext;
+                                    }
+                                })(),
+                                left:'10px',
+                                top:(function(){
+                                    if(!data.text){
+                                        return '-20px'
+                                    }
+                                })(),
+                                subtextStyle:{
+                                    color:'#333'
+                                }
+                            },
+                            tooltip : {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                left: '2%',
+                                y:'20%',
+                                data: (function(){
+                                    var arr=[];
+                                    data.data.forEach(function(val){
+                                        arr.push(val.name);
+                                    });
+                                    return arr;
+                                })()
+                            },
+                            series : [
+                                {
+                                    name: '访问来源',
+                                    type: 'pie',
+                                    radius : '45%',
+                                    center: ['60%', '70%'],
+                                    data:data.data,
+                                    itemStyle : {
+                                        normal : {
+                                            label : {
+                                                position : 'inner',
+                                                formatter : function (params) {
+                                                    return (params.percent - 0).toFixed(0) + '%'
+                                                }
+                                            },
+                                            labelLine : {
+                                                show : false
+                                            }
+                                        },
+                                        emphasis : {
+                                            label : {
+                                                show : true,
+                                                formatter : "{b}\n{d}%",
+                                                shadowBlur: 10,
+                                                shadowOffsetX: 0,
+                                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                            }
+                                        }
+
+                                    },
+                                }
+                            ]
+
+
                         };
                         break;
                     default:break;

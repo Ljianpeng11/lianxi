@@ -8,7 +8,7 @@ var chartLib = require('modules/onlineMonitor/chartLib');
 
 //组装数据
 var road = ['青城路','北一路','东环路','东外环','高青县长江路','高苑路','黄河路','老北环路','六号路','芦湖路','蒲台路','七号路','齐东路'];
-var randomNum =  Math.random().toFixed(2)*1250;
+var randomNum =  Math.random()*1250;
 var pipeLineArr = [],yData = [];
 road.forEach(function(val,index){
    var item = {
@@ -39,6 +39,7 @@ var pipeLineChartOptions = {
         '#f00',
     ],
     xData:road,
+    yAxisName:'单位：米',
     seriesData:[
         {
             name:'',

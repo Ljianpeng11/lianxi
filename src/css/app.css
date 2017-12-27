@@ -163,9 +163,9 @@ li {
 
 .closeDetailBtn{
     display: inline-block;
-    width: 3em;
-    height: 3em;
+    width: 40em;
+    height: 48em;
     position: absolute;
-    top: 143px;
-    right: 710px;
+    top: 144px;
+    right: 688px;
 }

@@ -21,6 +21,10 @@ var comm = Vue.extend({
         },
         toggleDetail:function(){
             this.isShowDetail = false;
+        },
+        closeEndDetail:function(){
+            this.closeDetail();
+            eventHelper.emit('closeCommand');
         }
     },
     mounted: function () {

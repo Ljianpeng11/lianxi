@@ -43,8 +43,8 @@
 .seeperList{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     align-items: center;
+    background: #f1f1f1;
 }
 .seeperItem{
     flex-basis:10%;
@@ -117,4 +117,15 @@
 .projectMenu .menuToggle .toggleOff{
     position: absolute;
     left:125px;
+}
+.rainChartInfo{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.rainChartInfo .colFix{
+    width:80%;
+    padding:0.5em 0;
 }

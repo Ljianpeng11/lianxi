@@ -2,6 +2,12 @@ var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
 var moment = require('moment');
 
+//加载数据
+var seeperRoad = ['大悦路齐商银行门口','齐林小区北门','青城路东','高苑路东','蒲台-黄河','芦湖路','芦湖-青城','齐东路东','营丘大道','丽居路','丽居-黄河',
+'丽居-青城','高苑-丽居','高苑路西','中心路','扳倒井路','田镇街','文化路东','黄河路','青城路'];
+var seeperArr = [];
+var baseData = Math.random()*2;
+
 // 定义组件
 var comm = Vue.extend({
     template: template,
@@ -29,69 +35,7 @@ var comm = Vue.extend({
                 todayDegree:4
             },
             weatherData:[],
-            seeperArr:[
-                {
-                    title:'大悦路东',
-                    num:'0.5m'
-                },{
-                    title:'黄河路东',
-                    num:'0.5m'
-                },{
-                    title:'青城路东',
-                    num:'0.5m'
-                },{
-                    title:'高苑路东',
-                    num:'0.5m'
-                },{
-                    title:'蒲台-黄河',
-                    num:'0.5m'
-                },{
-                    title:'芦湖路',
-                    num:'0.5m'
-                },{
-                    title:'芦湖-青城',
-                    num:'0.5m'
-                },{
-                    title:'齐东路东',
-                    num:'0.5m'
-                },{
-                    title:'营丘大道',
-                    num:'0.5m'
-                },{
-                    title:'丽居路',
-                    num:'0.5m'
-                },{
-                    title:'丽居-黄河',
-                    num:'0.5m'
-                },{
-                    title:'丽居-黄河',
-                    num:'0.5m'
-                },{
-                    title:'丽居-青城',
-                    num:'0.5m'
-                },{
-                    title:'高苑-丽居',
-                    num:'0.5m'
-                },{
-                    title:'高苑路西',
-                    num:'0.5m'
-                },{
-                    title:'中心路',
-                    num:'0.5m'
-                },{
-                    title:'扳倒井路',
-                    num:'0.5m'
-                },{
-                    title:'田镇街',
-                    num:'0.5m'
-                },{
-                    title:'文化路东',
-                    num:'0.5m'
-                },{
-                    title:'田镇街',
-                    num:'0.5m'
-                }
-            ],
+            seeperArr:seeperArr,
             emergencyData:[
             {
                 name:'王福娥',
@@ -186,6 +130,29 @@ var comm = Vue.extend({
         eventHelper.on('showCommandPanel',function(){
             this.showAlarmBox = true;
         }.bind(this));
+        eventHelper.on('closeCommand',function(){
+            this.toggleCommadBox();
+        }.bind(this));
+        setInterval(function(){
+            if(seeperArr.length > 0){
+                seeperArr = [];
+            }
+            seeperRoad.forEach(function(val){
+                var item = {
+                    title:val,
+                    num:(function(){
+                        var num = ((Math.random() - 0.4) * 1 + baseData).toFixed(2);
+                        if(num < 0){
+                            return (0-num)+'m';
+                        }else{
+                            return num+'m';
+                        }
+                    })()
+                };
+                seeperArr.push(item);
+            });
+            self.seeperArr = seeperArr;
+        },10000);
     },
     components: {
 

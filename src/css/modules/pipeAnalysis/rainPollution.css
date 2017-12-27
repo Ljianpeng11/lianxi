@@ -11,7 +11,7 @@
 .rainChartBox{
     max-width: calc(100% - 18em - 440px);
     width: calc(81.5% - 440px);
-    height: 12em;
+    height: 18em;
     position: absolute;
     right: 430px;
     bottom: 5px;
