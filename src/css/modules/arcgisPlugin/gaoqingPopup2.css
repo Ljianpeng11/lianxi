@@ -1,46 +1,47 @@
-.gaoqingPopup .esri-popup__main-container {
-    width: 200px;
+.gaoqingPopup2 .esri-popup__main-container {
+    width: 300px;
     border-radius: 10px;
     padding-bottom: 0px;
-    transform: translate(0,-85%);
     box-shadow:0 0 10px 0 rgba(0,0,0,0.3);
+    border: 1px solid #007EDF;
 }
-.gaoqingPopup .esri-popup__position-container {
+.gaoqingPopup2 .esri-popup__position-container {
     border-radius: 10px;
 }
-.gaoqingPopup .esri-popup__footer {
+.gaoqingPopup2 .esri-popup__footer {
     border-radius: 10px;
     display: none;
 }
-.gaoqingPopup .esri-popup__header {
+.gaoqingPopup2 .esri-popup__header {
     background-color: #F1F1F1;
     height: 40px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    background-color: #007EDF;
 }
-.gaoqingPopup .esri-popup__header .esri-popup__header-title{
+.gaoqingPopup2 .esri-popup__header .esri-popup__header-title{
     text-overflow: ellipsis;
     overflow: hidden;
     max-width: 13em;
     word-break: keep-all;
 }
-.gaoqingPopup .esri-popup__content{
+.gaoqingPopup2 .esri-popup__content{
     margin:0 10px;
 }
-.gaoqingPopup .esri-popup__content .listContent{
+.gaoqingPopup2 .esri-popup__content .listContent{
     padding-bottom: 0px;
 }
-.gaoqingPopup .esri-popup__content .detailBtnDiv {
+.gaoqingPopup2 .esri-popup__content .detailBtnDiv {
     text-align: center;
     padding-bottom: 10px;
 }
-.gaoqingPopup .esri-popup__content .detailBtn {
+.gaoqingPopup2 .esri-popup__content .detailBtn {
     border-radius: 20px;
     height: 30px;
     font-size: 10px;
     padding:0 2em;
 }
-.gaoqingPopup .esri-popup__content .gaoqingListContent{
+.gaoqingPopup2 .esri-popup__content .gaoqingListContent{
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -48,13 +49,13 @@
     position: relative;
     overflow: hidden;
 }
-.gaoqingPopup .esri-popup__position-container .listLabel-left{
+.gaoqingPopup2 .esri-popup__position-container .listLabel-left{
     flex-basis: calc(40% - 0.5em);
 }
-.gaoqingPopup .esri-popup__position-container .listLabel-right{
+.gaoqingPopup2 .esri-popup__position-container .listLabel-right{
     flex-basis: calc(60% - 0.5em);
 }
-.gaoqingPopup .windowBox-sm{
+.gaoqingPopup2 .windowBox-sm{
     background: #2f91e4;
     color: #fff;
     padding: 0.5em 1em;
@@ -64,7 +65,7 @@
     top:-5px;
     box-shadow:0 0 10px 0 rgba(0,0,0,0.3);
 }
-.gaoqingPopup .windowBox-sm:before,.gaoqingPopup .esri-popup__main-container:before{
+.gaoqingPopup2 .windowBox-sm:before,.gaoqingPopup2 .esri-popup__main-container:before{
     content: '';
     display: block;
     width:1em;
@@ -76,7 +77,7 @@
     transform:translate(-50%,-50%) rotate(45deg);
     z-index:0;
 }
-.gaoqingPopup .windowBox-sm > span{
+.gaoqingPopup2 .windowBox-sm > span{
     position: relative;
 }
 .dangerStatus-bg{
