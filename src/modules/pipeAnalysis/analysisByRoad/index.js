@@ -78,7 +78,7 @@ var comm = Vue.extend({
             this.openAnalysisRoadBox = true;
         },
         openMonitorPipe:function(){
-            mapHelper.setCenter(this.baseView,117.8490172157689,37.16923962553807,15);
+            mapHelper.setCenter(this.baseView,117.8490172157689,37.16923962553807,16);
         },
         togglePipeLineBox:function(){
             var highWaterLineLayer = this.baseView.map.findLayerById("highWaterLine");

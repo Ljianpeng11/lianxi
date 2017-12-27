@@ -268,6 +268,7 @@ var comm = Vue.extend({
         }.bind(this));
         //开启雨污分析功能
         eventHelper.on('openRainPollution',function(){
+            mapHelper.setCenter(this.baseView,117.8391141229457,37.16665107307562,13);
             if(this.$refs.devicePanel.isOpenPanel){
                 this.$refs.devicePanel.isOpenPanel = false;
             }
@@ -290,6 +291,7 @@ var comm = Vue.extend({
         }.bind(this));
         //开启高水位管线分析功能
         eventHelper.on('openAnalysisRoad',function(){
+            mapHelper.setCenter(this.baseView,117.8391141229457,37.16665107307562,13);
             if(this.$refs.devicePanel.isOpenPanel){
                 this.$refs.devicePanel.isOpenPanel = false;
             }
