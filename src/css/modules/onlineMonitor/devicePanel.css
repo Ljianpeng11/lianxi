@@ -87,7 +87,7 @@
     justify-content: center;
 }
 .tabContent .listLabel-left,.tabContent .listLabel-right{
-    flex-basis:50%;
+    flex:1;
 }
 .cesc-badge .arrow-up{
     display: inline-block;

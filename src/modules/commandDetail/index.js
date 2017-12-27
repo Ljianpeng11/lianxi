@@ -25,6 +25,9 @@ var comm = Vue.extend({
         closeEndDetail:function(){
             this.closeDetail();
             eventHelper.emit('closeCommand');
+        },
+        saveImgFun:function(){
+
         }
     },
     mounted: function () {

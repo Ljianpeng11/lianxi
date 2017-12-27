@@ -164,8 +164,12 @@ li {
 .closeDetailBtn{
     display: inline-block;
     width: 40em;
-    height: 48em;
+    height: 3em;
     position: absolute;
     top: 144px;
     right: 688px;
+}
+.saveImg{
+    top: calc(147px + 3em);
+    height: 6em;
 }

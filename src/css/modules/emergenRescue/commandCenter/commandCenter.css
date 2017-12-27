@@ -129,3 +129,52 @@
     width:80%;
     padding:0.5em 0;
 }
+.normalBg{
+    background: #2f91e4;
+}
+.warningBg{
+    background: #f2b817;
+}
+.dangerBg{
+    background: #fe5240;
+}
+/*自定义饿了么弹框*/
+.normalDialog{
+    transform: translate(-50%,-50%);
+}
+.normalDialog .el-dialog__header{
+    padding:0;
+}
+.normalDialog .el-dialog__body{
+    margin:0;
+    border:none;
+}
+.appleyBox-sm{
+    width: 25%;
+}
+.appleyBox-sm .dialog-title{
+    background: #2f91e4;
+    padding:20px 0;
+}
+.appleyBox-sm .dailog-text{
+    text-align: center;
+    font-size: 2em;
+    color: #fff;
+    margin-bottom: 20px;
+}
+.appleyBox-sm .shareBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+.shareBox .shareIcon{
+    border-radius: 2em;
+    background: #0062AD;
+    font-size: 24px;
+    height: 2em;
+    width: 2em;
+    text-align: center;
+    line-height: 2em;
+    margin: 0 0.2em;
+}

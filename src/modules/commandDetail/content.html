@@ -2,6 +2,7 @@
    <div style="width: 100%;height: 100%;" v-show="isShowDetail&&!isShowEndDetail" @click="closeDetail">
       <img src="../../img/emegency/apply-sm.png" alt="" style="width:100%;height: 100%;">
       <span class="closeDetailBtn" @click.stop="toggleDetail"></span>
+      <span class="closeDetailBtn saveImg" @click.stop="saveImgFun"></span>
    </div>
    <div style="width: 100%;height: 100%;" v-show="!isShowDetail&&!isShowEndDetail" @click="closeDetail">
       <img src="../../img/emegency/apply-lg.png" alt="" style="width:100%;height: 100%;">
