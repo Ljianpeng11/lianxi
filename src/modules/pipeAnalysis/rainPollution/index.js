@@ -155,7 +155,7 @@ var comm = Vue.extend({
         },
         openMonitorPipe:function(){
             var point = mapHelper.createPoint(117.8683719917964,37.167425970805766);
-            this.baseView.popup.class="gaoqingPopup";
+            this.baseView.popup.class="gaoqingPopup2";
             this.baseView.popup.location = point;
             this.baseView.popup.title= "问题类型:【排放不明】";
             this.baseView.popup.content = "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>";
