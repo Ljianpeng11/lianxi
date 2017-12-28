@@ -148,9 +148,14 @@
 .normalDialog .el-dialog__body{
     margin:0;
     border:none;
+    padding: 0;
 }
 .appleyBox-sm{
     width: 25%;
+}
+.appleyBox-sm .el-dialog__body{
+    padding: 20px 30px;
+    backgrond:#F5F5F5;
 }
 .appleyBox-sm .dialog-title{
     background: #2f91e4;
@@ -160,7 +165,7 @@
 }
 .appleyBox-sm .dailog-text{
     text-align: center;
-    font-size: 2em;
+    font-size: 2.2em;
     margin-bottom: 30px;
 }
 .appleyBox-sm .shareBox{
@@ -200,4 +205,67 @@
 .title-scale{
     top:calc(1em + 5px);
     right: -1em;
+}
+.report-title{
+    text-align: center;
+    font-size:1.4em;
+    padding:0.5em 0;
+    color: #F40002;
+}
+.report-content{
+    background: #FFEBEC;
+    box-shadow:0 0 5px 0 rgba(0,0,0,0.2);
+    font-size: 1.2em;
+}
+.report-content .shortNote{
+    padding: 1em 2em;
+}
+.pondingBox{
+    padding: 10px;
+}
+.pondingBox > li{
+    height:113px;
+    display: flex;
+    margin-bottom:10px;
+}
+.pondingBox > li:last-child{
+    margin-bottom:0;
+}
+.pondingBox-left{
+    width:180px;
+    height:100px;
+}
+.pondingBox-right{
+    width:calc(100% - 200px);
+    height:100px;
+    background: #fff;
+    padding: 10px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height:inherit;
+}
+.ponding-title{
+    font-size:16px;
+}
+/*.pondingContent{*/
+    /*padding: 0;*/
+    /*justify-content: center;*/
+    /*flex: 1;*/
+/*}*/
+/*.pondingContent .listLabel-left,.pondingContent .listLabel-right{*/
+    /*flex:1;*/
+/*}*/
+.pondingContent{
+    display: table;
+    width:100%;
+    padding:20px 0;
+}
+.pondingContent .listLabel{
+    display:table-cell;
+}
+.appleyBox-lg{
+    width:1293px;
+    background:transparent;
 }

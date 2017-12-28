@@ -92,7 +92,7 @@
              <span class="shareIcon">
                 <i class="icon iconfont icon-yunpan"></i>
              </span>
-             <span class="shareIcon">
+             <span class="shareIcon" @click="saveImgFun">
                 <i class="icon iconfont icon-youxiang"></i>
              </span>
              <span class="shareIcon">
@@ -102,14 +102,57 @@
                 <i class="icon iconfont icon-weixin"></i>
              </span>
           </div>
-         <span class="title-btn title-close icon iconfont icon-shanchu"></span>
-         <span class="title-btn title-scale icon iconfont icon-zuidahua"></span>
+         <span class="title-btn title-close icon iconfont icon-shanchu" @click="closeReportModel"></span>
+         <span class="title-btn title-scale icon iconfont icon-zuidahua" @click="toggleDetail"></span>
       </div>
       <div class="dialog-content">
          <div class="dialogBodyItem">
             <p class="report-title">应急简报</p>
-
+            <div class="report-content">
+               <p class="shortNote">8月02日18时我县出现强降水过程，田镇(城区)降水量达52.2毫米，城区多地发生严重路面积水，特此发出提闸排水请示。</p>
+            </div>
          </div>
+         <div class="dialogBodyItem">
+            <p class="report-title">积水点</p>
+            <div class="report-content">
+               <ul class="pondingBox clearfix">
+                  <li v-for="item in pondingArr">
+                     <div class="pondingBox-left">
+                        <img :src="item.src" alt="item.name" width="100%">
+                     </div>
+                     <div class="pondingBox-right">
+                        <p class="ponding-title">{{item.name}}</p>
+                        <div class="pondingContent">
+                           <div class="listLabel text-right">
+                              <p>积水已达：</p>
+                              <p>距离倒灌小区：</p>
+                           </div>
+                           <div class="listLabel text-left">
+                              <p>{{item.value1}}</p>
+                              <p>{{item.value2}}</p>
+                           </div>
+                        </div>
+                        <!--<div class="listContent" v-for="tip in item.children">-->
+                        <!--<div class="listLabel-left">-->
+                        <!--<p>{{tip.key}}</p>-->
+                        <!--</div>-->
+                        <!--<div class="listLabel-right">-->
+                        <!--<p>{{tip.value}}</p>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                     </div>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </el-dialog>
+   <el-dialog :visible.sync="isShowDetail"
+              :show-close="false"
+              top="50%"
+              custom-class="normalDialog appleyBox-lg">
+      <div class="dialog-content">
+         <img src="../../../img/emegency/apply-lg.png" alt="">
       </div>
    </el-dialog>
 </div>

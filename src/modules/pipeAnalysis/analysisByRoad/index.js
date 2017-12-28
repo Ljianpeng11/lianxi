@@ -77,6 +77,7 @@ var comm = Vue.extend({
     methods: {
         init:function(){
             this.openAnalysisRoadBox = true;
+            this.showData = true;
         },
         openMonitorPipe:function(){
             mapHelper.setCenter(this.baseView,117.8490172157689,37.16923962553807,16);

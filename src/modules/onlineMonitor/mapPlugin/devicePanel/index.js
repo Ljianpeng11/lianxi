@@ -132,7 +132,7 @@ var comm = Vue.extend({
                 this.showTip = true;
                 setTimeout(function(){
                     this.showTip = false;
-                }.bind(this),2000);
+                }.bind(this),5000);
             }else{
                 this.currentPic = pic;
                 this.showBigImg = true;

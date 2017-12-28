@@ -37,6 +37,7 @@ var comm = Vue.extend({
             },
             weatherData:[],
             showSmallDialog:false,
+            isShowDetail:false,
             seeperArr:seeperArr,
             emergencyData:[
             {
@@ -85,23 +86,19 @@ var comm = Vue.extend({
                 team:'城市管理局',
                 step:'撤防'
             }],
-            gridData: [{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }],
+            pondingArr:[
+                {
+                    name:'大悦路齐商银行门口',
+                    src:'img/emegency/report01.jpg',
+                    value1:'15公分',
+                    value2:'5公分'
+                },{
+                    name:'齐林小区北门',
+                    src:'img/emegency/report02.jpg',
+                    value1:'17公分',
+                    value2:'3公分'
+                }
+            ]
         }
     },
     methods: {
@@ -123,12 +120,26 @@ var comm = Vue.extend({
                 var smsContent = "高青县气象局2017年12月26日10点37分发布暴雨红色报警信号";
                 eventHelper.emit("SDSSendMessageAll",smsContent);
             }else{
-                eventHelper.emit('openCommandDetail');
-                // this.showSmallDialog = true;
+                // eventHelper.emit('openCommandDetail');
+                this.showSmallDialog = true;
             }
         },
         endStep:function(){
             eventHelper.emit('openComandEndDetail');
+        },
+        toggleDetail:function(){
+            this.showSmallDialog = false;
+            this.isShowDetail = true;
+        },
+        saveImgFun:function(){
+            eventHelper.emit("SDSSendMessageFile","提闸申请");
+            this.$message({
+                message: '短信已发送成功!!',
+                type: 'success'
+            });
+        },
+        closeReportModel:function(){
+            this.showSmallDialog = false;
         }
     },
     mounted: function () {

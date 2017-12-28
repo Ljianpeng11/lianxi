@@ -116,6 +116,9 @@ var comm = Vue.extend({
                 item.facilityDevice.devices.forEach(function(val){
                     for(var i = 0;i<val.items.length;i++){
                         var monitorData = val.items[i];
+                        if(!monitorData.dValue){
+                            monitorData.dValue = '-';
+                        }
                         if(Number(monitorData.dValue) != parseInt(Number(monitorData.dValue))){
                             monitorData.dValue = parseFloat(monitorData.dValue).toFixed(2);
                         }
@@ -161,6 +164,8 @@ var comm = Vue.extend({
                         }
                         if(!!monitorData.sysUpdateTime){
                             item.sysUpdateTime = monitorData.sysUpdateTime;
+                        }else{
+                            item.sysUpdateTime = '-';
                         }
                     }
                });
