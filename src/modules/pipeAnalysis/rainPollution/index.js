@@ -160,7 +160,7 @@ var comm = Vue.extend({
             this.baseView.popup.title= "问题类型:【排放不明】";
             this.baseView.popup.content = "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>";
             this.baseView.popup.visible = true;
-            mapHelper.setCenter(this.baseView,117.87014423725806,37.16757634314801,16);
+            mapHelper.setCenter(this.baseView,117.86854653112252,37.16741657253446,18);
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);

@@ -1109,15 +1109,6 @@ define(function () {
         });
         return line;
     };
-    instance.project = function (geometry,wkid) {
-        var spatialReference = new instance.SpatialReference({
-            wkid:wkid
-        });
-        return new instance.webMercatorUtils.project(geometry,spatialReference);
-    };
-    instance.webMercatorToGeographic = function (geometry) {
-        return new instance.webMercatorUtils.webMercatorToGeographic(geometry);
-    };
     var screenLengthToMapLength = function (map, screenPixel) {
         var screenWidth = map.width;
 
@@ -1181,8 +1172,7 @@ define(function () {
                 "esri/PopupTemplate",
                 "esri/tasks/IdentifyTask",
                 "esri/tasks/support/IdentifyParameters",
-                "dojo/_base/array",
-                "esri/geometry/support/webMercatorUtils"
+                "dojo/_base/array"
             ], function (arcgisMap,
                          arcgisPoint,
                          arcgisExtent,
@@ -1213,8 +1203,7 @@ define(function () {
                          PopupTemplate,
                          IdentifyTask,
                          IdentifyParameters,
-                         arrayUtils,
-                         webMercatorUtils) {
+                         arrayUtils,) {
                 instance.Map = arcgisMap;
                 instance.Point = arcgisPoint;
                 instance.Extent = arcgisExtent;
@@ -1246,7 +1235,6 @@ define(function () {
                 instance.IdentifyTask = IdentifyTask;
                 instance.IdentifyParameters = IdentifyParameters;
                 instance.arrayUtils = arrayUtils;
-                instance.webMercatorUtils = webMercatorUtils;
                 instance.drawConfig = {
                     drawingSymbol: new arcgisSimpleFillSymbol({
                         color: [102, 0, 255, 0.15],

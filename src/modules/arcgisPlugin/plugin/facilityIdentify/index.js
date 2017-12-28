@@ -20,29 +20,33 @@ var comm = Vue.extend({
         closeIdentityQuery: function () {
             this.$message('关闭管网点查询功能');
             this.isQueryFacility = false;
-            this.leftMap.setMapCursor("default");
+            //this.leftMap.setMapCursor("default");
             this.showIdentifyResult = false;
             mapHelper.removeLocationIdentifyLayer();
         },
         handleCurrentChange: function (index) {
             //this.displayIdentifyInfo = this.identifyData[index - 1].prpos;
             //this.displayIdentifyInfoTitle = this.identifyData[index - 1].titleName;
-            //mapHelper.locationIdentifyLayerByGeometry(this.identifyData[index - 1].geometry);
-        },
-        onCompleteFunction: function (results) {
-            this.identifyData = [];
-            if (results && results.length > 0) {
-                for (var i in results) {
-                    var feature = results[i];
-                    var titleName = "";
-                    feature.titleName = titleName;
-                    var prpos = this.allPrpos(feature);
-                    feature.prpos = prpos;
-                    this.identifyData.push(feature);
+            var style ={
+                color: [226, 119, 40],
+                width: 4
+            };
+
+            var facilityIdentifyLayer = this.baseView.map.findLayerById("facilityIdentify");
+            facilityIdentifyLayer.removeAll();
+            var location
+            var geometry = this.identifyData[index].geometry;
+            if(geometry.type=="LINE"){
+                var paths= [];
+                for(var i in geometry.points){
+                    var path = [geometry.points[i].x,geometry.points[i].y];
+                    paths.push(path);
                 }
-                this.showIdentifyResult=true;
-                this.handleCurrentChange(1);
+                location = mapHelper.createPolyline(facilityIdentifyLayer,[paths],style);
+            } else {
+                location = mapHelper.createPolyline(facilityIdentifyLayer,geometry.points,style);
             }
+            mapHelper.setCenter(this.baseView,location.geometry.extent.center.x,location.geometry.extent.center.y,15);
         },
         allPrpos : function(feature){
             var props = [];
@@ -74,7 +78,7 @@ var comm = Vue.extend({
             };
             $.ajax({
                 type:"POST",
-                url:"http://223.99.169.187:20070/iserver/services/data-gqpsfacility/rest/data/featureResults.json?returnContent=true",
+                url:"http://11.0.204.11:8090/iserver/services/data-gqpsfacility/rest/data/featureResults.json?returnContent=true",
                 data:JSON.stringify(queryParam),
                 dataType:"json",
                 success:this.handleSearchSuccess,
@@ -86,28 +90,18 @@ var comm = Vue.extend({
         },
         handleSearchSuccess:function(data){
             if(data.features.length>0){
-                debugger;
-                this.onCompleteFunction(data.features);
-                var style = {
-                    color: [227, 139, 79, 0.8],
-                    outline: {
-                        color: [255, 255, 255],
-                        width: 1
+                var facilityIdentifyLayer = mapHelper.createGraphicsLayer(this.baseView.map,"facilityIdentify");
+                this.identifyData = [];
+                if (data.features && data.features.length > 0) {
+                    for (var i in data.features) {
+                        var feature = data.features[i];
+                        feature.titleName = "";
+                        feature.prpos =  this.allPrpos(feature);
+                        this.identifyData.push(feature);
                     }
-                };
-                var facilityIdentifyLayer = mapHelper.createVideoGraphicsLayer(this.baseView.map,"facilityIdentify");
-                var location
-                if(data.features[0].geometry.type=="LINE"){
-                    var paths= [];
-                    for(var i in data.features[0].geometry.points){
-                        var path = [data.features[0].geometry.points[i].x,data.features[0].geometry.points[i].y];
-                        paths.push(path);
-                    }
-                    location = mapHelper.createPolyline(facilityIdentifyLayer,paths,style);
-                } else {
-                    location = mapHelper.createPolyline(facilityIdentifyLayer,data.features[0].geometry.points,style);
+                    this.showIdentifyResult=true;
+                    this.handleCurrentChange(1);
                 }
-                mapHelper.setCenter(this.baseView,location.geometry.extent.center.x,location.geometry.extent.center.y,13);
             } else {
                 this.$message.info('点查询无数据！');
             }
