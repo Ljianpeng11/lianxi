@@ -5,7 +5,8 @@
                         'warningStatus-bg':infoBox.state === 1,
                         'dangerStatus-bg':infoBox.state === 2
                  }">
-            <span>水位：{{infoBox.waterLevel}}</span>
+            <span v-if="!!infoBox.waterLevel">水位：{{infoBox.waterLevel}}</span>
+            <span v-if="!infoBox.waterLevel">井盖状态：{{infoBox.dValue}}</span>
         </div>
         <div class="esri-popup__main-container" v-show="infoBox.showBigBox">
             <!-- Popup Header -->
