@@ -37,6 +37,7 @@ define(['config'], function (config) {
         getIotDeviceOnlineState:basicUrl + '/iotDevice/iotDeviceOnlineState',
         getRainFacility:basicUrl + '/iotDevice/getRainFacility',
         getCurRequestInfo:basicUrl + '/elteVideo/getRequestInfo',
+        uploadGpsInfo:basicUrl + '/elteVideo/uploadGpsInfo',
         collectFacilities:basicUrl + '/userFacilityCollection/updateUserFacilityCollection',
         getCollectionFacilityList:basicUrl + '/facility/getCollectionFacilityList'
     }

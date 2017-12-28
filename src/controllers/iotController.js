@@ -38,6 +38,11 @@ define([ 'services/iotService'], function ( iotService) {
             iotService.getCollectionFacilityList(function(data){
                 cb(data);
             })
+        },
+        uploadGpsInfo:function(param,cb){
+            iotService.uploadGpsInfo(param,function(data){
+                cb(data);
+            });
         }
     }
 });

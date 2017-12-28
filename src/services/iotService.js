@@ -67,6 +67,18 @@ define(['./serviceHelper'], function (serviceHelper) {
                     return;
                 }
             })
+        },
+        uploadGpsInfo:function(param,cb){
+            var ajaxParam = {
+                id: 'uploadGpsInfo',
+                parameter: param
+            }
+            $.get(serviceHelper.getPath(ajaxParam),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+            })
         }
     }
 });

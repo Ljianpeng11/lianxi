@@ -165,6 +165,15 @@ var comm = Vue.extend({
                                         item.state = monitorData.state;
                                         item.waterLevel = monitorData.dValue;
                                         break;
+                                    case '是否溢出':
+                                        monitorData.dValue = (monitorData.dValue===1) ? '水位溢出' : '未溢出';
+                                        item.state = (monitorData.dValue===1) ? 2 : 0;
+                                        break;
+                                    case '井盖状态':
+                                        monitorData.dValue = (monitorData.dValue===1) ? '被开启' : '闭合';
+                                        item.manholeCoverState = (monitorData.dValue===1) ? '被开启' : '闭合';
+                                        item.state = (monitorData.dValue===1) ? 2 : 0;
+                                        break;
                                     default:
                                         break;
                                 }

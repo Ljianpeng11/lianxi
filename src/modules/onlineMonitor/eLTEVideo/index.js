@@ -28,7 +28,9 @@ var comm = Vue.extend({
     methods: {
         load : function (){
             this.ocxObj = $("#eLTE_PlayerOCX")[0];
-            if (this.ocxObj) {
+            if(!this.ocxObj.ELTE_OCX_UnLoad){
+                this.ocxStatus="该浏览器不支持控件加载，请使用IE浏览器并使用管理员模式运行";
+            } else if (this.ocxObj) {
                 var resultXml = this.ocxObj.ELTE_OCX_UnLoad();
                 var xmlDoc = $.parseXML(resultXml);
                 var result = $(xmlDoc).find("ResultCode").text();
@@ -579,6 +581,7 @@ var comm = Vue.extend({
                         debugger;
                     }
                 }
+                this.uploadGpsInfo(userId,time,altitude,latitude,longtitude);
             }
         },
         SetTitleText : function (userId) {
@@ -795,6 +798,18 @@ var comm = Vue.extend({
             var result = $(xmlDoc).find("ResultCode").text();
             console.log("ELTE_OCX_SDSSendMessage:" +result);
         },
+        uploadGpsInfo :function(userId,time,altitude,latitude,longtitude){
+            var data  = {
+                userId : userId,
+                time : time,
+                altitude : altitude,
+                latitude : latitude,
+                longtitude : longtitude
+            }
+            iotController.uploadGpsInfo(data,function(data){
+                debugger;
+            }.bind(this));
+        }
     },
     mounted: function () {
         this.load();
