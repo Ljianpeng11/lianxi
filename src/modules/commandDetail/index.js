@@ -27,7 +27,11 @@ var comm = Vue.extend({
             eventHelper.emit('closeCommand');
         },
         saveImgFun:function(){
-
+            console.log(123);
+            this.$message({
+                message: '短信已发送成功!!',
+                type: 'success'
+            });
         }
     },
     mounted: function () {
