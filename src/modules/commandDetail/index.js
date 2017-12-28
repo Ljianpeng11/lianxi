@@ -27,7 +27,7 @@ var comm = Vue.extend({
             eventHelper.emit('closeCommand');
         },
         saveImgFun:function(){
-            console.log(123);
+            eventHelper.emit("SDSSendMessageFile","提闸申请");
             this.$message({
                 message: '短信已发送成功!!',
                 type: 'success'

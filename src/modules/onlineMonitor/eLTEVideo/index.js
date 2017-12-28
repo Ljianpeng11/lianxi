@@ -54,7 +54,7 @@ var comm = Vue.extend({
         login : function () {
             if (this.ocxObj){
                 iotController.getCurRequestInfo(function(data){
-                    this.loginInfo.localIP = data.remoteIp;
+                    //this.loginInfo.localIP = data.remoteIp;
                     var resultXml = this.ocxObj.ELTE_OCX_Login(this.loginInfo.userName, this.loginInfo.password, this.loginInfo.serverIP, this.loginInfo.localIP, this.loginInfo.sipPort);
                     var xmlDoc = $.parseXML(resultXml);
                     var result = $(xmlDoc).find("ResultCode").text();
@@ -380,29 +380,28 @@ var comm = Vue.extend({
                 var status = $(xmlDoc).find("P2pcallStatus").text();
                 var caller = $(xmlDoc).find("Caller").text();
                 var callee = $(xmlDoc).find("Callee").text();
-
                 if (status == 2002) {
                     //指示调度台收到点呼请求
-                    alert("Call request:" + caller);
+                    //alert("Call request:" + caller);
                     this.ocxObj.ELTE_OCX_P2PRecv(caller);
                 } else if (status == 2003) {
                     //指示调度台（做主叫时）对端已接听
-                    alert("P2P accepted");
+                    //alert("P2P accepted");
                 } else if (status == 2009 || status == 2010) {
                     // 指示对端已挂断
-                    alert("P2P hangup");
+                    //alert("P2P hangup");
                 } else if (status == 2011) {
                     //指示点呼请求已取消
-                    alert("P2P canceled");
+                    //alert("P2P canceled");
                 } else if (status == 2013) {
                     //指示对端忙
-                    alert("P2P busy");
+                    //alert("P2P busy");
                 } else if (status == 2017) {
                     //指示对端无应答
-                    alert("P2P no answer");
+                    //alert("P2P no answer");
                 } else if (status == 2020) {
                     //指示音频流组织失败
-                    alert("P2P failed");
+                    //alert("P2P failed");
                 }
             }
             //$("#eventType").val(msg);
@@ -770,7 +769,32 @@ var comm = Vue.extend({
                     this.traceObj = mapHelper.createPolyline(ep820VideoLayer,points,styleObj);
                 }
             }
-        }
+        },
+        SDSSendMessageFile:function(content){
+            debugger;
+            var strSDSParam = "<Content>";
+            strSDSParam +=    "<SDSType>";
+            strSDSParam +=    "0004";
+            strSDSParam +=    "</SDSType>";
+            strSDSParam +=    "<MsgBody>";
+            strSDSParam +=    content
+            strSDSParam +=    "</MsgBody>";
+            strSDSParam +=    "<Receiver>";
+            strSDSParam +=    "8003"
+            strSDSParam +=    "</Receiver>";
+            strSDSParam +=    "<AttachFileList>";
+            strSDSParam +=    "<AttachFile>";
+            strSDSParam +=    "d:\\\\1.jpg";
+            strSDSParam +=    "</AttachFile>";
+            strSDSParam +=    "</AttachFileList>";
+            strSDSParam +=    "</Content>";
+
+            var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+
+            var xmlDoc = $.parseXML(resultXml);
+            var result = $(xmlDoc).find("ResultCode").text();
+            console.log("ELTE_OCX_SDSSendMessage:" +result);
+        },
     },
     mounted: function () {
         this.load();
@@ -794,6 +818,9 @@ var comm = Vue.extend({
         }.bind(this));
         eventHelper.on("eLTEtrace",function(resId){
             this.eLTEtrace(resId);
+        }.bind(this));
+        eventHelper.on("SDSSendMessageFile",function(content){
+            this.SDSSendMessageFile(content);
         }.bind(this));
     },
     components: {
