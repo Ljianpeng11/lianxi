@@ -171,6 +171,7 @@ var comm = Vue.extend({
                                         break;
                                     case '井盖状态':
                                         monitorData.dValue = (monitorData.dValue===1) ? '被开启' : '闭合';
+                                        item.manholeCoverState = (monitorData.dValue===1) ? '被开启' : '闭合';
                                         item.state = (monitorData.dValue===1) ? 2 : 0;
                                         break;
                                     default:
