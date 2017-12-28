@@ -18,6 +18,9 @@ var comm = Vue.extend({
             isOpenPanel: false,
             isOpenBox: true,
             deviceInfo: {},
+            showBigImg:false,
+            currentPic:'',
+            showTip:false,
             devicePics: [
                 './img/mediaGallery/default.png'
             ],
@@ -114,6 +117,26 @@ var comm = Vue.extend({
         },
         toggleBox:function(){
             this.isOpenBox = !this.isOpenBox;
+            if(this.isOpenBox){
+                $(".multiDeviceBox").css("bottom","calc(18em + 10px)");
+            }else{
+                $(".multiDeviceBox").removeAttr("style");
+            }
+        },
+        scaleImg:function(ev,pic){
+            if(pic.indexOf('default') != -1){
+                var top = ev.offsetY;
+                var left = ev.offsetX;
+                $('.cesc-toolTip').css("top",top);
+                $('.cesc-toolTip').css("left",left);
+                this.showTip = true;
+                setTimeout(function(){
+                    this.showTip = false;
+                }.bind(this),2000);
+            }else{
+                this.currentPic = pic;
+                this.showBigImg = true;
+            }
         }
     },
     mounted: function () {

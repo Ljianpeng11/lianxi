@@ -155,18 +155,18 @@
 .appleyBox-sm .dialog-title{
     background: #2f91e4;
     padding:20px 0;
+    position: relative;
+    color: #fff;
 }
 .appleyBox-sm .dailog-text{
     text-align: center;
     font-size: 2em;
-    color: #fff;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 .appleyBox-sm .shareBox{
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fff;
 }
 .shareBox .shareIcon{
     border-radius: 2em;
@@ -176,5 +176,28 @@
     width: 2em;
     text-align: center;
     line-height: 2em;
-    margin: 0 0.2em;
+    margin: 0 0.3em;
+}
+.shareIcon > i{
+    display: inline-block;
+    transform: scale(1.8);
+    color: #C4EEFF;
+}
+.title-btn{
+    position: absolute;
+    width:2em;
+    height: 2em;
+    line-height:2em;
+    text-align: center;
+    background: #fff;
+    color: #2f91e4;
+    border-radius:2em;
+}
+.title-close{
+    top:-1em;
+    right:-1em;
+}
+.title-scale{
+    top:calc(1em + 5px);
+    right: -1em;
 }

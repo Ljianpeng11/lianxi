@@ -59,7 +59,7 @@
 .multiDeviceBox{
     position: absolute;
     top:155px;
-    bottom:calc(18em + 10px);
+    /*bottom:calc(18em + 10px);*/
     right: 5px;
     width:400px;
 }
@@ -108,4 +108,15 @@
 }
 .highlight-text{
     color:#333;
+}
+.scaleImgBox .dialog-content{
+    padding:0;
+}
+.cesc-toolTip{
+    padding: 0.2em 1em;
+    background: #2f91e4;
+    position: absolute;
+    color: #fff;
+    min-width: 8em;
+    border-radius:5px;
 }
