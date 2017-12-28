@@ -149,6 +149,14 @@ var comm = Vue.extend({
                                 monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(mm)':'-';
                                 item.state = monitorData.state;
                                 break;
+                            case '是否溢出':
+                                monitorData.dValue = (monitorData.dValue===1) ? '水位溢出' : '未溢出';
+                                item.state = (monitorData.dValue===1) ? 2 : 0;
+                                break;
+                            case '井盖状态':
+                                monitorData.dValue = (monitorData.dValue===1) ? '被打开' : '闭合';
+                                item.state = (monitorData.dValue===1) ? 2 : 0;
+                                break;
                             default:break;
                         }
                         if(!!monitorData.sysUpdateTime){
