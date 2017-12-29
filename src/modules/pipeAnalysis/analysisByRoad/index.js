@@ -86,6 +86,8 @@ var comm = Vue.extend({
             var highWaterLineLayer = this.baseView.map.findLayerById("highWaterLine");
             highWaterLineLayer.visible=false;
             this.openAnalysisRoadBox = false;
+            clearInterval(this.$parent.hightWaterLineLayerHandle);
+            this.$parent.hightWaterLineLayerHandle=null;
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);

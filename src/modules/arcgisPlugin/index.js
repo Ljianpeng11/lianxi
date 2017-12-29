@@ -57,6 +57,7 @@ var comm = Vue.extend({
             isSuperRainSewageOpen : false,
             hightWaterLineLayer : "",
             isHightWaterLineOpen : false,
+            hightWaterLineLayerHandle : null
         }
     },
     methods: {
@@ -232,6 +233,14 @@ var comm = Vue.extend({
         initVideoGraphicsLayer:function(view){
             //临时加载
             var ep820VideoLayer = mapHelper.createGraphicsLayer(view.map,"ep820Video");
+        },
+        refreshhightWaterLineLayer : function(){
+            if(this.hightWaterLineLayer){
+                if(this.hightWaterLineLayer.visible)
+                    this.hightWaterLineLayer.visible=false;
+                else
+                    this.hightWaterLineLayer.visible=true;
+            }
         }
     },
     mounted: function () {
@@ -310,6 +319,9 @@ var comm = Vue.extend({
                 //临时加载高水位隐患排查图层
                 this.hightWaterLineLayer = mapHelper.initSuperHighWaterLineMapLayer(this.baseView);
                 this.hightWaterLineLayer.opacity = 0.75;
+            }
+            if(!this.hightWaterLineLayerHandle){
+                this.hightWaterLineLayerHandle = setInterval(this.refreshhightWaterLineLayer,1000);
             }
         }.bind(this));
     },
