@@ -21,7 +21,7 @@ var comm = Vue.extend({
                 if (this.isNumber(items[i].x) && this.isNumber(items[i].y)) {
                     var boxID = '#infoBox-' + items[i].facilityId;
                     var screenPoint = this.baseView.toScreen(items[i]);
-                    var x = screenPoint.x - 102;
+                    var x = screenPoint.x;
                     var y = screenPoint.y - 30 -$(boxID).height();
                     items[i].style.top = y+"px";
                     items[i].style.left = x+"px";

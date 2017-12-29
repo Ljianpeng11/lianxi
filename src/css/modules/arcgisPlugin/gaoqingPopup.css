@@ -2,7 +2,7 @@
     width: 200px;
     border-radius: 10px;
     padding-bottom: 0px;
-    transform: translate(0,-85%);
+    transform: translate(-50%,-85%);
     box-shadow:0 0 10px 0 rgba(0,0,0,0.3);
 }
 .gaoqingPopup .esri-popup__position-container {
@@ -60,9 +60,8 @@
     padding: 0.5em 1em;
     border-radius: 2em;
     position: relative;
-    left: 42px;
-    top:-5px;
     box-shadow:0 0 10px 0 rgba(0,0,0,0.3);
+    transform:translate(-50%,0);
 }
 .gaoqingPopup .windowBox-sm:before,.gaoqingPopup .esri-popup__main-container:before{
     content: '';
