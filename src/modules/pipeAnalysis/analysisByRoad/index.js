@@ -83,20 +83,21 @@ var comm = Vue.extend({
             mapHelper.setCenter(this.baseView,117.8490172157689,37.16923962553807,16);
         },
         togglePipeLineBox:function(){
-            var highWaterLineLayer = this.baseView.map.findLayerById("highWaterLine");
-            highWaterLineLayer.visible=false;
+            this.$parent.hightWaterLineLayer.visible=false;
             this.openAnalysisRoadBox = false;
+            clearInterval(this.$parent.hightWaterLineLayerHandle);
+            this.$parent.hightWaterLineLayerHandle=null;
         },
-        handleSizeChange(val) {
+        handleSizeChange:function(val) {
             console.log(`每页 ${val} 条`);
         },
-        handleCurrentChange(val) {
+        handleCurrentChange:function(val) {
             console.log(`当前页: ${val}`);
         },
-        formatter(row, column) {
+        formatter:function(row, column) {
             return row.id;
         },
-        filterTag(value, row) {
+        filterTag:function(value, row) {
             if(!!row.location){
                 return row.location === value;
             }else{

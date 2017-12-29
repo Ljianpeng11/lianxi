@@ -54,9 +54,8 @@ var comm = Vue.extend({
             weatherImg: "",
             radarImg: "",
             rainSewageLayer : "",
-            isSuperRainSewageOpen : false,
             hightWaterLineLayer : "",
-            isHightWaterLineOpen : false,
+            hightWaterLineLayerHandle : null
         }
     },
     methods: {
@@ -160,6 +159,12 @@ var comm = Vue.extend({
                     self.cacheLayers.baseMaps = apiInstance.processBaseMapConfig(map, baseMaps);
                     //临时加载管网图层
                     mapHelper.initFacilitySuperMap(view);
+                    //加载雨污分析图层
+                    this.rainSewageLayer = mapHelper.initSuperRainSewageMapLayer(view);
+                    this.rainSewageLayer.visible = false;
+                    //加载高水位图层
+                    this.hightWaterLineLayer = mapHelper.initSuperHighWaterLineMapLayer(view);
+                    this.hightWaterLineLayer.visible = false;
                     eventHelper.emit('init-map-type', mapConfigHelper.getBaseMapConfig());
                     eventHelper.on('change-map-type', function (layerID) {
                         for (var key in this.cacheLayers.baseMaps) {
@@ -232,6 +237,14 @@ var comm = Vue.extend({
         initVideoGraphicsLayer:function(view){
             //临时加载
             var ep820VideoLayer = mapHelper.createGraphicsLayer(view.map,"ep820Video");
+        },
+        refreshhightWaterLineLayer : function(){
+            if(this.hightWaterLineLayer){
+                if(this.hightWaterLineLayer.visible)
+                    this.hightWaterLineLayer.visible=false;
+                else
+                    this.hightWaterLineLayer.visible=true;
+            }
         }
     },
     mounted: function () {
@@ -279,15 +292,10 @@ var comm = Vue.extend({
                 this.$refs.analysisRoad.openAnalysisRoadBox = false;
             }
             this.$refs.rainPollution.init();
-            if(this.isSuperRainSewageOpen){
-                this.isSuperRainSewageOpen = false;
-                this.rainSewageLayer.visible = false;
-            }else{
-                this.isSuperRainSewageOpen = true;
-                //临时加载雨污分析图层
-                this.rainSewageLayer = mapHelper.initSuperRainSewageMapLayer(this.baseView);
-                this.rainSewageLayer.opacity = 0.45;
-            }
+
+            //开启雨污分析图层
+            this.rainSewageLayer.visible = true;
+            this.rainSewageLayer.opacity = 0.45;
         }.bind(this));
         //开启高水位管线分析功能
         eventHelper.on('openAnalysisRoad',function(){
@@ -310,6 +318,14 @@ var comm = Vue.extend({
                 //临时加载高水位隐患排查图层
                 this.hightWaterLineLayer = mapHelper.initSuperHighWaterLineMapLayer(this.baseView);
                 this.hightWaterLineLayer.opacity = 0.75;
+            }
+
+
+            //开启高水位隐患排查图层
+            this.hightWaterLineLayer.visible = true;
+            this.hightWaterLineLayer.opacity = 0.75;
+            if(!this.hightWaterLineLayerHandle){
+                this.hightWaterLineLayerHandle = setInterval(this.refreshhightWaterLineLayer,1000);
             }
         }.bind(this));
     },
