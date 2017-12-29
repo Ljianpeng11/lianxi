@@ -236,7 +236,7 @@
     height:100px;
 }
 .pondingBox-right{
-    width:calc(100% - 200px);
+    width:calc(100% - 180px);
     height:100px;
     background: #fff;
     padding: 10px;

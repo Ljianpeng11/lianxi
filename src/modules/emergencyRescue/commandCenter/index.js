@@ -3,8 +3,10 @@ var eventHelper = require('utils/eventHelper');
 var moment = require('moment');
 
 //加载数据
-var seeperRoad = ['大悦路齐商银行门口','齐林小区北门','青城路东','高苑路东','蒲台-黄河','芦湖路','芦湖-青城','齐东路东','营丘大道','利居路','利居-黄河',
-'利居-青城','高苑-利居','高苑路西','中心路','扳倒井路','田镇街','文化路东','黄河路','青城路'];
+var seeperRoad = ['大悦路东','高苑路东','高苑路（学府路）','桃园闸中国结闸','桃园闸对面小区','齐林家园','芦湖-青城','齐东路东','营丘大道','利居路','利居-黄河',
+    '利居-青城','高苑-利居','高苑路西','中心路','扳倒井路','田镇街','文化路东','黄河路','青城路'];
+// var seeperRoad = ['大悦路齐商银行门口','齐林小区北门','青城路东','高苑路东','蒲台-黄河','芦湖路','芦湖-青城','齐东路东','营丘大道','利居路','利居-黄河',
+// '利居-青城','高苑-利居','高苑路西','中心路','扳倒井路','田镇街','文化路东','黄河路','青城路'];
 var seeperArr = [];
 var baseData = Math.random()*1.2;
 var alarmData = Math.random()*15;
@@ -177,7 +179,7 @@ var comm = Vue.extend({
                     unit:''
                 };
                 var numData,num;
-                if(index < 10){
+                if(index < 5){
                     numData = alarmData;
                     item.status = 2;
                     item.unit = 'cm';
@@ -185,7 +187,7 @@ var comm = Vue.extend({
                     num = ((Math.random() - 0.4) * 10 + numData).toFixed(2);
                 }else{
                     numData = baseData;
-                    if(index >= 10 && index < 12){
+                    if(index >= 5 && index < 12){
                         item.status = 1;
                         num = ((Math.random() - 0.4) * 1 + numData + 0.8).toFixed(2);
                     }else{

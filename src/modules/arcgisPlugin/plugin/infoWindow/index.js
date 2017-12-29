@@ -155,10 +155,10 @@ var comm = Vue.extend({
                                         item.waterLevel = monitorData.dValue;
                                         break;
                                     case '积水深度':
-                                        monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) + '(m)' : '-';
+                                        monitorData.dValue = monitorData.dValue ? (monitorData.dValue * 100).toFixed(2) + '(cm)' : '-';
                                         deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
                                         item.state = monitorData.state;
-                                        item.waterLevel = monitorData.dValue;
+                                        item.waterOverLevel = monitorData.dValue;
                                         break;
                                     case '雨量':
                                         monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) + '(mm)':'-';

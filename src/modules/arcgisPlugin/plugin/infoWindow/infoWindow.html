@@ -6,6 +6,7 @@
                         'dangerStatus-bg':infoBox.state === 2
                  }">
             <span v-if="!!infoBox.waterLevel">水位：{{infoBox.waterLevel}}</span>
+            <span v-if="!!infoBox.waterOverLevel">积水深度：{{infoBox.waterOverLevel}}</span>
             <span v-if="!!infoBox.manholeCoverState">井盖状态：{{infoBox.manholeCoverState}}</span>
         </div>
         <div class="esri-popup__main-container" v-show="infoBox.showBigBox">

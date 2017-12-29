@@ -149,8 +149,8 @@ var comm = Vue.extend({
             this.openRainPollution = true;
         },
         togglePollutionBox:function(){
-            var rainSewageLayer = this.baseView.map.findLayerById("rainSewage");
-            rainSewageLayer.visible=false;
+
+            this.$parent.rainSewageLayer.visible = false;
             this.openRainPollution = false;
         },
         openMonitorPipe:function(){
@@ -162,16 +162,16 @@ var comm = Vue.extend({
             this.baseView.popup.visible = true;
             mapHelper.setCenter(this.baseView,117.86854653112252,37.16741657253446,18);
         },
-        handleSizeChange(val) {
+        handleSizeChange:function(val) {
             console.log(`每页 ${val} 条`);
         },
-        handleCurrentChange(val) {
+        handleCurrentChange:function(val) {
             console.log(`当前页: ${val}`);
         },
-        formatter(row, column) {
+        formatter:function(row, column) {
             return row.id;
         },
-        filterTag(value, row) {
+        filterTag:function(value, row) {
             if(!!row.location){
                 return row.location === value;
             }else{
@@ -179,8 +179,7 @@ var comm = Vue.extend({
             }
 
         }
-    }
-    ,
+    },
     mounted: function () {
     },
     components: {
