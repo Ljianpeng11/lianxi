@@ -138,7 +138,7 @@
     overflow: hidden;
 }
 
-.listItemTop:before, .listItemTop:after, .listContent:before, .listContent:after {
+.halfRadius .listItemTop:before,.halfRadius  .listItemTop:after, .halfRadius:before, .halfRadius:after {
     display: block;
     content: '';
     position: absolute;
@@ -148,22 +148,22 @@
     border-radius: 2em;
 }
 
-.listItemTop:before {
+.halfRadius .listItemTop:before {
     left: -0.5em;
     bottom: -0.5em;
 }
 
-.listItemTop:after {
+.halfRadius .listItemTop:after {
     right: -0.5em;
     bottom: -0.5em;
 }
 
-.listContent:before {
+.halfRadius:before {
     left: -0.5em;
     top: -0.5em;
 }
 
-.listContent:after {
+.halfRadius:after {
     right: -0.5em;
     top: -0.5em;
 }
@@ -220,4 +220,30 @@
 
 .icon-icon-life-alarm {
     font-size: 1.5em;
+}
+
+.twinkle{
+    -webkit-animation: twinkling 0.2s infinite ease-in-out
+}
+.animated{
+    -webkit-animation-duration: 0.2s;
+    animation-duration: 0.2s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both
+}
+@-webkit-keyframes twinkling{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@keyframes twinkling{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
 }
