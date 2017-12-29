@@ -79,6 +79,18 @@ define(['./serviceHelper'], function (serviceHelper) {
                     return;
                 }
             })
+        },
+        queryeLTEtrace:function(param,cb){
+            var ajaxParam = {
+                id: 'queryeLTEtrace',
+                parameter: param
+            }
+            $.get(serviceHelper.getPath(ajaxParam),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+            })
         }
     }
 });
