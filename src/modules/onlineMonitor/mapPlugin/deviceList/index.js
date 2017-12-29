@@ -146,7 +146,7 @@ var comm = Vue.extend({
                                 item.state = monitorData.state;
                                 break;
                             case '积水深度':
-                                monitorData.dValue = monitorData.dValue ? monitorData.dValue * 100 + '(cm)':'-';
+                                monitorData.dValue = monitorData.dValue ? (monitorData.dValue * 100).toFixed(2) + '(cm)':'-';
                                 item.state = monitorData.state;
                                 break;
                             case '雨量':
