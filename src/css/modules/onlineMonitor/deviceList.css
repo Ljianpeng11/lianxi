@@ -223,11 +223,11 @@
 }
 
 .twinkle{
-    -webkit-animation: twinkling 0.2s infinite ease-in-out
+    -webkit-animation: twinkling 0.5s infinite ease-in-out
 }
 .animated{
-    -webkit-animation-duration: 0.2s;
-    animation-duration: 0.2s;
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both
 }
