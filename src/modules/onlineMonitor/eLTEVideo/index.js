@@ -15,7 +15,7 @@ var comm = Vue.extend({
                 userName : "8889",
                 password : "8889",
                 serverIP : "69.8.0.131",//60.210.40.198
-                localIP : "192.168.43.31",
+                localIP : "192.168.43.32",
                 sipPort : "5060"//5064
             },
             groupUserArray:[],
@@ -809,7 +809,28 @@ var comm = Vue.extend({
             iotController.uploadGpsInfo(data,function(data){
                 debugger;
             }.bind(this));
-        }
+        },
+        queryeLTEtrace : function (resId){
+            var ep820VideoLayer = this.baseView.map.findLayerById("ep820Video");
+            if(this.traceObj){
+                ep820VideoLayer.remove(this.traceObj);
+                this.traceObj = null;
+            } else {
+                var param = {
+                    startTime : Date.parse(new Date())/1000,
+                    endTime : Date.parse(new Date())/1000 - 86400,
+                    userId : resId
+                }
+                iotController.queryeLTEtrace(param,function(data){
+                    var styleObj = {
+                        color: [226, 119, 40],
+                        width: 4
+                    };
+                    this.traceObj = mapHelper.createPolyline(ep820VideoLayer,points,styleObj);
+
+                }.bind(this));
+            }
+        },
     },
     mounted: function () {
         this.load();

@@ -101,6 +101,7 @@ var comm = Vue.extend({
             var graphics=[];
             for(var i=0,len=facilities.length;i<len;i++){
                 if(this.isNumber(facilities[i].x)&&this.isNumber(facilities[i].y)){
+
                     var newIcon = './img/mapLegend/gaoqing/' + legend.icon + '.png';
                     facilities[i].show = true;
                     var imgObj = {
@@ -201,7 +202,7 @@ var comm = Vue.extend({
                                         return;
                                     }
                                     // mapHelper.setCenter(graView, evt.mapPoint.x, evt.mapPoint.y);
-                              /*      if (layerId === 'graphicLayer') {
+                              /*  if (layerId === 'graphicLayer') {
                                         eventHelper.emit('openDevicePanel',selectItem);
                                         self.$refs.rightPanel.open(attributes.item, attributes.facilityTypeName);
                                         return;
@@ -310,20 +311,6 @@ var comm = Vue.extend({
                 this.$refs.rainPollution.openRainPollution = false;
             }
             this.$refs.analysisRoad.init();
-            if(this.isHightWaterLineOpen){
-                this.isHightWaterLineOpen = false;
-                this.hightWaterLineLayer.visible = false;
-            }else{
-                this.isHightWaterLineOpen = true;
-                //临时加载高水位隐患排查图层
-                this.hightWaterLineLayer = mapHelper.initSuperHighWaterLineMapLayer(this.baseView);
-                this.hightWaterLineLayer.opacity = 0.75;
-            }
-
-
-            //开启高水位隐患排查图层
-            this.hightWaterLineLayer.visible = true;
-            this.hightWaterLineLayer.opacity = 0.75;
             if(!this.hightWaterLineLayerHandle){
                 this.hightWaterLineLayerHandle = setInterval(this.refreshhightWaterLineLayer,1000);
             }

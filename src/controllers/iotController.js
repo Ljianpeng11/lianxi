@@ -43,6 +43,11 @@ define([ 'services/iotService'], function ( iotService) {
             iotService.uploadGpsInfo(param,function(data){
                 cb(data);
             });
+        },
+        queryeLTEtrace:function(param,cb){
+            iotService.queryeLTEtrace(param,function(data){
+                cb(data);
+            });
         }
     }
 });
