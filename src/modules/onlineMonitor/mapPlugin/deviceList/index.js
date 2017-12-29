@@ -112,8 +112,9 @@ var comm = Vue.extend({
             eventHelper.emit('openDevicePanel',selectItem);
         },
         renderList:function(list){
+            var originList = [];
             list.forEach(function(item){
-                item.facilityDevice.devices.forEach(function(val){
+                item.facilityDevice.devices.forEach(function(val,index){
                     for(var i = 0;i<val.items.length;i++){
                         var monitorData = val.items[i];
                         if(!monitorData.dValue){
@@ -175,7 +176,14 @@ var comm = Vue.extend({
                 };
                 this.typeOption2.options.push(optionValue);
             }.bind(this));
-            this.deviceList = list;
+            originList = list;
+            originList.forEach(function(item,index){
+                if(item.state === 2){
+                    originList.splice(index,1);
+                    originList.unshift(item);
+                }
+            });
+            this.deviceList = originList;
             this.queryList = list;
         },
         loadData:function(){
