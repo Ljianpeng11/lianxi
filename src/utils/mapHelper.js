@@ -160,14 +160,5 @@ define(function () {
         executeIdentifyTask: function (parcelsURL,view,event, cb,cb1) {
             return this.apiInstance.executeIdentifyTask(parcelsURL,view,event, cb,cb1);
         },
-        createPolylineGeometry: function (paths) {
-            return this.apiInstance.createPolylineGeometry(paths);
-        },
-        webMercatorToGeographic: function (geometry) {
-            return this.apiInstance.webMercatorToGeographic(geometry);
-        },
-        project: function (geometry,wkid) {
-            return this.apiInstance.project(geometry,wkid);
-        },
     }
 });

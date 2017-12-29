@@ -29,7 +29,7 @@ var comm = Vue.extend({
             };
             $.ajax({
                 type:"POST",
-                url:"http://223.99.169.187:20071/iserver/services/data-dimingdizhi/rest/data/featureResults.json?returnContent=true",
+                url:"http://11.0.204.12:8090/iserver/services/data-dimingdizhi/rest/data/featureResults.json?returnContent=true",
                 data:JSON.stringify(queryParam),
                 dataType:"json",
                 success:this.handleSearchSuccess,
