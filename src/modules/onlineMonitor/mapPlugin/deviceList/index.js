@@ -115,6 +115,8 @@ var comm = Vue.extend({
             var originList = [];
             list.forEach(function(item){
                 item.facilityDevice.devices.forEach(function(val,index){
+                    //井盖要单独配置一下
+                    var wellState = 0;
                     for(var i = 0;i<val.items.length;i++){
                         var monitorData = val.items[i];
                         if(!monitorData.dValue){
@@ -154,12 +156,18 @@ var comm = Vue.extend({
                                 item.state = monitorData.state;
                                 break;
                             case '是否溢出':
+                                item.state = monitorData.state;
+                                if(item.state==2){
+                                    wellState = 2;
+                                }
                                 monitorData.dValue = (monitorData.dValue===1) ? '水位溢出' : '未溢出';
-                                item.state = (monitorData.dValue===1) ? 2 : 0;
                                 break;
                             case '井盖状态':
+                                item.state = monitorData.state;
+                                if(wellState==2){
+                                    item.state = wellState;
+                                }
                                 monitorData.dValue = (monitorData.dValue===1) ? '被开启' : '闭合';
-                                item.state = (monitorData.dValue===1) ? 2 : 0;
                                 break;
                             default:break;
                         }

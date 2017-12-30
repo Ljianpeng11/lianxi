@@ -132,6 +132,9 @@ var comm = Vue.extend({
                     for(var j=0,devicelen=item.facilityDevice.devices.length;j<devicelen;j++){
                         var deviceItem = item.facilityDevice.devices[j];
                         if(deviceItem.items) {
+                            //井盖要单独配置一下
+                            var wellStateText = '';
+                            var wellState = 0;
                             for (var k = 0, jianceItemLen = deviceItem.items.length; k < jianceItemLen; k++,jianceItemLen = deviceItem.items.length) {
                                 var monitorData = deviceItem.items[k];
                                 switch (monitorData.name) {
@@ -166,13 +169,21 @@ var comm = Vue.extend({
                                         item.waterLevel = monitorData.dValue;
                                         break;
                                     case '是否溢出':
-                                        monitorData.dValue = (monitorData.dValue===1) ? '水位溢出' : '未溢出';
-                                        item.state = (monitorData.dValue===1) ? 2 : 0;
+                                        item.state = monitorData.state;
+                                        if(item.state==2){
+                                            wellState = 2;
+                                        }
+                                        wellStateText += (monitorData.dValue===1) ? '水位溢出' : '未溢出';
+                                        monitorData.dValue = wellStateText;
                                         break;
                                     case '井盖状态':
-                                        monitorData.dValue = (monitorData.dValue===1) ? '被开启' : '闭合';
+                                        item.state = monitorData.state;
                                         item.manholeCoverState = (monitorData.dValue===1) ? '被开启' : '闭合';
-                                        item.state = (monitorData.dValue===1) ? 2 : 0;
+                                        item.manholeCoverState += "," + wellStateText ;
+                                        if(wellState==2){
+                                            item.state = wellState;
+                                        }
+                                        monitorData.dValue = (monitorData.dValue===1) ? '被开启' : '闭合';
                                         break;
                                     default:
                                         break;
