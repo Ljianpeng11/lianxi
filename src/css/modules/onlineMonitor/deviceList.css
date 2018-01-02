@@ -6,7 +6,7 @@
 }
 
 .deviceListBox {
-    min-width: 18em;
+    min-width: 19em;
     width:18.5%;
     height: calc(100% - 10px);
     position: absolute;
@@ -131,7 +131,7 @@
 
 .listContent {
     display: flex;
-    align-items: center;
+    /*align-items: center;*/
     flex-wrap: wrap;
     padding: 1em 0;
     position: relative;
@@ -169,7 +169,7 @@
 }
 
 .listLabel-left {
-    flex-basis: calc(30% - 0.5em);
+    flex-basis: calc(34% - 0.5em);
     text-align: right;
     padding-right: 0.5em;
     color: #2f91e4;
