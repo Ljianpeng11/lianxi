@@ -15,10 +15,13 @@
     <link rel="stylesheet" href="./css/login.css">
 
     <script type="text/javascript">
+        window.onload = function() {
+            this.getCookie();
+        }
         function login() {
-            $('#loginPanel').hide();
+            /*$('#loginPanel').hide();
             $('#loadingMask').show();
-            $('#app').show();
+            $('#app').show();*/
             var timmer = setInterval(function () {
                 if (!!window.eventHelper) {
                     window.eventHelper.emit('login-start');
@@ -26,6 +29,19 @@
                 }
             }, 10);
         };
+        function getCookie(){
+            console.log(!!document.cookie);
+            if(!!document.cookie){
+                var allcookies = document.cookie;
+                console.log(allcookies);
+                var end = allcookies.indexOf(";");
+                var user = allcookies.substring(7,end);
+                var pass = allcookies.substring(user.length+16,allcookies.length);
+                document.getElementById("userName").value=user;
+                document.getElementById("password").value=pass;
+                document.getElementById("rember").checked=true;
+            }
+        }
     </script>
     <link rel="stylesheet" href="../3rd/element-ui/lib/theme-default/index.css">
     <link rel="stylesheet" href="../vendors/loaders.css">
@@ -51,11 +67,11 @@
             <p class="title-l">用户登录</p>
             <ul>
                 <li class="srk">
-                    <input class="user" id='userName' type="text" value="eadmin" placeholder="用户名">
-                    <input class="password" id='password' type="password" value="123456" placeholder="密码">
+                    <input class="user" id='userName' type="text"  placeholder="用户名" >
+                    <input class="password" id='password' type="password"  placeholder="密码" >
                 </li>
                 <li class="jj-t">
-                    <input class="mui-switch mui-switch-anim" type="checkbox">
+                    <input class="mui-switch mui-switch-anim" type="checkbox" id="rember" >
                     <span>记住用户名</span>
                 </li>
                 <li class="btn-login"><a onclick="login();">登录</a></li>
@@ -134,7 +150,7 @@
     window.cesc = {
         require: require,
         define: define,
-        dojo: dojo
+        dojo: dojo,
     }
     var agent = navigator.userAgent.toLowerCase();
     var regStr_ie = /msie [\d.]+/gi;

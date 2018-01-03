@@ -23,6 +23,9 @@ var comm = Vue.extend({
     methods: {
         login: function () {
             eventHelper.emit('loading-start');
+            $('#loginPanel').hide();
+            $('#loadingMask').show();
+            $('#app').show();
             loginCtrl.login(this.userName, this.password, function (token) {
                 var user = {
                     userName: this.userName,
@@ -36,11 +39,26 @@ var comm = Vue.extend({
                 console.log('Login Success:', token);
                 this.loginComplete = true;
                 $('#loginPage').hide();
+                if($('#rember')[0].checked){
+                    this.saveCookie(this.userName,this.password,30);
+                };
+                if($('#rember')[0].checked==false){
+                    this.clearCookie();
+                };
             }.bind(this), function (error) {
                 this.$message.error('错误:' + error);
                 this.password = '';
                 eventHelper.emit('loading-end');
             }.bind(this));
+        },
+        saveCookie:function (user,passWorld,days) {
+            var exdate = new Date();
+            exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * days);
+            window.document.cookie = "userNa" + "=" + user + ";path=/;expires=" + exdate.toGMTString();
+            window.document.cookie = "userPw" + "=" + passWorld + ";path=/;expires=" + exdate.toGMTString();
+        },
+        clearCookie:function(){
+            this.saveCookie("","",-1);
         }
     },
     mounted: function () {
@@ -68,7 +86,7 @@ var comm = Vue.extend({
          }.bind(this));
          }*/
         var loginFlag = true;
-        eventHelper.on('login-start', function () {
+        eventHelper.on('login-start', function (rember) {
             this.userName = $('#userName').val();
             this.password = $('#password').val();
             if (loginFlag) {
