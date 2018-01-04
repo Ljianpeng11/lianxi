@@ -202,7 +202,7 @@ var comm = Vue.extend({
         },
         closeEndModel:function(){
             this.showEndDialog = false;
-        }
+        },
         //设置弹出框最大高度
         setDialogHeight:function(){
             this.$nextTick(function(){
