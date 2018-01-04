@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="./css/login.css">
 
     <script type="text/javascript">
+        window.onload = function() {
+            this.getCookie();
+        };
         function login() {
             $('#loginPanel').hide();
             $('#loadingMask').show();
@@ -25,6 +28,22 @@
                     clearInterval(timmer);
                 }
             }, 10);
+        };
+        function getCookie(){
+            if(!!document.cookie){
+                var allcookies = document.cookie;
+                var arrCookie=allcookies.split("; ");
+                for(var i=0;i<arrCookie.length;i++){
+                    var arr = arrCookie[i].split("=");
+                    if(arr[0]=="userNa"){
+                        document.getElementById("userName").value=arr[1]
+                        document.getElementById("rember").checked=true;
+                    };
+                    if(arr[0]=="userPw"){
+                        document.getElementById("password").value=arr[1];
+                    };
+                };
+            }
         };
     </script>
     <link rel="stylesheet" href="../3rd/element-ui/lib/theme-default/index.css">
@@ -51,18 +70,18 @@
             <p class="title-l">用户登录</p>
             <ul>
                 <li class="srk">
-                    <input class="user" id='userName' type="text" value="eadmin" placeholder="用户名">
-                    <input class="password" id='password' type="password" value="123456" placeholder="密码">
+                    <input class="user" id='userName' type="text"  placeholder="用户名">
+                    <input class="password" id='password' type="password"  placeholder="密码">
                 </li>
                 <li class="jj-t">
-                    <input class="mui-switch mui-switch-anim" type="checkbox">
+                    <input class="mui-switch mui-switch-anim" type="checkbox" id="rember">
                     <span>记住用户名</span>
                 </li>
                 <li class="btn-login"><a onclick="login();">登录</a></li>
-                <li>
+               <!-- <li>
                     <a class="forget" href="#">忘记密码？</a>
                     <a class="reg" href="#">注册</a>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>
