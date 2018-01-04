@@ -39,6 +39,7 @@ var comm = Vue.extend({
             },
             weatherData:[],
             showSmallDialog:false,
+            showEndDialog:false,
             isShowDetail:false,
             seeperArr:seeperArr,
             emergencyData:[
@@ -100,13 +101,59 @@ var comm = Vue.extend({
                     value1:'17公分',
                     value2:'3公分'
                 }
+            ],
+            dialogClass:'normalDialog appleyBox-sm',
+            emergencyImgList:[
+                {
+                    src:'img/emegency/report01.jpg',
+                    text:'高苑路东'
+                },{
+                    src:'img/emegency/report02.jpg',
+                    text:'青城路西'
+                },{
+                    src:'img/emegency/report03.jpg',
+                    text:'中心路'
+                },{
+                    src:'img/emegency/report04.jpg',
+                    text:'丽居路'
+                },{
+                    src:'img/emegency/report05.jpg',
+                    text:'芦湖路'
+                },{
+                    src:'img/emegency/report03.jpg',
+                    text:'中心路'
+                }
+            ],
+            reportList:[
+                {
+                    date:'2017年08月02日17时42分',
+                    text:'高青县气象局发布暴雨红色预警信号'
+                },{
+                    date:'2017年08月02日18时44分',
+                    text:'县防汛办提闸排涝'
+                },{
+                    date:'2017年08月02日19时46分',
+                    text:'高青县气象局撤下暴雨红色预警信号'
+                }
             ]
+        }
+    },
+    watch:{
+        isShowDetail:function(val){
+            if(val){
+                this.dialogClass =  'normalDialog appleyBox-lg';
+            }else{
+                this.dialogClass =  'normalDialog appleyBox-sm';
+            }
         }
     },
     methods: {
         init:function(){
             this.showCommandBox = true;
+            this.isShowDetail = false;
+            this.showEndDialog = false;
             this.isStart = false;
+            this.setDialogHeight();
         },
         handleClick(row) {
             console.log(row);
@@ -114,6 +161,7 @@ var comm = Vue.extend({
         toggleCommadBox:function(){
             this.showCommandBox = false;
             this.showAlarmBox = false;
+            this.setDialogHeight();
         },
         startStep:function(){
             if(!this.isStart){
@@ -121,17 +169,26 @@ var comm = Vue.extend({
                 this.showCommandBox = true;
                 var smsContent = "高青县气象局2017年12月26日10点37分发布暴雨红色报警信号";
                 eventHelper.emit("SDSSendMessageAll",smsContent);
+                this.$message({
+                    message: '短信已发送成功!!',
+                    type: 'success'
+                });
             }else{
                 // eventHelper.emit('openCommandDetail');
+                this.isShowDetail = false;
                 this.showSmallDialog = true;
+                this.setDialogHeight();
             }
         },
         endStep:function(){
-            eventHelper.emit('openComandEndDetail');
+            // eventHelper.emit('openComandEndDetail');
+            this.showSmallDialog = false;
+            this.showEndDialog = true;
+            this.setDialogHeight();
         },
         toggleDetail:function(){
-            this.showSmallDialog = false;
-            this.isShowDetail = true;
+            this.isShowDetail = !this.isShowDetail;
+            this.setDialogHeight();
         },
         saveImgFun:function(){
             eventHelper.emit("SDSSendMessageFile","提闸申请");
@@ -142,6 +199,17 @@ var comm = Vue.extend({
         },
         closeReportModel:function(){
             this.showSmallDialog = false;
+        },
+        closeEndModel:function(){
+            this.showEndDialog = false;
+        }
+        //设置弹出框最大高度
+        setDialogHeight:function(){
+            this.$nextTick(function(){
+                var screenHeight = $(window).height();
+                var maxHeight = screenHeight*0.9 - 95;
+                $(".normalDialog").find(".el-dialog__body").css("max-height",maxHeight + 'px');
+            }.bind(this));
         }
     },
     mounted: function () {
