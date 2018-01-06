@@ -174,6 +174,11 @@ var comm = Vue.extend({
                             // }
                         } else if (item.itemID.indexOf('stressWaterLine') > 0) {
                             self.deviceInfo.stressWaterLine = item.dValue;
+                        } else if (item.itemID.indexOf('turbidity') > 0 ){
+                            self.deviceInfo.turbidity = item.dValue;
+                        } else if (item.itemID.indexOf('rainfall') > 0 ){
+                            self.deviceInfo.rainfall = item.dValue;
+                            self.deviceInfo.sysUpdateTime = item.sysUpdateTime;
                         }
                         if (item.itemTypeName.indexOf('waterLevel') !== -1) {//todo 动态输入水位值（超声波、压力）
                             self.itemID = item.itemID;
