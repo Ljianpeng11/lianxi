@@ -155,6 +155,9 @@ var comm = Vue.extend({
                                 monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(mm)':'-';
                                 item.state = monitorData.state;
                                 break;
+                            case '浊度':
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(ntu)':'-';
+                                break;
                             case '是否溢出':
                                 item.state = monitorData.state;
                                 if(item.state==2){

@@ -168,6 +168,9 @@ var comm = Vue.extend({
                                         item.state = monitorData.state;
                                         item.waterLevel = monitorData.dValue;
                                         break;
+                                    case '浊度':
+                                        monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) + '(ntu)':'-';
+                                        break;
                                     case '是否溢出':
                                         item.state = monitorData.state;
                                         if(item.state==2){
