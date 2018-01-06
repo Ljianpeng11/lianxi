@@ -2,6 +2,9 @@ var template = require('./infoWindow.html');
 var eventHelper = require('utils/eventHelper');
 var mapHelper = require('utils/mapHelper');
 var facilityController = require('controllers/facilityController');
+
+var currentThread;
+
 // 定义组件
 var comm = Vue.extend({
     template: template,
@@ -230,6 +233,9 @@ var comm = Vue.extend({
                 }.bind(this));
             }
         }.bind(this));
+        currentThread = setInterval(function () {
+            this.loadData();
+        }.bind(this), 10000);
     },
     components: {}
 });

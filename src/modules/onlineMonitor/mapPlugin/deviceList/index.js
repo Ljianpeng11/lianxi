@@ -4,6 +4,8 @@ var mapHelper = require('utils/mapHelper');
 var facilityController = require('controllers/facilityController');
 var iotController = require('controllers/iotController');
 
+var currentThread;
+
 // 定义组件
 var comm = Vue.extend({
     template: template,
@@ -236,7 +238,9 @@ var comm = Vue.extend({
         }
     },
     mounted: function () {
-
+        currentThread = setInterval(function () {
+            this.loadData();
+        }.bind(this), 10000);
     },
     components: {}
 });
