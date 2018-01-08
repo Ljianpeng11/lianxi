@@ -167,7 +167,8 @@ var comm = Vue.extend({
             if(!this.isStart){
                 this.isStart = true;
                 this.showCommandBox = true;
-                var smsContent = "高青县气象局2017年12月26日10点37分发布暴雨红色报警信号";
+                var nowTime = moment().format('YYYY-MM-DD HH:mm:ss');
+                var smsContent = "高青县气象局"+ nowTime +"发布暴雨红色报警信号";
                 eventHelper.emit("SDSSendMessageAll",smsContent);
                 this.$message({
                     message: '短信已发送成功!!',
