@@ -56,7 +56,7 @@ var comm = Vue.extend({
         login : function () {
             if (this.ocxObj){
                 iotController.getCurRequestInfo(function(data){
-                    //this.loginInfo.localIP = data.remoteIp;
+                    this.loginInfo.localIP = data.remoteIp;
                     var resultXml = this.ocxObj.ELTE_OCX_Login(this.loginInfo.userName, this.loginInfo.password, this.loginInfo.serverIP, this.loginInfo.localIP, this.loginInfo.sipPort);
                     var xmlDoc = $.parseXML(resultXml);
                     var result = $(xmlDoc).find("ResultCode").text();
@@ -108,7 +108,8 @@ var comm = Vue.extend({
                     }.bind(this),800)
                 } else if(result == -40006){
                     setTimeout(function(){
-                        this.StopRealPlay(resId);
+                        //先开语音再开视频
+                        this.setVideoPos(resId);
                     }.bind(this),800)
                 }
             }
@@ -155,9 +156,6 @@ var comm = Vue.extend({
                 var xmlDoc = $.parseXML(resultXml);
                 var result = $(xmlDoc).find("ResultCode").text();
                 console.log(" ELTE_OCX_ShowRealPlay:" +result);
-                setTimeout(function(){
-                    this.setVideoPos(resId);
-                }.bind(this),800)
             }
         },
         setVideoPos : function (resId){
@@ -171,6 +169,9 @@ var comm = Vue.extend({
                 var xmlDoc = $.parseXML(resultXml);
                 var result = $(xmlDoc).find("ResultCode").text();
                 console.log(" ELTE_OCX_SetVideoWindowPos:" +result);
+                setTimeout(function(){
+                    this.StopRealPlay(resId);
+                }.bind(this),800)
             }
         },
         setGISSubscribe : function(resId){
@@ -542,7 +543,9 @@ var comm = Vue.extend({
                                 "<p>纬度：{latitude}</p>"
                     };
                     var graphic_new = mapHelper.createPictureMarkSymbol(ep820VideoLayer, longtitude,latitude, imgObj, graphic.attributes, popupTemplate);
-
+                    var graphic2 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.81448586576231, 37.16103482424958, imgObj, graphic.attributes, popupTemplate);
+                    var graphic4 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8408447968, 37.1614142667, imgObj, graphic.attributes, popupTemplate);
+                    var graphic5 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8508447968, 37.1614142667, imgObj, graphic.attributes, popupTemplate);
                     ep820VideoLayer.remove(graphic);
                 } else {
                     var userObj = null;
@@ -577,6 +580,9 @@ var comm = Vue.extend({
                         };
 
                         var graphic = mapHelper.createPictureMarkSymbol(ep820VideoLayer, longtitude, latitude, imgObj, userObj, popupTemplate);
+                        var graphic2 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.81448586576231, 37.16103482424958, imgObj, userObj, popupTemplate);
+                        var graphic4 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8408447968, 37.1614142667, imgObj, userObj, popupTemplate);
+                        var graphic5 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8508447968, 37.1614142667, imgObj, userObj, popupTemplate);
                     } else {
                         debugger;
                     }
