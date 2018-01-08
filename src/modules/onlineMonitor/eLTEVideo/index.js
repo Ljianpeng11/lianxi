@@ -76,7 +76,7 @@ var comm = Vue.extend({
         startRealPlay : function (resId) {
             if (this.ocxObj) {
                 var videoFormat = "D1";
-                var cameraType = "0";
+                var cameraType = "1";
                 var userConfirm = "0";
                 var muteType = "0";
 
@@ -108,8 +108,7 @@ var comm = Vue.extend({
                     }.bind(this),800)
                 } else if(result == -40006){
                     setTimeout(function(){
-                        //先开语音再开视频
-                        this.setVideoPos(resId);
+                        this.StopRealPlay(resId);
                     }.bind(this),800)
                 }
             }
@@ -156,6 +155,9 @@ var comm = Vue.extend({
                 var xmlDoc = $.parseXML(resultXml);
                 var result = $(xmlDoc).find("ResultCode").text();
                 console.log(" ELTE_OCX_ShowRealPlay:" +result);
+                setTimeout(function(){
+                    this.setVideoPos(resId);
+                }.bind(this),800)
             }
         },
         setVideoPos : function (resId){
@@ -169,9 +171,6 @@ var comm = Vue.extend({
                 var xmlDoc = $.parseXML(resultXml);
                 var result = $(xmlDoc).find("ResultCode").text();
                 console.log(" ELTE_OCX_SetVideoWindowPos:" +result);
-                setTimeout(function(){
-                    this.StopRealPlay(resId);
-                }.bind(this),800)
             }
         },
         setGISSubscribe : function(resId){
@@ -532,20 +531,20 @@ var comm = Vue.extend({
                     var popupTemplate = {
                         title: graphic.attributes.userName,
                         content: "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('initeLTEVideo','{userId}');\"><span>打开视频</span></button>" +
-                                "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage','{userId}');\"><span>发短信</span></button>"+
-                                "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('p2p','{userId}');\"><span>语音</span></button>"+
-                                "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('eLTEtrace','{userId}');\"><span>展示轨迹</span></button>"+
-                                "<p>用户编号：{userId}</p>"+
-                                "<p>语音状态：{p2pstatus}</p>"+
-                                "<p>GPS上报时间：{time}</p>"+
-                                "<p>高程：{altitude}</p>"+
-                                "<p>经度：{longtitude}</p>"+
-                                "<p>纬度：{latitude}</p>"
+                        "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage','{userId}');\"><span>发短信</span></button>"+
+                        "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('p2p','{userId}');\"><span>语音</span></button>"+
+                        "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('eLTEtrace','{userId}');\"><span>展示轨迹</span></button>"+
+                        "<p>用户编号：{userId}</p>"+
+                        "<p>语音状态：{p2pstatus}</p>"+
+                        "<p>GPS上报时间：{time}</p>"+
+                        "<p>高程：{altitude}</p>"+
+                        "<p>经度：{longtitude}</p>"+
+                        "<p>纬度：{latitude}</p>"
                     };
                     var graphic_new = mapHelper.createPictureMarkSymbol(ep820VideoLayer, longtitude,latitude, imgObj, graphic.attributes, popupTemplate);
-                    var graphic2 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.81448586576231, 37.16103482424958, imgObj, graphic.attributes, popupTemplate);
-                    var graphic4 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8408447968, 37.1614142667, imgObj, graphic.attributes, popupTemplate);
-                    var graphic5 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8508447968, 37.1614142667, imgObj, graphic.attributes, popupTemplate);
+                    // var graphic2 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.81448586576231, 37.16103482424958, imgObj, graphic.attributes, popupTemplate);
+                    // var graphic4 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8408447968, 37.1614142667, imgObj, graphic.attributes, popupTemplate);
+                    // var graphic5 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8508447968, 37.1614142667, imgObj, graphic.attributes, popupTemplate);
                     ep820VideoLayer.remove(graphic);
                 } else {
                     var userObj = null;
@@ -568,23 +567,23 @@ var comm = Vue.extend({
                         var popupTemplate = {
                             title: userObj.userName,
                             content: "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('initeLTEVideo','{userId}');\"><span>打开视频</span></button>" +
-                                    "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage','{userId}');\"><span>发短信</span></button>"+
-                                    "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('p2p','{userId}');\"><span>语音</span></button>"+
-                                    "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('eLTEtrace','{userId}');\"><span>展示轨迹</span></button>"+
-                                    "<p>用户编号：{userId}</p>"+
-                                    "<p>语音状态：{p2pstatus}</p>"+
-                                    "<p>GPS上报时间：{time}</p>"+
-                                    "<p>高程：{altitude}</p>"+
-                                    "<p>经度：{longtitude}</p>"+
-                                    "<p>纬度：{latitude}</p>"
+                            "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage','{userId}');\"><span>发短信</span></button>"+
+                            "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('p2p','{userId}');\"><span>语音</span></button>"+
+                            "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('eLTEtrace','{userId}');\"><span>展示轨迹</span></button>"+
+                            "<p>用户编号：{userId}</p>"+
+                            "<p>语音状态：{p2pstatus}</p>"+
+                            "<p>GPS上报时间：{time}</p>"+
+                            "<p>高程：{altitude}</p>"+
+                            "<p>经度：{longtitude}</p>"+
+                            "<p>纬度：{latitude}</p>"
                         };
 
                         var graphic = mapHelper.createPictureMarkSymbol(ep820VideoLayer, longtitude, latitude, imgObj, userObj, popupTemplate);
-                        var graphic2 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.81448586576231, 37.16103482424958, imgObj, userObj, popupTemplate);
-                        var graphic4 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8408447968, 37.1614142667, imgObj, userObj, popupTemplate);
-                        var graphic5 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8508447968, 37.1614142667, imgObj, userObj, popupTemplate);
+                        // var graphic2 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.81448586576231, 37.16103482424958, imgObj, userObj, popupTemplate);
+                        // var graphic4 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8408447968, 37.1614142667, imgObj, userObj, popupTemplate);
+                        // var graphic5 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8508447968, 37.1614142667, imgObj, userObj, popupTemplate);
                     } else {
-                        debugger;
+                        //debugger;
                     }
                 }
                 this.uploadGpsInfo(userId,time,altitude,latitude,longtitude);
@@ -619,7 +618,7 @@ var comm = Vue.extend({
             if(graphic!=null){
                 var screenPoint = this.baseView.toScreen(graphic.geometry);
                 return [screenPoint.x,screenPoint.y-240];
-                debugger;
+                //debugger;
             } else {
                 return [0,0];
             }
@@ -780,7 +779,7 @@ var comm = Vue.extend({
             }
         },
         SDSSendMessageFile:function(content){
-            debugger;
+            //debugger;
             var strSDSParam = "<Content>";
             strSDSParam +=    "<SDSType>";
             strSDSParam +=    "0004";
@@ -813,7 +812,7 @@ var comm = Vue.extend({
                 longtitude : longtitude
             }
             iotController.uploadGpsInfo(data,function(data){
-                debugger;
+                //debugger;
             }.bind(this));
         },
         queryeLTEtrace : function (resId){
