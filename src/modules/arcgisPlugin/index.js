@@ -101,8 +101,15 @@ var comm = Vue.extend({
             var graphics=[];
             for(var i=0,len=facilities.length;i<len;i++){
                 if(this.isNumber(facilities[i].x)&&this.isNumber(facilities[i].y)){
-
-                    var newIcon = './img/mapLegend/gaoqing/' + legend.icon + '.png';
+                    var legendIcon;
+                    if(facilities[i].state === 1){
+                        legendIcon = legend.icon.split("-")[0] + '-02';
+                    }else if(facilities[i].state === 2){
+                        legendIcon = legend.icon.split("-")[0] + '-03';
+                    }else{
+                        legendIcon = legend.icon;
+                    }
+                    var newIcon = './img/mapLegend/gaoqing/' + legendIcon + '.png';
                     facilities[i].show = true;
                     var imgObj = {
                         url: newIcon,
