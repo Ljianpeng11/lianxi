@@ -130,8 +130,6 @@
 }
 
 .listContent {
-    display: flex;
-    /*align-items: center;*/
     flex-wrap: wrap;
     padding: 1em 0;
     position: relative;
@@ -169,17 +167,17 @@
 }
 
 .listLabel-left {
-    flex-basis: calc(34% - 0.5em);
     text-align: right;
     padding-right: 0.5em;
     color: #2f91e4;
+    display: table-cell;
 }
 
 .listLabel-right {
-    flex-basis: calc(50% - 0.5em);
     text-align: left;
     padding-left: 0.5em;
     color: #666;
+    display: table-cell;
 }
 
 .devicePanel .unVisibleDiv {
@@ -214,8 +212,10 @@
 }
 
 .leftDotBox {
-    flex-basis: 20%;
     text-align: center;
+    display: table-cell;
+    width: 20%;
+    vertical-align: middle;
 }
 
 .icon-icon-life-alarm {

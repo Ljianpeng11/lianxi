@@ -66,17 +66,7 @@ var comm = Vue.extend({
         }
     },
     created(){
-        /* this.$nextTick(function () {
-         eventHelper.on('openDevicePanel', function (selectItem) {
-         this.isOpenPanel = true;
-         this.deviceInfo = {
-         title: selectItem.name
-         }
-         if (!!this.timer) {
-         clearInterval(this.timer);
-         }
-         }.bind(this));
-         }.bind(this));*/
+
     },
     methods: {
         openDeviceDetail: function () {
@@ -101,6 +91,7 @@ var comm = Vue.extend({
             });
 
         },
+        //查询历史数据并渲染到图表
         searchData:function(){
             if(!!this.timeRangeObj){
                 var timeObj = {};
@@ -142,64 +133,68 @@ var comm = Vue.extend({
     mounted: function () {
         eventHelper.on('openDevicePanel', function (selectItem) {
             this.facilityTypeName = selectItem.facilityTypeName;
-            if (!!selectItem.facilityDevice) {
-                var self = this;
-                var devices = selectItem.facilityDevice.devices;
-                var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
-                var startDate = moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
-                var timeRangeObj = {
-                    startDate:startDate,
-                    endDate:endDate
-                };
-                self.timeRangeObj = [startDate,endDate];
-                devices.forEach(function (device) {
-                    var items = device.items;
-                    items.forEach(function (item) {
-                        if (item.itemID.indexOf('ultrasoundWaterLine') > 0) {
-                            self.deviceInfo = {
-                                sysUpdateTime: item.sysUpdateTime,
-                                alarmHeight: item.alarmHeight,
-                                warningHeight: item.warningHeight,
-                                wellLidHeight: item.wellLidHeight,
-                                waterLevel: item.dValue
+            if(this.facilityTypeName !== 'WQ'){
+                if (!!selectItem.facilityDevice) {
+                    var self = this;
+                    var devices = selectItem.facilityDevice.devices;
+                    var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+                    var startDate = moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+                    var timeRangeObj = {
+                        startDate:startDate,
+                        endDate:endDate
+                    };
+                    self.timeRangeObj = [startDate,endDate];
+                    devices.forEach(function (device) {
+                        var items = device.items;
+                        items.forEach(function (item) {
+                            if (item.itemID.indexOf('ultrasoundWaterLine') > 0) {
+                                self.deviceInfo = {
+                                    sysUpdateTime: item.sysUpdateTime,
+                                    alarmHeight: item.alarmHeight,
+                                    warningHeight: item.warningHeight,
+                                    wellLidHeight: item.wellLidHeight,
+                                    waterLevel: item.dValue
+                                }
+                                if(!!item.alarmHeight){
+                                    self.chartOptions.alarmHeight = item.wellLidHeight;
+                                }
+                                if(!!item.warningHeight){
+                                    self.chartOptions.warningHeight = item.warningHeight;
+                                }
+                                // if(!!item.wellLidHeight){
+                                //     self.chartOptions.wellLidHeight = item.wellLidHeight;
+                                // }
+                            } else if (item.itemID.indexOf('stressWaterLine') > 0) {
+                                self.deviceInfo.stressWaterLine = item.dValue;
                             }
-                            if(!!item.alarmHeight){
-                                self.chartOptions.alarmHeight = item.wellLidHeight;
+                            if (item.itemTypeName.indexOf('waterLevel') !== -1) {//todo 动态输入水位值（超声波、压力）
+                                self.itemID = item.itemID;
+                                self.loadChart(self.itemID,timeRangeObj);
                             }
-                            if(!!item.warningHeight){
-                                self.chartOptions.warningHeight = item.warningHeight;
-                            }
-                            // if(!!item.wellLidHeight){
-                            //     self.chartOptions.wellLidHeight = item.wellLidHeight;
-                            // }
-                        } else if (item.itemID.indexOf('stressWaterLine') > 0) {
-                            self.deviceInfo.stressWaterLine = item.dValue;
-                        }
-                        if (item.itemTypeName.indexOf('waterLevel') !== -1) {//todo 动态输入水位值（超声波、压力）
-                            self.itemID = item.itemID;
-                            self.loadChart(self.itemID,timeRangeObj);
-                        }
-                    })
-                });
-                if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics.length > 0) {
-                    var pics = selectItem.facilityDevice.pics;
-                    self.devicePics.splice(0, self.devicePics.length);
-                    pics.forEach(function (pic) {
-                        self.devicePics.push(serviceHelper.getPicUrl(pic.id));
-                    })
-                } else {
-                    self.devicePics = [
-                        './img/mediaGallery/default.png'
-                    ]
+                        })
+                    });
+                    if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics.length > 0) {
+                        var pics = selectItem.facilityDevice.pics;
+                        self.devicePics.splice(0, self.devicePics.length);
+                        pics.forEach(function (pic) {
+                            self.devicePics.push(serviceHelper.getPicUrl(pic.id));
+                        })
+                    } else {
+                        self.devicePics = [
+                            './img/mediaGallery/default.png'
+                        ]
+                    }
+                    this.deviceInfo.title = selectItem.name;
+                    this.isOpenPanel = true;
+                    if(screen.width < 1400){
+                        this.isOpenBox = false;
+                    }
+                    if (!!this.timer) {
+                        clearInterval(this.timer);
+                    }
                 }
-                this.deviceInfo.title = selectItem.name;
-                this.isOpenPanel = true;
-                if(screen.width < 1400){
-                    this.isOpenBox = false;
-                }
-                if (!!this.timer) {
-                    clearInterval(this.timer);
-                }
+            }else{
+                alert(123);
             }
         }.bind(this));
     },

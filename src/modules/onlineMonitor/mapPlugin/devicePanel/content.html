@@ -5,7 +5,7 @@
             <i class="el-icon-d-arrow-right" :class="[isOpenBox?'rotate-up':'rotate-down']" @click="toggleBox"></i>
         </div>
         <div class="devicePanel-bottom" v-show="isOpenBox">
-            <el-tabs type="border-card" class="multiTabs">
+            <el-tabs type="border-card" class="multiTabs" v-if="facilityTypeName !== 'WQ'">
                 <!--<el-tab-pane label="雨量计">-->
                 <!--<div class="tabInfoBox">-->
                 <!--<div class="tabInfoImg">-->
@@ -74,6 +74,7 @@
                     </div>
                 </el-tab-pane>
             </el-tabs>
+            <div v-else>123324243</div>
         </div>
     </div>
     <transition enter-active-class="fadeInUP" leave-active-class="fadeOutDown">

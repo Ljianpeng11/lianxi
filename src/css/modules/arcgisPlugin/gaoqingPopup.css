@@ -41,18 +41,16 @@
     padding:0 2em;
 }
 .gaoqingPopup .esri-popup__content .gaoqingListContent{
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
     padding-top: 1em;
     position: relative;
     overflow: hidden;
 }
-.gaoqingPopup .esri-popup__position-container .listLabel-left{
-    flex-basis: calc(40% - 0.5em);
+.gaoqingListContent p{
+    line-height: unset;
+    margin: 0.3em 0;
 }
-.gaoqingPopup .esri-popup__position-container .listLabel-right{
-    flex-basis: calc(60% - 0.5em);
+.gaoqingListContent .listLabel-left,.gaoqingListContent .listLabel-right{
+    padding:0;
 }
 .gaoqingPopup .windowBox-sm{
     background: #2f91e4;
