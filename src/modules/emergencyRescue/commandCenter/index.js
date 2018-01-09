@@ -246,22 +246,6 @@ var comm = Vue.extend({
                 //     alert('无法获取天气数据');
                 // }
             });
-        }
-    },
-    mounted: function () {
-        //获取天气数据
-        var weatherDatas;
-        var self = this;
-        //加载淄博温度信息
-        this.gainTemperatureData();
-        eventHelper.on('showCommandPanel',function(){
-            this.showAlarmBox = true;
-            this.isStart = false;
-        }.bind(this));
-        eventHelper.on('closeCommand',function(){
-            this.toggleCommadBox();
-        }.bind(this));
-        setInterval(function(){
         },
         loadRoadData:function(state){
             if(seeperArr.length > 0){
@@ -309,18 +293,8 @@ var comm = Vue.extend({
         //获取天气数据
         var weatherDatas;
         var self = this;
-        $.ajax({
-            url:"http://wthrcdn.etouch.cn/weather_mini?city=济南",
-            dataType:'jsonp',
-            data:'',
-            success:function(result) {
-               weatherDatas = result.data;
-               self.todayInfo.todayDegree = weatherDatas.wendu;
-            },
-            // error:function(){
-            //     alert('无法获取天气数据');
-            // }
-        });
+        //加载淄博温度信息
+        this.gainTemperatureData();
         eventHelper.on('showCommandPanel',function(){
             this.showAlarmBox = true;
             this.isStart = false;
