@@ -48,6 +48,11 @@ define([ 'services/iotService'], function ( iotService) {
             iotService.queryeLTEtrace(param,function(data){
                 cb(data);
             });
+        },
+        gainTemperatureData:function(param,cb){
+            iotService.gainTemperatureData(param,function(data){
+                cb(data);
+            });
         }
     }
 });

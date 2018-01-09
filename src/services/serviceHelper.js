@@ -40,7 +40,8 @@ define(['config'], function (config) {
         uploadGpsInfo:basicUrl + '/elteVideo/uploadGpsInfo',
         queryeLTEtrace:basicUrl + '/elteVideo/queryGpsInfo',
         collectFacilities:basicUrl + '/userFacilityCollection/updateUserFacilityCollection',
-        getCollectionFacilityList:basicUrl + '/facility/getCollectionFacilityList'
+        getCollectionFacilityList:basicUrl + '/facility/getCollectionFacilityList',
+        gainTemperatureData:'http://wthrcdn.etouch.cn/weather_mini'
     }
     return {
         setToken: function (token) {
