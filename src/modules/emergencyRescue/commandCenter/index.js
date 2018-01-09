@@ -121,9 +121,6 @@ var comm = Vue.extend({
                 },{
                     src:'img/emegency/report05.jpg',
                     text:'芦湖路'
-                },{
-                    src:'img/emegency/report03.jpg',
-                    text:'中心路'
                 }
             ],
             reportList:[

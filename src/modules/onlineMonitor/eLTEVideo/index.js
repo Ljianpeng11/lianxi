@@ -58,7 +58,7 @@ var comm = Vue.extend({
         login : function () {
             if (this.ocxObj){
                 iotController.getCurRequestInfo(function(data){
-                    this.loginInfo.localIP = data.remoteIp;
+                    //this.loginInfo.localIP = data.remoteIp;
                     var resultXml = this.ocxObj.ELTE_OCX_Login(this.loginInfo.userName, this.loginInfo.password, this.loginInfo.serverIP, this.loginInfo.localIP, this.loginInfo.sipPort);
                     var xmlDoc = $.parseXML(resultXml);
                     var result = $(xmlDoc).find("ResultCode").text();
@@ -781,6 +781,55 @@ var comm = Vue.extend({
             }
         },
         SDSSendMessageFile:function(content){
+            //debugger;
+            var deviceEP820 = ["8003","8999","8503"];
+            for(var i=0;i<deviceEP820.length;i++){
+                var strSDSParam = "<Content>";
+                strSDSParam +=    "<SDSType>";
+                strSDSParam +=    "0004";
+                strSDSParam +=    "</SDSType>";
+                strSDSParam +=    "<MsgBody>";
+                strSDSParam +=    content
+                strSDSParam +=    "</MsgBody>";
+                strSDSParam +=    "<Receiver>";
+                strSDSParam +=    deviceEP820[i]
+                strSDSParam +=    "</Receiver>";
+                strSDSParam +=    "<AttachFileList>";
+                strSDSParam +=    "<AttachFile>";
+                strSDSParam +=    "d:\\\\1.jpg";
+                strSDSParam +=    "</AttachFile>";
+                strSDSParam +=    "</AttachFileList>";
+                strSDSParam +=    "</Content>";
+
+                var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+            }
+
+            var xmlDoc = $.parseXML(resultXml);
+            var result = $(xmlDoc).find("ResultCode").text();
+            console.log("ELTE_OCX_SDSSendMessage:" +result);
+        },
+        SDSSendMessageFileEventing:function(content){
+            var deviceEP820 = ["8003","8999","8503"];
+            for(var i=0;i<deviceEP820.length;i++){
+                var strSDSParam = "<Content>";
+                strSDSParam +=    "<SDSType>";
+                strSDSParam +=    "0004";
+                strSDSParam +=    "</SDSType>";
+                strSDSParam +=    "<MsgBody>";
+                strSDSParam +=    content
+                strSDSParam +=    "</MsgBody>";
+                strSDSParam +=    "<Receiver>";
+                strSDSParam +=    deviceEP820[i]
+                strSDSParam +=    "</Receiver>";
+                strSDSParam +=    "<AttachFileList>";
+                strSDSParam +=    "<AttachFile>";
+                strSDSParam +=    "d:\\\\4.png";
+                strSDSParam +=    "</AttachFile>";
+                strSDSParam +=    "</AttachFileList>";
+                strSDSParam +=    "</Content>";
+
+                var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+            }
             //debugger;
             var strSDSParam = "<Content>";
             strSDSParam +=    "<SDSType>";
