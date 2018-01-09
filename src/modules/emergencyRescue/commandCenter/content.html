@@ -74,7 +74,8 @@
                </div>
                <div class="seeperItem-bottom">
                   <span class="cesc-red-box"
-                        :class="{'dangerBg':item.status === 2,
+                        :class="{'unhasBg':item.status === 3,
+                                 'dangerBg':item.status === 2,
                                  'warningBg':item.status === 1,
                                  'normalBg':item.status === 0}">
                      {{item.name}}：{{item.num}}</span>
@@ -162,7 +163,8 @@
                         </div>
                         <div class="lgBox-seeperBottom">
                               <span class="lgBox-radiusBox"
-                                      :class="{'dangerBorder':item.status === 2,
+                                      :class="{'unhasBorder':item.status === 3,
+                                             'dangerBorder':item.status === 2,
                                              'warningBorder':item.status === 1,
                                              'normalBorder':item.status === 0}">
                                  {{item.name}}：{{item.num}}</span>

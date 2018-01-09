@@ -131,6 +131,9 @@
     width:80%;
     padding:0.5em 0;
 }
+.unhasBg{
+    background: #cccccc;
+}
 .normalBg{
     background: #2f91e4;
 }
@@ -139,6 +142,10 @@
 }
 .dangerBg{
     background: #fe5240;
+}
+.unhasBorder{
+    color: #cccccc;
+    border:1px solid #cccccc;
 }
 .normalBorder{
     color: #2f91e4;

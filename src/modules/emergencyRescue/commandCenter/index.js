@@ -4,8 +4,8 @@ var iotController = require('controllers/iotController');
 var moment = require('moment');
 
 //加载数据
-var seeperRoad = ['桃园闸中国结闸','高苑路（学府路）','大悦路东','高苑路东','齐林家园','芦湖-青城','齐东路东','营丘大道','利居路','利居-黄河',
-    '利居-青城','高苑-利居','高苑路西','中心路','桃园闸对面小区','扳倒井路','田镇街','文化路东','黄河路','青城路'];
+var seeperRoad = ['高苑路东','大悦路东','青城路东','桃园闸中国结闸','桃园闸露天井','芦湖-青城','高苑路（学府路）','齐东路东','营丘大道','利居路','利居-黄河',
+    '利居-青城','高苑-利居','高苑路西','中心路','桃园闸对面小区','扳倒井路','田镇街','文化路东','黄河路'];
 // var seeperRoad = ['大悦路齐商银行门口','齐林小区北门','青城路东','高苑路东','蒲台-黄河','芦湖路','芦湖-青城','齐东路东','营丘大道','利居路','利居-黄河',
 // '利居-青城','高苑-利居','高苑路西','中心路','扳倒井路','田镇街','文化路东','黄河路','青城路'];
 var seeperArr = [];
@@ -45,52 +45,52 @@ var comm = Vue.extend({
             seeperArr:seeperArr,
             newSeeperArr:seeperArr,
             emergencyData:[
-            {
-                name:'王福娥',
-                department:'综合行政执法局',
-                team:'城市管理局',
-                step:'撤防'
-            },{
-                name:'尹俊峰',
-                department:'综合行政执法局',
-                team:'城市管理局',
-                step:'支援'
-            },{
-                name:'王圣津',
-                department:'综合行政执法局',
-                team:'城市管理局',
-                step:'改派'
-            },{
-                name:'李拥军',
-                department:'综合行政执法局',
-                team:'城市管理局',
-                step:'撤防'
-            },{
-                name:'肖康生',
-                department:'综合行政执法局',
-                team:'城市管理局',
-                step:'撤防'
-            },{
-                name:'李俊杰',
-                department:'综合行政执法局',
-                team:'城市管理局',
-                step:'撤防'
-            },{
-                name:'阎恩会',
-                department:'综合行政执法局',
-                team:'城市管理局',
-                step:'撤防'
-            },{
-                name:'张中原',
-                department:'综合行政执法局',
-                team:'城市管理局',
-                step:'撤防'
-            },{
-                name:'马鹏飞',
-                department:'综合行政执法局',
-                team:'城市管理局',
-                step:'撤防'
-            }],
+                {
+                    name:'王福娥',
+                    department:'综合行政执法局',
+                    team:'城市管理局',
+                    step:'撤防'
+                },{
+                    name:'尹俊峰',
+                    department:'综合行政执法局',
+                    team:'城市管理局',
+                    step:'支援'
+                },{
+                    name:'王圣津',
+                    department:'综合行政执法局',
+                    team:'城市管理局',
+                    step:'改派'
+                },{
+                    name:'李拥军',
+                    department:'综合行政执法局',
+                    team:'城市管理局',
+                    step:'撤防'
+                },{
+                    name:'肖康生',
+                    department:'综合行政执法局',
+                    team:'城市管理局',
+                    step:'撤防'
+                },{
+                    name:'李俊杰',
+                    department:'综合行政执法局',
+                    team:'城市管理局',
+                    step:'撤防'
+                },{
+                    name:'阎恩会',
+                    department:'综合行政执法局',
+                    team:'城市管理局',
+                    step:'撤防'
+                },{
+                    name:'张中原',
+                    department:'综合行政执法局',
+                    team:'城市管理局',
+                    step:'撤防'
+                },{
+                    name:'马鹏飞',
+                    department:'综合行政执法局',
+                    team:'城市管理局',
+                    step:'撤防'
+                }],
             pondingArr:[
                 {
                     name:'大悦路齐商银行门口',
@@ -125,20 +125,20 @@ var comm = Vue.extend({
             ],
             reportList:[
                 {
-                    date:'2017年08月02日17时42分',
+                    date:'2017年08月02日16时42分',
                     text:'高青县气象局发布暴雨红色预警信号'
                 },{
-                    date:'2017年08月02日17时58分',
+                    date:'2017年08月02日16时57分',
                     text:'出动5位抢险人员'
                 },{
-                    date:'2017年08月02日18时44分',
+                    date:'2017年08月02日17时20分',
                     text:'县防汛办提闸排涝'
+                },{
+                    date:'2017年08月02日18时20分',
+                    text:'县防汛办关排涝闸'
                 },{
                     date:'2017年08月02日19时46分',
                     text:'高青县气象局撤下暴雨红色预警信号'
-                },{
-                    date:'2017年08月02日20时56分',
-                    text:'县防汛办关排涝闸'
                 }
             ],
             newReportList:[]
@@ -198,6 +198,11 @@ var comm = Vue.extend({
             this.showSmallDialog = false;
             this.showEndDialog = true;
             this.setDialogHeight();
+            eventHelper.emit("SDSSendMessageFileEventing","事中报告");
+            this.$message({
+                message: '事中报告已发送成功!!',
+                type: 'success'
+            });
         },
         toggleDetail:function(){
             this.isShowDetail = !this.isShowDetail;
@@ -256,24 +261,28 @@ var comm = Vue.extend({
                     unit:''
                 };
                 var numData,num;
-                if(index < 2){
-                    numData = alarmData;
-                    item.status = 2;
-                    item.unit = 'cm';
-                    item.name = '积水';
-                    num = ((Math.random() - 0.4) * 10 + numData).toFixed(2);
-                }else{
-                    numData = baseData;
-                    if(index >= 2 && index < 12){
-                        item.status = 1;
-                        num = ((Math.random() - 0.4) * 1 + numData + 0.8).toFixed(2);
-                    }else{
-                        item.status = 0;
-                        num = ((Math.random() - 0.4) * 1 + numData).toFixed(2);
-                    }
-                    item.unit = 'm';
-                    item.name = '井下水位';
+                if(index===0){
+                    item.status = 1;
+                    num = 0.99;
+                }else if(index===1){
+                    item.status = 1;
+                    num = 1.50;
+                }else if(index===2){
+                    item.status = 0;
+                    num = 2.48;
+                }else if(index===3){
+                    item.status = 0;
+                    num = 1.74;
+                }else if(index===4){
+                    item.status = 0;
+                    num = 2.58;
+                }else if(index >= 5){
+                    item.status = 3;
+                    num = '-';
                 }
+                item.unit = 'm';
+                item.name = '井下水位';
+
                 item.num = (num < 0)?(0 - num):num + item.unit;
                 seeperArr.push(item);
             });

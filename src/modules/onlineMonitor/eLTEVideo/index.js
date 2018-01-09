@@ -977,6 +977,9 @@ var comm = Vue.extend({
         eventHelper.on("SDSSendMessageFile",function(content){
             this.SDSSendMessageFile(content);
         }.bind(this));
+        eventHelper.on("SDSSendMessageFileEventing",function(content){
+            this.SDSSendMessageFileEventing(content);
+        }.bind(this));
     },
     components: {
     }
