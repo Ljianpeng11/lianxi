@@ -1,5 +1,6 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
+var iotController = require('controllers/iotController');
 var moment = require('moment');
 
 //加载数据
@@ -225,6 +226,42 @@ var comm = Vue.extend({
                 var maxHeight = screenHeight*0.9 - 95;
                 $(".normalDialog").find(".el-dialog__body").css("max-height",maxHeight + 'px');
             }.bind(this));
+        },
+        gainTemperatureData:function(){
+            /*var param = {
+                citykey : "101120301"
+            }
+            iotController.gainTemperatureData(param,function(data){
+                debugger;
+            }.bind(this));*/
+            $.ajax({
+                url:"http://wthrcdn.etouch.cn/weather_mini?city=淄博",
+                dataType:'jsonp',
+                data:'',
+                success:function(result) {
+                    var weatherDatas = result.data;
+                    this.todayInfo.todayDegree = weatherDatas.wendu;
+                }.bind(this),
+                // error:function(){
+                //     alert('无法获取天气数据');
+                // }
+            });
+        }
+    },
+    mounted: function () {
+        //获取天气数据
+        var weatherDatas;
+        var self = this;
+        //加载淄博温度信息
+        this.gainTemperatureData();
+        eventHelper.on('showCommandPanel',function(){
+            this.showAlarmBox = true;
+            this.isStart = false;
+        }.bind(this));
+        eventHelper.on('closeCommand',function(){
+            this.toggleCommadBox();
+        }.bind(this));
+        setInterval(function(){
         },
         loadRoadData:function(state){
             if(seeperArr.length > 0){

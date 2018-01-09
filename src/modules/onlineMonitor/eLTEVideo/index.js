@@ -40,6 +40,8 @@ var comm = Vue.extend({
                 this.ocxObj.ELTE_OCX_SetBypassBuildMedia(0);
                 this.ocxObj.ELTE_OCX_SetLogPath("D:\\eLTE_Player_log");
                 this.ocxObj.ELTE_OCX_SetLogLevel(0);
+                //加载插件，首次使用OCX的时候，插件加载类型必须为ulType=1，
+                // 后续如果用户要额外添加OCX窗口，加载类型必须为ulType=2
                 var resultXml = this.ocxObj.ELTE_OCX_Load(1);
                 var xmlDoc = $.parseXML(resultXml);
                 var result = $(xmlDoc).find("ResultCode").text();
@@ -799,6 +801,63 @@ var comm = Vue.extend({
 
             var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
 
+            var strSDSParam1 = "<Content>";
+            strSDSParam1 +=    "<SDSType>";
+            strSDSParam1 +=    "0004";
+            strSDSParam1 +=    "</SDSType>";
+            strSDSParam1 +=    "<MsgBody>";
+            strSDSParam1 +=    content
+            strSDSParam1 +=    "</MsgBody>";
+            strSDSParam1 +=    "<Receiver>";
+            strSDSParam1 +=    "8999"
+            strSDSParam1 +=    "</Receiver>";
+            strSDSParam1 +=    "<AttachFileList>";
+            strSDSParam1 +=    "<AttachFile>";
+            strSDSParam1 +=    "d:\\\\1.jpg";
+            strSDSParam1 +=    "</AttachFile>";
+            strSDSParam1 +=    "</AttachFileList>";
+            strSDSParam1 +=    "</Content>";
+
+            var resultXml1 = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam1);
+
+            var strSDSParam2 = "<Content>";
+            strSDSParam2 +=    "<SDSType>";
+            strSDSParam2 +=    "0004";
+            strSDSParam2 +=    "</SDSType>";
+            strSDSParam2 +=    "<MsgBody>";
+            strSDSParam2 +=    content
+            strSDSParam2 +=    "</MsgBody>";
+            strSDSParam2 +=    "<Receiver>";
+            strSDSParam2 +=    "8503"
+            strSDSParam2 +=    "</Receiver>";
+            strSDSParam2 +=    "<AttachFileList>";
+            strSDSParam2 +=    "<AttachFile>";
+            strSDSParam2 +=    "d:\\\\1.jpg";
+            strSDSParam2 +=    "</AttachFile>";
+            strSDSParam2 +=    "</AttachFileList>";
+            strSDSParam2 +=    "</Content>";
+
+            var resultXml2 = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam2);
+
+            // var strSDSParam3 = "<Content>";
+            // strSDSParam3 +=    "<SDSType>";
+            // strSDSParam3 +=    "0004";
+            // strSDSParam3 +=    "</SDSType>";
+            // strSDSParam3 +=    "<MsgBody>";
+            // strSDSParam3 +=    content
+            // strSDSParam3 +=    "</MsgBody>";
+            // strSDSParam3 +=    "<Receiver>";
+            // strSDSParam3 +=    "8503"
+            // strSDSParam3 +=    "</Receiver>";
+            // strSDSParam3 +=    "<AttachFileList>";
+            // strSDSParam3 +=    "<AttachFile>";
+            // strSDSParam3 +=    "d:\\\\1.jpg";
+            // strSDSParam3 +=    "</AttachFile>";
+            // strSDSParam3 +=    "</AttachFileList>";
+            // strSDSParam3 +=    "</Content>";
+            //
+            // var resultXml1 = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam3);
+
             var xmlDoc = $.parseXML(resultXml);
             var result = $(xmlDoc).find("ResultCode").text();
             console.log("ELTE_OCX_SDSSendMessage:" +result);
@@ -840,8 +899,14 @@ var comm = Vue.extend({
     mounted: function () {
         this.load();
         eventHelper.on("initeLTEVideo",function(param){
-            this.startRealPlay(param);
-            this.ocxObj.ELTE_OCX_P2PDial(param);
+            var resultXml = this.ocxObj.ELTE_OCX_P2PDial(param);
+            // var xmlDoc = $.parseXML(resultXml);
+            // xmlDoc = $(xmlDoc);
+            // var result = xmlDoc.find("ResultCode").text();
+            // console.log("P2P-result:" + result);
+            setTimeout(function(){
+                this.startRealPlay(param);
+            }.bind(this),2000)
         }.bind(this));
         eventHelper.on("handleELTEOCXEvent",function(eventInfo){
             var ulEventType = eventInfo[0];
