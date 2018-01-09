@@ -48,6 +48,7 @@
 }
 .gaoqingListContent p{
     line-height: unset;
+    margin: 0.3em 0;
 }
 .gaoqingPopup .windowBox-sm{
     background: #2f91e4;

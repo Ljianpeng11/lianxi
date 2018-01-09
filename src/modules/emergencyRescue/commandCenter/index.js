@@ -42,6 +42,7 @@ var comm = Vue.extend({
             showEndDialog:false,
             isShowDetail:false,
             seeperArr:seeperArr,
+            newSeeperArr:seeperArr,
             emergencyData:[
             {
                 name:'王福娥',
@@ -141,7 +142,8 @@ var comm = Vue.extend({
                     date:'2017年08月02日20时56分',
                     text:'县防汛办关排涝闸'
                 }
-            ]
+            ],
+            newReportList:[]
         }
     },
     watch:{
@@ -187,8 +189,14 @@ var comm = Vue.extend({
                 this.setDialogHeight();
             }
         },
-        endStep:function(){
+        endStep:function(state){
             // eventHelper.emit('openComandEndDetail');
+            var len = this.reportList.length;
+            if(!state){
+                this.newReportList = this.reportList.slice(0,len - 2);
+            }else{
+                this.newReportList = this.reportList;
+            }
             this.showSmallDialog = false;
             this.showEndDialog = true;
             this.setDialogHeight();
@@ -217,32 +225,8 @@ var comm = Vue.extend({
                 var maxHeight = screenHeight*0.9 - 95;
                 $(".normalDialog").find(".el-dialog__body").css("max-height",maxHeight + 'px');
             }.bind(this));
-        }
-    },
-    mounted: function () {
-        //获取天气数据
-        var weatherDatas;
-        var self = this;
-        $.ajax({
-            url:"http://wthrcdn.etouch.cn/weather_mini?city=济南",
-            dataType:'jsonp',
-            data:'',
-            success:function(result) {
-               weatherDatas = result.data;
-               self.todayInfo.todayDegree = weatherDatas.wendu;
-            },
-            // error:function(){
-            //     alert('无法获取天气数据');
-            // }
-        });
-        eventHelper.on('showCommandPanel',function(){
-            this.showAlarmBox = true;
-            this.isStart = false;
-        }.bind(this));
-        eventHelper.on('closeCommand',function(){
-            this.toggleCommadBox();
-        }.bind(this));
-        setInterval(function(){
+        },
+        loadRoadData:function(state){
             if(seeperArr.length > 0){
                 seeperArr = [];
             }
@@ -275,7 +259,41 @@ var comm = Vue.extend({
                 item.num = (num < 0)?(0 - num):num + item.unit;
                 seeperArr.push(item);
             });
-            self.seeperArr = seeperArr;
+            if(!!state){
+                this.seeperArr = seeperArr;
+            }else{
+                this.seeperArr = seeperArr;
+                this.newSeeperArr = seeperArr;
+            }
+
+        }
+    },
+    mounted: function () {
+        //获取天气数据
+        var weatherDatas;
+        var self = this;
+        $.ajax({
+            url:"http://wthrcdn.etouch.cn/weather_mini?city=济南",
+            dataType:'jsonp',
+            data:'',
+            success:function(result) {
+               weatherDatas = result.data;
+               self.todayInfo.todayDegree = weatherDatas.wendu;
+            },
+            // error:function(){
+            //     alert('无法获取天气数据');
+            // }
+        });
+        eventHelper.on('showCommandPanel',function(){
+            this.showAlarmBox = true;
+            this.isStart = false;
+        }.bind(this));
+        eventHelper.on('closeCommand',function(){
+            this.toggleCommadBox();
+        }.bind(this));
+        this.loadRoadData();
+        setInterval(function(){
+            self.loadRoadData(true);
         },10000);
     },
     components: {

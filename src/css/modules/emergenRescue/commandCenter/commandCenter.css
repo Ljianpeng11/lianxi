@@ -102,6 +102,9 @@
 .startStepBtn{
     background: #FFCD04;
 }
+.middleStepBtn{
+    background: #ccc;
+}
 .endStepBtn{
     background: #403E38;
     color: #fff;
