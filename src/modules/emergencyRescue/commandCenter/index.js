@@ -192,17 +192,19 @@ var comm = Vue.extend({
             var len = this.reportList.length;
             if(!state){
                 this.newReportList = this.reportList.slice(0,len - 2);
+                this.newemergencyImgList = this.emergencyImgList.slice(0,len - 3);
+                eventHelper.emit("SDSSendMessageFileEventing","事中报告");
+                this.$message({
+                    message: '事中报告已发送成功!!',
+                    type: 'success'
+                });
             }else{
                 this.newReportList = this.reportList;
             }
             this.showSmallDialog = false;
             this.showEndDialog = true;
             this.setDialogHeight();
-            eventHelper.emit("SDSSendMessageFileEventing","事中报告");
-            this.$message({
-                message: '事中报告已发送成功!!',
-                type: 'success'
-            });
+
         },
         toggleDetail:function(){
             this.isShowDetail = !this.isShowDetail;
