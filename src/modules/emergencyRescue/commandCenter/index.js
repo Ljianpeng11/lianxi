@@ -220,7 +220,7 @@ var comm = Vue.extend({
                 msg = '提闸申请';
                 eventHelper.emit("SDSSendMessageFile",msg);
             }else{
-                msg = '事中报告'
+                msg = '事中报告';
                 eventHelper.emit("SDSSendMessageFileEventing",msg);
             }
             this.$message({
