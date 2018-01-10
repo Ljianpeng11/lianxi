@@ -276,16 +276,16 @@ var comm = Vue.extend({
                 var numData,num;
                 if(index===0){
                     item.status = 1;
-                    num = 0.99;
+                    num = 0.92;
                 }else if(index===1){
                     item.status = 1;
-                    num = 1.50;
+                    num = 1.42;
                 }else if(index===2){
                     item.status = 0;
                     num = 2.48;
                 }else if(index===3){
                     item.status = 0;
-                    num = 1.74;
+                    num = 1.64;
                 }else if(index===4){
                     item.status = 0;
                     num = 2.58;
