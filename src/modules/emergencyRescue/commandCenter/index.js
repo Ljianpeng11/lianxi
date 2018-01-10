@@ -253,7 +253,7 @@ var comm = Vue.extend({
                 debugger;
             }.bind(this));*/
             $.ajax({
-                url:"http://wthrcdn.etouch.cn/weather_mini?city=淄博",
+                url:"http://wthrcdn.etouch.cn/weather_mini?citykey=101120301",
                 dataType:'jsonp',
                 data:'',
                 success:function(result) {
@@ -286,7 +286,7 @@ var comm = Vue.extend({
                     num = 0.93;
                 }else if(index===1){
                     item.status = 1;
-                    num = 1.47;
+                    num = 1.50;
                 }else if(index===2){
                     item.status = 0;
                     num = 0.02;
@@ -295,7 +295,7 @@ var comm = Vue.extend({
                     num = 1.33;
                 }else if(index===4){
                     item.status = 0;
-                    num = 1.69;
+                    num = 1.73;
                 }else if(index >= 5){
                     item.status = 3;
                     num = '-';
