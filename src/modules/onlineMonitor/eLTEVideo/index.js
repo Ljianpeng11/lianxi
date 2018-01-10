@@ -782,7 +782,7 @@ var comm = Vue.extend({
         },
         SDSSendMessageFile:function(content){
             //debugger;
-            var deviceEP820 = ["8003","8999","8503"];
+            var deviceEP820 = ["8003","8999","8503","8504"];
             for(var i=0;i<deviceEP820.length;i++){
                 var strSDSParam = "<Content>";
                 strSDSParam +=    "<SDSType>";
@@ -809,7 +809,7 @@ var comm = Vue.extend({
             console.log("ELTE_OCX_SDSSendMessage:" +result);
         },
         SDSSendMessageFileEventing:function(content){
-            var deviceEP820 = ["8003","8999","8503"];
+            var deviceEP820 = ["8003","8999","8503","8504"];
             for(var i=0;i<deviceEP820.length;i++){
                 var strSDSParam = "<Content>";
                 strSDSParam +=    "<SDSType>";
