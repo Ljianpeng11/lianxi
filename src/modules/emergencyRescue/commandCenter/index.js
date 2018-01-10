@@ -45,6 +45,7 @@ var comm = Vue.extend({
             showSmallDialog:false,
             showEndDialog:false,
             isShowDetail:false,
+            isMiddle:false,
             isEnd:false,
             seeperArr:seeperArr,
             newSeeperArr:[],
@@ -188,6 +189,7 @@ var comm = Vue.extend({
                 // eventHelper.emit('openCommandDetail');
                 this.isShowDetail = false;
                 this.showSmallDialog = true;
+                this.isMiddle = false;
                 this.setDialogHeight();
             }
         },
@@ -196,9 +198,11 @@ var comm = Vue.extend({
             this.isEnd = state;
             var len = this.reportList.length;
             if(!state){
+                this.isMiddle = true;
                 this.newReportList = this.reportList.slice(0,len - 2);
                 this.newemergencyImgList = this.emergencyImgList.slice(0,3);
             }else{
+                this.isMiddle = false;
                 this.newReportList = this.reportList;
                 this.newemergencyImgList = this.emergencyImgList;
             }
@@ -212,11 +216,11 @@ var comm = Vue.extend({
         },
         saveImgFun:function(){
             var msg;
-            if(this.isEnd){
+            if(!this.isMiddle){
                 msg = '提闸申请';
                 eventHelper.emit("SDSSendMessageFile",msg);
             }else{
-                msg = '事中报告';
+                msg = '事中报告'
                 eventHelper.emit("SDSSendMessageFileEventing",msg);
             }
             this.$message({
