@@ -802,6 +802,7 @@ var comm = Vue.extend({
                 strSDSParam +=    "</Content>";
 
                 var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+                console.log("发送提闸申请给"+deviceEP820[i]);
             }
 
             var xmlDoc = $.parseXML(resultXml);
@@ -829,6 +830,7 @@ var comm = Vue.extend({
                 strSDSParam +=    "</Content>";
 
                 var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+                console.log("发送事中报告给"+deviceEP820[i]);
             }
 
             var xmlDoc = $.parseXML(resultXml);
