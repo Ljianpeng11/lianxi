@@ -36,7 +36,10 @@ var comm = Vue.extend({
                     }
                     return moment().format('YYYY/MM/DD ')+week;
                 })(),
-                todayDegree:4
+                todayDegree:4,
+                fengli:"",
+                fengxiang:"",
+                type:""
             },
             weatherData:[],
             showSmallDialog:false,
@@ -233,6 +236,10 @@ var comm = Vue.extend({
                 success:function(result) {
                     var weatherDatas = result.data;
                     this.todayInfo.todayDegree = weatherDatas.wendu;
+                    this.todayInfo.fengxiang = weatherDatas.forecast[0].fengxiang;
+                    this.todayInfo.type = weatherDatas.forecast[0].type;
+                    var fengli = weatherDatas.forecast[0].fengli.replace("<![CDATA[","").replace("]]>","");
+                    this.todayInfo.fengli = fengli;
                 }.bind(this),
                 // error:function(){
                 //     alert('无法获取天气数据');
