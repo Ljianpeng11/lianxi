@@ -172,6 +172,9 @@
     padding: 0;
     overflow: auto;
 }
+.el-dialog__wrapper{
+    overflow:hidden;
+}
 .appleyBox-sm{
     width: 25%;
 }
@@ -305,6 +308,7 @@
 .appleyBox-lg .shareBox{
     align-self: flex-start;
     transform:translate(-120%,0);
+    min-width:18em;
 }
 .dialogContent-top{
     width:100%;
@@ -333,7 +337,10 @@
 }
 .appleyBox-lg .dialogContent-bottom{
     background: #fff;
-    margin-top:20px;
+    margin-top:10px;
+}
+.appleyBox-lg .dialogContent-bottom:first-child{
+    margin:0;
 }
 .extraTop{
     display: flex;
@@ -349,7 +356,7 @@
     transform:translate(-150%);
 }
 .extraContent{
-    padding: 10px 20px 20px;
+    padding: 0 20px 10px;
 }
 .extraContent .seeperList{
     background: #fff;

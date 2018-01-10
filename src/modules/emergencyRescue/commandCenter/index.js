@@ -42,8 +42,9 @@ var comm = Vue.extend({
             showSmallDialog:false,
             showEndDialog:false,
             isShowDetail:false,
+            isEnd:false,
             seeperArr:seeperArr,
-            newSeeperArr:seeperArr,
+            newSeeperArr:[],
             emergencyData:[
                 {
                     name:'王福娥',
@@ -123,6 +124,7 @@ var comm = Vue.extend({
                     text:'芦湖路'
                 }
             ],
+            newemergencyImgList:[],
             reportList:[
                 {
                     date:'2017年08月02日16时42分',
@@ -167,7 +169,6 @@ var comm = Vue.extend({
         toggleCommadBox:function(){
             this.showCommandBox = false;
             this.showAlarmBox = false;
-            this.setDialogHeight();
         },
         startStep:function(){
             if(!this.isStart){
@@ -189,10 +190,11 @@ var comm = Vue.extend({
         },
         endStep:function(state){
             // eventHelper.emit('openComandEndDetail');
+            this.isEnd = state;
             var len = this.reportList.length;
             if(!state){
                 this.newReportList = this.reportList.slice(0,len - 2);
-                this.newemergencyImgList = this.emergencyImgList.slice(0,len - 3);
+                this.newemergencyImgList = this.emergencyImgList.slice(0,3);
                 eventHelper.emit("SDSSendMessageFileEventing","事中报告");
                 this.$message({
                     message: '事中报告已发送成功!!',
@@ -200,18 +202,24 @@ var comm = Vue.extend({
                 });
             }else{
                 this.newReportList = this.reportList;
+                this.newemergencyImgList = this.emergencyImgList;
             }
             this.showSmallDialog = false;
             this.showEndDialog = true;
             this.setDialogHeight();
-
         },
         toggleDetail:function(){
             this.isShowDetail = !this.isShowDetail;
             this.setDialogHeight();
         },
         saveImgFun:function(){
-            eventHelper.emit("SDSSendMessageFile","提闸申请");
+            var msg;
+            if(this.isEnd){
+                msg = '提闸申请';
+            }else{
+                msg = '事中报告'
+            }
+            eventHelper.emit("SDSSendMessageFile",msg);
             this.$message({
                 message: '短信已发送成功!!',
                 type: 'success'
@@ -222,6 +230,9 @@ var comm = Vue.extend({
         },
         closeEndModel:function(){
             this.showEndDialog = false;
+            if(this.isEnd){
+                this.toggleCommadBox();
+            }
         },
         //设置弹出框最大高度
         setDialogHeight:function(){
@@ -292,7 +303,7 @@ var comm = Vue.extend({
                 this.seeperArr = seeperArr;
             }else{
                 this.seeperArr = seeperArr;
-                this.newSeeperArr = seeperArr;
+                this.newSeeperArr = seeperArr.splice(0,8);
             }
 
         }

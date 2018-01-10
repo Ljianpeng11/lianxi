@@ -194,7 +194,7 @@
               top="50%"
               custom-class="normalDialog appleyBox-lg">
       <div slot="title" class="dialog-title">
-         <p class="dailog-text"><span>08/02</span>应急响应报告</p>
+         <p class="dailog-text"><span>08/02</span><span v-if="isEnd">一雨一报</span><span v-else>事中报告</span></p>
          <div class="shareBox">
              <span class="shareIcon">
                 <i class="icon iconfont icon-yunpan"></i>
@@ -215,7 +215,7 @@
          <div class="dialogContent-bottom">
             <div class="extraItem">
                <div class="extraTop">
-                  <p class="extraTitle cesc-color">——&nbsp;&nbsp;应急简报&nbsp;&nbsp;——</p>
+                  <p class="extraTitle cesc-color">——&nbsp;&nbsp;<span v-if="isEnd">结束应急简报</span><span v-else>事中应急简报</span>&nbsp;&nbsp;——</p>
                </div>
                <div class="extraContent">
                   <div class="reportListBox">
@@ -231,7 +231,7 @@
                   <p class="extraTitle cesc-color">——&nbsp;&nbsp;雨情信息&nbsp;&nbsp;——</p>
                </div>
                <div class="extraContent">
-                  <p>经统计，2017年08月02日16时42分至08月02日19时46分，我县出现强降水过程，降水量统计如下：</p>
+                  <p>经统计，2017年08月02日16时42分至08月02日<span v-if="isEnd">19时46分</span><span v-else>17时20分</span>，我县出现强降水过程，降水量统计如下：</p>
                   <div class="seeperList yqInfoBox">
                      <div class="seeperItem" style="margin:0;" v-for="item in newSeeperArr">
                         <div class="seeperItem-top">
@@ -255,7 +255,7 @@
                <div class="extraContent">
                   <div class="managerInfo">
                      <p style="padding: 5px;">经统计，防汛办抢险人员触动8人，车辆4台，水泵2台。</p>
-                     <p style="padding: 5px;">经统计，此次城区出现明显积水点5个，大悦路东最大积水深度70公分，青城路西最大积水深度60公分，高苑路东最大积水深度70公分，中心路最大积水深度70公分，丽居路最大进水深度60公分。经抢险人员及时出路，以上积水点已于19时10分全部恢复交通。特此报告。</p>
+                     <p style="padding: 5px;">经统计，此次城区出现明显积水点5个，大悦路东最大积水深度4公分，青城路西最大积水深度4.2公分，高苑路东最大积水深度4.5公分，中心路最大积水深度5公分，丽居路最大进水深度3.8公分。经抢险人员及时出路，以上积水点已于<span v-if="isEnd">19时10分</span><span v-else>17时00分</span>全部恢复交通。特此报告。</p>
                   </div>
                </div>
             </div>
@@ -265,7 +265,7 @@
                </div>
                <div class="extraContent">
                   <div class="extraImgList">
-                     <div class="extraImgItem" v-for="item in emergencyImgList">
+                     <div class="extraImgItem" v-for="item in newemergencyImgList">
                         <img :src="item.src" alt="">
                         <p class="altInfo">{{item.text}}</p>
                      </div>
