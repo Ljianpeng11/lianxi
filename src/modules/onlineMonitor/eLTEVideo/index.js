@@ -782,81 +782,54 @@ var comm = Vue.extend({
         },
         SDSSendMessageFile:function(content){
             //debugger;
-            var strSDSParam = "<Content>";
-            strSDSParam +=    "<SDSType>";
-            strSDSParam +=    "0004";
-            strSDSParam +=    "</SDSType>";
-            strSDSParam +=    "<MsgBody>";
-            strSDSParam +=    content
-            strSDSParam +=    "</MsgBody>";
-            strSDSParam +=    "<Receiver>";
-            strSDSParam +=    "8003"
-            strSDSParam +=    "</Receiver>";
-            strSDSParam +=    "<AttachFileList>";
-            strSDSParam +=    "<AttachFile>";
-            strSDSParam +=    "d:\\\\1.jpg";
-            strSDSParam +=    "</AttachFile>";
-            strSDSParam +=    "</AttachFileList>";
-            strSDSParam +=    "</Content>";
+            var deviceEP820 = ["8003","8999","8503"];
+            for(var i=0;i<deviceEP820.length;i++){
+                var strSDSParam = "<Content>";
+                strSDSParam +=    "<SDSType>";
+                strSDSParam +=    "0004";
+                strSDSParam +=    "</SDSType>";
+                strSDSParam +=    "<MsgBody>";
+                strSDSParam +=    content
+                strSDSParam +=    "</MsgBody>";
+                strSDSParam +=    "<Receiver>";
+                strSDSParam +=    deviceEP820[i]
+                strSDSParam +=    "</Receiver>";
+                strSDSParam +=    "<AttachFileList>";
+                strSDSParam +=    "<AttachFile>";
+                strSDSParam +=    "d:\\\\1.jpg";
+                strSDSParam +=    "</AttachFile>";
+                strSDSParam +=    "</AttachFileList>";
+                strSDSParam +=    "</Content>";
 
-            var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+                var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+            }
 
-            var strSDSParam1 = "<Content>";
-            strSDSParam1 +=    "<SDSType>";
-            strSDSParam1 +=    "0004";
-            strSDSParam1 +=    "</SDSType>";
-            strSDSParam1 +=    "<MsgBody>";
-            strSDSParam1 +=    content
-            strSDSParam1 +=    "</MsgBody>";
-            strSDSParam1 +=    "<Receiver>";
-            strSDSParam1 +=    "8999"
-            strSDSParam1 +=    "</Receiver>";
-            strSDSParam1 +=    "<AttachFileList>";
-            strSDSParam1 +=    "<AttachFile>";
-            strSDSParam1 +=    "d:\\\\1.jpg";
-            strSDSParam1 +=    "</AttachFile>";
-            strSDSParam1 +=    "</AttachFileList>";
-            strSDSParam1 +=    "</Content>";
+            var xmlDoc = $.parseXML(resultXml);
+            var result = $(xmlDoc).find("ResultCode").text();
+            console.log("ELTE_OCX_SDSSendMessage:" +result);
+        },
+        SDSSendMessageFileEventing:function(content){
+            var deviceEP820 = ["8003","8999","8503"];
+            for(var i=0;i<deviceEP820.length;i++){
+                var strSDSParam = "<Content>";
+                strSDSParam +=    "<SDSType>";
+                strSDSParam +=    "0004";
+                strSDSParam +=    "</SDSType>";
+                strSDSParam +=    "<MsgBody>";
+                strSDSParam +=    content
+                strSDSParam +=    "</MsgBody>";
+                strSDSParam +=    "<Receiver>";
+                strSDSParam +=    deviceEP820[i]
+                strSDSParam +=    "</Receiver>";
+                strSDSParam +=    "<AttachFileList>";
+                strSDSParam +=    "<AttachFile>";
+                strSDSParam +=    "d:\\\\4.jpg";
+                strSDSParam +=    "</AttachFile>";
+                strSDSParam +=    "</AttachFileList>";
+                strSDSParam +=    "</Content>";
 
-            var resultXml1 = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam1);
-
-            var strSDSParam2 = "<Content>";
-            strSDSParam2 +=    "<SDSType>";
-            strSDSParam2 +=    "0004";
-            strSDSParam2 +=    "</SDSType>";
-            strSDSParam2 +=    "<MsgBody>";
-            strSDSParam2 +=    content
-            strSDSParam2 +=    "</MsgBody>";
-            strSDSParam2 +=    "<Receiver>";
-            strSDSParam2 +=    "8503"
-            strSDSParam2 +=    "</Receiver>";
-            strSDSParam2 +=    "<AttachFileList>";
-            strSDSParam2 +=    "<AttachFile>";
-            strSDSParam2 +=    "d:\\\\1.jpg";
-            strSDSParam2 +=    "</AttachFile>";
-            strSDSParam2 +=    "</AttachFileList>";
-            strSDSParam2 +=    "</Content>";
-
-            var resultXml2 = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam2);
-
-            // var strSDSParam3 = "<Content>";
-            // strSDSParam3 +=    "<SDSType>";
-            // strSDSParam3 +=    "0004";
-            // strSDSParam3 +=    "</SDSType>";
-            // strSDSParam3 +=    "<MsgBody>";
-            // strSDSParam3 +=    content
-            // strSDSParam3 +=    "</MsgBody>";
-            // strSDSParam3 +=    "<Receiver>";
-            // strSDSParam3 +=    "8503"
-            // strSDSParam3 +=    "</Receiver>";
-            // strSDSParam3 +=    "<AttachFileList>";
-            // strSDSParam3 +=    "<AttachFile>";
-            // strSDSParam3 +=    "d:\\\\1.jpg";
-            // strSDSParam3 +=    "</AttachFile>";
-            // strSDSParam3 +=    "</AttachFileList>";
-            // strSDSParam3 +=    "</Content>";
-            //
-            // var resultXml1 = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam3);
+                var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+            }
 
             var xmlDoc = $.parseXML(resultXml);
             var result = $(xmlDoc).find("ResultCode").text();
@@ -927,6 +900,9 @@ var comm = Vue.extend({
         }.bind(this));
         eventHelper.on("SDSSendMessageFile",function(content){
             this.SDSSendMessageFile(content);
+        }.bind(this));
+        eventHelper.on("SDSSendMessageFileEventing",function(content){
+            this.SDSSendMessageFileEventing(content);
         }.bind(this));
     },
     components: {

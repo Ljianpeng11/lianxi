@@ -44,7 +44,7 @@ var comm = Vue.extend({
                     questionType:'污水直排',
                     x:117.8683719917964,
                     y:37.167425970805766,
-                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：污水直排。</p><p>解决建议：需核查污水去向；核查井：WS8013023803927</p></div>"
                 },{
                     id:'GQYW5',
                     location:'高苑路',

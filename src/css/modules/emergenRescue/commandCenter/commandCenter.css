@@ -107,6 +107,9 @@
 .startStepBtn{
     background: #FFCD04;
 }
+.middleStepBtn{
+    background: #ccc;
+}
 .endStepBtn{
     background: #403E38;
     color: #fff;
@@ -133,6 +136,9 @@
     width:80%;
     padding:0.5em 0;
 }
+.unhasBg{
+    background: #cccccc;
+}
 .normalBg{
     background: #2f91e4;
 }
@@ -141,6 +147,10 @@
 }
 .dangerBg{
     background: #fe5240;
+}
+.unhasBorder{
+    color: #cccccc;
+    border:1px solid #cccccc;
 }
 .normalBorder{
     color: #2f91e4;
@@ -166,6 +176,9 @@
     border:none;
     padding: 0;
     overflow: auto;
+}
+.el-dialog__wrapper{
+    overflow:hidden;
 }
 .appleyBox-sm{
     width: 25%;
@@ -300,6 +313,7 @@
 .appleyBox-lg .shareBox{
     align-self: flex-start;
     transform:translate(-120%,0);
+    min-width:18em;
 }
 .dialogContent-top{
     width:100%;
@@ -328,7 +342,10 @@
 }
 .appleyBox-lg .dialogContent-bottom{
     background: #fff;
-    margin-top:20px;
+    margin-top:10px;
+}
+.appleyBox-lg .dialogContent-bottom:first-child{
+    margin:0;
 }
 .extraTop{
     display: flex;
@@ -344,7 +361,7 @@
     transform:translate(-150%);
 }
 .extraContent{
-    padding: 10px 20px 20px;
+    padding: 0 20px 10px;
 }
 .extraContent .seeperList{
     background: #fff;

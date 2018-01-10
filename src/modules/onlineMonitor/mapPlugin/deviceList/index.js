@@ -129,10 +129,12 @@ var comm = Vue.extend({
                         }
                         switch(monitorData.name){
                             case '电压':
-                                monitorData.dValue = monitorData.dValue + 'V';
+                                // middle
                                 if(monitorData.dValue < monitorData.lowAlarm){item.voltage = 'low'}
-                                else if(monitorData > monitorData.highAlarm){item.voltage = 'high'}
-                                else{item.voltage = 'middle'}
+                                else if(monitorData.dValue > monitorData.highAlarm){item.voltage = 'high'}
+                                else{item.voltage = 'high'}
+                                monitorData.dValue = monitorData.dValue + 'V';
+                                item.onlineState = monitorData.onlineState;
                                 val.items.splice(i,1);
                                 i --;
                                 break;
