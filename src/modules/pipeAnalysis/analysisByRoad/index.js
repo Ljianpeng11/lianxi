@@ -7,9 +7,11 @@ var moment = require('moment');
 var chartLib = require('modules/onlineMonitor/chartLib');
 
 //组装数据
-var road = ['青城路','北一路','东环路','东外环','高青县长江路','高苑路','黄河路','老北环路','六号路','芦湖路','蒲台路','七号路','齐东路'];
+var road = ['青城路','高苑路','东环路','东外环','高青县长江路','高苑路','黄河路','老北环路','六号路','芦湖路','蒲台路','七号路','齐东路'];
+//var randomNum =  [434,748,379,528,0,0,0,0,0,0,0,0,0];
 var randomNum =  Math.random()*1250;
-var pipeLineArr = [],yData = [];
+var pipeLineItem = [434,448,379,528,0,0,0,0,0,0,0,0,0],yData = [434,748,379,528,0,0,0,0,0,0,0,0,0];
+var pipeLineArr = [];
 road.forEach(function(val,index){
    var item = {
        id:(function(){
@@ -20,16 +22,9 @@ road.forEach(function(val,index){
            }
        })(),
        location:val,
-       length:(function(){
-           var num = ((Math.random() - 0.4) * 1000 + randomNum).toFixed(2);
-           if(num < 0){
-               return 0-num;
-           }else{
-               return num;
-           }
-       })()
+       length:pipeLineItem[index]
    };
-    yData.push(item.length);
+    // yData.push(item.length);
     pipeLineArr.push(item);
 });
 var pipeLineChartOptions = {

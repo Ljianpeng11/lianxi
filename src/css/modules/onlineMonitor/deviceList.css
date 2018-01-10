@@ -129,6 +129,7 @@
     padding-right: 0;
 }
 
+
 .listContent {
     flex-wrap: wrap;
     padding: 1em 0;
@@ -212,9 +213,9 @@
 }
 
 .leftDotBox {
+    width: 4em;
     text-align: center;
     display: table-cell;
-    width: 20%;
     vertical-align: middle;
 }
 

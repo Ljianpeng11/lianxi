@@ -40,6 +40,8 @@ var comm = Vue.extend({
                 this.ocxObj.ELTE_OCX_SetBypassBuildMedia(0);
                 this.ocxObj.ELTE_OCX_SetLogPath("D:\\eLTE_Player_log");
                 this.ocxObj.ELTE_OCX_SetLogLevel(0);
+                //加载插件，首次使用OCX的时候，插件加载类型必须为ulType=1，
+                // 后续如果用户要额外添加OCX窗口，加载类型必须为ulType=2
                 var resultXml = this.ocxObj.ELTE_OCX_Load(1);
                 var xmlDoc = $.parseXML(resultXml);
                 var result = $(xmlDoc).find("ResultCode").text();
@@ -56,7 +58,7 @@ var comm = Vue.extend({
         login : function () {
             if (this.ocxObj){
                 iotController.getCurRequestInfo(function(data){
-                    //this.loginInfo.localIP = data.remoteIp;
+                    this.loginInfo.localIP = data.remoteIp;
                     var resultXml = this.ocxObj.ELTE_OCX_Login(this.loginInfo.userName, this.loginInfo.password, this.loginInfo.serverIP, this.loginInfo.localIP, this.loginInfo.sipPort);
                     var xmlDoc = $.parseXML(resultXml);
                     var result = $(xmlDoc).find("ResultCode").text();
@@ -76,7 +78,7 @@ var comm = Vue.extend({
         startRealPlay : function (resId) {
             if (this.ocxObj) {
                 var videoFormat = "D1";
-                var cameraType = "0";
+                var cameraType = "1";
                 var userConfirm = "0";
                 var muteType = "0";
 
@@ -531,18 +533,20 @@ var comm = Vue.extend({
                     var popupTemplate = {
                         title: graphic.attributes.userName,
                         content: "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('initeLTEVideo','{userId}');\"><span>打开视频</span></button>" +
-                                "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage','{userId}');\"><span>发短信</span></button>"+
-                                "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('p2p','{userId}');\"><span>语音</span></button>"+
-                                "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('eLTEtrace','{userId}');\"><span>展示轨迹</span></button>"+
-                                "<p>用户编号：{userId}</p>"+
-                                "<p>语音状态：{p2pstatus}</p>"+
-                                "<p>GPS上报时间：{time}</p>"+
-                                "<p>高程：{altitude}</p>"+
-                                "<p>经度：{longtitude}</p>"+
-                                "<p>纬度：{latitude}</p>"
+                        "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage','{userId}');\"><span>发短信</span></button>"+
+                        "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('p2p','{userId}');\"><span>语音</span></button>"+
+                        "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('eLTEtrace','{userId}');\"><span>展示轨迹</span></button>"+
+                        "<p>用户编号：{userId}</p>"+
+                        "<p>语音状态：{p2pstatus}</p>"+
+                        "<p>GPS上报时间：{time}</p>"+
+                        "<p>高程：{altitude}</p>"+
+                        "<p>经度：{longtitude}</p>"+
+                        "<p>纬度：{latitude}</p>"
                     };
                     var graphic_new = mapHelper.createPictureMarkSymbol(ep820VideoLayer, longtitude,latitude, imgObj, graphic.attributes, popupTemplate);
-
+                    // var graphic2 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.81448586576231, 37.16103482424958, imgObj, graphic.attributes, popupTemplate);
+                    // var graphic4 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8408447968, 37.1614142667, imgObj, graphic.attributes, popupTemplate);
+                    // var graphic5 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8508447968, 37.1614142667, imgObj, graphic.attributes, popupTemplate);
                     ep820VideoLayer.remove(graphic);
                 } else {
                     var userObj = null;
@@ -565,20 +569,23 @@ var comm = Vue.extend({
                         var popupTemplate = {
                             title: userObj.userName,
                             content: "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('initeLTEVideo','{userId}');\"><span>打开视频</span></button>" +
-                                    "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage','{userId}');\"><span>发短信</span></button>"+
-                                    "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('p2p','{userId}');\"><span>语音</span></button>"+
-                                    "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('eLTEtrace','{userId}');\"><span>展示轨迹</span></button>"+
-                                    "<p>用户编号：{userId}</p>"+
-                                    "<p>语音状态：{p2pstatus}</p>"+
-                                    "<p>GPS上报时间：{time}</p>"+
-                                    "<p>高程：{altitude}</p>"+
-                                    "<p>经度：{longtitude}</p>"+
-                                    "<p>纬度：{latitude}</p>"
+                            "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('SDSSendMessage','{userId}');\"><span>发短信</span></button>"+
+                            "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('p2p','{userId}');\"><span>语音</span></button>"+
+                            "<button type=\"button\" class=\"el-button detailBtn el-button--primary\" onclick=\"eventHelper.emit('eLTEtrace','{userId}');\"><span>展示轨迹</span></button>"+
+                            "<p>用户编号：{userId}</p>"+
+                            "<p>语音状态：{p2pstatus}</p>"+
+                            "<p>GPS上报时间：{time}</p>"+
+                            "<p>高程：{altitude}</p>"+
+                            "<p>经度：{longtitude}</p>"+
+                            "<p>纬度：{latitude}</p>"
                         };
 
                         var graphic = mapHelper.createPictureMarkSymbol(ep820VideoLayer, longtitude, latitude, imgObj, userObj, popupTemplate);
+                        // var graphic2 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.81448586576231, 37.16103482424958, imgObj, userObj, popupTemplate);
+                        // var graphic4 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8408447968, 37.1614142667, imgObj, userObj, popupTemplate);
+                        // var graphic5 = mapHelper.createPictureMarkSymbol(ep820VideoLayer, 117.8508447968, 37.1614142667, imgObj, userObj, popupTemplate);
                     } else {
-                        debugger;
+                        //debugger;
                     }
                 }
                 this.uploadGpsInfo(userId,time,altitude,latitude,longtitude);
@@ -613,7 +620,7 @@ var comm = Vue.extend({
             if(graphic!=null){
                 var screenPoint = this.baseView.toScreen(graphic.geometry);
                 return [screenPoint.x,screenPoint.y-240];
-                debugger;
+                //debugger;
             } else {
                 return [0,0];
             }
@@ -774,25 +781,57 @@ var comm = Vue.extend({
             }
         },
         SDSSendMessageFile:function(content){
-            debugger;
-            var strSDSParam = "<Content>";
-            strSDSParam +=    "<SDSType>";
-            strSDSParam +=    "0004";
-            strSDSParam +=    "</SDSType>";
-            strSDSParam +=    "<MsgBody>";
-            strSDSParam +=    content
-            strSDSParam +=    "</MsgBody>";
-            strSDSParam +=    "<Receiver>";
-            strSDSParam +=    "8003"
-            strSDSParam +=    "</Receiver>";
-            strSDSParam +=    "<AttachFileList>";
-            strSDSParam +=    "<AttachFile>";
-            strSDSParam +=    "d:\\\\1.jpg";
-            strSDSParam +=    "</AttachFile>";
-            strSDSParam +=    "</AttachFileList>";
-            strSDSParam +=    "</Content>";
+            //debugger;
+            var deviceEP820 = ["8003","8999","8503","8504"];
+            for(var i=0;i<deviceEP820.length;i++){
+                var strSDSParam = "<Content>";
+                strSDSParam +=    "<SDSType>";
+                strSDSParam +=    "0004";
+                strSDSParam +=    "</SDSType>";
+                strSDSParam +=    "<MsgBody>";
+                strSDSParam +=    content
+                strSDSParam +=    "</MsgBody>";
+                strSDSParam +=    "<Receiver>";
+                strSDSParam +=    deviceEP820[i]
+                strSDSParam +=    "</Receiver>";
+                strSDSParam +=    "<AttachFileList>";
+                strSDSParam +=    "<AttachFile>";
+                strSDSParam +=    "d:\\\\1.jpg";
+                strSDSParam +=    "</AttachFile>";
+                strSDSParam +=    "</AttachFileList>";
+                strSDSParam +=    "</Content>";
 
-            var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+                var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+                console.log("发送提闸申请给"+deviceEP820[i]);
+            }
+
+            var xmlDoc = $.parseXML(resultXml);
+            var result = $(xmlDoc).find("ResultCode").text();
+            console.log("ELTE_OCX_SDSSendMessage:" +result);
+        },
+        SDSSendMessageFileEventing:function(content){
+            var deviceEP820 = ["8003","8999","8503","8504"];
+            for(var i=0;i<deviceEP820.length;i++){
+                var strSDSParam = "<Content>";
+                strSDSParam +=    "<SDSType>";
+                strSDSParam +=    "0004";
+                strSDSParam +=    "</SDSType>";
+                strSDSParam +=    "<MsgBody>";
+                strSDSParam +=    content
+                strSDSParam +=    "</MsgBody>";
+                strSDSParam +=    "<Receiver>";
+                strSDSParam +=    deviceEP820[i]
+                strSDSParam +=    "</Receiver>";
+                strSDSParam +=    "<AttachFileList>";
+                strSDSParam +=    "<AttachFile>";
+                strSDSParam +=    "d:\\\\4.jpg";
+                strSDSParam +=    "</AttachFile>";
+                strSDSParam +=    "</AttachFileList>";
+                strSDSParam +=    "</Content>";
+
+                var resultXml = this.ocxObj.ELTE_OCX_SDSSendMessage("8889", strSDSParam);
+                console.log("发送事中报告给"+deviceEP820[i]);
+            }
 
             var xmlDoc = $.parseXML(resultXml);
             var result = $(xmlDoc).find("ResultCode").text();
@@ -807,7 +846,7 @@ var comm = Vue.extend({
                 longtitude : longtitude
             }
             iotController.uploadGpsInfo(data,function(data){
-                debugger;
+                //debugger;
             }.bind(this));
         },
         queryeLTEtrace : function (resId){
@@ -835,8 +874,14 @@ var comm = Vue.extend({
     mounted: function () {
         this.load();
         eventHelper.on("initeLTEVideo",function(param){
-            this.startRealPlay(param);
-            this.ocxObj.ELTE_OCX_P2PDial(param);
+            var resultXml = this.ocxObj.ELTE_OCX_P2PDial(param);
+            // var xmlDoc = $.parseXML(resultXml);
+            // xmlDoc = $(xmlDoc);
+            // var result = xmlDoc.find("ResultCode").text();
+            // console.log("P2P-result:" + result);
+            setTimeout(function(){
+                this.startRealPlay(param);
+            }.bind(this),2000)
         }.bind(this));
         eventHelper.on("handleELTEOCXEvent",function(eventInfo){
             var ulEventType = eventInfo[0];
@@ -857,6 +902,9 @@ var comm = Vue.extend({
         }.bind(this));
         eventHelper.on("SDSSendMessageFile",function(content){
             this.SDSSendMessageFile(content);
+        }.bind(this));
+        eventHelper.on("SDSSendMessageFileEventing",function(content){
+            this.SDSSendMessageFileEventing(content);
         }.bind(this));
     },
     components: {

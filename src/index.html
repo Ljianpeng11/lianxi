@@ -33,13 +33,17 @@
             console.log(!!document.cookie);
             if(!!document.cookie){
                 var allcookies = document.cookie;
-                console.log(allcookies);
-                var end = allcookies.indexOf(";");
-                var user = allcookies.substring(7,end);
-                var pass = allcookies.substring(user.length+16,allcookies.length);
-                document.getElementById("userName").value=user;
-                document.getElementById("password").value=pass;
-                document.getElementById("rember").checked=true;
+                var arrCookie=allcookies.split("; ");
+                for(var i=0;i<arrCookie.length;i++){
+                    var arr = arrCookie[i].split("=");
+                    if(arr[0]=="userNa"){
+                        document.getElementById("userName").value=arr[1]
+                        document.getElementById("rember").checked=true;
+                    };
+                    if(arr[0]=="userPw"){
+                        document.getElementById("password").value=arr[1];
+                    };
+                };
             }
         }
     </script>
@@ -67,6 +71,7 @@
             <p class="title-l">用户登录</p>
             <ul>
                 <li class="srk">
+<<<<<<< HEAD
                     <input class="user" id='userName' type="text"  placeholder="用户名" >
                     <input class="password" id='password' type="password"  placeholder="密码" >
                 </li>
@@ -76,6 +81,17 @@
                 </li>
                 <li class="btn-login"><a onclick="login();">登录</a></li>
                 <!--<li>
+=======
+                    <input class="user" id='userName' type="text"  placeholder="用户名">
+                    <input class="password" id='password' type="password"  placeholder="密码">
+                </li>
+                <li class="jj-t">
+                    <input class="mui-switch mui-switch-anim" type="checkbox" id="rember">
+                    <span>记住用户名</span>
+                </li>
+                <li class="btn-login"><a onclick="login();">登录</a></li>
+               <!-- <li>
+>>>>>>> upstream/master
                     <a class="forget" href="#">忘记密码？</a>
                     <a class="reg" href="#">注册</a>
                 </li>-->

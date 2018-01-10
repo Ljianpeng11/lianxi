@@ -32,7 +32,7 @@ define(['config'], function (config) {
         getItemFieldByItemTypeId: basicUrl + '/itemType/getItemFieldByItemTypeId',
         saveIotDeviceInfo: basicUrl + '/iotDevice/save',
         sendDataCommand: basicUrl + '/iotDevice/registerSendDataCommand',
-        iotFacilityInfo: basicUrl + '/iotDevice/list',
+        iotFacilityInfo: basicUrl + '/iotDevice/InfoList',
         getIotDeviceRunningState:basicUrl + '/iotDevice/iotDeviceRunningState',
         getIotDeviceOnlineState:basicUrl + '/iotDevice/iotDeviceOnlineState',
         getRainFacility:basicUrl + '/iotDevice/getRainFacility',
@@ -40,7 +40,8 @@ define(['config'], function (config) {
         uploadGpsInfo:basicUrl + '/elteVideo/uploadGpsInfo',
         queryeLTEtrace:basicUrl + '/elteVideo/queryGpsInfo',
         collectFacilities:basicUrl + '/userFacilityCollection/updateUserFacilityCollection',
-        getCollectionFacilityList:basicUrl + '/facility/getCollectionFacilityList'
+        getCollectionFacilityList:basicUrl + '/facility/getCollectionFacilityList',
+        gainTemperatureData:'http://wthrcdn.etouch.cn/weather_mini'
     }
     return {
         setToken: function (token) {
