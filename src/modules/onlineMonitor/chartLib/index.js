@@ -38,13 +38,13 @@ var comm = Vue.extend({
                 switch(data.type){
                     case 'YLChart':
                         this.options = {
-                            backgroundColor: '#fff',
+                            // backgroundColor: '#fff',
                             tooltip: {
                                 trigger: 'axis'
                             },
                             grid: {
                                 left: '8%',
-                                right: '8%',
+                                right: '18%',
                                 bottom: '15%',
                                 top: '20%'
                             },

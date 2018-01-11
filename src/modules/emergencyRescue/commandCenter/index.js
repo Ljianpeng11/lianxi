@@ -4,7 +4,7 @@ var iotController = require('controllers/iotController');
 var moment = require('moment');
 
 //加载数据
-var seeperRoad = ['高苑路东','大悦路东','青城路东','桃园闸中国结闸','桃园闸露天井','芦湖-青城','高苑路（学府路）','齐东路东','营丘大道','利居路','利居-黄河',
+var seeperRoad = ['高苑路东','大悦路东','青城路东','桃园闸窨井','桃园闸观测井','芦湖-青城','高苑路（学府路）','齐东路东','营丘大道','利居路','利居-黄河',
     '利居-青城','高苑-利居','高苑路西','中心路','桃园闸对面小区','扳倒井路','田镇街','文化路东','黄河路'];
 // var seeperRoad = ['大悦路齐商银行门口','齐林小区北门','青城路东','高苑路东','蒲台-黄河','芦湖路','芦湖-青城','齐东路东','营丘大道','利居路','利居-黄河',
 // '利居-青城','高苑-利居','高苑路西','中心路','扳倒井路','田镇街','文化路东','黄河路','青城路'];
@@ -45,6 +45,7 @@ var comm = Vue.extend({
             showSmallDialog:false,
             showEndDialog:false,
             isShowDetail:false,
+            isMiddle:false,
             isEnd:false,
             seeperArr:seeperArr,
             newSeeperArr:[],
@@ -188,6 +189,7 @@ var comm = Vue.extend({
                 // eventHelper.emit('openCommandDetail');
                 this.isShowDetail = false;
                 this.showSmallDialog = true;
+                this.isMiddle = false;
                 this.setDialogHeight();
             }
         },
@@ -196,14 +198,11 @@ var comm = Vue.extend({
             this.isEnd = state;
             var len = this.reportList.length;
             if(!state){
+                this.isMiddle = true;
                 this.newReportList = this.reportList.slice(0,len - 2);
                 this.newemergencyImgList = this.emergencyImgList.slice(0,3);
-                eventHelper.emit("SDSSendMessageFileEventing","事中报告");
-                this.$message({
-                    message: '事中报告已发送成功!!',
-                    type: 'success'
-                });
             }else{
+                this.isMiddle = false;
                 this.newReportList = this.reportList;
                 this.newemergencyImgList = this.emergencyImgList;
             }
@@ -217,14 +216,15 @@ var comm = Vue.extend({
         },
         saveImgFun:function(){
             var msg;
-            if(this.isEnd){
+            if(!this.isMiddle){
                 msg = '提闸申请';
+                eventHelper.emit("SDSSendMessageFile",msg);
             }else{
-                msg = '事中报告'
+                msg = '事中报告';
+                eventHelper.emit("SDSSendMessageFileEventing",msg);
             }
-            eventHelper.emit("SDSSendMessageFile",msg);
             this.$message({
-                message: '短信已发送成功!!',
+                message: msg+'短信已发送成功!!',
                 type: 'success'
             });
         },
@@ -283,19 +283,19 @@ var comm = Vue.extend({
                 var numData,num;
                 if(index===0){
                     item.status = 1;
-                    num = 0.99;
+                    num = 0.93;
                 }else if(index===1){
                     item.status = 1;
-                    num = 1.50;
+                    num = 1.47;
                 }else if(index===2){
                     item.status = 0;
-                    num = 2.48;
+                    num = 0.02;
                 }else if(index===3){
                     item.status = 0;
-                    num = 1.74;
+                    num = 1.33;
                 }else if(index===4){
                     item.status = 0;
-                    num = 2.58;
+                    num = 1.69;
                 }else if(index >= 5){
                     item.status = 3;
                     num = '-';
