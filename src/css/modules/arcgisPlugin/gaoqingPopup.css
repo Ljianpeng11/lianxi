@@ -41,6 +41,7 @@
     padding:0 2em;
 }
 .gaoqingPopup .esri-popup__content .gaoqingListContent{
+    flex-wrap: wrap;
     padding-top: 1em;
     position: relative;
     overflow: hidden;

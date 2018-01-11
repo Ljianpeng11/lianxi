@@ -91,6 +91,18 @@ define(['./serviceHelper'], function (serviceHelper) {
                     return;
                 }
             })
+        },
+        gainTemperatureData:function(param,cb){
+            var ajaxParam = {
+                id: 'gainTemperatureData',
+                parameter: param
+            }
+            $.get(serviceHelper.getPath(ajaxParam),function(result){
+                if(!!result.success){
+                    cb(result.data);
+                    return;
+                }
+            })
         }
     }
 });

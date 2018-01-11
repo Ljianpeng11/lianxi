@@ -83,28 +83,44 @@ var comm = Vue.extend({
                                     }
                                 }
                             ],
-                            // visualMap: {
-                            //     top: 10,
-                            //     right: 10,
-                            //     seriesIndex:0,
-                            //     showLabel:false,
-                            //     show:false,
-                            //     pieces: [{
-                            //         gt: 0,
-                            //         lte: 0.5,
-                            //         color: '#2f91e4'
-                            //     }, {
-                            //         gt: 0.5,
-                            //         lte: 0.8,
-                            //         color: '#f2b817'
-                            //     }, {
-                            //         gt: 0.8,
-                            //         color: '#fe5240'
-                            //     }],
-                            //     outOfRange: {
-                            //         color: '#999'
-                            //     }
-                            // },
+                            visualMap: {
+                                top: 10,
+                                right: 10,
+                                seriesIndex:0,
+                                showLabel:false,
+                                show:false,
+                                pieces: [{
+                                    gt: 0,
+                                    lte: (function(){
+                                        if(!!data.warningHeight){
+                                            return parseFloat(data.warningHeight);
+                                        }
+                                    })(),
+                                    color: '#2f91e4'
+                                }, {
+                                    gt: (function(){
+                                        if(!!data.warningHeight){
+                                            return parseFloat(data.warningHeight);
+                                        }
+                                    })(),
+                                    lte: (function(){
+                                        if(!!data.alarmHeight){
+                                            return parseFloat(data.alarmHeight);
+                                        }
+                                    })(),
+                                    color: '#f2b817'
+                                }, {
+                                    gt: (function(){
+                                        if(!!data.alarmHeight){
+                                            return parseFloat(data.alarmHeight);
+                                        }
+                                    })(),
+                                    color: '#fe5240'
+                                }],
+                                outOfRange: {
+                                    color: '#999'
+                                }
+                            },
                             series: [
                                 {
                                     name: '测量液位(m)',
@@ -115,17 +131,17 @@ var comm = Vue.extend({
                                         trigger: 'axis'
                                     },
                                     smooth: true,
-                                    itemStyle: {
-                                        normal: {
-                                            color: '#2f91e4',
-                                            lineStyle: {
-                                                color: '#2f91e4'
-                                            },
-                                            // areaStyle: {
-                                            //     color: 'rgba(67,67,72, 0.8)'
-                                            // }
-                                        }
-                                    },
+                                    // itemStyle: {
+                                    //     normal: {
+                                    //         color: '#2f91e4',
+                                    //         lineStyle: {
+                                    //             color: '#2f91e4'
+                                    //         },
+                                    //         // areaStyle: {
+                                    //         //     color: 'rgba(67,67,72, 0.8)'
+                                    //         // }
+                                    //     }
+                                    // },
                                     label:{
                                         normal:{
                                             fontSize:'24'

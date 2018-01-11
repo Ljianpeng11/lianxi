@@ -4,6 +4,8 @@ var mapHelper = require('utils/mapHelper');
 var facilityController = require('controllers/facilityController');
 var iotController = require('controllers/iotController');
 
+var currentThread;
+
 // 定义组件
 var comm = Vue.extend({
     template: template,
@@ -127,10 +129,12 @@ var comm = Vue.extend({
                         }
                         switch(monitorData.name){
                             case '电压':
-                                monitorData.dValue = monitorData.dValue + 'V';
+                                // middle
                                 if(monitorData.dValue < monitorData.lowAlarm){item.voltage = 'low'}
-                                else if(monitorData > monitorData.highAlarm){item.voltage = 'high'}
-                                else{item.voltage = 'middle'}
+                                else if(monitorData.dValue > monitorData.highAlarm){item.voltage = 'high'}
+                                else{item.voltage = 'high'}
+                                monitorData.dValue = monitorData.dValue + 'V';
+                                item.onlineState = monitorData.onlineState;
                                 val.items.splice(i,1);
                                 i --;
                                 break;
@@ -154,6 +158,9 @@ var comm = Vue.extend({
                             case '雨量':
                                 monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(mm)':'-';
                                 item.state = monitorData.state;
+                                break;
+                            case '浊度':
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(ntu)':'-';
                                 break;
                             case '是否溢出':
                                 item.state = monitorData.state;
@@ -233,7 +240,9 @@ var comm = Vue.extend({
         }
     },
     mounted: function () {
-
+        currentThread = setInterval(function () {
+            this.loadData();
+        }.bind(this), 10000);
     },
     components: {}
 });

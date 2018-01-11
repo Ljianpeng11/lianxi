@@ -71,6 +71,34 @@
                                 <p>{{deviceInfo.sysUpdateTime}}</p>
                             </div>
                         </div>
+                        <div class="listContent tabContent" v-if="facilityTypeName=='WP'">
+                            <div class="listLabel-left">
+                                <p>超声波水位：</p>
+                                <p>井盖高度：</p>
+                                <p>预警值：</p>
+                                <p>报警值：</p>
+                                <p>最近通讯：</p>
+                            </div>
+                            <div class="listLabel-right">
+                                <p>{{deviceInfo.waterLevel}}</p>
+                                <p class="numStatus">{{deviceInfo.pipeHeight}}&nbsp(m)</p>
+                                <p class="numStatus">{{deviceInfo.warningHeight}}&nbsp(m)</p>
+                                <p class="numStatus">{{deviceInfo.alarmHeight}}&nbsp(m)</p>
+                                <p>{{deviceInfo.sysUpdateTime}}</p>
+                            </div>
+                        </div>
+                        <div class="listContent tabContent" v-if="facilityTypeName=='RF'">
+                            <div class="listLabel-left">
+                                <p>雨量：</p>
+                                <p>浊度：</p>
+                                <p>最近通讯：</p>
+                            </div>
+                            <div class="listLabel-right">
+                                <p>{{deviceInfo.rainfall}}</p>
+                                <p class="numStatus">{{deviceInfo.turbidity}}&nbsp(m)</p>
+                                <p>{{deviceInfo.sysUpdateTime}}</p>
+                            </div>
+                        </div>
                     </div>
                 </el-tab-pane>
             </el-tabs>

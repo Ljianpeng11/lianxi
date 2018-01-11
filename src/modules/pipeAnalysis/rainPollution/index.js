@@ -20,83 +20,143 @@ var comm = Vue.extend({
                 {
                     id:'GQYW1',
                     location:'高苑路',
-                    questionType:'排放不明'
+                    questionType:'排放不明',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW2',
                     location:'高苑路',
-                    questionType:'流向混乱'
+                    questionType:'流向混乱',
+                    x:117.84033321300572,
+                    y:37.165335315080874,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW3',
                     location:'高苑路',
-                    questionType:'雨污混接'
+                    questionType:'雨污混接',
+                    x:117.8187655227783,
+                    y:37.16387992562512,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW4',
                     location:'高苑路',
-                    questionType:'污水直排'
+                    questionType:'污水直排',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：污水直排。</p><p>解决建议：需核查污水去向；核查井：WS8013023803927</p></div>"
                 },{
                     id:'GQYW5',
                     location:'高苑路',
-                    questionType:'雨污混接'
+                    questionType:'雨污混接',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW6',
                     location:'高苑路',
-                    questionType:'数据不全'
+                    questionType:'数据不全',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW7',
                     location:'邦德路',
-                    questionType:'排放不明'
+                    questionType:'排放不明',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW8',
                     location:'邦德路',
-                    questionType:'流向混乱'
+                    questionType:'流向混乱',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW9',
                     location:'邦德路',
-                    questionType:'雨污混接'
+                    questionType:'雨污混接',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW10',
                     location:'邦德路',
-                    questionType:'雨污混接'
+                    questionType:'雨污混接',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW11',
                     location:'邦德路',
-                    questionType:'雨污混接'
+                    questionType:'雨污混接',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW12',
                     location:'北一路',
-                    questionType:'排放不明'
+                    questionType:'排放不明',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW13',
                     location:'北一路',
-                    questionType:'雨污混接'
+                    questionType:'雨污混接',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW14',
                     location:'北一路',
-                    questionType:'污水直排'
+                    questionType:'污水直排',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW15',
                     location:'东环路',
-                    questionType:'雨污混接'
+                    questionType:'雨污混接',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW16',
                     location:'东环路',
-                    questionType:'流向混乱'
+                    questionType:'流向混乱',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW17',
                     location:'东环路',
-                    questionType:'污水直排'
+                    questionType:'污水直排',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW18',
                     location:'东环路',
-                    questionType:'污水直排'
+                    questionType:'污水直排',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW19',
                     location:'东环路',
-                    questionType:'雨污混接'
+                    questionType:'雨污混接',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 },{
                     id:'GQYW20',
                     location:'东环路',
-                    questionType:'数据不全'
+                    questionType:'数据不全',
+                    x:117.8683719917964,
+                    y:37.167425970805766,
+                    popupContent : "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>"
                 }
             ],
             pieChartOptions: {
@@ -153,14 +213,14 @@ var comm = Vue.extend({
             this.$parent.rainSewageLayer.visible = false;
             this.openRainPollution = false;
         },
-        openMonitorPipe:function(){
-            var point = mapHelper.createPoint(117.8683719917964,37.167425970805766);
+        openMonitorPipe:function(row, event, column){
+            var point = mapHelper.createPoint(row.x,row.y);
             this.baseView.popup.class="gaoqingPopup2";
             this.baseView.popup.location = point;
-            this.baseView.popup.title= "问题类型:【排放不明】";
-            this.baseView.popup.content = "<div style=\"text-align: left;\"><p>问题详情：不知污水排放去向。</p><p>解决建议：需核查污水去向；补充污水管线。核查井：WS8013023803925</p></div>";
+            this.baseView.popup.title= "问题类型:【"+row.questionType+"】";
+            this.baseView.popup.content = row.popupContent;
             this.baseView.popup.visible = true;
-            mapHelper.setCenter(this.baseView,117.86854653112252,37.16741657253446,18);
+            mapHelper.setCenter(this.baseView,row.x,row.y,18);
         },
         handleSizeChange:function(val) {
             console.log(`每页 ${val} 条`);

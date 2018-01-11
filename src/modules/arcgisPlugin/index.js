@@ -289,7 +289,8 @@ var comm = Vue.extend({
         }.bind(this));
         //开启雨污分析功能
         eventHelper.on('openRainPollution',function(){
-            mapHelper.setCenter(this.baseView,117.8391141229457,37.16665107307562,13);
+
+            mapHelper.setCenter(this.baseView,117.84926425604506,37.164911050258546,15);
             if(this.$refs.devicePanel.isOpenPanel){
                 this.$refs.devicePanel.isOpenPanel = false;
             }
