@@ -74,14 +74,31 @@
                     </div>
                 </el-tab-pane>
             </el-tabs>
-            <div v-else>123324243</div>
+            <div v-else class="szPanel">
+                <div class="szPanel-top">
+                    <div class="szTop-l">
+                        <p>上次通信时间：2018-01-10 16:22:02</p>
+                        <p>设备类型：水质监测箱</p>
+                        <p>地址：{{deviceInfo.title}}</p>
+                    </div>
+                    <div class="szTop-r">
+                        <p>当前等级</p>
+                        <span class="grade-5">V</span>
+                    </div>
+                </div>
+                <div class="szPanel-bottom">
+                    <div class="szChartBox" v-for="(item,index) in szChartData">
+                        <chart-lib :chartId="'szChart'+index" ref="'szChart'+index" :chartOptions="item"></chart-lib>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <transition enter-active-class="fadeInUP" leave-active-class="fadeOutDown">
         <div id="devicePanel" class="devicePanel deviceInfo animated" v-if="isOpenPanel">
             <div class="devicePanel-top">
                 <span>{{deviceInfo.title}}</span>
-                <div class="deviceMiddle">
+                <div class="deviceMiddle" v-if="facilityTypeName !== 'WQ'">
                 <!--<span class="selectItem">参考线：-->
                 <!--<b>参考线</b><i class="icon iconfont icon-xiajiantou"></i>-->
                 <!--<ul class="selectBox" style="display:none">-->
@@ -116,11 +133,12 @@
                 <span class="top-label">
                     <!--累计降雨量：<b>0</b>mm&nbsp;&nbsp;&nbsp;-->
                     <b class="cesc-tag-active" @click="openDeviceDetail">详情</b>
+                    <i class="el-icon-d-arrow-right rotate-down" @click="closePanel"></i>
                 </span>
-                <i class="el-icon-d-arrow-right rotate-down" @click="closePanel"></i>
             </div>
             <div class="devicePanel-bottom">
-                <chart-lib :chartId="'deviceWaterChart'" ref="deviceWaterChart" :chartOptions="chartOptions"></chart-lib>
+                <chart-lib v-if="facilityTypeName !== 'WQ'" :chartId="'deviceWaterChart'" ref="deviceWaterChart" :chartOptions="chartOptions"></chart-lib>
+                <div v-else>12341342342</div>
             </div>
         </div>
     </transition>

@@ -444,13 +444,132 @@ var comm = Vue.extend({
 
                         };
                         break;
+                    case 'gaugeChart':
+                        this.options = {
+                            title: {
+                                text:data.text,
+                                subtext:data.subtext,
+                                x: '50%',
+                                y: '35%',
+                                textAlign: "center",
+                                textStyle: {
+                                    fontWeight: 'normal',
+                                    "fontSize": 24
+                                },
+                                subtextStyle: {
+                                    color: '#fff',
+                                    rich: {
+                                        label: {
+                                            backgroundColor: data.color,
+                                            padding:[5,20],
+                                            borderRadius:50,
+                                            fontSize:18
+                                        }
+                                    }
+                                }
+                            },
+                            grid:{
+                                x:'center',
+                                y:'center',
+                                width:'80%',
+                                height:'200%'
+                            },
+                            series: [{
+                                name: '外围刻度',
+                                type: 'gauge',
+                                radius: '75%',
+                                center: ['50%', '50%'],
+                                startAngle: 180,
+                                endAngle: 0,
+                                axisLine: {
+                                    lineStyle: {
+                                        width:4,
+                                        color:[[1,data.color]]
+                                    },
+                                },
+                                splitLine: {
+                                    length: -20,
+                                    lineStyle:{
+                                        color:data.color,
+                                        width:2,
+                                    }
+                                },
+                                axisLabel: {
+                                    distance: 30,
+                                    color:'#fff',
+                                    fontSize:24,
+                                    formatter:function(param){
+                                        if ((param % 10)==0) {
+                                            return param
+                                        }
+                                    }
+                                },
+                                detail: {
+                                    show: false,
+                                },
+                                axisTick:{
+                                    splitNumber:1,
+                                    lineStyle:{
+                                        opacity:0,
+                                    }
+                                },
+                                pointer:{
+                                    show:false
+                                },
+                                data: [{
+                                    value:'',
+                                    name:'水温'
+                                }]
+                            },{
+                                    name: 'pie',
+                                    type: 'pie',
+                                    clockWise: true,
+                                    startAngle:180,
+                                    color:['transparent'],
+                                    radius: '70%',
+                                    center: ['50%', '50%'],
+                                    hoverAnimation: false,
+                                    labelLine:{
+                                        normal:{
+                                            show:false
+                                        }
+                                    },
+                                    data: [
+                                        {
+                                            name:'水温',
+                                            value:data.value*360/100,
+                                            label: {
+                                                normal: {
+                                                    formatter: [
+                                                        '\n\n\n\n\n{dot|}'
+                                                    ].join('\n'),
+                                                    rich: {
+                                                        dot: {
+                                                            backgroundColor: data.color,
+                                                            height: 15,
+                                                            width:15,
+                                                            borderRadius:15
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            name:'',
+                                            value:(100 - data.value)*360/100
+                                        }
+                                    ]
+                                }
+                            ]
+                        };
+                        break;
                     default:break;
                 }
                 this.myChart.setOption(this.options);
                 eventHelper.on('toggle-menu', function () {
                     setTimeout(function () {
                         this.myChart.resize();
-                    }.bind(this), 1000)
+                    }.bind(this), 1000);
                 }.bind(this));
                 // if(data.type === 'YLChart'){
                 //     this.refreshYLChart();

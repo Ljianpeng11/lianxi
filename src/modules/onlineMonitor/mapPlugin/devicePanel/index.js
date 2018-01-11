@@ -63,6 +63,21 @@ var comm = Vue.extend({
                     }
                 }]
             },
+            szChartData:[
+                {
+                    type:'gaugeChart',
+                    text:'水温',
+                    subtext:'{label|25℃}',
+                    value:20,
+                    color:'green'
+                },{
+                    type:'gaugeChart',
+                    text:'水温',
+                    subtext:'{label|25℃}',
+                    value:20,
+                    color:'red'
+                }
+            ]
         }
     },
     created(){
@@ -133,7 +148,12 @@ var comm = Vue.extend({
     mounted: function () {
         eventHelper.on('openDevicePanel', function (selectItem) {
             this.facilityTypeName = selectItem.facilityTypeName;
+            this.deviceInfo.title = selectItem.name;
+            this.isOpenPanel = true;
             if(this.facilityTypeName !== 'WQ'){
+                this.$nextTick(function(){
+                    $(".multiDeviceBox").css("top","155px");
+                });
                 if (!!selectItem.facilityDevice) {
                     var self = this;
                     var devices = selectItem.facilityDevice.devices;
@@ -184,17 +204,18 @@ var comm = Vue.extend({
                             './img/mediaGallery/default.png'
                         ]
                     }
-                    this.deviceInfo.title = selectItem.name;
-                    this.isOpenPanel = true;
-                    if(screen.width < 1400){
-                        this.isOpenBox = false;
-                    }
-                    if (!!this.timer) {
-                        clearInterval(this.timer);
-                    }
                 }
             }else{
+                this.$nextTick(function(){
+                    $(".multiDeviceBox").css("top","5px");
+                });
                 alert(123);
+            }
+            if(screen.width < 1400){
+                this.isOpenBox = false;
+            }
+            if (!!this.timer) {
+                clearInterval(this.timer);
             }
         }.bind(this));
     },
