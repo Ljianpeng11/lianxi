@@ -169,7 +169,6 @@
 
 .listLabel-left {
     text-align: right;
-    padding-right: 0.5em;
     color: #2f91e4;
     display:table-cell;
 }
@@ -177,7 +176,6 @@
 .listLabel-right {
     display:table-cell;
     text-align: left;
-    padding-left: 0.5em;
     color: #666;
 }
 
