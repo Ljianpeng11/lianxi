@@ -46,23 +46,25 @@ var comm = Vue.extend({
                 var instance = mapHelper.getInstance();
                 this.registerEvents.push(
                     instance.dojoOn(
-                        this.baseView, "resize", instance.dojoHitct(this, function () {
+                        this.baseView.root, "resize", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
-                        })
-                    )
-                );
-
-                this.registerEvents.push(
-                    instance.dojoOn(
-                        this.baseView, "mouse-wheel", instance.dojoHitct(this, function () {
-                            this.relocate(this.infoBoxes);
+                            console.log("resize");
                         })
                     )
                 );
                 this.registerEvents.push(
                     instance.dojoOn(
-                        this.baseView, "pan-end", instance.dojoHitct(this, function () {
+                        this.baseView.root, "mousewheel", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
+                            console.log("mousewheel");
+                        })
+                    )
+                );
+                this.registerEvents.push(
+                    instance.dojoOn(
+                        this.baseView.root, "dblclick", instance.dojoHitct(this, function () {
+                            this.relocate(this.infoBoxes);
+                            console.log("dblclick");
                         })
                     )
                 );
@@ -71,6 +73,7 @@ var comm = Vue.extend({
                     instance.dojoOn(
                         this.baseView.root, "mousemove", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
+                            console.log("mousemove");
                         })
                     )
                 );
@@ -78,6 +81,7 @@ var comm = Vue.extend({
                     instance.dojoOn(
                         this.baseView.root, "mouseup", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
+                            console.log("mouseup");
                         })
                     )
                 );
