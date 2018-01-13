@@ -1,6 +1,6 @@
 define(['./serviceHelper'], function (serviceHelper) {
     return {
-        login: function (userName, password, cb,errorCb) {
+        login: function (userName, password, cb) {
             var parameter = {
                 id: 'login',
                 parameter: {
@@ -19,7 +19,7 @@ define(['./serviceHelper'], function (serviceHelper) {
                         this.startRefreshTokenInterval();
                     }
                     else {
-                        errorCb(result.msg);
+                        alert(result.msg);
                     }
                 }
                 else {
@@ -44,19 +44,24 @@ define(['./serviceHelper'], function (serviceHelper) {
         //原则上每次进入页面要且只能执行一次此方法
         startRefreshTokenInterval: function () {
             setInterval(function () {
-                //refreshToken
-                //间隔一段时间（目前暂时5分钟更新一次）往后台更新一下token，保证token在后台不过期
-                $.get(serviceHelper.getPath('refreshToken'), function (result) {
-                    if (!!result) {
-                        if (!!result.success) {
-                            console.log('刷新Token成功');
-                        }
+                this.updateToken();
+            }.bind(this), 300000);
+        },
+        //刷新token
+        updateToken: function () {
+            //refreshToken
+            //间隔一段时间（目前暂时5分钟更新一次）往后台更新一下token，保证token在后台不过期
+            //加上随机数，ie下没有随机数会被使用缓存
+            $.get(serviceHelper.getPath('refreshToken'), {r: Math.random()}, function (result) {
+                if (!!result) {
+                    if (!!result.success) {
+                        console.log('刷新Token成功');
                     }
-                    else {
-                        console.log('刷新Token失败');
-                    }
-                });
-            }, 300000);
+                }
+                else {
+                    console.log('刷新Token失败');
+                }
+            });
         }
     }
 });

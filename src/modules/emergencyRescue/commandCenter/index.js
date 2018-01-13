@@ -283,19 +283,19 @@ var comm = Vue.extend({
                 var numData,num;
                 if(index===0){
                     item.status = 1;
-                    num = 0.93;
+                    num = 0.95;
                 }else if(index===1){
                     item.status = 1;
                     num = 1.50;
                 }else if(index===2){
                     item.status = 0;
-                    num = 0.02;
+                    num = 0.20;
                 }else if(index===3){
                     item.status = 0;
                     num = 1.33;
                 }else if(index===4){
                     item.status = 0;
-                    num = 1.73;
+                    num = 1.75;
                 }else if(index >= 5){
                     item.status = 3;
                     num = '-';
