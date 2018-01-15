@@ -5,8 +5,8 @@
                         'warningStatus-bg':infoBox.state === 1,
                         'dangerStatus-bg':infoBox.state === 2
                  }">
-            <span v-if="!!infoBox.waterLevel">水位：{{infoBox.waterLevel}}</span>
-            <span v-if="!!infoBox.waterOverLevel">积水深度：{{infoBox.waterOverLevel}}</span>
+            <span v-if="!!infoBox.waterLevel">水位：{{infoBox.waterLevel}}(m)</span>
+            <span v-if="!!infoBox.waterOverLevel">积水深度：{{infoBox.waterOverLevel}}(cm)</span>
             <span v-if="!!infoBox.manholeCoverState">井盖状态：{{infoBox.manholeCoverState}}</span>
         </div>
         <div class="esri-popup__main-container" v-show="infoBox.showBigBox">
@@ -31,7 +31,7 @@
                     </div>
                     <div class="listLabel-right">
                         <p>{{devicesItem.name}}</p>
-                        <p v-for="monitorData in devicesItem.items">{{monitorData.dValue}}</p>
+                        <p v-for="monitorData in devicesItem.items">{{monitorData.dValue}}<span v-if="!!monitorData.unit">({{monitorData.unit}})</span></p>
                         <p>{{devicesItem.sysUpdateTime}}</p>
                     </div>
                 </div>

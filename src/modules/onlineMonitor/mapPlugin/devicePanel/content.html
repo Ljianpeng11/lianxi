@@ -105,7 +105,7 @@
             <div v-else class="szPanel">
                 <div class="szPanel-top">
                     <div class="szTop-l">
-                        <p>上次通信时间：2018-01-10 16:22:02</p>
+                        <p>上次通信时间：{{szDeviceInfo.sysUpdateTime}}</p>
                         <p>设备类型：水质监测箱</p>
                         <p>地址：{{deviceInfo.title}}</p>
                     </div>
@@ -116,7 +116,7 @@
                 </div>
                 <div class="szPanel-bottom">
                     <div class="szChartBox" v-for="(item,index) in szChartData">
-                        <chart-lib :chartId="'szChart'+index" ref="'szChart'+index" :chartOptions="item"></chart-lib>
+                        <chart-lib :chartId="'szChart'+index" :ref="'szChart'+index" :chartOptions="item"></chart-lib>
                     </div>
                 </div>
             </div>
@@ -166,7 +166,7 @@
             </div>
             <div class="devicePanel-bottom">
                 <chart-lib v-if="facilityTypeName !== 'WQ'" :chartId="'deviceWaterChart'" ref="deviceWaterChart" :chartOptions="chartOptions"></chart-lib>
-                <div v-else>12341342342</div>
+                <chart-lib v-else :chartId="'szLineChart'" ref="szLineChart" :chartOptions="szLineChartOptions"></chart-lib>
             </div>
         </div>
     </transition>

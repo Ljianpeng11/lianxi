@@ -23,7 +23,7 @@
     "bootstrap-table": "^1.11.1",
     "browserify": "^14.3.0",
     "daterangepicker": "^2.1.25",
-    "echarts": "^3.6.1",
+    "echarts": "^3.8.5",
     "element-ui": "^1.4.12",
     "eventemitter3": "^2.0.3",
     "flatpickr": "^2.4.8",

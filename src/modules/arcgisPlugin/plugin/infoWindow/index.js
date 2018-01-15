@@ -140,6 +140,7 @@ var comm = Vue.extend({
                             var wellState = 0;
                             for (var k = 0, jianceItemLen = deviceItem.items.length; k < jianceItemLen; k++,jianceItemLen = deviceItem.items.length) {
                                 var monitorData = deviceItem.items[k];
+                                deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
                                 switch (monitorData.name) {
                                     case '电压':
                                         deviceItem.items.splice(k, 1);k--;
@@ -152,22 +153,19 @@ var comm = Vue.extend({
                                         break;
                                     case '电压比':
                                         monitorData.dValue = monitorData.dValue ? monitorData.dValue * 100 + '%':"-";
-                                        deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
                                         break;
                                     case '水位':
-                                        monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) + '(m)' : '-';
-                                        deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
+                                        monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) : '-';
                                         item.state = monitorData.state;
                                         item.waterLevel = monitorData.dValue;
                                         break;
                                     case '积水深度':
-                                        monitorData.dValue = monitorData.dValue ? (monitorData.dValue * 100).toFixed(2) + '(cm)' : '-';
-                                        deviceItem.sysUpdateTime = monitorData.sysUpdateTime;
+                                        monitorData.dValue = monitorData.dValue ? (monitorData.dValue * 100).toFixed(2) : '-';
                                         item.state = monitorData.state;
                                         item.waterOverLevel = monitorData.dValue;
                                         break;
                                     case '雨量':
-                                        monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) + '(mm)':'-';
+                                        monitorData.dValue = monitorData.dValue ? monitorData.dValue.toFixed(2) :'-';
                                         item.state = monitorData.state;
                                         item.waterLevel = monitorData.dValue;
                                         break;

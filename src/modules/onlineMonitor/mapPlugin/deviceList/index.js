@@ -148,19 +148,19 @@ var comm = Vue.extend({
                                 i --;
                                 break;
                             case '水位':
-                                monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(m)':'-';
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue:'-';
                                 item.state = monitorData.state;
                                 break;
                             case '积水深度':
-                                monitorData.dValue = monitorData.dValue ? (monitorData.dValue * 100).toFixed(2) + '(cm)':'-';
+                                monitorData.dValue = monitorData.dValue ? (monitorData.dValue * 100).toFixed(2):'-';
                                 item.state = monitorData.state;
                                 break;
                             case '雨量':
-                                monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(mm)':'-';
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue:'-';
                                 item.state = monitorData.state;
                                 break;
                             case '浊度':
-                                monitorData.dValue = monitorData.dValue ? monitorData.dValue + '(ntu)':'-';
+                                monitorData.dValue = monitorData.dValue ? monitorData.dValue:'-';
                                 break;
                             case '是否溢出':
                                 item.state = monitorData.state;

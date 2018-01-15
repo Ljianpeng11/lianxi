@@ -63,21 +63,11 @@ var comm = Vue.extend({
                     }
                 }]
             },
-            szChartData:[
-                {
-                    type:'gaugeChart',
-                    text:'水温',
-                    subtext:'{label|25℃}',
-                    value:20,
-                    color:'green'
-                },{
-                    type:'gaugeChart',
-                    text:'水温',
-                    subtext:'{label|25℃}',
-                    value:20,
-                    color:'red'
-                }
-            ]
+            szDeviceInfo:{},
+            szChartData:[],
+            szLineChartOptions:{
+                type:'szLineChart'
+            }
         }
     },
     created(){
@@ -150,23 +140,29 @@ var comm = Vue.extend({
             this.facilityTypeName = selectItem.facilityTypeName;
             this.deviceInfo.title = selectItem.name;
             this.isOpenPanel = true;
-            if(this.facilityTypeName !== 'WQ'){
-                this.$nextTick(function(){
-                    $(".multiDeviceBox").css("top","155px");
-                });
-                if (!!selectItem.facilityDevice) {
-                    var self = this;
-                    var devices = selectItem.facilityDevice.devices;
-                    var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
-                    var startDate = moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
-                    var timeRangeObj = {
-                        startDate:startDate,
-                        endDate:endDate
-                    };
-                    self.timeRangeObj = [startDate,endDate];
-                    devices.forEach(function (device) {
-                        var items = device.items;
-                        items.forEach(function (item) {
+            if (!!selectItem.facilityDevice) {
+                //水位历史查询时间设置
+                var self = this;
+                var devices = selectItem.facilityDevice.devices;
+                var endDate = moment().format('YYYY-MM-DD HH:mm:ss', new Date());
+                var startDate = moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+                var timeRangeObj = {
+                    startDate:startDate,
+                    endDate:endDate
+                };
+                self.timeRangeObj = [startDate,endDate];
+                //水质监测值设置
+                var chartColor = ['#21C393','#5A95ED','#7EC644','#09BCE3','#EBAF0F','#F46B07'];
+                var szChartItem;
+                self.szChartData = [];
+                //遍历组装数据
+                devices.forEach(function (device) {
+                    var items = device.items;
+                    items.forEach(function (item,index) {
+                        if(self.facilityTypeName !== 'WQ'){
+                            self.$nextTick(function(){
+                                $(".multiDeviceBox").css("top","155px");
+                            });
                             if (item.itemID.indexOf('ultrasoundWaterLine') > 0) {
                                 self.deviceInfo = {
                                     sysUpdateTime: item.sysUpdateTime,
@@ -191,25 +187,47 @@ var comm = Vue.extend({
                                 self.itemID = item.itemID;
                                 self.loadChart(self.itemID,timeRangeObj);
                             }
-                        })
-                    });
-                    if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics.length > 0) {
-                        var pics = selectItem.facilityDevice.pics;
-                        self.devicePics.splice(0, self.devicePics.length);
-                        pics.forEach(function (pic) {
-                            self.devicePics.push(serviceHelper.getPicUrl(pic.id));
-                        })
-                    } else {
-                        self.devicePics = [
-                            './img/mediaGallery/default.png'
-                        ]
-                    }
-                }
-            }else{
-                this.$nextTick(function(){
-                    $(".multiDeviceBox").css("top","5px");
+                        }else{
+                            self.$nextTick(function(){
+                                $(".multiDeviceBox").css("top","5px");
+                            });
+                            self.szDeviceInfo.sysUpdateTime = item.sysUpdateTime;
+                            szChartItem={
+                                type:'gaugeChart',
+                                text:item.name,
+                                subtext:'{label|'+item.dValue+item.unit+'}',
+                                value:item.dValue,
+                                color:(function(){
+                                    var i;
+                                    if(index < chartColor.length){
+                                        i = index;
+                                    }else{
+                                        i = index%chartColor.length;
+                                    }
+                                    return chartColor[i];
+                                })()
+                            };
+                            self.szChartData.push(szChartItem);
+                            self.$nextTick(function(){
+                                self.szChartData.forEach(function(val,index){
+                                    var refName = 'szChart'+index;
+                                    self.$refs[refName][0].reloadChart(val);
+                                });
+                            })
+                        }
+                    })
                 });
-                alert(123);
+                if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics.length > 0) {
+                    var pics = selectItem.facilityDevice.pics;
+                    self.devicePics.splice(0, self.devicePics.length);
+                    pics.forEach(function (pic) {
+                        self.devicePics.push(serviceHelper.getPicUrl(pic.id));
+                    })
+                } else {
+                    self.devicePics = [
+                        './img/mediaGallery/default.png'
+                    ]
+                }
             }
             if(screen.width < 1400){
                 this.isOpenBox = false;

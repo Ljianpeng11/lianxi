@@ -1,6 +1,6 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
-var echarts = require('echarts');
+// var echarts = require('echarts');
 var moment = require('moment');
 
 
@@ -465,21 +465,21 @@ var comm = Vue.extend({
                             title: {
                                 text:data.text,
                                 subtext:data.subtext,
-                                x: '50%',
-                                y: '35%',
+                                x: '48%',
+                                y: '45%',
                                 textAlign: "center",
                                 textStyle: {
                                     fontWeight: 'normal',
-                                    "fontSize": 24
+                                    "fontSize": 16
                                 },
                                 subtextStyle: {
                                     color: '#fff',
                                     rich: {
                                         label: {
                                             backgroundColor: data.color,
-                                            padding:[5,20],
+                                            padding:[5,15],
                                             borderRadius:50,
-                                            fontSize:18
+                                            fontSize:14
                                         }
                                     }
                                 }
@@ -487,35 +487,37 @@ var comm = Vue.extend({
                             grid:{
                                 x:'center',
                                 y:'center',
-                                width:'80%',
-                                height:'200%'
+                                width:'80%'
                             },
                             series: [{
                                 name: '外围刻度',
                                 type: 'gauge',
-                                radius: '75%',
-                                center: ['50%', '50%'],
+                                title:{
+                                    show:false
+                                },
+                                radius: '130%',
+                                center: ['50%', '90%'],
                                 startAngle: 180,
                                 endAngle: 0,
                                 axisLine: {
                                     lineStyle: {
-                                        width:4,
+                                        width:1,
                                         color:[[1,data.color]]
                                     },
                                 },
                                 splitLine: {
-                                    length: -20,
+                                    length: -10,
                                     lineStyle:{
                                         color:data.color,
-                                        width:2,
+                                        width:1,
                                     }
                                 },
                                 axisLabel: {
-                                    distance: 30,
-                                    color:'#fff',
-                                    fontSize:24,
+                                    distance: 12,
+                                    color:data.color,
+                                    fontSize:12,
                                     formatter:function(param){
-                                        if ((param % 10)==0) {
+                                        if ((param % 50)==0) {
                                             return param
                                         }
                                     }
@@ -542,8 +544,8 @@ var comm = Vue.extend({
                                     clockWise: true,
                                     startAngle:180,
                                     color:['transparent'],
-                                    radius: '70%',
-                                    center: ['50%', '50%'],
+                                    radius: '80%',
+                                    center: ['50%', '90%'],
                                     hoverAnimation: false,
                                     labelLine:{
                                         normal:{
@@ -557,14 +559,14 @@ var comm = Vue.extend({
                                             label: {
                                                 normal: {
                                                     formatter: [
-                                                        '\n\n\n\n\n{dot|}'
+                                                        '\n\n\n{dot|}'
                                                     ].join('\n'),
                                                     rich: {
                                                         dot: {
                                                             backgroundColor: data.color,
-                                                            height: 15,
-                                                            width:15,
-                                                            borderRadius:15
+                                                            height: 10,
+                                                            width:10,
+                                                            borderRadius:10
                                                         }
                                                     }
                                                 }
@@ -577,6 +579,196 @@ var comm = Vue.extend({
                                     ]
                                 }
                             ]
+                        };
+                        break;
+                    case 'szLineChart':
+                        this.options = {
+                            // title: {
+                            //     text: '水质监测'
+                            // },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            color: ["#FF0000", "#00BFFF", "#FF00FF", "#1ce322", "#000000", '#EE7942','red','pink'],
+                            legend: {
+                                data:['水温','PH值','溶解氧','高锰酸盐指数','化学需氧量','五日生化需氧量','氨氮','总磷']
+                            },
+                            grid: {
+                                left: '3%',
+                                top:'10%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                offset:'40',
+                                boundaryGap: false,
+                                data: ['2017/1/24','2017/1/25','2017/1/26','2017/2/3','2017/2/6','2017/2/7','2017/2/8']
+                            },
+                            yAxis: [{
+                                type: 'value',
+                                // offset:'20',
+                                axisLabel: {
+                                    formatter: '{value} '
+                                },
+                                min: 0,
+                                max: 6
+                            }],
+                            series: [
+                            //     {
+                            //     "name": "1级",
+                            //     "type": "bar",
+                            //     "stack": "总量",
+                            //     "barMaxWidth": 35,
+                            //     "itemStyle": {
+                            //         "normal": {
+                            //             "color": "#11c5fa"
+                            //         }
+                            //     },
+                            //     "data": [
+                            //         1
+                            //     ],
+                            // },
+                            //     {
+                            //         "name": "2级",
+                            //         "type": "bar",
+                            //         "stack": "总量",
+                            //         "itemStyle": {
+                            //             "normal": {
+                            //                 "color": "#13a9f0",
+                            //                 "barBorderRadius": 0
+                            //             }
+                            //         },
+                            //         "data": [
+                            //             1,
+                            //         ]
+                            //     },{
+                            //         "name": "3级",
+                            //         "type": "bar",
+                            //         "stack": "总量",
+                            //         "itemStyle": {
+                            //             "normal": {
+                            //                 "color": "#60d41c",
+                            //                 "barBorderRadius": 0,
+                            //             }
+                            //         },
+                            //         "data": [
+                            //             1,
+                            //         ]
+                            //     },{
+                            //         "name": "4级",
+                            //         "type": "bar",
+                            //         "stack": "总量",
+                            //         "itemStyle": {
+                            //             "normal": {
+                            //                 "color": "#20b660",
+                            //                 "barBorderRadius": 0
+                            //             }
+                            //         },
+                            //         "data": [
+                            //             1,
+                            //         ]
+                            //     },{
+                            //         "name": "5级",
+                            //         "type": "bar",
+                            //         "stack": "总量",
+                            //         "itemStyle": {
+                            //             "normal": {
+                            //                 "color": "#fec109",
+                            //                 "barBorderRadius": 0,
+                            //             }
+                            //         },
+                            //         "data": [
+                            //             1,
+                            //         ]
+                            //     },{
+                            //         "name": "6级",
+                            //         "type": "bar",
+                            //         "stack": "总量",
+                            //         "itemStyle": {
+                            //             "normal": {
+                            //                 "color": "#fc5304",
+                            //                 "barBorderRadius": 0,
+                            //             }
+                            //         },
+                            //         "data": [
+                            //             1,
+                            //         ]
+                            //     },
+                                {
+                                    name: '水温',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[1, 2, 1, 3, 5, 3, 2]
+                                }, {
+                                    name: 'PH值',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[1, 3, 2, 3, 4, 3, 1]
+                                }, {
+                                    name: '溶解氧',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[3, 2, 4, 3, 5, 6, 2]
+                                }, {
+                                    name: '高锰酸盐指数',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[6, 2, 3, 4, 5, 1, 4]
+                                }, {
+                                    name: '化学需氧量',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[3, 2, 4, 1, 5, 2, 2]
+                                }, {
+                                    name: '五日生化需氧量',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[4, 5, 3, 1, 5, 4, 2]
+                                }, {
+                                    name: '氨氮',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[2, 3, 3, 4, 5, 1, 2]
+                                }, {
+                                    name: '总磷',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[5, 3, 1, 2, 3, 4, 2]
+                                }]
                         };
                         break;
                     default:break;

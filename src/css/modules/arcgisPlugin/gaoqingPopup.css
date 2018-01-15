@@ -53,6 +53,9 @@
 .gaoqingListContent .listLabel-left,.gaoqingListContent .listLabel-right{
     padding:0;
 }
+.gaoqingListContent .listLabel-right > p{
+    max-width:8em;
+}
 .gaoqingPopup .windowBox-sm{
     background: #2f91e4;
     color: #fff;

@@ -87,7 +87,7 @@
                </div>
                <div class="listLabel-right">
                   <p>{{devicesItem.name}}</p>
-                  <p v-for="item in devicesItem.items">{{item.dValue}}</p>
+                  <p v-for="item in devicesItem.items">{{item.dValue}}<span v-if="!!item.unit">({{item.unit}})</span></p>
                   <p>{{item.sysUpdateTime}}</p>
                </div>
          </div>
