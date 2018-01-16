@@ -249,3 +249,12 @@
         opacity: 1;
     }
 }
+
+@media screen and (max-width: 1600px) {
+    .listContent {
+        font-size: 11px;
+    }
+    .listLabel-right {
+        flex-basis: calc(51%);
+    }
+}
