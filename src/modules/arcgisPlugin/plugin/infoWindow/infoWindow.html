@@ -1,6 +1,7 @@
 <div class="gaoqingPopup">
-    <div v-bind:style="infoBox.style" v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+infoBox.facilityId" @mouseenter="highLight(infoBox)" @mouseleave="normalize(infoBox)" class="esri-popup__position-container esri-popup--title-visible esri-popup--content-visible esri-popup--top-aligned" >
-        <div class="windowBox-sm" v-show="!infoBox.showBigBox"
+    <div v-bind:style="infoBox.style" v-for="(infoBox,index) in infoBoxes" :id="'infoBox-'+infoBox.facilityId" class="esri-popup__position-container esri-popup--title-visible esri-popup--content-visible esri-popup--top-aligned" >
+        <div @mouseenter="highLight(infoBox)" @mouseleave="normalize(infoBox)"
+             class="windowBox-sm" v-show="!infoBox.showBigBox"
              :class="{
                         'warningStatus-bg':infoBox.state === 1,
                         'dangerStatus-bg':infoBox.state === 2
@@ -8,8 +9,9 @@
             <span v-if="!!infoBox.waterLevel">水位：{{infoBox.waterLevel}}(m)</span>
             <span v-if="!!infoBox.waterOverLevel">积水深度：{{infoBox.waterOverLevel}}(cm)</span>
             <span v-if="!!infoBox.manholeCoverState">井盖状态：{{infoBox.manholeCoverState}}</span>
+            <span class="cancelTag" @click.stop.prevent="alertInfoPanel">撤销报警</span>
         </div>
-        <div class="esri-popup__main-container" v-show="infoBox.showBigBox">
+        <div @mouseenter="highLight(infoBox)" @mouseleave="normalize(infoBox)" class="esri-popup__main-container" v-show="infoBox.showBigBox">
             <!-- Popup Header -->
             <header class="esri-popup__header">
                 <span class="esri-popup__header-title" :title="infoBox.name">{{infoBox.name}}</span>
@@ -48,5 +50,17 @@
             <!--<div class="esri-popup__pointer-direction esri-popup&#45;&#45;shadow"></div>-->
         <!--</div>-->
         <!-- /Popup Pointer -->
+    </div>
+    <div class="infoPanel" v-if="showInfoPanel">
+        <div class="infoPanel-top">
+            <p class="info-title">撤销报警<i class="el-icon-close"></i></p>
+        </div>
+        <div class="infoPanel-bottom">
+            <el-input type="textarea" v-model="form.desc"></el-input>
+            <div class="cesc-btnGroup">
+                <span>取消</span>
+                <span>确定</span>
+            </div>
+        </div>
     </div>
 </div>

@@ -141,10 +141,12 @@
 .szTop-r{
     text-align: center;
 }
-.grade-5{
-    padding: 0.2em 2em;
-    background: orange;
+.stateTag{
+    padding: 5px 20px;
     border-radius: 2em;
+}
+.grade-5{
+    background: orange;
 }
 .szPanel-bottom{
     height:calc(100% - 8em);
@@ -158,4 +160,17 @@
     flex:1 0 50%;
     min-height:8em;
     overflow:hidden;
+}
+.jgImgBox{
+    width:100%;
+    height:100%;
+    padding:10px;
+}
+.customCarousel{
+    width:100%;
+    height:100%;
+}
+.customCarousel .el-carousel__container{
+    height:100%;
+    text-align: center;
 }

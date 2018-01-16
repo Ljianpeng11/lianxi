@@ -55,7 +55,8 @@ var comm = Vue.extend({
             radarImg: "",
             rainSewageLayer : "",
             hightWaterLineLayer : "",
-            hightWaterLineLayerHandle : null
+            hightWaterLineLayerHandle : null,
+            showInfoPanel:false
         }
     },
     methods: {
