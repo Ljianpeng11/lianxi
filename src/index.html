@@ -11,17 +11,23 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
-    <title>高青县城市排水防汛应急指挥系统</title>
+    <title>东华在线监测系统</title>
     <link rel="stylesheet" href="./css/login.css">
 
     <script type="text/javascript">
         window.onload = function() {
+            document.onkeydown = function (e) {
+                var ev = document.all ? window.event : e;
+                if (ev.keyCode == 13) {
+                    self.login();
+                }
+            }
             this.getCookie();
-        }
+        };
         function login() {
-            /*$('#loginPanel').hide();
+            $('#loginPanel').hide();
             $('#loadingMask').show();
-            $('#app').show();*/
+            $('#app').show();
             var timmer = setInterval(function () {
                 if (!!window.eventHelper) {
                     window.eventHelper.emit('login-start');
@@ -30,7 +36,6 @@
             }, 10);
         };
         function getCookie(){
-            console.log(!!document.cookie);
             if(!!document.cookie){
                 var allcookies = document.cookie;
                 var arrCookie=allcookies.split("; ");
