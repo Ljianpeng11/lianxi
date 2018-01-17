@@ -1,0 +1,14 @@
+<div class="cancelBox" v-if="showCancelBox">
+    <div class="cancelBox-top">
+        <p class="info-title">撤销报警<i class="el-icon-close" @click="closeCancelBox"></i></p>
+    </div>
+    <div class="cancelBox-bottom">
+        <div class="el-textarea">
+            <textarea v-model="msg" type="textarea" rows="4" autocomplete="off" validateevent="true" class="el-textarea__inner" placeholder="请填写撤销原因"></textarea>
+        </div>
+        <div class="cesc-btnGroup">
+            <span class="cesc-btn cesc-cancel">取消</span>
+            <span class="cesc-btn cesc-ok">确定</span>
+        </div>
+    </div>
+</div>

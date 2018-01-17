@@ -15,8 +15,7 @@ var comm = Vue.extend({
             fcEvents: [],
             showInput: false,
             registerEvents: [],
-            waterLevel:null,
-            showInfoPanel:false
+            waterLevel:null
         }
     },
     methods: {
@@ -208,8 +207,8 @@ var comm = Vue.extend({
                 this.renderList(list);
             }.bind(this));
         },
-        alertInfoPanel:function(){
-            this.showInfoPanel = true;
+        openCancelPanel:function(){
+            eventHelper.emit('openCancelBox');
         }
     },
     mounted: function () {

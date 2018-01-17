@@ -773,7 +773,7 @@ var comm = Vue.extend({
                         break;
                     case 'categoryLineChart':
                         this.options = {
-                            color: data.color,
+                            color:data.color,
                             tooltip: {
                                 trigger: 'axis'
                             },
@@ -789,10 +789,10 @@ var comm = Vue.extend({
                                 })()
                             },
                             grid: {
-                                x: '15%',
-                                y: '10%',
-                                width:'70%',
-                                height: '70%'
+                                left: '8%',
+                                right: '8%',
+                                bottom: '15%',
+                                top: '20%'
                             },
                             xAxis: [
                                 {
@@ -803,19 +803,12 @@ var comm = Vue.extend({
                             yAxis: [
                                 {
                                     type: 'value',
-                                    minInterval: 1,
-                                    axisLabel: {
-                                        formatter: function(params){
-                                            if(params === 1){
-                                                return '正常';
-                                            }else if(params === 2){
-                                                return '报警';
-                                            }else if(params === 3){
-                                                return '已溢流';
-                                            }
-                                        }
+                                    axisTick:{
+                                        show:false
                                     },
-                                    name: data.yAxisName
+                                    axisLabel: {
+                                        show:false
+                                    }
                                 }
                             ],
                             series: (function () {

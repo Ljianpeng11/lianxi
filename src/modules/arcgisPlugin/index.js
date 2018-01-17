@@ -4,6 +4,7 @@ var eventHelper = require('../../utils/eventHelper');
 var toolBar = require('./plugin/toolBar/toolBar');
 var mapType = require('./plugin/mapType');
 var layerList = require('./plugin/layerList');
+var cancelBox = require('./plugin/cancelBox');
 var facilityController = require('controllers/facilityController');
 var infoWindow = require('./plugin/infoWindow');
 var rightPanel = require('modules/rightPanel');
@@ -328,6 +329,7 @@ var comm = Vue.extend({
     components: {
         'layer-list': layerList,
         'info-window': infoWindow,
+        'cancel-box':cancelBox,
         'right-panel': rightPanel,
         'retrospect-detail': retrospectDetail,
         'info-board': infoBoard,

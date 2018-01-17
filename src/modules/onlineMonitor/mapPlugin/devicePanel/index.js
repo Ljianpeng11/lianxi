@@ -70,11 +70,57 @@ var comm = Vue.extend({
             },
             jgLineChartOptions:{
                 type: 'categoryLineChart',
-                xData: ['广东', '湖北', '广西', '江苏', '山东', '浙江', '重庆'],
+                color: ['#2f91e4'],
+                xData: ['6:00', '10:00', '14:00', '18:00', '22:00', '2:00', '6:00'],
                 seriesData: [
                     {
                         type: 'line',
-                        data: [0, 2, 1, 1, 2, 1, 0]
+                        symbol:'circle',
+                        symbolSize:8,
+                        markLine: {
+                            symbolSize:0,
+                            label:{
+                                normal:{
+                                    position:'start',
+                                    color:'#333',
+                                    formatter:function(params){
+                                        if(params.value === 1){
+                                            return '正常';
+                                        }else if(params.value === 2){
+                                            return '报警';
+                                        }else if(params.value === 3){
+                                            return '已溢流';
+                                        }
+                                    }
+                                }
+                            },
+                            data: [{
+                                yAxis: 1,
+                                lineStyle:{
+                                    normal:{
+                                        type:'solid',
+                                        color:'#55D1AC'
+                                    }
+                                },
+                            },{
+                                yAxis: 2,
+                                lineStyle:{
+                                    normal:{
+                                        type:'solid',
+                                        color:'#EFBE3D'
+                                    }
+                                },
+                            }, {
+                                yAxis: 3,
+                                lineStyle:{
+                                    normal:{
+                                        type:'solid',
+                                        color:'#FD0BEF'
+                                    }
+                                },
+                            }]
+                        },
+                        data: [1, 2, 1, 3, 2, 1, 2],
                     }
                 ]
             }
