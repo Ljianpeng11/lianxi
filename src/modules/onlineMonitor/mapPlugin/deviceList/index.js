@@ -121,7 +121,7 @@ var comm = Vue.extend({
                     var wellState = 0;
                     for(var i = 0;i<val.items.length;i++){
                         var monitorData = val.items[i];
-                        if(!monitorData.dValue){
+                        if(monitorData.dValue == null){
                             monitorData.dValue = '-';
                         }
                         if(Number(monitorData.dValue) != parseInt(Number(monitorData.dValue))){

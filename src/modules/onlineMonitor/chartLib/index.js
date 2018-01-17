@@ -771,6 +771,62 @@ var comm = Vue.extend({
                                 }]
                         };
                         break;
+                    case 'categoryLineChart':
+                        this.options = {
+                            color: data.color,
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                right: '5px',
+                                top: '5px',
+                                data: (function () {
+                                    var arr = [];
+                                    data.seriesData.forEach(function (val) {
+                                        arr.push(val.name);
+                                    });
+                                    return arr;
+                                })()
+                            },
+                            grid: {
+                                x: '15%',
+                                y: '10%',
+                                width:'70%',
+                                height: '70%'
+                            },
+                            xAxis: [
+                                {
+                                    type: 'category',
+                                    data: data.xData
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type: 'value',
+                                    minInterval: 1,
+                                    axisLabel: {
+                                        formatter: function(params){
+                                            if(params === 1){
+                                                return '正常';
+                                            }else if(params === 2){
+                                                return '报警';
+                                            }else if(params === 3){
+                                                return '已溢流';
+                                            }
+                                        }
+                                    },
+                                    name: data.yAxisName
+                                }
+                            ],
+                            series: (function () {
+                                var arr = [];
+                                data.seriesData.forEach(function (val) {
+                                    arr.push(val);
+                                })
+                                return arr;
+                            })()
+                        };
+                        break;
                     default:break;
                 }
                 this.myChart.setOption(this.options);

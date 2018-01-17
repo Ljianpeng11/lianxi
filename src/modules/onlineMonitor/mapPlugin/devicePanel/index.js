@@ -67,6 +67,25 @@ var comm = Vue.extend({
             szChartData:[],
             szLineChartOptions:{
                 type:'szLineChart'
+            },
+            jgLineChartOptions:{
+                type: 'categoryLineChart',
+                xData: ['广东', '湖北', '广西', '江苏', '山东', '浙江', '重庆'],
+                seriesData: [
+                    {
+                        type: 'line',
+                        data: [0, 2, 1, 1, 2, 1, 0]
+                    }
+                ]
+            }
+        }
+    },
+    computed:{
+        arrowType:function(){
+            if(this.devicePics.length === 1){
+                return 'never';
+            }else{
+                return 'always';
             }
         }
     },
@@ -134,6 +153,19 @@ var comm = Vue.extend({
                 this.currentPic = pic;
                 this.showBigImg = true;
             }
+        },
+        loadSzChart:function(){
+            this.$nextTick(function(){
+                this.szChartData.forEach(function(val,index){
+                    var refName = 'szChart'+index;
+                    this.$refs[refName][0].reloadChart(val);
+                }.bind(this));
+            }.bind(this));
+        },
+        loadJgChart:function(){
+            this.$nextTick(function(){
+                this.$refs.jgLineChart.reloadChart(this.jgLineChartOptions);
+            }.bind(this));
         }
     },
     mounted: function () {
@@ -159,8 +191,9 @@ var comm = Vue.extend({
                 //遍历组装数据
                 devices.forEach(function (device) {
                     var items = device.items;
+                    self.szDeviceInfo.name = device.name;
                     items.forEach(function (item,index) {
-                        if(self.facilityTypeName !== 'WQ'){
+                        if(self.facilityTypeName !== 'WQ' && self.facilityTypeName !== 'MHC'){
                             self.$nextTick(function(){
                                 $(".multiDeviceBox").css("top","155px");
                             });
@@ -189,32 +222,33 @@ var comm = Vue.extend({
                                 self.loadChart(self.itemID,timeRangeObj);
                             }
                         }else{
-                            self.$nextTick(function(){
-                                $(".multiDeviceBox").css("top","5px");
-                            });
-                            self.szDeviceInfo.sysUpdateTime = item.sysUpdateTime;
-                            szChartItem={
-                                type:'gaugeChart',
-                                text:item.name,
-                                subtext:'{label|'+item.dValue+item.unit+'}',
-                                value:item.dValue,
-                                color:(function(){
-                                    var i;
-                                    if(index < chartColor.length){
-                                        i = index;
-                                    }else{
-                                        i = index%chartColor.length;
-                                    }
-                                    return chartColor[i];
-                                })()
-                            };
-                            self.szChartData.push(szChartItem);
-                            self.$nextTick(function(){
-                                self.szChartData.forEach(function(val,index){
-                                    var refName = 'szChart'+index;
-                                    self.$refs[refName][0].reloadChart(val);
+                            if(self.facilityTypeName === 'WQ'){
+                                self.$nextTick(function(){
+                                    $(".multiDeviceBox").css("top","5px");
                                 });
-                            })
+                                szChartItem={
+                                    type:'gaugeChart',
+                                    text:item.name,
+                                    subtext:'{label|'+item.dValue+item.unit+'}',
+                                    value:item.dValue,
+                                    color:(function(){
+                                        var i;
+                                        if(index < chartColor.length){
+                                            i = index;
+                                        }else{
+                                            i = index%chartColor.length;
+                                        }
+                                        return chartColor[i];
+                                    })()
+                                };
+                                self.szChartData.push(szChartItem);
+                                self.loadSzChart();
+                            }else if(self.facilityTypeName === 'MHC'){
+                                self.$nextTick(function(){
+                                    $(".multiDeviceBox").css("top","155px");
+                                });
+                            }
+                            self.szDeviceInfo.sysUpdateTime = item.sysUpdateTime;
                         }
                     })
                 });

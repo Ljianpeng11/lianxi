@@ -15,7 +15,8 @@ var comm = Vue.extend({
             fcEvents: [],
             showInput: false,
             registerEvents: [],
-            waterLevel:null
+            waterLevel:null,
+            showInfoPanel:false
         }
     },
     methods: {
@@ -206,6 +207,9 @@ var comm = Vue.extend({
                 //设备列表加载测站数据
                 this.renderList(list);
             }.bind(this));
+        },
+        alertInfoPanel:function(){
+            this.showInfoPanel = true;
         }
     },
     mounted: function () {

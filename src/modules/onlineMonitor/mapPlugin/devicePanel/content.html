@@ -5,7 +5,7 @@
             <i class="el-icon-d-arrow-right" :class="[isOpenBox?'rotate-up':'rotate-down']" @click="toggleBox"></i>
         </div>
         <div class="devicePanel-bottom" v-show="isOpenBox">
-            <el-tabs type="border-card" class="multiTabs" v-if="facilityTypeName !== 'WQ'">
+            <el-tabs type="border-card" class="multiTabs" v-if="facilityTypeName !== 'WQ' && facilityTypeName !== 'MHC'">
                 <!--<el-tab-pane label="雨量计">-->
                 <!--<div class="tabInfoBox">-->
                 <!--<div class="tabInfoImg">-->
@@ -106,17 +106,29 @@
                 <div class="szPanel-top">
                     <div class="szTop-l">
                         <p>上次通信时间：{{szDeviceInfo.sysUpdateTime}}</p>
-                        <p>设备类型：水质监测箱</p>
+                        <p>设备类型：{{szDeviceInfo.name}}</p>
                         <p>地址：{{deviceInfo.title}}</p>
                     </div>
-                    <div class="szTop-r">
+                    <div class="szTop-r" v-if="facilityTypeName == 'WQ'">
                         <p>当前等级</p>
-                        <span class="grade-5">V</span>
+                        <span  class="stateTag grade-5">V</span>
+                    </div>
+                    <div class="szTop-r" v-else-if="facilityTypeName == 'MHC'">
+                        <p>当前状态</p>
+                        <span class="stateTag grade-5">已打开</span><div style="margin:5px;"></div>
+                        <span class="stateTag grade-5">未溢流</span>
                     </div>
                 </div>
                 <div class="szPanel-bottom">
-                    <div class="szChartBox" v-for="(item,index) in szChartData">
+                    <div v-if="facilityTypeName == 'WQ'" class="szChartBox" v-for="(item,index) in szChartData">
                         <chart-lib :chartId="'szChart'+index" :ref="'szChart'+index" :chartOptions="item"></chart-lib>
+                    </div>
+                    <div class="jgImgBox" v-if="facilityTypeName == 'MHC'">
+                        <el-carousel class="customCarousel" trigger="click" :arrow="arrowType">
+                            <el-carousel-item v-for="item in devicePics" :key="item">
+                                <img :src="item" alt="设备图片" height="100%">
+                            </el-carousel-item>
+                        </el-carousel>
                     </div>
                 </div>
             </div>
@@ -126,7 +138,7 @@
         <div id="devicePanel" class="devicePanel deviceInfo animated" v-if="isOpenPanel">
             <div class="devicePanel-top">
                 <span>{{deviceInfo.title}}</span>
-                <div class="deviceMiddle" v-if="facilityTypeName !== 'WQ'">
+                <div class="deviceMiddle" v-if="facilityTypeName !== 'WQ' && facilityTypeName !== 'MHC'">
                 <!--<span class="selectItem">参考线：-->
                 <!--<b>参考线</b><i class="icon iconfont icon-xiajiantou"></i>-->
                 <!--<ul class="selectBox" style="display:none">-->
@@ -165,8 +177,9 @@
                 </span>
             </div>
             <div class="devicePanel-bottom">
-                <chart-lib v-if="facilityTypeName !== 'WQ'" :chartId="'deviceWaterChart'" ref="deviceWaterChart" :chartOptions="chartOptions"></chart-lib>
-                <chart-lib v-else :chartId="'szLineChart'" ref="szLineChart" :chartOptions="szLineChartOptions"></chart-lib>
+                <chart-lib v-if="facilityTypeName !== 'WQ' && facilityTypeName !== 'MHC'" :chartId="'deviceWaterChart'" ref="deviceWaterChart" :chartOptions="chartOptions"></chart-lib>
+                <chart-lib v-else-if="facilityTypeName === 'WQ'" :chartId="'szLineChart'" ref="szLineChart" :chartOptions="szLineChartOptions"></chart-lib>
+                <chart-lib v-else-if="facilityTypeName === 'MHC'" :chartId="'jgLineChart'" ref="jgLineChart" :chartOptions="jgLineChartOptions"></chart-lib>
             </div>
         </div>
     </transition>
