@@ -151,6 +151,7 @@ var comm = Vue.extend({
                     self.chartOptions.xData = [];
                     self.chartOptions.yData1 = [];
                     self.chartOptions.yData2 = [];
+                    console.log(result)
                     result.forEach(function(value){
                         self.chartOptions.xData.push(value.deviceUpdateTime);
                         self.chartOptions.yData1.push(parseFloat(value.dValue).toFixed(2));
@@ -216,7 +217,7 @@ var comm = Vue.extend({
     mounted: function () {
         eventHelper.on('openDevicePanel', function (selectItem) {
             this.facilityTypeName = selectItem.facilityTypeName;
-            this.deviceInfo.title = selectItem.name;
+            this.deviceInfo.name = selectItem.name;
             this.isOpenPanel = true;
             if (!!selectItem.facilityDevice) {
                 //水位历史查询时间设置
@@ -297,6 +298,10 @@ var comm = Vue.extend({
                         }
                     })
                 });
+                var allData = [selectItem,this.chartOptions,timeRangeObj];
+                debugger
+                eventHelper.emit('openStatisticsPanel',allData);
+                console.log(allData)
                 if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics.length > 0) {
                     var pics = selectItem.facilityDevice.pics;
                     self.devicePics.splice(0, self.devicePics.length);

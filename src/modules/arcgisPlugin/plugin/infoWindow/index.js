@@ -213,6 +213,7 @@ var comm = Vue.extend({
     },
     mounted: function () {
         eventHelper.on('alert-point', function (points, isReplace) {
+            debugger
             if (!!isReplace) {
                 this.infoBoxes = points;
             } else {

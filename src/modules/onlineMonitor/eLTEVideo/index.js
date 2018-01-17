@@ -29,7 +29,7 @@ var comm = Vue.extend({
         load : function (){
             this.ocxObj = $("#eLTE_PlayerOCX")[0];
             if(!this.ocxObj.ELTE_OCX_UnLoad){
-                this.ocxStatus="该浏览器不支持控件加载，请使用IE浏览器并使用管理员模式运行";
+               /* this.ocxStatus="该浏览器不支持控件加载，请使用IE浏览器并使用管理员模式运行";*/
             } else if (this.ocxObj) {
                 var resultXml = this.ocxObj.ELTE_OCX_UnLoad();
                 var xmlDoc = $.parseXML(resultXml);
