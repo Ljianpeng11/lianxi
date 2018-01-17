@@ -16,3 +16,13 @@
     background-color: rgba(102, 0, 255, 0.3);
     color: white;
 }
+
+.esri-zoom {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.esri-widget-button {
+    width: 42px;
+    height: 42px;
+}

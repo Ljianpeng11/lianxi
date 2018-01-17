@@ -8,12 +8,12 @@ var comm = Vue.extend({
     data: function () {
         return {
             currentPage: 1,
-            idenfityInfoArr: [],
             isQueryFacility: false,
             showIdentifyResult: false,
             isAddEvent:false,
             identifyData:[],
-            displayIdentifyInfoTitle:""
+            displayIdentifyInfoTitle:"",
+            displayIdentifyInfo:[]
         }
     },
     methods: {
@@ -22,11 +22,17 @@ var comm = Vue.extend({
             this.isQueryFacility = false;
             //this.leftMap.setMapCursor("default");
             this.showIdentifyResult = false;
-            mapHelper.removeLocationIdentifyLayer();
+            //mapHelper.removeLocationIdentifyLayer();
         },
         handleCurrentChange: function (index) {
-            //this.displayIdentifyInfo = this.identifyData[index - 1].prpos;
-            //this.displayIdentifyInfoTitle = this.identifyData[index - 1].titleName;
+            this.currentPage=index;
+            this.displayIdentifyInfo = this.identifyData[index - 1];
+            this.displayIdentifyInfoTitle = "排水沟渠";
+            for(var i in this.displayIdentifyInfo.props){
+                if(this.displayIdentifyInfo.props[i].title=="D_S")
+                    this.displayIdentifyInfoTitle = "排水管道";
+            }
+
             var style ={
                 color: [226, 119, 40],
                 width: 4
@@ -35,7 +41,7 @@ var comm = Vue.extend({
             var facilityIdentifyLayer = this.baseView.map.findLayerById("facilityIdentify");
             facilityIdentifyLayer.removeAll();
             var location
-            var geometry = this.identifyData[index].geometry;
+            var geometry = this.identifyData[index-1].geometry;
             if(geometry.type=="LINE"){
                 var paths= [];
                 for(var i in geometry.points){
@@ -46,9 +52,9 @@ var comm = Vue.extend({
             } else {
                 location = mapHelper.createPolyline(facilityIdentifyLayer,geometry.points,style);
             }
-            mapHelper.setCenter(this.baseView,location.geometry.extent.center.x,location.geometry.extent.center.y,15);
+            mapHelper.setCenter(this.baseView,location.geometry.extent.center.x,location.geometry.extent.center.y,17);
         },
-        allPrpos : function(feature){
+        allProps : function(feature){
             var props = [];
             for(var i in feature.fieldNames){
                 props.push({title:feature.fieldNames[i],value:feature.fieldValues[i]});
@@ -59,7 +65,7 @@ var comm = Vue.extend({
             var queryParam = {
                 'datasetNames':["gqpsfacilitygh:PS_CANAL_ZY_GLX","gqpsfacilitygh:PS_PIPE_ZY_GLX"],
                 'getFeatureMode':"BUFFER",
-                'bufferDistance':5,
+                'bufferDistance':0.0001,
                 'geometry':{
                     'id':0,
                     'style':null,
@@ -76,6 +82,8 @@ var comm = Vue.extend({
                     'type':"POINT"
                 }
             };
+            //http://11.0.204.11:8090/iserver/services/data-gqpsfacility
+            //http://223.99.169.187:20070/iserver/services/data-gqpsfacility
             $.ajax({
                 type:"POST",
                 url:"http://11.0.204.11:8090/iserver/services/data-gqpsfacility/rest/data/featureResults.json?returnContent=true",
@@ -86,17 +94,16 @@ var comm = Vue.extend({
             })
         },
         handleSearchError:function(erro,info,obj){
-            this.$message.error('地名地址查询失败！');
+            this.$message.error('点查询失败！');
         },
         handleSearchSuccess:function(data){
             if(data.features.length>0){
-                var facilityIdentifyLayer = mapHelper.createGraphicsLayer(this.baseView.map,"facilityIdentify");
+                mapHelper.createGraphicsLayer(this.baseView.map,"facilityIdentify");
                 this.identifyData = [];
                 if (data.features && data.features.length > 0) {
                     for (var i in data.features) {
                         var feature = data.features[i];
-                        feature.titleName = "";
-                        feature.prpos =  this.allPrpos(feature);
+                        feature.props = this.allProps(feature);
                         this.identifyData.push(feature);
                     }
                     this.showIdentifyResult=true;
