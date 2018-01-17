@@ -630,7 +630,7 @@ var comm = Vue.extend({
             this.currentmap = map.map;
             this.leftMap = map.view;
             this.resetLayer();
-            this.selectedPipeLineLayer = mapHelper.getGraphicsLayer('selectedPipeLine', 99999, this.map);
+            this.selectedPipeLineLayer = mapHelper.getGraphicsLayer('selectedPipeLine', 99999, this.currentmap);
             // this.selectedPipeLineLayer.on('click', function () {
             //     console.log(1);
             // });
@@ -686,7 +686,7 @@ var comm = Vue.extend({
 
             }.bind(this));
         }.bind(this));
-        eventHelper.on('open-small-right-panel', function () {debugger;
+        eventHelper.on('open-small-right-panel', function () {
             if (this.smallRightPanelOpen == false) {
                 this.smallRightPanelOpen = true;
                 //初始化状态
