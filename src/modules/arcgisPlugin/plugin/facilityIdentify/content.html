@@ -7,15 +7,15 @@
     </div>
     <el-card class="identifyInfoDiv" v-show="showIdentifyResult">
         <div slot="header">
-            <div class='identifyHeader'><a href="#" v-show="currentPage>1" @click="currentPage = currentPage - 1;handleCurrentChange(currentPage)">
-                < </a>{{displayIdentifyInfoTitle}}<a href="#" v-show='currentPage<identifyData.length' @click="currentPage = currentPage +1;handleCurrentChange(currentPage)">
+            <div class='identifyHeader'><a href="#" v-show="currentPage>1" @click="handleCurrentChange(--currentPage)">
+                < </a>{{displayIdentifyInfoTitle}}<a href="#" v-show='currentPage<identifyData.length' @click="handleCurrentChange(++currentPage)">
                 ></a></div>
             <div class='identifyCounter'>{{currentPage}}/{{identifyData.length}}</div>
         </div>
         <div class="identifyInfoBody">
-            <div v-for="idenfityInfo in identifyData" class="identifyContent">
-                <span class="title">{{idenfityInfo.prpos.title}}</span>
-                <span class="value" :title="idenfityInfo.prpos.value">{{idenfityInfo.prpos.value}}</span>
+            <div v-for="idenfityInfo in displayIdentifyInfo.props" class="identifyContent">
+                <span class="title">{{idenfityInfo.title}}</span>
+                <span class="value" :title="idenfityInfo.value">{{idenfityInfo.value}}</span>
             </div>
         </div>
     </el-card>

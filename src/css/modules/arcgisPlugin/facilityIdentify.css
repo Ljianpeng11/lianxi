@@ -82,7 +82,7 @@
 }
 
 .identifyInfoDiv .identifyHeader {
-    width: calc(100% - 2em);
+    /*width: calc(100% - 2em);*/
     float: left;
 }
 
@@ -97,8 +97,8 @@
 }
 
 .identifyInfoDiv .identifyCounter {
-    float: left;
-    width: 2em;
+    float: right;
+    /*width: 2em;*/
 }
 
 .identifyInfoDiv .el-card__body {
