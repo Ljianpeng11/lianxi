@@ -48,7 +48,7 @@ var comm = Vue.extend({
                     instance.dojoOn(
                         this.baseView.root, "resize", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
-                            console.log("resize");
+                            //console.log("resize");
                         })
                     )
                 );
@@ -56,7 +56,7 @@ var comm = Vue.extend({
                     instance.dojoOn(
                         this.baseView.root, "mousewheel", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
-                            console.log("mousewheel");
+                            //console.log("mousewheel");
                         })
                     )
                 );
@@ -64,7 +64,7 @@ var comm = Vue.extend({
                     instance.dojoOn(
                         this.baseView.root, "dblclick", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
-                            console.log("dblclick");
+                            //console.log("dblclick");
                         })
                     )
                 );
@@ -73,7 +73,7 @@ var comm = Vue.extend({
                     instance.dojoOn(
                         this.baseView.root, "mousemove", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
-                            console.log("mousemove");
+                            //console.log("mousemove");
                         })
                     )
                 );
@@ -81,10 +81,21 @@ var comm = Vue.extend({
                     instance.dojoOn(
                         this.baseView.root, "mouseup", instance.dojoHitct(this, function () {
                             this.relocate(this.infoBoxes);
-                            console.log("mouseup");
+                            //console.log("mouseup");
                         })
                     )
                 );
+
+                this.baseView.watch("animation", function(response){
+                    if(response && response.state === "running"){
+                        console.log("Animation in progress");
+                        this.relocate(this.infoBoxes);
+                    }
+                    else{
+                        console.log("No animation");
+                        this.relocate(this.infoBoxes);
+                    }
+                }.bind(this));
             }
         },
         isNumber: function (value) {
