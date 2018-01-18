@@ -864,8 +864,8 @@ var comm = Vue.extend({
             if (!!this.arrowGraphicLayer) {
                 mapHelper.removeLayers(this.currentmap, this.arrowGraphicLayer);
             }
-            this.graphicsLayer = mapHelper.getGraphicsLayer('singleTrace',99999, this.map);
-            this.arrowGraphicLayer = mapHelper.getGraphicsLayer('arrowLayer',99999, this.map);
+            this.graphicsLayer = mapHelper.getGraphicsLayer('singleTrace',99999, this.currentmap);
+            this.arrowGraphicLayer = mapHelper.getGraphicsLayer('arrowLayer',99999, this.currentmap);
             // this.graphicsLayer.removeAll();
             // this.arrowGraphicLayer.removeAll();
             if (!intervalHandleController) {
