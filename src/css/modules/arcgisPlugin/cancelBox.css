@@ -1,0 +1,43 @@
+.cancelBox{
+    width: 450px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 99999;
+    border-radius:20px;
+    box-shadow:0 0 10px 0 rgba(0,0,0,0.2);
+}
+.cancelBox-top{
+    height:3em;
+    line-height: 3em;
+    background: #2f91e4;
+    text-align: center;
+    color: #fff;
+    padding:0 1em;
+}
+.cancelBox-top i{
+    margin-top:1em;
+    float: right;
+}
+.cancelBox-bottom{
+    background: #fff;
+    padding:20px 30px;
+}
+.cesc-btnGroup{
+    margin-top:20px;
+    text-align: center;
+}
+.cesc-btn{
+    padding:0.5em 1.5em;
+    border-radius:2em;
+    color: #fff;
+}
+.cesc-cancel{
+    background: #A9A9A9;
+    margin-right:1em;
+    margin-left:-1em;
+}
+.cesc-ok{
+    background: #2f91e4;
+}

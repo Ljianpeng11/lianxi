@@ -1,6 +1,6 @@
 var template = require('./content.html');
 var eventHelper = require('utils/eventHelper');
-var echarts = require('echarts');
+// var echarts = require('echarts');
 var moment = require('moment');
 
 
@@ -460,13 +460,373 @@ var comm = Vue.extend({
 
                         };
                         break;
+                    case 'gaugeChart':
+                        this.options = {
+                            title: {
+                                text:data.text,
+                                subtext:data.subtext,
+                                x: '48%',
+                                y: '45%',
+                                textAlign: "center",
+                                textStyle: {
+                                    fontWeight: 'normal',
+                                    "fontSize": 16
+                                },
+                                subtextStyle: {
+                                    color: '#fff',
+                                    rich: {
+                                        label: {
+                                            backgroundColor: data.color,
+                                            padding:[5,15],
+                                            borderRadius:50,
+                                            fontSize:14
+                                        }
+                                    }
+                                }
+                            },
+                            grid:{
+                                x:'center',
+                                y:'center',
+                                width:'80%'
+                            },
+                            series: [{
+                                name: '外围刻度',
+                                type: 'gauge',
+                                title:{
+                                    show:false
+                                },
+                                radius: '130%',
+                                center: ['50%', '90%'],
+                                startAngle: 180,
+                                endAngle: 0,
+                                axisLine: {
+                                    lineStyle: {
+                                        width:1,
+                                        color:[[1,data.color]]
+                                    },
+                                },
+                                splitLine: {
+                                    length: -10,
+                                    lineStyle:{
+                                        color:data.color,
+                                        width:1,
+                                    }
+                                },
+                                axisLabel: {
+                                    distance: 12,
+                                    color:data.color,
+                                    fontSize:12,
+                                    formatter:function(param){
+                                        if ((param % 50)==0) {
+                                            return param
+                                        }
+                                    }
+                                },
+                                detail: {
+                                    show: false,
+                                },
+                                axisTick:{
+                                    splitNumber:1,
+                                    lineStyle:{
+                                        opacity:0,
+                                    }
+                                },
+                                pointer:{
+                                    show:false
+                                },
+                                data: [{
+                                    value:'',
+                                    name:'水温'
+                                }]
+                            },{
+                                    name: 'pie',
+                                    type: 'pie',
+                                    clockWise: true,
+                                    startAngle:180,
+                                    color:['transparent'],
+                                    radius: '80%',
+                                    center: ['50%', '90%'],
+                                    hoverAnimation: false,
+                                    labelLine:{
+                                        normal:{
+                                            show:false
+                                        }
+                                    },
+                                    data: [
+                                        {
+                                            name:'水温',
+                                            value:data.value*360/100,
+                                            label: {
+                                                normal: {
+                                                    formatter: [
+                                                        '\n\n\n{dot|}'
+                                                    ].join('\n'),
+                                                    rich: {
+                                                        dot: {
+                                                            backgroundColor: data.color,
+                                                            height: 10,
+                                                            width:10,
+                                                            borderRadius:10
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            name:'',
+                                            value:(100 - data.value)*360/100
+                                        }
+                                    ]
+                                }
+                            ]
+                        };
+                        break;
+                    case 'szLineChart':
+                        this.options = {
+                            // title: {
+                            //     text: '水质监测'
+                            // },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            color: ["#FF0000", "#00BFFF", "#FF00FF", "#1ce322", "#000000", '#EE7942','red','pink'],
+                            legend: {
+                                data:['水温','PH值','溶解氧','高锰酸盐指数','化学需氧量','五日生化需氧量','氨氮','总磷']
+                            },
+                            grid: {
+                                left: '3%',
+                                top:'10%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                offset:'40',
+                                boundaryGap: false,
+                                data: ['2017/1/24','2017/1/25','2017/1/26','2017/2/3','2017/2/6','2017/2/7','2017/2/8']
+                            },
+                            yAxis: [{
+                                type: 'value',
+                                // offset:'20',
+                                axisLabel: {
+                                    formatter: '{value} '
+                                },
+                                min: 0,
+                                max: 6
+                            }],
+                            series: [
+                            //     {
+                            //     "name": "1级",
+                            //     "type": "bar",
+                            //     "stack": "总量",
+                            //     "barMaxWidth": 35,
+                            //     "itemStyle": {
+                            //         "normal": {
+                            //             "color": "#11c5fa"
+                            //         }
+                            //     },
+                            //     "data": [
+                            //         1
+                            //     ],
+                            // },
+                            //     {
+                            //         "name": "2级",
+                            //         "type": "bar",
+                            //         "stack": "总量",
+                            //         "itemStyle": {
+                            //             "normal": {
+                            //                 "color": "#13a9f0",
+                            //                 "barBorderRadius": 0
+                            //             }
+                            //         },
+                            //         "data": [
+                            //             1,
+                            //         ]
+                            //     },{
+                            //         "name": "3级",
+                            //         "type": "bar",
+                            //         "stack": "总量",
+                            //         "itemStyle": {
+                            //             "normal": {
+                            //                 "color": "#60d41c",
+                            //                 "barBorderRadius": 0,
+                            //             }
+                            //         },
+                            //         "data": [
+                            //             1,
+                            //         ]
+                            //     },{
+                            //         "name": "4级",
+                            //         "type": "bar",
+                            //         "stack": "总量",
+                            //         "itemStyle": {
+                            //             "normal": {
+                            //                 "color": "#20b660",
+                            //                 "barBorderRadius": 0
+                            //             }
+                            //         },
+                            //         "data": [
+                            //             1,
+                            //         ]
+                            //     },{
+                            //         "name": "5级",
+                            //         "type": "bar",
+                            //         "stack": "总量",
+                            //         "itemStyle": {
+                            //             "normal": {
+                            //                 "color": "#fec109",
+                            //                 "barBorderRadius": 0,
+                            //             }
+                            //         },
+                            //         "data": [
+                            //             1,
+                            //         ]
+                            //     },{
+                            //         "name": "6级",
+                            //         "type": "bar",
+                            //         "stack": "总量",
+                            //         "itemStyle": {
+                            //             "normal": {
+                            //                 "color": "#fc5304",
+                            //                 "barBorderRadius": 0,
+                            //             }
+                            //         },
+                            //         "data": [
+                            //             1,
+                            //         ]
+                            //     },
+                                {
+                                    name: '水温',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[1, 2, 1, 3, 5, 3, 2]
+                                }, {
+                                    name: 'PH值',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[1, 3, 2, 3, 4, 3, 1]
+                                }, {
+                                    name: '溶解氧',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[3, 2, 4, 3, 5, 6, 2]
+                                }, {
+                                    name: '高锰酸盐指数',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[6, 2, 3, 4, 5, 1, 4]
+                                }, {
+                                    name: '化学需氧量',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[3, 2, 4, 1, 5, 2, 2]
+                                }, {
+                                    name: '五日生化需氧量',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[4, 5, 3, 1, 5, 4, 2]
+                                }, {
+                                    name: '氨氮',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[2, 3, 3, 4, 5, 1, 2]
+                                }, {
+                                    name: '总磷',
+                                    type: 'line',
+                                    lineStyle: {
+                                        normal: {
+                                            width: 2,
+                                        }
+                                    },
+                                    data:[5, 3, 1, 2, 3, 4, 2]
+                                }]
+                        };
+                        break;
+                    case 'categoryLineChart':
+                        this.options = {
+                            color:data.color,
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                right: '5px',
+                                top: '5px',
+                                data: (function () {
+                                    var arr = [];
+                                    data.seriesData.forEach(function (val) {
+                                        arr.push(val.name);
+                                    });
+                                    return arr;
+                                })()
+                            },
+                            grid: {
+                                left: '8%',
+                                right: '8%',
+                                bottom: '15%',
+                                top: '20%'
+                            },
+                            xAxis: [
+                                {
+                                    type: 'category',
+                                    data: data.xData
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type: 'value',
+                                    axisTick:{
+                                        show:false
+                                    },
+                                    axisLabel: {
+                                        show:false
+                                    }
+                                }
+                            ],
+                            series: (function () {
+                                var arr = [];
+                                data.seriesData.forEach(function (val) {
+                                    arr.push(val);
+                                })
+                                return arr;
+                            })()
+                        };
+                        break;
                     default:break;
                 }
                 this.myChart.setOption(this.options);
                 eventHelper.on('toggle-menu', function () {
                     setTimeout(function () {
                         this.myChart.resize();
-                    }.bind(this), 1000)
+                    }.bind(this), 1000);
                 }.bind(this));
                 // if(data.type === 'YLChart'){
                 //     this.refreshYLChart();

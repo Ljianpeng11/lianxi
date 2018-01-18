@@ -86,3 +86,17 @@
 .warningStatus-bg{
     background: #f2b817!important;
 }
+.infoPanel{
+    width:450px;
+}
+.cancelTag{
+    background: #2f91e4;
+    padding: 5px 10px;
+    border-radius: 20px;
+    text-align: center;
+}
+.infoPanel-top{
+    height:3em;
+    line-height: 3em;
+    text-align: center;
+}

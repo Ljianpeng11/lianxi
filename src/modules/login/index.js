@@ -23,9 +23,6 @@ var comm = Vue.extend({
     methods: {
         login: function () {
             eventHelper.emit('loading-start');
-            $('#loginPanel').hide();
-            $('#loadingMask').show();
-            $('#app').show();
             loginCtrl.login(this.userName, this.password, function (token) {
                 var user = {
                     userName: this.userName,
@@ -63,12 +60,12 @@ var comm = Vue.extend({
     },
     mounted: function () {
         var self = this;
-        document.onkeydown = function (e) {
-            var ev = document.all ? window.event : e;
-            if (ev.keyCode == 13) {
-                self.login();
-            }
-        }
+        /*document.onkeydown = function (e) {
+         var ev = document.all ? window.event : e;
+         if (ev.keyCode == 13) {
+         self.login();
+         }
+         }*/
         /*var cache = window.sessionStorage.getItem('cescToken');
          if (!!cache) {
          //当页面初始化有token时（也就是已登录）会进入这里
