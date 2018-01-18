@@ -38,7 +38,6 @@ var comm = Vue.extend({
                 switch(data.type){
                     case 'YLChart':
                         this.options = {
-                            backgroundColor: '#fff',
                             tooltip: {
                                 trigger: 'axis'
                             },
@@ -62,11 +61,7 @@ var comm = Vue.extend({
                                 {
                                     name: '测量液位(m)',
                                     type: 'value',
-                                    max: (function(){
-                                        if(!!data.alarmHeight){
-                                            return Math.ceil(parseFloat(data.alarmHeight) + 1);
-                                        }
-                                    })(),
+                                    max: data.yMax,
                                     splitNumber: 4,
                                     axisLine: {
                                         show: false

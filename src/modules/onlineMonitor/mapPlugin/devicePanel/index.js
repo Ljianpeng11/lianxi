@@ -30,6 +30,7 @@ var comm = Vue.extend({
                 warningHeight:0,
                 wellLidHeight:0,
                 alarmHeight:0,
+                yMax:0,
                 xData: [],
                 yData1: [],
                 yData2: []
@@ -153,6 +154,13 @@ var comm = Vue.extend({
                     self.chartOptions.yData2 = [];
                     console.log(result)
                     result.forEach(function(value){
+                        //设置y轴最大值，若水位值大于报警线则水位值+1，反之报警值+0.5;
+                        // if(parseFloat(value.dValue) > self.chartOptions.wellLidHeight){
+                        //     self.chartOptions.yMax =  Math.ceil(parseFloat(value.dValue) + 1);
+                        // }else{
+                        //     self.chartOptions.yMax = Math.ceil(parseFloat(self.chartOptions.wellLidHeight) + 0.5);
+                        // }
+                        //加载雨量图表x轴，水位y轴，雨量y轴数据
                         self.chartOptions.xData.push(value.deviceUpdateTime);
                         self.chartOptions.yData1.push(parseFloat(value.dValue).toFixed(2));
                         self.chartOptions.yData2.push(0);
@@ -240,34 +248,38 @@ var comm = Vue.extend({
                     self.szDeviceInfo.name = device.name;
                     items.forEach(function (item,index) {
                         if(self.facilityTypeName !== 'WQ' && self.facilityTypeName !== 'MHC'){
+                            //设置父容器高度
                             self.$nextTick(function(){
                                 $(".multiDeviceBox").css("top","155px");
                             });
+                            //加载雨量图表各项数据
                             if (item.itemID.indexOf('ultrasoundWaterLine') > 0) {
                                 self.deviceInfo = {
                                     sysUpdateTime: item.sysUpdateTime,
-                                    alarmHeight: item.alarmHeight,
-                                    warningHeight: item.warningHeight,
-                                    wellLidHeight: item.wellLidHeight,
-                                    waterLevel: item.dValue
+                                    alarmHeight: parseFloat(item.alarmHeight),
+                                    warningHeight: parseFloat(item.warningHeight),
+                                    wellLidHeight: parseFloat(item.wellLidHeight),
+                                    waterLevel: parseFloat(item.dValue)
                                 }
-                                if(!!item.alarmHeight){
-                                    self.chartOptions.alarmHeight = item.wellLidHeight;
+                                //设置报警值，预警值，最大值
+                                if(!!item.wellLidHeight){
+                                    self.chartOptions.alarmHeight = parseFloat(item.wellLidHeight);
                                 }
                                 if(!!item.warningHeight){
-                                    self.chartOptions.warningHeight = item.warningHeight;
+                                    self.chartOptions.warningHeight = parseFloat(item.warningHeight);
                                 }
                                 // if(!!item.wellLidHeight){
                                 //     self.chartOptions.wellLidHeight = item.wellLidHeight;
                                 // }
                             } else if (item.itemID.indexOf('stressWaterLine') > 0) {
-                                self.deviceInfo.stressWaterLine = item.dValue;
+                                self.deviceInfo.stressWaterLine = parseFloat(item.dValue);
                             }
                             if (item.itemTypeName.indexOf('waterLevel') !== -1) {//todo 动态输入水位值（超声波、压力）
                                 self.itemID = item.itemID;
                                 self.loadChart(self.itemID,timeRangeObj);
                             }
                         }else{
+                            //水质和井盖数据加载
                             if(self.facilityTypeName === 'WQ'){
                                 self.$nextTick(function(){
                                     $(".multiDeviceBox").css("top","5px");

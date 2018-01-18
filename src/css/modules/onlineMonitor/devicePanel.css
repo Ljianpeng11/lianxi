@@ -82,7 +82,7 @@
     overflow: auto;
     padding: 1em;
 }
-.tabContent{
+.tabBox{
     flex-basis: 100%;
     padding: 0;
     height: 100%;
@@ -90,7 +90,7 @@
     justify-content: center;
     align-items: center;
 }
-.tabContent .listLabel-left,.tabContent .listLabel-right{
+.tabBox .listLabel-left,.tabBox .listLabel-right{
     flex:1;
 }
 .cesc-badge .arrow-up{
@@ -177,8 +177,5 @@
     text-align: center;
 }
 .swImg{
-    background-image: url('../../../img/emegency/modelImg.png');
-    background-repeat: no-repeat;
-    background-position: 91% 57%;
-    background-size: 115px;
+    background: url('../../../img/emegency/modelImg.png')no-repeat 91% 57%/115px!important;
 }
