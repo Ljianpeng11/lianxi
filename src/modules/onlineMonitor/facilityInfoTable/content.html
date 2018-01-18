@@ -80,16 +80,22 @@
                     width="100">
             </el-table-column>
             <el-table-column
+                    prop="deviceStateStr"
+                    label="状态"
+                    :formatter="deviceStateStrFormat"
+                    width="180">
+            </el-table-column>
+            <el-table-column
                     prop="waterTraffic"
                     label="流量(L/s)"
                     :formatter="waterTrafficFormat"
                     width="100">
             </el-table-column>
             <el-table-column
-                prop="waterSpeed"
-                label="流速(m/s)"
-                :formatter="waterSpeedFormat"
-                width="100">
+                    prop="waterSpeed"
+                    label="流速(m/s)"
+                    :formatter="waterSpeedFormat"
+                    width="100">
             </el-table-column>
             <el-table-column
                     prop="solids"
@@ -114,12 +120,6 @@
                     label="湿度(%)"
                     :formatter="humidityFormat"
                     width="90">
-            </el-table-column>
-            <el-table-column
-                    prop="deviceStateStr"
-                    label="状态"
-                    :formatter="deviceStateStrFormat"
-                    width="180">
             </el-table-column>
         </el-table>
     </div>
