@@ -39,6 +39,7 @@
     height: 30px;
     font-size: 10px;
     padding:0 2em;
+    margin-left:2px;
 }
 .gaoqingPopup .esri-popup__content .gaoqingListContent{
     flex-wrap: wrap;
