@@ -299,7 +299,6 @@ var comm = Vue.extend({
                     })
                 });
                 var allData = [selectItem,this.chartOptions,timeRangeObj];
-                debugger
                 eventHelper.emit('openStatisticsPanel',allData);
                 console.log(allData)
                 if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics.length > 0) {

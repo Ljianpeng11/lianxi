@@ -75,7 +75,6 @@ var comm = Vue.extend({
     mounted: function () {
         this.$refs.deviceList.openMapWindow(0,this.$refs.deviceList.deviceList[0]);
         eventHelper.on('openStatisticsPanel',function (allData) {
-            debugger
             var facilityTypeName = allData[0].facilityTypeName;
             console.log(allData)
         }.bind(this));

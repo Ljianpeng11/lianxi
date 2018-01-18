@@ -176,3 +176,9 @@
     height:100%;
     text-align: center;
 }
+.swImg{
+    background-image: url('../../../img/emegency/modelImg.png');
+    background-repeat: no-repeat;
+    background-position: 91% 57%;
+    background-size: 115px;
+}

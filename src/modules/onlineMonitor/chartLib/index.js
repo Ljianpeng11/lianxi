@@ -142,6 +142,11 @@ var comm = Vue.extend({
                                     //         // }
                                     //     }
                                     // },
+                                    areaStyle:{
+                                        normal:{
+                                            color:'#59C3E4'
+                                        }
+                                    },
                                     label:{
                                         normal:{
                                             fontSize:'24'

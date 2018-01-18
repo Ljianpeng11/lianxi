@@ -177,7 +177,7 @@
                 </span>
             </div>
             <div class="devicePanel-bottom">
-                <chart-lib v-if="facilityTypeName !== 'WQ' && facilityTypeName !== 'MHC'" :chartId="'deviceWaterChart'" ref="deviceWaterChart" :chartOptions="chartOptions"></chart-lib>
+                <chart-lib v-if="facilityTypeName !== 'WQ' && facilityTypeName !== 'MHC'" class="swImg" :chartId="'deviceWaterChart'" ref="deviceWaterChart" :chartOptions="chartOptions"></chart-lib>
                 <chart-lib v-else-if="facilityTypeName === 'WQ'" :chartId="'szLineChart'" ref="szLineChart" :chartOptions="szLineChartOptions"></chart-lib>
                 <chart-lib v-else-if="facilityTypeName === 'MHC'" :chartId="'jgLineChart'" ref="jgLineChart" :chartOptions="jgLineChartOptions"></chart-lib>
             </div>
