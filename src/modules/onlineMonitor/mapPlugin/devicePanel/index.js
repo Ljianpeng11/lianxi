@@ -21,6 +21,7 @@ var comm = Vue.extend({
             showBigImg:false,
             currentPic:'',
             showTip:false,
+            allData:[],
             devicePics: [
                 './img/mediaGallery/default.png'
             ],
@@ -141,8 +142,12 @@ var comm = Vue.extend({
     methods: {
         openDeviceDetail: function () {
             eventHelper.emit('change-menu', {title: '监测设备管理', funUrl: 'statisticsPanel'});
-            eventHelper.emit('openDeviceInfoPanel', this.deviceInfo);
+            /*eventHelper.emit('openDeviceInfoPanel', this.allData);*/
+            /*eventHelper.emit('openDeviceInfoPanel', this.deviceInfo);*/
             // eventHelper.emit('loadStatisticData',this.deviceInfo);
+        },
+        openStatisticsPanel:function(){
+            eventHelper.emit('openDeviceInfoPanel', this.allData);
         },
         loadChart:function(itemID,timeRangeObj){
             var self = this;
@@ -151,7 +156,6 @@ var comm = Vue.extend({
                     self.chartOptions.xData = [];
                     self.chartOptions.yData1 = [];
                     self.chartOptions.yData2 = [];
-                    console.log(result)
                     result.forEach(function(value){
                         self.chartOptions.xData.push(value.deviceUpdateTime);
                         self.chartOptions.yData1.push(parseFloat(value.dValue).toFixed(2));
@@ -208,11 +212,11 @@ var comm = Vue.extend({
                 }.bind(this));
             }.bind(this));
         },
-        loadJgChart:function(){
+        /*loadJgChart:function(){
             this.$nextTick(function(){
                 this.$refs.jgLineChart.reloadChart(this.jgLineChartOptions);
             }.bind(this));
-        }
+        }*/
     },
     mounted: function () {
         eventHelper.on('openDevicePanel', function (selectItem) {
@@ -249,7 +253,10 @@ var comm = Vue.extend({
                                     alarmHeight: item.alarmHeight,
                                     warningHeight: item.warningHeight,
                                     wellLidHeight: item.wellLidHeight,
-                                    waterLevel: item.dValue
+                                    waterLevel: item.dValue,
+                                    itemName: selectItem.name,
+                                    name:item.name,
+                                    itemId:item.itemID
                                 }
                                 if(!!item.alarmHeight){
                                     self.chartOptions.alarmHeight = item.wellLidHeight;
@@ -298,10 +305,7 @@ var comm = Vue.extend({
                         }
                     })
                 });
-                var allData = [selectItem,this.chartOptions,timeRangeObj];
-                debugger
-                eventHelper.emit('openStatisticsPanel',allData);
-                console.log(allData)
+               self.allData = [selectItem,self.deviceInfo,self.timeRangeObj];
                 if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics.length > 0) {
                     var pics = selectItem.facilityDevice.pics;
                     self.devicePics.splice(0, self.devicePics.length);
@@ -320,6 +324,10 @@ var comm = Vue.extend({
             if (!!this.timer) {
                 clearInterval(this.timer);
             }
+        }.bind(this));
+        eventHelper.on('openStatistics',function () {
+            debugger
+            eventHelper.emit('openDeviceInfoPanel', this.allData);
         }.bind(this));
     },
     components: {
