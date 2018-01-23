@@ -33,12 +33,20 @@
 .gaoqingPopup .esri-popup__content .detailBtnDiv {
     text-align: center;
     padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left:2px;
 }
 .gaoqingPopup .esri-popup__content .detailBtn {
     border-radius: 20px;
     height: 30px;
     font-size: 10px;
     padding:0 2em;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left:2px;
 }
 .gaoqingPopup .esri-popup__content .gaoqingListContent{
     flex-wrap: wrap;

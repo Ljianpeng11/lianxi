@@ -82,13 +82,15 @@
     overflow: auto;
     padding: 1em;
 }
-.tabContent{
+.tabBox{
     flex-basis: 100%;
     padding: 0;
     height: 100%;
+    display: flex;
     justify-content: center;
+    align-items: center;
 }
-.tabContent .listLabel-left,.tabContent .listLabel-right{
+.tabBox .listLabel-left,.tabBox .listLabel-right{
     flex:1;
 }
 .cesc-badge .arrow-up{
@@ -173,4 +175,7 @@
 .customCarousel .el-carousel__container{
     height:100%;
     text-align: center;
+}
+.swImg{
+    background: url('../../../img/emegency/modelImg.png')no-repeat 91% 57%/115px!important;
 }

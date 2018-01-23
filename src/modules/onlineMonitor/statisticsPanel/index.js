@@ -10,7 +10,7 @@ var chartLib = require('modules/onlineMonitor/chartLib');
 
 //雨量数据
 var xData = [],yData1 = [],yData2 = [],tableData = [];
-var data1 = [Math.random() *60];
+/*var data1 = [Math.random() *60];
 var data2 = [Math.random() *2];
 var time;
 for(var i = 0;i<12;i++){
@@ -25,7 +25,7 @@ for(var i = 0;i<12;i++){
         status:Math.floor(Math.random()*3)
     }
     tableData.push(item);
-}
+}*/
 
 // 定义组件
 var comm = Vue.extend({
@@ -104,9 +104,8 @@ var comm = Vue.extend({
         closePanel:function(){
             this.isOpen = false;
         },
-        loadCharts:function(itemID,timeRangeObj){
+        /*loadCharts:function(itemID,timeRangeObj){
             var self = this;
-            debugger
             controller.getHistoricalDataByMonitor(itemID, timeRangeObj.startDate, timeRangeObj.endDate, function (result) {
                 if(!!result && result.length > 0){
                     self.chartOptions.xData = [];
@@ -118,15 +117,14 @@ var comm = Vue.extend({
                         self.chartOptions.yData2.push(0);
                     });
                 }
-                debugger
+                console.log(self.chartOptions);
                 self.$refs.waterChart.reloadChart(self.chartOptions);
             });
 
-        },
+        },*/
     },
     mounted: function () {
         eventHelper.on('openDeviceInfoPanel',function(item){
-            debugger
             var self = this;
             self.deviceInfo ={
                 title:item[1].itemName,
@@ -136,7 +134,9 @@ var comm = Vue.extend({
                 dValue:item[1].waterLevel,
                 itemId:item[1].itemId
             };
-            self.loadCharts(this.deviceInfo.itemId,item[2]);
+            debugger
+            console.log(self.chartOptions);
+            /*self.loadCharts(this.deviceInfo.itemId,item[2]);*/
             var nowDate=moment().format("YYYY-MM-DD HH:mm:ss");
             var startTime = new Date(this.deviceInfo.sysUpdateTime);
             var endTime = new Date(nowDate);

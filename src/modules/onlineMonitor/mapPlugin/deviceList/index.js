@@ -115,7 +115,6 @@ var comm = Vue.extend({
             eventHelper.emit('openDevicePanel',selectItem);
         },
         openStatisticsPanel:function(){
-            debugger
             eventHelper.emit('openStatistics');
         },
         renderList:function(list){

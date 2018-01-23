@@ -326,7 +326,6 @@ var comm = Vue.extend({
             }
         }.bind(this));
         eventHelper.on('openStatistics',function () {
-            debugger
             eventHelper.emit('openDeviceInfoPanel', this.allData);
         }.bind(this));
     },
