@@ -113,6 +113,9 @@ var comm = Vue.extend({
         detailView:function(selectItem){
             eventHelper.emit('openDevicePanel',selectItem);
         },
+        openStatisticsPanel:function(){
+            eventHelper.emit('openStatisticsPanel');
+        },
         renderList:function(list){
             var originList = [];
             list.forEach(function(item){

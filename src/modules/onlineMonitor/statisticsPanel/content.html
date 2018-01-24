@@ -3,7 +3,7 @@
     <div class="devicePanel statisticsPanel">
         <div class="statisticsPanel-top">
             <div class="devicePanel-top">
-                <span>黄三角产业园区南边水尺&nbsp;&nbsp;(液位仪：{{deviceInfo.deviceCode}})</span>
+                <span>{{deviceInfo.name}}&nbsp;&nbsp;(液位仪：{{deviceInfo.deviceCode}})</span>
                 <el-select class="selectBox" v-model="viewTypeOption.value" placeholder="请选择">
                     <el-option
                             v-for="item in viewTypeOption.options"
@@ -16,11 +16,11 @@
             <div class="devicePanel-bottom dataLayout">
                 <div class="dataLayoutItem">
                     <p>最新数据时间</p>
-                    <p>2017-12-07 14:59:00</p>
+                    <p>{{deviceInfo.sysUpdateTime}}</p>
                 </div>
                 <div class="dataLayoutItem">
                     <p>最近通信</p>
-                    <p>18分钟前</p>
+                    <p>{{times}}分钟前</p>
                 </div>
                 <div class="dataLayoutItem">
                     <p>液位(m)</p>

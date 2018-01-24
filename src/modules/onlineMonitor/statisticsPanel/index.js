@@ -12,7 +12,7 @@ var xData = [],yData1 = [],yData2 = [],tableData = [];
 var data1 = [Math.random() *60];
 var data2 = [Math.random() *2];
 var time;
-for(var i = 0;i<12;i++){
+/*for(var i = 0;i<12;i++){
     time = moment().subtract(i,'h').format('YYYY-MM-DD hh:ss');
     xData[(11 - i)] = time;
     yData1.push(((Math.random() - 0.4) + data2[data2.length - 1]).toFixed(2));
@@ -24,7 +24,7 @@ for(var i = 0;i<12;i++){
         status:Math.floor(Math.random()*3)
     }
     tableData.push(item);
-}
+}*/
 
 // 定义组件
 var comm = Vue.extend({
@@ -37,6 +37,7 @@ var comm = Vue.extend({
             isShowChart: true,
             deviceInfo: {},
             radioValue: '曲线',
+            times:'',
             viewTypeOption: {
                 value: '设备地图',
                 options: [{
@@ -57,12 +58,12 @@ var comm = Vue.extend({
         }
     },
     created:function(){
-        eventHelper.on('openDeviceInfoPanel',function(item){
+        /*eventHelper.on('openDeviceInfoPanel',function(item){
             this.deviceInfo ={
                 title:item.name,
                 deviceCode:item.deviceCode
             };
-        }.bind(this));
+        }.bind(this));*/
     },
     methods: {
         toggleDataView:function(){
@@ -73,11 +74,21 @@ var comm = Vue.extend({
         }
     },
     mounted: function () {
-        this.$refs.deviceList.openMapWindow(0,this.$refs.deviceList.deviceList[0]);
-        eventHelper.on('openStatisticsPanel',function (allData) {
-            var facilityTypeName = allData[0].facilityTypeName;
-            console.log(allData)
+        var self = this;
+        eventHelper.on('openDeviceInfoPanel',function(item){
+            this.deviceInfo ={
+                title:item[1].name,
+                deviceCode:item[1].deviceCode,
+                name:item[1].name,
+                itemName:item[1].itemName,
+                itemID:item[1].itemID,
+                sysUpdateTime:item[1].sysUpdateTime
+            };
+            var nowDate = new Date(moment().format('YYYY-MM-DD hh:mm:ss')).getTime();;
+            var earlyDate = new Date(this.deviceInfo.sysUpdateTime).getTime();;
+            this.times = ((nowDate-earlyDate)/1000/60).toFixed(0);
         }.bind(this));
+        this.$refs.deviceList.openStatisticsPanel();
     },
     components: {
         'device-list':deviceList,

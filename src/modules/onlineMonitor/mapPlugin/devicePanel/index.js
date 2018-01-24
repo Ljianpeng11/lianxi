@@ -37,6 +37,7 @@ var comm = Vue.extend({
             },
             itemID:'',
             timeRangeObj:[],
+            allData:[],
             pickerOptions: {
                 shortcuts: [{
                     text: '最近一周',
@@ -142,7 +143,7 @@ var comm = Vue.extend({
     methods: {
         openDeviceDetail: function () {
             eventHelper.emit('change-menu', {title: '监测设备管理', funUrl: 'statisticsPanel'});
-            eventHelper.emit('openDeviceInfoPanel', this.deviceInfo);
+           /* eventHelper.emit('openDeviceInfoPanel', this.deviceInfo);*/
             // eventHelper.emit('loadStatisticData',this.deviceInfo);
         },
         loadChart:function(itemID,timeRangeObj){
@@ -259,7 +260,11 @@ var comm = Vue.extend({
                                     alarmHeight: parseFloat(item.alarmHeight),
                                     warningHeight: parseFloat(item.warningHeight),
                                     wellLidHeight: parseFloat(item.wellLidHeight),
-                                    waterLevel: parseFloat(item.dValue)
+                                    waterLevel: parseFloat(item.dValue),
+                                    name:selectItem.name,
+                                    itemName:item.name,
+                                    itemID:item.itemID,
+                                    sysUpdateTime:item.sysUpdateTime
                                 }
                                 //设置报警值，预警值，最大值
                                 if(!!item.wellLidHeight){
@@ -310,9 +315,10 @@ var comm = Vue.extend({
                         }
                     })
                 });
-                var allData = [selectItem,this.chartOptions,timeRangeObj];
-                eventHelper.emit('openStatisticsPanel',allData);
-                console.log(allData)
+                debugger
+                self.allData = [selectItem,self.deviceInfo,self.timeRangeObj];
+                console.log(self.allData)
+                console.log(selectItem)
                 if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics.length > 0) {
                     var pics = selectItem.facilityDevice.pics;
                     self.devicePics.splice(0, self.devicePics.length);
@@ -331,6 +337,9 @@ var comm = Vue.extend({
             if (!!this.timer) {
                 clearInterval(this.timer);
             }
+        }.bind(this));
+        eventHelper.on('openStatisticsPanel', function () {
+            eventHelper.emit('openDeviceInfoPanel',this.allData);
         }.bind(this));
     },
     components: {
