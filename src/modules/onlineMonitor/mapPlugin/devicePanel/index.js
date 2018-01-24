@@ -31,6 +31,7 @@ var comm = Vue.extend({
                 warningHeight:0,
                 wellLidHeight:0,
                 alarmHeight:0,
+                yMax:0,
                 xData: [],
                 yData1: [],
                 yData2: []
@@ -156,10 +157,16 @@ var comm = Vue.extend({
                     self.chartOptions.xData = [];
                     self.chartOptions.yData1 = [];
                     self.chartOptions.yData2 = [];
+                    console.log(result)
                     result.forEach(function(value){
-                        self.chartOptions.xData.push(value.deviceUpdateTime);
-                        self.chartOptions.yData1.push(parseFloat(value.dValue).toFixed(2));
-                        self.chartOptions.yData2.push(0);
+                        //设置y轴最大值，若水位值大于报警线则水位值+1，反之报警值+0.5;
+                        if(parseFloat(value.dValue) > self.chartOptions.alarmHeight){
+                            self.chartOptions.yMax =  Math.ceil(parseFloat(value.dValue) + 1);
+                        }
+                        //加载雨量图表x轴，水位y轴，雨量y轴数据
+                        // self.chartOptions.xData.push(value.deviceUpdateTime);
+                        self.chartOptions.yData1.push([value.deviceUpdateTime,parseFloat(value.dValue).toFixed(2)]);
+                        self.chartOptions.yData2.push([0,0]);
                     });
                 }
                 self.$refs.deviceWaterChart.reloadChart(self.chartOptions);
@@ -210,6 +217,7 @@ var comm = Vue.extend({
                     var refName = 'szChart'+index;
                     this.$refs[refName][0].reloadChart(val);
                 }.bind(this));
+                this.$refs.szLineChart.reloadChart(this.szLineChartOptions);
             }.bind(this));
         },
         /*loadJgChart:function(){
@@ -244,9 +252,11 @@ var comm = Vue.extend({
                     self.szDeviceInfo.name = device.name;
                     items.forEach(function (item,index) {
                         if(self.facilityTypeName !== 'WQ' && self.facilityTypeName !== 'MHC'){
+                            //设置父容器高度
                             self.$nextTick(function(){
                                 $(".multiDeviceBox").css("top","155px");
                             });
+                            //加载雨量图表各项数据
                             if (item.itemID.indexOf('ultrasoundWaterLine') > 0) {
                                 self.deviceInfo = {
                                     sysUpdateTime: item.sysUpdateTime,
@@ -254,12 +264,13 @@ var comm = Vue.extend({
                                     warningHeight: item.warningHeight,
                                     wellLidHeight: item.wellLidHeight,
                                     waterLevel: item.dValue,
-                                    itemName: selectItem.name,
-                                    name:item.name,
+                                    itemName: item.name,
+                                    name:selectItem.name,
                                     itemId:item.itemID
                                 }
-                                if(!!item.alarmHeight){
-                                    self.chartOptions.alarmHeight = item.wellLidHeight;
+                                //设置报警值，预警值，最大值
+                                if(!!item.wellLidHeight){
+                                    self.chartOptions.alarmHeight = parseFloat(item.wellLidHeight);
                                 }
                                 if(!!item.warningHeight){
                                     self.chartOptions.warningHeight = item.warningHeight;
@@ -267,6 +278,8 @@ var comm = Vue.extend({
                                 // if(!!item.wellLidHeight){
                                 //     self.chartOptions.wellLidHeight = item.wellLidHeight;
                                 // }
+                                //y轴最大值
+                                self.chartOptions.yMax = Math.ceil(parseFloat(self.chartOptions.alarmHeight) + 0.5);
                             } else if (item.itemID.indexOf('stressWaterLine') > 0) {
                                 self.deviceInfo.stressWaterLine = item.dValue;
                             }
@@ -295,7 +308,6 @@ var comm = Vue.extend({
                                     })()
                                 };
                                 self.szChartData.push(szChartItem);
-                                self.loadSzChart();
                             }else if(self.facilityTypeName === 'MHC'){
                                 self.$nextTick(function(){
                                     $(".multiDeviceBox").css("top","155px");
@@ -316,6 +328,9 @@ var comm = Vue.extend({
                     self.devicePics = [
                         './img/mediaGallery/default.png'
                     ]
+                }
+                if(self.facilityTypeName == 'WQ'){
+                    self.loadSzChart();
                 }
             }
             if(screen.width < 1400){

@@ -22,15 +22,11 @@ var comm = Vue.extend({
             options:{}
         }
     },
-    watch:{
-        chartOptions:function(val){
-            this.loadChart('#' + this.chartId,val);
-        }
-    },
     created(){
 
     },
     methods: {
+        //根据图表类型加载图表数据
         loadChart:function(dom,data){
             this.$nextTick(function () {
                 this.myChart = echarts.init($(dom)[0]);
@@ -50,23 +46,19 @@ var comm = Vue.extend({
                             },
                             xAxis: [
                                 {
-                                    type: 'category',
+                                    type: 'time',
                                     boundaryGap: false,
                                     axisLine: {
                                         onZeroAxisIndex: 1
                                     },
-                                    data: data.xData
+                                    // data: data.xData
                                 }
                             ],
                             yAxis: [
                                 {
                                     name: '测量液位(m)',
                                     type: 'value',
-                                    max: (function(){
-                                        if(!!data.alarmHeight){
-                                            return Math.ceil(parseFloat(data.alarmHeight) + 1);
-                                        }
-                                    })(),
+                                    max:data.yMax,
                                     splitNumber: 4,
                                     axisLine: {
                                         show: false
@@ -125,23 +117,17 @@ var comm = Vue.extend({
                                 {
                                     name: '测量液位(m)',
                                     type: 'line',
-                                    symbol: 'diamond',
-                                    symbolSize: 4,
+                                    // symbol: 'diamond',
+                                    symbolSize: 0,
                                     tooltip: {
                                         trigger: 'axis'
                                     },
                                     smooth: true,
-                                    // itemStyle: {
-                                    //     normal: {
-                                    //         color: '#2f91e4',
-                                    //         lineStyle: {
-                                    //             color: '#2f91e4'
-                                    //         },
-                                    //         // areaStyle: {
-                                    //         //     color: 'rgba(67,67,72, 0.8)'
-                                    //         // }
-                                    //     }
-                                    // },
+                                    areaStyle:{
+                                        normal:{
+                                            color:'#59C3E4'
+                                        }
+                                    },
                                     label:{
                                         normal:{
                                             fontSize:'24'
@@ -151,29 +137,30 @@ var comm = Vue.extend({
                                         symbolSize: 0
                                     },
                                     data: data.yData1
-                                },{
-                                    name: '降雨量(mm)',
-                                    type: 'bar',
-                                    barWidth:'10%',
-                                    // symbolSize: 4,
-                                    tooltip: {
-                                        trigger: 'axis'
-                                    },
-                                    yAxisIndex: 1,
-                                    // smooth: true,
-                                    itemStyle: {
-                                        normal: {
-                                            color: 'rgba(124,181,236, 1)',
-                                            lineStyle: {
-                                                color: 'rgba(124,181,236, 0.8)'
-                                            },
-                                            areaStyle: {
-                                                color: 'rgba(124,181,236, 0.8)'
-                                            }
-                                        }
-                                    },
-                                    data: data.yData2
                                 }
+                                // ,{
+                                //     name: '降雨量(mm)',
+                                //     type: 'bar',
+                                //     barWidth:'10%',
+                                //     // symbolSize: 4,
+                                //     tooltip: {
+                                //         trigger: 'axis'
+                                //     },
+                                //     yAxisIndex: 1,
+                                //     // smooth: true,
+                                //     itemStyle: {
+                                //         normal: {
+                                //             color: 'rgba(124,181,236, 1)',
+                                //             lineStyle: {
+                                //                 color: 'rgba(124,181,236, 0.8)'
+                                //             },
+                                //             areaStyle: {
+                                //                 color: 'rgba(124,181,236, 0.8)'
+                                //             }
+                                //         }
+                                //     },
+                                //     data: data.yData2
+                                // }
                             ]
                         };
                         this.options.series[0].markLine.data = [];
@@ -608,94 +595,25 @@ var comm = Vue.extend({
                             },
                             yAxis: [{
                                 type: 'value',
-                                // offset:'20',
                                 axisLabel: {
-                                    formatter: '{value} '
+                                    formatter: function(value){
+                                        var str;
+                                        switch(value){
+                                            case 1: str = 'I';break;
+                                            case 2: str = 'II';break;
+                                            case 3: str = 'III';break;
+                                            case 4: str = 'IV';break;
+                                            case 5: str = 'V';break;
+                                            case 6: str = '劣V';break;
+                                            default:break;
+                                        }
+                                        return str;
+                                    }
                                 },
                                 min: 0,
                                 max: 6
                             }],
                             series: [
-                            //     {
-                            //     "name": "1级",
-                            //     "type": "bar",
-                            //     "stack": "总量",
-                            //     "barMaxWidth": 35,
-                            //     "itemStyle": {
-                            //         "normal": {
-                            //             "color": "#11c5fa"
-                            //         }
-                            //     },
-                            //     "data": [
-                            //         1
-                            //     ],
-                            // },
-                            //     {
-                            //         "name": "2级",
-                            //         "type": "bar",
-                            //         "stack": "总量",
-                            //         "itemStyle": {
-                            //             "normal": {
-                            //                 "color": "#13a9f0",
-                            //                 "barBorderRadius": 0
-                            //             }
-                            //         },
-                            //         "data": [
-                            //             1,
-                            //         ]
-                            //     },{
-                            //         "name": "3级",
-                            //         "type": "bar",
-                            //         "stack": "总量",
-                            //         "itemStyle": {
-                            //             "normal": {
-                            //                 "color": "#60d41c",
-                            //                 "barBorderRadius": 0,
-                            //             }
-                            //         },
-                            //         "data": [
-                            //             1,
-                            //         ]
-                            //     },{
-                            //         "name": "4级",
-                            //         "type": "bar",
-                            //         "stack": "总量",
-                            //         "itemStyle": {
-                            //             "normal": {
-                            //                 "color": "#20b660",
-                            //                 "barBorderRadius": 0
-                            //             }
-                            //         },
-                            //         "data": [
-                            //             1,
-                            //         ]
-                            //     },{
-                            //         "name": "5级",
-                            //         "type": "bar",
-                            //         "stack": "总量",
-                            //         "itemStyle": {
-                            //             "normal": {
-                            //                 "color": "#fec109",
-                            //                 "barBorderRadius": 0,
-                            //             }
-                            //         },
-                            //         "data": [
-                            //             1,
-                            //         ]
-                            //     },{
-                            //         "name": "6级",
-                            //         "type": "bar",
-                            //         "stack": "总量",
-                            //         "itemStyle": {
-                            //             "normal": {
-                            //                 "color": "#fc5304",
-                            //                 "barBorderRadius": 0,
-                            //             }
-                            //         },
-                            //         "data": [
-                            //             1,
-                            //         ]
-                            //     },
                                 {
                                     name: '水温',
                                     type: 'line',
@@ -822,7 +740,7 @@ var comm = Vue.extend({
                         break;
                     default:break;
                 }
-                this.myChart.setOption(this.options);
+                this.myChart.setOption(this.options,true);
                 eventHelper.on('toggle-menu', function () {
                     setTimeout(function () {
                         this.myChart.resize();
@@ -833,6 +751,8 @@ var comm = Vue.extend({
                 // }
             }.bind(this));
         },
+        //雨量数据每隔一段时间刷新
+        //控制数据更新
         addData:function(){
             this.chartOptions.xData.shift();
             this.chartOptions.yData1.shift();
@@ -841,6 +761,7 @@ var comm = Vue.extend({
             this.chartOptions.yData1.push(((Math.random() - 0.4) + data1[data1.length - 1]).toFixed(2));
             this.chartOptions.yData2.push(((Math.random() - 0.4) * 10 + data2[data2.length - 1]).toFixed(2));
         },
+        //控制刷新频率
         refreshYLChart:function(){
             this.timer = setInterval(function(){
                 this.addData();
@@ -849,6 +770,7 @@ var comm = Vue.extend({
                 this.myChart.setOption(this.options,true);
             }.bind(this),2000);
         },
+        //重绘图表
         reloadChart:function(data){
             this.loadChart('#' + this.chartId,data);
         }

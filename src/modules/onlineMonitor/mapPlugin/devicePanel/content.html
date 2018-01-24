@@ -1,7 +1,7 @@
 <div>
     <div class="devicePanel multiDeviceBox" v-if="isOpenPanel" style="bottom:calc(18em + 10px)">
         <div class="devicePanel-top">
-            <span>{{deviceInfo.title}}</span>
+            <span>{{deviceInfo.name}}</span>
             <i class="el-icon-d-arrow-right" :class="[isOpenBox?'rotate-up':'rotate-down']" @click="toggleBox"></i>
         </div>
         <div class="devicePanel-bottom" v-show="isOpenBox">
@@ -107,7 +107,7 @@
                     <div class="szTop-l">
                         <p>上次通信时间：{{szDeviceInfo.sysUpdateTime}}</p>
                         <p>设备类型：{{szDeviceInfo.name}}</p>
-                        <p>地址：{{deviceInfo.title}}</p>
+                        <p>地址：{{deviceInfo.name}}</p>
                     </div>
                     <div class="szTop-r" v-if="facilityTypeName == 'WQ'">
                         <p>当前等级</p>
@@ -137,7 +137,7 @@
     <transition enter-active-class="fadeInUP" leave-active-class="fadeOutDown">
         <div id="devicePanel" class="devicePanel deviceInfo animated" v-if="isOpenPanel">
             <div class="devicePanel-top">
-                <span>{{deviceInfo.title}}</span>
+                <span>{{deviceInfo.name}}</span>
                 <div class="deviceMiddle" v-if="facilityTypeName !== 'WQ' && facilityTypeName !== 'MHC'">
                 <!--<span class="selectItem">参考线：-->
                 <!--<b>参考线</b><i class="icon iconfont icon-xiajiantou"></i>-->
