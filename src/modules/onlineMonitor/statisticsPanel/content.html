@@ -3,7 +3,7 @@
     <div class="devicePanel statisticsPanel">
         <div class="statisticsPanel-top">
             <div class="devicePanel-top">
-                <span>{{deviceInfo.name}}&nbsp;&nbsp;(液位仪：{{deviceInfo.deviceCode}})</span>
+                <span>{{deviceInfo.title}}&nbsp;&nbsp;(液位仪：{{deviceInfo.deviceCode}})</span>
                 <el-select class="selectBox" v-model="viewTypeOption.value" placeholder="请选择">
                     <el-option
                             v-for="item in viewTypeOption.options"
@@ -24,15 +24,15 @@
                 </div>
                 <div class="dataLayoutItem">
                     <p>液位(m)</p>
-                    <p>0</p>
+                    <p>{{waterValue}}</p>
                 </div>
                 <div class="dataLayoutItem">
                     <p>黄海液位(m)</p>
                     <p>0.000</p>
                 </div>
                 <div class="dataLayoutItem">
-                    <p>中继电器(39%)</p>
-                    <p>39</p>
+                    <p>中继电器(%)</p>
+                    <p>{{electricityValue}}</p>
                 </div>
                 <div class="dataLayoutItem">
                     <p>最新数据当天累计降雨量(mm)</p>
@@ -55,16 +55,21 @@
                 <div class="selectTools">
                     <span class="selectItem">导航：
                          <b>工期范围</b><i class="icon iconfont icon-xiajiantou"></i>
-                         <ul class="selectBox" style="display:none">
+                         <el-date-picker
+                                type="datetimerange"
+                                :picker-options="pickerOptions"
+                                placeholder="选择时间范围">
+                         </el-date-picker>
+                         <!--<ul class="selectBox" style="display:none">
                             <li></li>
-                         </ul>
+                         </ul>-->
                     </span>
-                    <span class="selectItem">
+                    <!--<span class="selectItem">
                         <b>2017-12-07~2017-12-08</b><i class="icon iconfont icon-xiajiantou"></i>
                         <ul class="selectBox" style="display:none">
                             <li></li>
                         </ul>
-                    </span>
+                    </span>-->
                     <span class="selectItem">参考线：
                          <b>参考线</b><i class="icon iconfont icon-xiajiantou"></i>
                          <ul class="selectBox" style="display:none">
@@ -98,7 +103,7 @@
                             <small>起止时间：2017-12-07~2017-12-07</small>
                         </div>
                         <div class="detailChartBox">
-                            <chart-lib :chartId="'waterChart'" :chartOptions="chartOptions"></chart-lib>
+                            <chart-lib  :chartId="'deviceWaterChart'" ref="deviceWaterChart" :chartOptions="chartOptions"></chart-lib>
                         </div>
                     </div>
                     <div class="dataView" v-show="!isShowChart">

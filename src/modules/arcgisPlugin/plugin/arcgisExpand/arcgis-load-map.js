@@ -76,7 +76,6 @@ define(function () {
                     ]
                 })
             });
-            debugger
             eventHelper.emit('alert-point', facilityArr, true);
             /*  graLayer.on('mouse-over',function (evt) {
              console.log('over',evt);

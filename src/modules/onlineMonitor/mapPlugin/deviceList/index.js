@@ -100,6 +100,7 @@ var comm = Vue.extend({
                 eventHelper.emit('openDevicePanel',this.selectIitem);
             }else{
                 //地图定位
+                eventHelper.emit('openDevicePanel',this.selectIitem);
                 var mapPoint = mapHelper.createPoint(this.deviceList[index].x,this.deviceList[index].y);
                 mapHelper.setCenter(this.baseView,this.deviceList[index].x,this.deviceList[index].y,16,function(){
                     //显示地图popup信息框
@@ -114,7 +115,7 @@ var comm = Vue.extend({
             eventHelper.emit('openDevicePanel',selectItem);
         },
         openStatisticsPanel:function(){
-            eventHelper.emit('openStatisticsPanel');
+            eventHelper.emit('openStatistics');
         },
         renderList:function(list){
             var originList = [];

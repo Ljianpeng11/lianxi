@@ -21,6 +21,7 @@ var comm = Vue.extend({
             showBigImg:false,
             currentPic:'',
             showTip:false,
+            allData:[],
             devicePics: [
                 './img/mediaGallery/default.png'
             ],
@@ -37,7 +38,6 @@ var comm = Vue.extend({
             },
             itemID:'',
             timeRangeObj:[],
-            allData:[],
             pickerOptions: {
                 shortcuts: [{
                     text: '最近一周',
@@ -143,8 +143,12 @@ var comm = Vue.extend({
     methods: {
         openDeviceDetail: function () {
             eventHelper.emit('change-menu', {title: '监测设备管理', funUrl: 'statisticsPanel'});
-           /* eventHelper.emit('openDeviceInfoPanel', this.deviceInfo);*/
+            /*eventHelper.emit('openDeviceInfoPanel', this.allData);*/
+            /*eventHelper.emit('openDeviceInfoPanel', this.deviceInfo);*/
             // eventHelper.emit('loadStatisticData',this.deviceInfo);
+        },
+        openStatisticsPanel:function(){
+            eventHelper.emit('openDeviceInfoPanel', this.allData);
         },
         loadChart:function(itemID,timeRangeObj){
             var self = this;
@@ -156,15 +160,13 @@ var comm = Vue.extend({
                     console.log(result)
                     result.forEach(function(value){
                         //设置y轴最大值，若水位值大于报警线则水位值+1，反之报警值+0.5;
-                        // if(parseFloat(value.dValue) > self.chartOptions.wellLidHeight){
-                        //     self.chartOptions.yMax =  Math.ceil(parseFloat(value.dValue) + 1);
-                        // }else{
-                        //     self.chartOptions.yMax = Math.ceil(parseFloat(self.chartOptions.wellLidHeight) + 0.5);
-                        // }
+                        if(parseFloat(value.dValue) > self.chartOptions.alarmHeight){
+                            self.chartOptions.yMax =  Math.ceil(parseFloat(value.dValue) + 1);
+                        }
                         //加载雨量图表x轴，水位y轴，雨量y轴数据
-                        self.chartOptions.xData.push(value.deviceUpdateTime);
-                        self.chartOptions.yData1.push(parseFloat(value.dValue).toFixed(2));
-                        self.chartOptions.yData2.push(0);
+                        // self.chartOptions.xData.push(value.deviceUpdateTime);
+                        self.chartOptions.yData1.push([value.deviceUpdateTime,parseFloat(value.dValue).toFixed(2)]);
+                        self.chartOptions.yData2.push([0,0]);
                     });
                 }
                 self.$refs.deviceWaterChart.reloadChart(self.chartOptions);
@@ -215,13 +217,14 @@ var comm = Vue.extend({
                     var refName = 'szChart'+index;
                     this.$refs[refName][0].reloadChart(val);
                 }.bind(this));
+                this.$refs.szLineChart.reloadChart(this.szLineChartOptions);
             }.bind(this));
         },
-        loadJgChart:function(){
+        /*loadJgChart:function(){
             this.$nextTick(function(){
                 this.$refs.jgLineChart.reloadChart(this.jgLineChartOptions);
             }.bind(this));
-        }
+        }*/
     },
     mounted: function () {
         eventHelper.on('openDevicePanel', function (selectItem) {
@@ -257,34 +260,34 @@ var comm = Vue.extend({
                             if (item.itemID.indexOf('ultrasoundWaterLine') > 0) {
                                 self.deviceInfo = {
                                     sysUpdateTime: item.sysUpdateTime,
-                                    alarmHeight: parseFloat(item.alarmHeight),
-                                    warningHeight: parseFloat(item.warningHeight),
-                                    wellLidHeight: parseFloat(item.wellLidHeight),
-                                    waterLevel: parseFloat(item.dValue),
+                                    alarmHeight: item.alarmHeight,
+                                    warningHeight: item.warningHeight,
+                                    wellLidHeight: item.wellLidHeight,
+                                    waterLevel: item.dValue,
+                                    itemName: item.name,
                                     name:selectItem.name,
-                                    itemName:item.name,
-                                    itemID:item.itemID,
-                                    sysUpdateTime:item.sysUpdateTime
+                                    itemId:item.itemID
                                 }
                                 //设置报警值，预警值，最大值
                                 if(!!item.wellLidHeight){
                                     self.chartOptions.alarmHeight = parseFloat(item.wellLidHeight);
                                 }
                                 if(!!item.warningHeight){
-                                    self.chartOptions.warningHeight = parseFloat(item.warningHeight);
+                                    self.chartOptions.warningHeight = item.warningHeight;
                                 }
                                 // if(!!item.wellLidHeight){
                                 //     self.chartOptions.wellLidHeight = item.wellLidHeight;
                                 // }
+                                //y轴最大值
+                                self.chartOptions.yMax = Math.ceil(parseFloat(self.chartOptions.alarmHeight) + 0.5);
                             } else if (item.itemID.indexOf('stressWaterLine') > 0) {
-                                self.deviceInfo.stressWaterLine = parseFloat(item.dValue);
+                                self.deviceInfo.stressWaterLine = item.dValue;
                             }
                             if (item.itemTypeName.indexOf('waterLevel') !== -1) {//todo 动态输入水位值（超声波、压力）
                                 self.itemID = item.itemID;
                                 self.loadChart(self.itemID,timeRangeObj);
                             }
                         }else{
-                            //水质和井盖数据加载
                             if(self.facilityTypeName === 'WQ'){
                                 self.$nextTick(function(){
                                     $(".multiDeviceBox").css("top","5px");
@@ -305,7 +308,6 @@ var comm = Vue.extend({
                                     })()
                                 };
                                 self.szChartData.push(szChartItem);
-                                self.loadSzChart();
                             }else if(self.facilityTypeName === 'MHC'){
                                 self.$nextTick(function(){
                                     $(".multiDeviceBox").css("top","155px");
@@ -315,10 +317,7 @@ var comm = Vue.extend({
                         }
                     })
                 });
-                debugger
-                self.allData = [selectItem,self.deviceInfo,self.timeRangeObj];
-                console.log(self.allData)
-                console.log(selectItem)
+               self.allData = [selectItem,self.deviceInfo,self.timeRangeObj];
                 if (selectItem.facilityDevice.pics && selectItem.facilityDevice.pics.length > 0) {
                     var pics = selectItem.facilityDevice.pics;
                     self.devicePics.splice(0, self.devicePics.length);
@@ -330,6 +329,9 @@ var comm = Vue.extend({
                         './img/mediaGallery/default.png'
                     ]
                 }
+                if(self.facilityTypeName == 'WQ'){
+                    self.loadSzChart();
+                }
             }
             if(screen.width < 1400){
                 this.isOpenBox = false;
@@ -338,8 +340,8 @@ var comm = Vue.extend({
                 clearInterval(this.timer);
             }
         }.bind(this));
-        eventHelper.on('openStatisticsPanel', function () {
-            eventHelper.emit('openDeviceInfoPanel',this.allData);
+        eventHelper.on('openStatistics',function () {
+            eventHelper.emit('openDeviceInfoPanel', this.allData);
         }.bind(this));
     },
     components: {
